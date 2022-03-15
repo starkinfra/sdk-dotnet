@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Title>StarkInfra SDK</Title>
+    <Authors>Stark Infra</Authors>
+    <Owners>Stark Infra</Owners>
+    <Description>SDK to facilitate C# (.NET) integrations with the Stark Infra API</Description>
+    <Summary>SDK to facilitate C# (.NET) integrations with the Stark Infra API</Summary>
+    <AssemblyTitle>StarkInfra</AssemblyTitle>
+    <AssemblyName>StarkInfra</AssemblyName>
+    <VersionPrefix>0.0.1</VersionPrefix>
+    <Version>0.0.1</Version>
+    <ReleaseVersion>0.0.1</ReleaseVersion>
+    <PackageVersion>0.0.1</PackageVersion>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <PackageId>starkinfra</PackageId>
+    <PackageTags>starkinfra;stark;infra;openbanking;open-banking</PackageTags>
+    <PackageIconUrl>https://dka575ofm4ao0.cloudfront.net/pages-transactional_logos/retina/135476/logo-white-1.png</PackageIconUrl>
+    <!-- <PackageIcon>icon.png</PackageIcon> -->
+    <PackageProjectUrl>https://github.com/starkinfra/sdk-dotnet</PackageProjectUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackOnBuild>true</PackOnBuild>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Configurations>Release;Debug</Configurations>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType></DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="starkbank-ecdsa" Version="1.3.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utils\" />
+    <Folder Include="User\" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Utils\endToEndId.cs" />
+    <Compile Include="Utils\EndToEndId.cs" />
+  </ItemGroup>
+</Project>
