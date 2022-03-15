@@ -15,7 +15,7 @@
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <PackageId>starkinfra</PackageId>
     <PackageTags>starkinfra;stark;infra;openbanking;open-banking</PackageTags>
-    <PackageIconUrl>https://dka575ofm4ao0.cloudfront.net/pages-transactional_logos/retina/135476/logo-white-1.png</PackageIconUrl>
+    <PackageIconUrl>https://starkinfra.com/static/icon.png</PackageIconUrl>
     <!-- <PackageIcon>icon.png</PackageIcon> -->
     <PackageProjectUrl>https://github.com/starkinfra/sdk-dotnet</PackageProjectUrl>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -23,7 +23,6 @@
     <PackOnBuild>true</PackOnBuild>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Configurations>Release;Debug</Configurations>
-    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -37,11 +36,12 @@
   <ItemGroup>
     <Folder Include="Utils\" />
     <Folder Include="User\" />
-  </ItemGroup>
-  <ItemGroup>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Utils\endToEndId.cs" />
-    <Compile Include="Utils\EndToEndId.cs" />
+    <Folder Include="Event\" />
+    <Folder Include="PixBalance\" />
+    <Folder Include="PixRequest\" />
+    <Folder Include="PixReversal\" />
+    <Folder Include="PixStatement\" />
+    <Folder Include="Settings\" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
 </Project>

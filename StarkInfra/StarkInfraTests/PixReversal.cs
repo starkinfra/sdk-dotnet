@@ -107,8 +107,7 @@ namespace StarkInfraTests
         public void PageParams()
         {
             List<PixReversal> page;
-            string cursor = null;
-            (page, cursor) = PixReversal.Page(
+            (page, _) = PixReversal.Page(
                 cursor: null,
                 fields: new List<string> {"amount", "id"},
                 limit: 10,
