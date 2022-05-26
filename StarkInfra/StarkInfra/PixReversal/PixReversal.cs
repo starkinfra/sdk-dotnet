@@ -16,29 +16,29 @@ namespace StarkInfra
     /// <br/>
     /// Properties:
     /// <list>
-    ///     <item>amount [integer]: amount in cents to be reversed from PixRequest. ex: 1234 (= R$ 12.34)</item>
-    ///     <item>externalId [string]: url safe string that must be unique among all your PixReversals. Duplicated external IDs will cause failures. By default, this parameter will block any PixReversal that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"</item>
-    ///     <item>endToEndId [string]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"</item>
-    ///     <item>reason [string]: reason why the PixRequest is being reversed. Options are "bankError", "fraud", "chashierError", "customerRequest"</item>
-    ///     <item>tags [list of strings, default null]: list of strings for reference when searching for PixReversals. ex: ["employees", "monthly"]</item>
-    ///     <item>id [string, default null]: unique id returned when the PixReversal is created. ex: "5656565656565656".</item>
-    ///     <item>returnId [string, default null]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".</item>
-    ///     <item>bankCode [string, default null]: code of the bank institution in Brazil. ex: "20018183" or "341"</item>
-    ///     <item>fee [string, default null]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)</item>
-    ///     <item>status [string, default null]: current PixReversal status. ex: "registered" or "paid"</item>
-    ///     <item>flow [string, default null]: direction of money flow. ex: "in" or "out"</item>
-    ///     <item>created [DateTime, default null]: creation datetime for the PixReversal. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)</item>
-    ///     <item>updated [DateTime, default null]: latest update datetime for the PixReversal. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>Amount [integer]: amount in cents to be reversed from PixRequest. ex: 1234 (= R$ 12.34)</item>
+    ///     <item>ExternalID [string]: url safe string that must be unique among all your PixReversals. Duplicated external IDs will cause failures. By default, this parameter will block any PixReversal that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"</item>
+    ///     <item>EndToEndID [string]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"</item>
+    ///     <item>Reason [string]: reason why the PixRequest is being reversed. Options are "bankError", "fraud", "chashierError", "customerRequest"</item>
+    ///     <item>Tags [list of strings, default null]: list of strings for reference when searching for PixReversals. ex: ["employees", "monthly"]</item>
+    ///     <item>ID [string]: unique id returned when the PixReversal is created. ex: "5656565656565656".</item>
+    ///     <item>ReturnID [string]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".</item>
+    ///     <item>BankCode [string]: code of the bank institution in Brazil. ex: "20018183" or "341"</item>
+    ///     <item>Fee [string]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)</item>
+    ///     <item>Status [string]: current PixReversal status. ex: "registered" or "paid"</item>
+    ///     <item>Flow [string]: direction of money flow. ex: "in" or "out"</item>
+    ///     <item>Created [DateTime]: creation datetime for the PixReversal. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>Updated [DateTime]: latest update datetime for the PixReversal. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
     /// </summary>
     public partial class PixReversal : Utils.Resource
     {
         public long Amount { get; }
-        public string ExternalId { get; }
-        public string EndToEndId { get; }
+        public string ExternalID { get; }
+        public string EndToEndID { get; }
         public string Reason { get; }
         public List<string> Tags { get; }
-        public string ReturnId { get; }
+        public string ReturnID { get; }
         public string BankCode { get; }
         public long? Fee { get; }
         public string Status { get; }
@@ -66,26 +66,26 @@ namespace StarkInfra
         /// </list>
         /// Attributes (return-only):
         /// <list>
-        ///     <item>id [string, default null]: unique id returned when the PixReversal is created. ex: "5656565656565656".</item>
-        ///     <item>returnId [string, default null]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".</item>
-        ///     <item>bankCode [string, default null]: code of the bank institution in Brazil. ex: "20018183" or "341"</item>
-        ///     <item>fee [string, default null]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)</item>
-        ///     <item>status [string, default null]: current PixReversal status. ex: "registered" or "paid"</item>
-        ///     <item>flow [string, default null]: direction of money flow. ex: "in" or "out"</item>
-        ///     <item>created [DateTime, default null]: creation datetime for the PixReversal. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)</item>
-        ///     <item>updated [DateTime, default null]: latest update datetime for the PixReversal. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>id [string]: unique id returned when the PixReversal is created. ex: "5656565656565656".</item>
+        ///     <item>returnId [string]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".</item>
+        ///     <item>bankCode [string]: code of the bank institution in Brazil. ex: "20018183" or "341"</item>
+        ///     <item>fee [string]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)</item>
+        ///     <item>status [string]: current PixReversal status. ex: "registered" or "paid"</item>
+        ///     <item>flow [string]: direction of money flow. ex: "in" or "out"</item>
+        ///     <item>created [DateTime]: creation datetime for the PixReversal. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>updated [DateTime]: latest update datetime for the PixReversal. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
         public PixReversal(long amount, string externalId, string endToEndId, string reason, List<string> tags = null,  
-        string id = null, string returnId = null, string bankCode = null, long? fee = null, string status = null, 
-        string flow = null, DateTime? created = null, DateTime? updated = null) : base(id)
+            string id = null, string returnId = null, string bankCode = null, long? fee = null, string status = null, 
+            string flow = null, DateTime? created = null, DateTime? updated = null) : base(id)
         {
             Amount = amount;
-            ExternalId = externalId;
-            EndToEndId = endToEndId;
+            ExternalID = externalId;
+            EndToEndID = endToEndId;
             Reason = reason;
             Tags = tags;
-            ReturnId = returnId;
+            ReturnID = returnId;
             BankCode = bankCode;
             Fee = fee;
             Status = status;
@@ -101,12 +101,12 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (required):
         /// <list>
-        ///     <item>pixReversals [list of PixReversal objects]: list of PixReversal objects to be created in the API</item>
+        ///     <item>reversals [list of PixReversal objects]: list of PixReversal objects to be created in the API</item>
         /// </list>
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>user [Organization/Project object]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
         /// Return:
@@ -114,13 +114,13 @@ namespace StarkInfra
         ///     <item>list of PixReversal objects with updated attributes</item>
         /// </list>
         /// </summary>
-        public static List<PixReversal> Create(List<PixReversal> pixReversals, User user = null)
+        public static List<PixReversal> Create(List<PixReversal> reversals, User user = null)
         {
             (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
-                entities: pixReversals,
+                entities: reversals,
                 user: user
             ).ToList().ConvertAll(o => (PixReversal)o);
         }
@@ -132,12 +132,12 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (required):
         /// <list>
-        ///     <item>pixReversals [list of Dictionaries]: list of Dictionaries representing the PixReversals to be created in the API</item>
+        ///     <item>reversals [list of dictionaries]: list of dictionaries representing the PixReversals to be created in the API</item>
         /// </list>
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>user [Organization/Project object]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
         /// Return:
@@ -145,13 +145,13 @@ namespace StarkInfra
         ///     <item>list of PixReversal objects with updated attributes</item>
         /// </list>
         /// </summary>
-        public static List<PixReversal> Create(List<Dictionary<string, object>> pixReversals, User user = null)
+        public static List<PixReversal> Create(List<Dictionary<string, object>> reversals, User user = null)
         {
             (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
-                entities: pixReversals,
+                entities: reversals,
                 user: user
             ).ToList().ConvertAll(o => (PixReversal)o);
         }
@@ -168,7 +168,7 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>user [Organization/Project object]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
         /// Return:
@@ -228,8 +228,7 @@ namespace StarkInfra
                     { "tags", tags },
                     { "ids", ids },
                     { "returnIds", returnIds },
-                    { "externalIds", externalIds },
-                    { "user", user }
+                    { "externalIds", externalIds }
                 },
                 user: user
             ).Cast<PixReversal>();
@@ -258,7 +257,8 @@ namespace StarkInfra
         /// <br/>
         /// Return:
         /// <list>
-        ///     <item>list of PixReversal objects with updated attributes and cursor to retrieve the next page of PixReversal objects</item>
+        ///     <item>list of PixReversal objects with updated attributes</item>
+        ///     <item>cursor to retrieve the next page of PixReversal objects</item>
         /// </list>
         /// </summary>
         public static (List<PixReversal> page, string pageCursor) Page(string cursor = null, List<string>  fields = null, 
@@ -279,17 +279,16 @@ namespace StarkInfra
                     { "tags", tags },
                     { "ids", ids },
                     { "returnIds", returnIds },
-                    { "externalIds", externalIds },
-                    { "user", user }
+                    { "externalIds", externalIds }
                 },
                 user: user
             );
-            List<PixReversal> pixReversals = new List<PixReversal>();
+            List<PixReversal> reversals = new List<PixReversal>();
             foreach (SubResource subResource in page)
             {
-                pixReversals.Add(subResource as PixReversal);
+                reversals.Add(subResource as PixReversal);
             }
-            return (pixReversals, pageCursor);
+            return (reversals, pageCursor);
         }
         
         /// <summary>
@@ -307,7 +306,7 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>user [Organization/Project object]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
         /// Return:

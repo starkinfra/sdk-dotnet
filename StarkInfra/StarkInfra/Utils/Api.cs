@@ -15,6 +15,11 @@ namespace StarkInfra.Utils
             return CastJsonToApiFormat(entity.ToJson());
         }
 
+        internal static Dictionary<string, object> ApiJson(SubResource entity)
+        {
+            return CastJsonToApiFormat(entity.ToJson());
+        }
+
         internal static Dictionary<string, object> ApiJson(Dictionary<string, object> entity)
         {
             return CastJsonToApiFormat(entity);
@@ -51,10 +56,15 @@ namespace StarkInfra.Utils
                 if (value is IList) {
                     bool nested = false;
                     List<object> casted = new List<object>();
-                    foreach (object nestedEntry in value) {
+                    foreach (dynamic nestedEntry in value) {
                         if(nestedEntry is Dictionary<string, object>) {
                             Dictionary<string, object> castedNestedEntry = nestedEntry as Dictionary<string, object>;
                             casted.Add(CastJsonToApiFormat(castedNestedEntry));
+                            nested = true;
+                        }
+                        if (nestedEntry is SubResource)
+                        {
+                            casted.Add(ApiJson(nestedEntry));
                             nested = true;
                         }
                     }

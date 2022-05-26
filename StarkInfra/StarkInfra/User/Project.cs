@@ -9,7 +9,7 @@ namespace StarkInfra
     /// The Project object is the main authentication entity for the SDK.
     /// All requests to the Stark Infra API must be authenticated via a project,
     /// which must have been previously created at the Stark Infra website
-    /// [https://web.sandbox.starkinfra.com] or [https://web.starkinfra.com]
+    /// [https://web.sandbox.starkbank.com] or [https://web.starkinfra.com]
     /// before you can use it in this SDK.Projects may be passed as a parameter on
     /// each request or may be defined as the default user at the start(See README).
     /// <br/>
@@ -33,7 +33,7 @@ namespace StarkInfra
         /// The Project object is the main authentication entity for the SDK.
         /// All requests to the Stark Infra API must be authenticated via a project,
         /// which must have been previously created at the Stark Infra website
-        /// [https://web.sandbox.starkinfra.com] or [https://web.starkinfra.com]
+        /// [https://web.sandbox.starkbank.com] or [https://web.starkinfra.com]
         /// before you can use it in this SDK.Projects may be passed as a parameter on
         /// each request or may be defined as the default user at the start(See README).
         /// <br/>

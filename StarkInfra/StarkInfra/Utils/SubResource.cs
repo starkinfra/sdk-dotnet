@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 
+
 namespace StarkInfra.Utils
 {
     public abstract class SubResource
@@ -68,6 +69,13 @@ namespace StarkInfra.Utils
             string core = string.Join("," + newLine + spacer, fields);
 
             return GetType().Name + "(" + newLine + spacer + core + newLine + ")";
+        }
+
+        internal Dictionary<string, object> ToJson()
+        {
+            return GetType()
+                .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                .ToDictionary(prop => prop.Name, prop => prop.GetValue(this));
         }
     }
 }

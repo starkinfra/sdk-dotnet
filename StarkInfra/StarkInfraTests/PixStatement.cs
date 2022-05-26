@@ -61,7 +61,7 @@ namespace StarkInfraTests
         public void QueryIds()
         {
             List<PixStatement> pixStatements = PixStatement.Query(limit: 10).ToList();
-            List<String> pixStatementsIdsExpected = new List<string>();
+            List<string> pixStatementsIdsExpected = new List<string>();
             Assert.Equal(10, pixStatements.Count);
             Assert.True(pixStatements.First().ID != pixStatements.Last().ID);
             foreach (PixStatement transaction in pixStatements)
@@ -71,7 +71,7 @@ namespace StarkInfraTests
             }
 
             List<PixStatement> pixStatementsResult = PixStatement.Query(limit:10, ids: pixStatementsIdsExpected).ToList();
-            List<String> pixStatementsIdsResult = new List<string>();
+            List<string> pixStatementsIdsResult = new List<string>();
             Assert.Equal(10, pixStatements.Count);
             Assert.True(pixStatements.First().ID != pixStatements.Last().ID);
             foreach (PixStatement transaction in pixStatementsResult)

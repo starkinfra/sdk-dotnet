@@ -14,6 +14,7 @@ namespace StarkInfra.Utils
                 path: Api.Endpoint(resourceName),
                 query: query
             ).Json();
+            
             List<SubResource> entities = new List<SubResource>();
             foreach (dynamic entityJson in json[Api.LastNamePlural(resourceName)])
             {
@@ -23,7 +24,7 @@ namespace StarkInfra.Utils
             return (entities, cursor);
         }
 
-        internal static IEnumerable<Resource> GetList(string resourceName, Api.ResourceMaker resourceMaker, Dictionary<string, object> query, User user)
+        internal static IEnumerable<SubResource> GetList(string resourceName, Api.ResourceMaker resourceMaker, Dictionary<string, object> query, User user)
         {
             query.TryGetValue("limit", out object rawLimit);
             query["limit"] = rawLimit;
@@ -69,6 +70,17 @@ namespace StarkInfra.Utils
                 user: user,
                 method: Request.Get,
                 path: $"{Api.Endpoint(resourceName)}/{id}"
+            ).Json()[Api.LastName(resourceName)];
+            return Api.FromApiJson(resourceMaker, json);
+        }
+
+        internal static Resource GetId(string resourceName, Api.ResourceMaker resourceMaker, string id, Dictionary<string, object> query, User user)
+        {
+            dynamic json = Request.Fetch(
+                user: user,
+                method: Request.Get,
+                path: $"{Api.Endpoint(resourceName)}/{id}",
+                query: query
             ).Json()[Api.LastName(resourceName)];
             return Api.FromApiJson(resourceMaker, json);
         }
@@ -127,6 +139,17 @@ namespace StarkInfra.Utils
         }
 
         static internal Resource PostSingle(string resourceName, Api.ResourceMaker resourceMaker, Resource entity, User user)
+        {
+            dynamic json = Request.Fetch(
+                user: user,
+                method: Request.Post,
+                path: Api.Endpoint(resourceName),
+                payload: Api.ApiJson(entity)
+            ).Json()[Api.LastName(resourceName)];
+            return Api.FromApiJson(resourceMaker, json);
+        }
+
+        static internal Resource PostSingle(string resourceName, Api.ResourceMaker resourceMaker, Dictionary<string, object> entity, User user)
         {
             dynamic json = Request.Fetch(
                 user: user,
