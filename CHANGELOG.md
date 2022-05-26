@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.0.2] - 2022-05-26
 ### Added
 - PixDirector resource for Direct Participants
 - PixKey resource for Indirect and Direct Participants

@@ -8,10 +8,10 @@
     <Summary>SDK to facilitate C# (.NET) integrations with the Stark Infra API</Summary>
     <AssemblyTitle>StarkInfra</AssemblyTitle>
     <AssemblyName>StarkInfra</AssemblyName>
-    <VersionPrefix>0.0.1</VersionPrefix>
-    <Version>0.0.1</Version>
-    <ReleaseVersion>0.0.1</ReleaseVersion>
-    <PackageVersion>0.0.1</PackageVersion>
+    <VersionPrefix>0.0.2</VersionPrefix>
+    <Version>0.0.2</Version>
+    <ReleaseVersion>0.0.2</ReleaseVersion>
+    <PackageVersion>0.0.2</PackageVersion>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <PackageId>starkinfra</PackageId>
     <PackageTags>starkinfra;stark;infra;openbanking;open-banking</PackageTags>
