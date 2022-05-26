@@ -21,7 +21,18 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - PixInfraction resource for Indirect and Direct Participants
 - PixChargeback resource for Indirect and Direct Participants
 - CreditNote resource for money lending with Stark's Infra endorsement.
+- IssuingAuthorization resource for Sub Issuers
+- IssuingBalance resource for Sub Issuers
+- IssuingBin resource for Sub Issuers
+- IssuingCard resource for Sub Issuers
+- IssuingHolder resource for Sub Issuers
+- IssuingPurchase resource for Sub Issuers
+- IssuingTransaction resource for Sub Issuers
+- IssuingInvoice resource for Sub Issuers
+- IssuingWithdrawal resource for Sub Issuers
 - Webhook resource to receive Events
+- Event.Attempt sub-resource to allow retrieval of information on failed webhook event delivery attempts
+
 
 ## [0.0.1] - 2022-03-15
 ### Added

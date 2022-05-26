@@ -25,9 +25,9 @@ namespace StarkInfra
     ///     <item>WorkspaceId [string]: ID of the Workspace that generated this Event. Mostly used when multiple Workspaces have Webhooks registered to the same endpoint. ex: "4545454545454545"
     /// </list>
     /// </summary>
-    public partial class Event : Utils.Resource
+    public partial class Event : Resource
     {
-        public Utils.Resource Log { get; }
+        public Resource Log { get; }
         public DateTime? Created { get; }
         public bool? IsDelivered { get; }
         public string Subscription { get; }
@@ -50,7 +50,7 @@ namespace StarkInfra
         ///     <item>workspaceId [string]: ID of the Workspace that generated this event. Mostly used when multiple Workspaces have Webhooks registered to the same endpoint. ex: "4545454545454545"</item>
         /// </list>
         /// </summary>
-        public Event(string id, Utils.Resource log, bool? isDelivered, string subscription, string workspaceId,
+        public Event(string id, Resource log, bool? isDelivered, string subscription, string workspaceId,
             DateTime? created = null) : base(id)
         {
             Log = log;
@@ -58,6 +58,181 @@ namespace StarkInfra
             IsDelivered = isDelivered;
             Subscription = subscription;
             WorkspaceId = workspaceId;
+        }
+
+        /// <summary>
+        /// Retrieve a specific notification Event
+        /// <br/>
+        /// Receive a single notification Event object previously created in the Stark Infra API by passing its id
+        /// <br/>
+        /// Parameters (required):
+        /// <list>
+        ///     <item>id [string]: object unique id. ex: "5656565656565656"</item>
+        /// </list>
+        /// <br/>
+        /// Parameters (optional):
+        /// <list>
+        ///     <item>user [Organization/Project object]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        /// </list>
+        /// <br/>
+        /// Return:
+        /// <list>
+        ///     <item>Event object with updated attributes</item>
+        /// </list>
+        /// </summary>
+        public static Event Get(string id, User user = null)
+        {
+            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            return Rest.GetId(
+                resourceName: resourceName,
+                resourceMaker: resourceMaker,
+                id: id,
+                user: user
+            ) as Event;
+        }
+        /// <summary>
+        /// Retrieve notification Events
+        /// <br/>
+        /// Receive an IEnumerable of notification Event objects previously created in the Stark Infra API
+        /// <br/>
+        /// Parameters (optional):
+        /// <list>
+        ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
+        ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>isDelivered [bool, default null]: bool to filter successfully delivered events. ex: True or False</item>
+        ///     <item>user [Project object, default null]: Project object. Not necessary if StarkInfra.User.Default was set before function call</item>
+        /// </list>
+        /// <br/>
+        /// Return:
+        /// <list>
+        ///     <item>IEnumerable of Event objects with updated attributes</item>
+        /// </list>
+        /// </summary>
+        public static IEnumerable<Event> Query(int? limit = null, DateTime? after = null, DateTime? before = null,
+            bool? isDelivered = null, User user = null)
+        {
+            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            return Rest.GetList(
+                resourceName: resourceName,
+                resourceMaker: resourceMaker,
+                query: new Dictionary<string, object> {
+                    { "limit", limit },
+                    { "after", new StarkDate(after) },
+                    { "before", new StarkDate(before) },
+                    { "isDelivered", isDelivered }
+                },
+                user: user
+            ).Cast<Event>();
+        }
+        /// <summary>
+        /// Retrieve paged notification Events
+        /// <br/>
+        /// Receive a list of up to 100 Event objects previously created in the Stark Infra API and the cursor to the next page.
+        /// Use this function instead of query if you want to manually page your requests.
+        /// <br/>
+        /// Parameters (optional):
+        /// <list>
+        ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
+        ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
+        ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>isDelivered [bool, default null]: bool to filter successfully delivered events. ex: True or False</item>
+        ///     <item>user [Project object, default null]: Project object. Not necessary if StarkInfra.User.Default was set before function call</item>
+        /// </list>
+        /// <br/>
+        /// Return:
+        /// <list>
+        ///     <item>list of Event objects with updated attributes and cursor to retrieve the next page of Event objects</item>
+        /// </list>
+        /// </summary>
+        public static (List<Event> page, string pageCursor) Page(string cursor = null, int? limit = null, DateTime? after = null,
+            DateTime? before = null, bool? isDelivered = null, User user = null)
+        {
+            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+                resourceName: resourceName,
+                resourceMaker: resourceMaker,
+                query: new Dictionary<string, object> {
+                    { "cursor", cursor },
+                    { "limit", limit },
+                    { "after", new StarkDate(after) },
+                    { "before", new StarkDate(before) },
+                    { "isDelivered", isDelivered }
+                },
+                user: user
+            );
+            List<Event> events = new List<Event>();
+            foreach (SubResource subResource in page)
+            {
+                events.Add(subResource as Event);
+            }
+            return (events, pageCursor);
+        }
+        /// <summary>
+        /// Cancel a notification Event
+        /// <br/>
+        /// Cancel a of notification Event entity previously created in the Stark Infra API by its ID
+        /// <br/>
+        /// Parameters (required):
+        /// <list>
+        ///     <item>id [string]: Event unique id. ex: "5656565656565656"</item>
+        /// </list>
+        /// <br/>
+        /// Parameters (optional):
+        /// <list>
+        ///     <item>user [Organization/Project object]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        /// </list>
+        /// <br/>
+        /// Return:
+        /// <list>
+        ///     <item>canceled Event object</item>
+        /// </list>
+        /// </summary>
+        public static Event Cancel(string id, User user = null)
+        {
+            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            return Rest.DeleteId(
+                resourceName: resourceName,
+                resourceMaker: resourceMaker,
+                id: id,
+                user: user
+            ) as Event;
+        }
+        /// <summary>
+        /// Update notification Event entity
+        /// <br/>
+        /// Update notification Event by passing id.
+        /// If isDelivered is True, the event will no longer be returned on queries with isDelivered=False.
+        /// <br/>
+        /// Parameters (required):
+        /// <list>
+        ///     <item>id [string]: Event unique ids. ex: "5656565656565656"</item>
+        ///     <item>isDelivered [bool]: If True and event hasn't been delivered already, event will be set as delivered. ex: True</item>
+        /// </list>
+        /// <br/>
+        /// Parameters (optional):
+        /// <list>
+        ///     <item>user [Organization/Project object]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        /// </list>
+        /// <br/>
+        /// Return:
+        /// <list>
+        ///     <item>target Event with updated attributes</item>
+        /// </list>
+        /// </summary>
+        public static Event Update(string id, bool isDelivered, User user = null)
+        {
+            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            return Rest.PatchId(
+                resourceName: resourceName,
+                resourceMaker: resourceMaker,
+                id: id,
+                payload: new Dictionary<string, object> {
+                    { "isDelivered", isDelivered }
+                },
+                user: user
+            ) as Event;
         }
 
         /// <summary>
@@ -75,7 +250,7 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>user [Organization/Project object]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
         /// Return:
@@ -96,21 +271,21 @@ namespace StarkInfra
             ) as Event;
         }
         
-        internal static (string resourceName, Utils.Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "Event", resourceMaker: ResourceMaker);
         }
 
-        internal static Utils.Resource ResourceMaker(dynamic json)
+        internal static Resource ResourceMaker(dynamic json)
         {
             string id = json.id;
             bool? isDelivered = json.isDelivered;
             string subscription = json.subscription;
             string createdString = json.created;
             string workspaceId = json.workspaceId;
-            DateTime created = Utils.Checks.CheckDateTime(createdString);
+            DateTime created = Checks.CheckDateTime(createdString);
 
-            Utils.Resource log = null;
+            Resource log = null;
             
             if (subscription.Contains("pix-key"))
             {
@@ -139,6 +314,18 @@ namespace StarkInfra
             if (subscription.Contains("credit-note"))
             {
                 log = CreditNote.Log.ResourceMaker(json.log);
+            }
+            if (subscription.Contains("issuing-card"))
+            {
+                log = IssuingCard.Log.ResourceMaker(json.log);
+            }
+            if (subscription.Contains("issuing-invoice"))
+            {
+                log = IssuingInvoice.Log.ResourceMaker(json.log);
+            }
+            if (subscription.Contains("issuing-purchase"))
+            {
+                log = IssuingPurchase.Log.ResourceMaker(json.log);
             }
 
             return new Event(

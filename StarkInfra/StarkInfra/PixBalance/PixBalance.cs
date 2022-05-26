@@ -38,10 +38,10 @@ namespace StarkInfra
         /// <br/>
         /// Attributes(return-only):
         /// <list>
-        ///     <item>id [string, default null]: unique id returned when the PixBalance is created. ex: "5656565656565656"</item>
-        ///     <item>amount [long, default null]: current balance amount of the workspace in cents. ex: 200 (= R$ 2.00)</item>
-        ///     <item>currency [string, default null]: currency of the current workspace. Expect others to be added eventually. ex: "BRL"</item>
-        ///     <item>updated [DateTime, default null]: update datetime for the balance. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>id [string]: unique id returned when the PixBalance is created. ex: "5656565656565656"</item>
+        ///     <item>amount [long]: current balance amount of the workspace in cents. ex: 200 (= R$ 2.00)</item>
+        ///     <item>currency [string]: currency of the current workspace. Expect others to be added eventually. ex: "BRL"</item>
+        ///     <item>updated [DateTime]: update datetime for the balance. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
         public PixBalance(string id, long amount, string currency, DateTime updated) : base(id)
@@ -58,7 +58,7 @@ namespace StarkInfra
         /// <br/>
         /// Parameters(optional):
         /// <list>
-        ///     <item>user [Organization/Project object]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
         /// Return:

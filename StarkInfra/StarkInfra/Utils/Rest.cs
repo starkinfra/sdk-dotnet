@@ -64,17 +64,7 @@ namespace StarkInfra.Utils
             } while (cursor != null && cursor.Length > 0 && (!limited || limit > 0));
         }
 
-        internal static Resource GetId(string resourceName, Api.ResourceMaker resourceMaker, string id, User user)
-        {
-            dynamic json = Request.Fetch(
-                user: user,
-                method: Request.Get,
-                path: $"{Api.Endpoint(resourceName)}/{id}"
-            ).Json()[Api.LastName(resourceName)];
-            return Api.FromApiJson(resourceMaker, json);
-        }
-
-        internal static Resource GetId(string resourceName, Api.ResourceMaker resourceMaker, string id, Dictionary<string, object> query, User user)
+        internal static Resource GetId(string resourceName, Api.ResourceMaker resourceMaker, string id, User user, Dictionary<string, object> query = null)
         {
             dynamic json = Request.Fetch(
                 user: user,
@@ -96,27 +86,27 @@ namespace StarkInfra.Utils
             ).ByteContent;
         }
 
-        static internal IEnumerable<Resource> Post(string resourceName, Api.ResourceMaker resourceMaker, IEnumerable<Resource> entities, User user)
+        static internal IEnumerable<Resource> Post(string resourceName, Api.ResourceMaker resourceMaker, IEnumerable<Resource> entities, User user, Dictionary<string, object> query = null)
         {
             List<Dictionary<string, object>> jsons = new List<Dictionary<string, object>>();
             foreach (Resource entity in entities)
             {
                 jsons.Add(Api.ApiJson(entity));
             }
-            return PrivatePost(resourceName, resourceMaker, jsons, user);
+            return PrivatePost(resourceName, resourceMaker, jsons, user, query);
         }
 
-        static internal IEnumerable<Resource> Post(string resourceName, Api.ResourceMaker resourceMaker, IEnumerable<Dictionary<string, object>> entities, User user)
+        static internal IEnumerable<Resource> Post(string resourceName, Api.ResourceMaker resourceMaker, IEnumerable<Dictionary<string, object>> entities, User user, Dictionary<string, object> query = null)
         {
             List<Dictionary<string, object>> jsons = new List<Dictionary<string, object>>();
             foreach (Dictionary<string, object> entity in entities)
             {
                 jsons.Add(Api.ApiJson(entity));
             }
-            return PrivatePost(resourceName, resourceMaker, jsons, user);
+            return PrivatePost(resourceName, resourceMaker, jsons, user, query);
         }
 
-        static private IEnumerable<Resource> PrivatePost(string resourceName, Api.ResourceMaker resourceMaker, IEnumerable<Dictionary<string, object>> entities, User user)
+        static private IEnumerable<Resource> PrivatePost(string resourceName, Api.ResourceMaker resourceMaker, IEnumerable<Dictionary<string, object>> entities, User user, Dictionary<string, object> query = null)
         {
             Dictionary<string, object> payload = new Dictionary<string, object>
             {
@@ -127,6 +117,7 @@ namespace StarkInfra.Utils
                 user: user,
                 method: Request.Post,
                 path: Api.Endpoint(resourceName),
+                query: query,
                 payload: payload
             ).Json()[Api.LastNamePlural(resourceName)];
 
@@ -148,7 +139,7 @@ namespace StarkInfra.Utils
             ).Json()[Api.LastName(resourceName)];
             return Api.FromApiJson(resourceMaker, json);
         }
-
+        
         static internal Resource PostSingle(string resourceName, Api.ResourceMaker resourceMaker, Dictionary<string, object> entity, User user)
         {
             dynamic json = Request.Fetch(

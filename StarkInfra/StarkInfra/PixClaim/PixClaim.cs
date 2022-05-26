@@ -334,6 +334,7 @@ namespace StarkInfra
             {
                 patchData = new Dictionary<string, object> { };
             }
+            patchData.Add("status", status);
             (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
             return Utils.Rest.PatchId(
                 resourceName: resourceName,

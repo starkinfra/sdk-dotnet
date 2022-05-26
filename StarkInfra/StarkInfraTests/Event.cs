@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using StarkInfra;
 using Xunit;
 
@@ -47,6 +50,85 @@ namespace StarkInfraTests
                 return;
             }
             throw new Exception("failed to raise InvalidSignatureError");
+        }
+        
+        [Fact]
+        public void QueryAndAttempt()
+        {
+            List<Event> events = Event.Query(limit: 2, isDelivered: false).ToList();
+            Assert.Equal(2, events.Count);
+            foreach (Event eventObject in events)
+            {
+                List<Event.Attempt> attempts = Event.Attempt.Query(limit: 1, eventIds: new List<string> { eventObject.ID }).ToList();
+                foreach (Event.Attempt attempt in attempts)
+                {
+                    Event.Attempt attemptGet = Event.Attempt.Get(attempt.ID);
+                    Assert.Equal(attempt.ID, attemptGet.ID);
+                }
+            }
+        }
+
+        [Fact]
+        public void Page()
+        {
+            List<string> ids = new List<string>();
+            List<Event> page;
+            string cursor = null;
+            for (int i = 0; i < 2; i++)
+            {
+                (page, cursor) = Event.Page(limit: 2, cursor: cursor);
+                foreach (Event entity in page)
+                {
+                    TestUtils.Log(entity);
+                    Debug.Write(entity);
+                    Assert.DoesNotContain(entity.ID, ids);
+                    ids.Add(entity.ID);
+                }
+                if (cursor == null)
+                {
+                    break;
+                }
+            }
+            Assert.True(ids.Count == 4);
+        }
+
+        [Fact]
+        public void Update()
+        {
+            List<Event> events = Event.Query(limit: 2, isDelivered: false).ToList();
+            Assert.True(2 >= events.Count);
+
+            foreach (Event eventItem in events)
+            {
+                TestUtils.Log(eventItem);
+                Debug.Write(eventItem);
+                Assert.NotNull(eventItem.ID);
+                Assert.Equal(false, eventItem.IsDelivered);
+                Event updatedEvent = Event.Update(id: eventItem.ID, isDelivered: true);
+                TestUtils.Log(updatedEvent);
+                Debug.Write(updatedEvent);
+                Assert.Equal(true, updatedEvent.IsDelivered);
+            }
+        }
+
+        [Fact]
+        public void GetAndCancel()
+        {
+            List<Event> events = Event.Query(limit: 2, isDelivered: false).ToList();
+            Assert.True(2 >= events.Count);
+
+            Event eventItem = events.First();
+            TestUtils.Log(eventItem);
+            Debug.Write(eventItem);
+            Assert.NotNull(eventItem.ID);
+            Event getEventItem = Event.Get(eventItem.ID);
+            Assert.Equal(getEventItem.ID, eventItem.ID);
+            TestUtils.Log(getEventItem);
+            Debug.Write(getEventItem);
+            Event canceledEventItem = Event.Cancel(id: eventItem.ID);
+            Assert.Equal(canceledEventItem.ID, eventItem.ID);
+            TestUtils.Log(canceledEventItem);
+            Debug.Write(canceledEventItem);
         }
     }
 }
