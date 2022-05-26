@@ -13,6 +13,15 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- PixDirector resource for Direct Participants
+- PixKey resource for Indirect and Direct Participants
+- PixClaim resource for Indirect and Direct Participants
+- PixDomain resource for Indirect and Direct Participants
+- PixInfraction resource for Indirect and Direct Participants
+- PixChargeback resource for Indirect and Direct Participants
+- CreditNote resource for money lending with Stark's Infra endorsement.
+- Webhook resource to receive Events
 
 ## [0.0.1] - 2022-03-15
 ### Added

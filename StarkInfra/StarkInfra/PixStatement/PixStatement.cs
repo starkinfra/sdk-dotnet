@@ -17,14 +17,14 @@ namespace StarkInfra
     /// <br/>
     /// Properties:
     /// <list>
-    ///     <item>after [DateTime]: transactions that happened at this date are stored in the PixStatement, must be the same as before. ex: (2022-01-01)</item>
-    ///     <item>before [DateTime]: transactions that happened at this date are stored in the PixStatement, must be the same as after. ex: (2022-01-01)</item>
-    ///     <item>type [string]: types of entities to include in statement. Options: ["interchange", "interchangeTotal", "transaction"]</item>
-    ///     <item>id [string, default null]: unique id returned when the PixStatement is created. ex: "5656565656565656"</item>
-    ///     <item>status [string, default null]: current PixStatement status. ex: "success" or "failed"</item>
-    ///     <item>transaction_count [integer, default null]: number of transactions that happened during the day that the PixStatement was requested. ex 11</item>
-    ///     <item>created [DateTime, default null]: creation datetime for the PixStatement. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
-    ///     <item>updated [DateTime, default null]: latest update datetime for the PixStatement. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>After [DateTime]: transactions that happened at this date are stored in the PixStatement, must be the same as before. ex: (2022-01-01)</item>
+    ///     <item>Before [DateTime]: transactions that happened at this date are stored in the PixStatement, must be the same as after. ex: (2022-01-01)</item>
+    ///     <item>Type [string]: types of entities to include in statement. Options: ["interchange", "interchangeTotal", "transaction"]</item>
+    ///     <item>ID [string]: unique id returned when the PixStatement is created. ex: "5656565656565656"</item>
+    ///     <item>Status [string]: current PixStatement status. ex: "success" or "failed"</item>
+    ///     <item>TransactionCount [integer]: number of transactions that happened during the day that the PixStatement was requested. ex: 11</item>
+    ///     <item>Created [DateTime]: creation datetime for the PixStatement. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>Updated [DateTime]: latest update datetime for the PixStatement. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
     /// </summary>
     public partial class PixStatement : Utils.Resource
@@ -43,7 +43,7 @@ namespace StarkInfra
         /// When you initialize a PixStatement it will not be created in the Stark Infra API.
         /// The 'create' function sends the objects to the Stark Infra API and returns the list of
         /// created objects. The PixStatement object stores information about all the transactions
-        /// that happened on a specific day at the workspace. It must be created by the user before
+        /// that happened on a specific day at the Workspace. It must be created by the user before
         /// it can be accessed by the user. This feature is only available for direct participants.
         /// <br/>
         /// Parameters (required):
@@ -55,11 +55,11 @@ namespace StarkInfra
         /// <br/>
         /// Attributes (return-only):
         /// <list>
-        ///     <item>id [string, default null]: unique id returned when the PixStatement is created. ex: "5656565656565656"</item>
-        ///     <item>status [string, default null]: current PixStatement status. ex: "success" or "failed"</item>
-        ///     <item>transaction_count [integer, default null]: number of transactions that happened during the day that the PixStatement was requested. ex 11</item>
-        ///     <item>created [DateTime, default null]: creation datetime for the PixStatement. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
-        ///     <item>updated [DateTime, default null]: latest update datetime for the PixStatement. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>id [string]: unique id returned when the PixStatement is created. ex: "5656565656565656"</item>
+        ///     <item>status [string]: current PixStatement status. ex: "success" or "failed"</item>
+        ///     <item>transactionCount [integer]: number of transactions that happened during the day that the PixStatement was requested. ex11</item>
+        ///     <item>created [DateTime]: creation datetime for the PixStatement. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>updated [DateTime]: latest update datetime for the PixStatement. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
         public PixStatement(DateTime? after, DateTime? before, string type, string id = null, string status = null, 
@@ -81,12 +81,12 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (required):
         /// <list>
-        ///     <item>pixStatements [list of Dictionaries]: list of Dictionaries representing the PixStatements to be created in the API</item>
+        ///     <item>statement [list of dictionaries]: list of dictionaries representing the PixStatements to be created in the API</item>
         /// </list>
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>user [Organization/Project object]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
         /// Return:
@@ -94,13 +94,44 @@ namespace StarkInfra
         ///     <item>list of PixStatement objects with updated attributes</item>
         /// </list>
         /// </summary>
-        public static PixStatement Create(PixStatement pixStatement, User user = null)
+        public static PixStatement Create(PixStatement statement, User user = null)
         {
             (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
             return Rest.PostSingle(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
-                entity: pixStatement,
+                entity: statement,
+                user: user
+            ) as PixStatement;
+        }
+        
+        /// <summary>
+        /// Create PixStatement
+        /// <br/>
+        /// Send a PixStatement dictionary for creation in the Stark Infra API
+        /// <br/>
+        /// Parameters (required):
+        /// <list>
+        ///     <item>statement [dictionary]: PixStatement to be created in the API</item>
+        /// </list>
+        /// <br/>
+        /// Parameters (optional):
+        /// <list>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        /// </list>
+        /// <br/>
+        /// Return:
+        /// <list>
+        ///     <item>PixStatement object with updated attributes</item>
+        /// </list>
+        /// </summary>
+        public static PixStatement Create(Dictionary<string, object> statement, User user = null)
+        {
+            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            return Rest.PostSingle(
+                resourceName: resourceName,
+                resourceMaker: resourceMaker,
+                entity: statement,
                 user: user
             ) as PixStatement;
         }
@@ -117,7 +148,7 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>user [Organization/Project object]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
         /// Return:
@@ -145,7 +176,7 @@ namespace StarkInfra
         /// <list>
         ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
         ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]</item>
-        ///     <item>user [Project object, default null]: Project object. Not necessary if StarkInfra.User.Default was set before function call</item>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
         /// Return:
@@ -178,12 +209,13 @@ namespace StarkInfra
         ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
         ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
         ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]</item>
-        ///     <item>user [Project object, default null]: Project object. Not necessary if StarkInfra.User.Default was set before function call</item>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
         /// Return:
         /// <list>
-        ///     <item>list of PixStatement objects with updated attributes and cursor to retrieve the next page of PixStatement objects</item>
+        ///     <item>list of PixStatement objects with updated attributes</item>
+        ///     <item>cursor to retrieve the next page of PixStatement objects</item>
         /// </list>
         /// </summary>
         public static (List<PixStatement> page, string pageCursor) Page(string cursor = null, int? limit = null, List<string> ids = null, User user = null)
@@ -199,12 +231,12 @@ namespace StarkInfra
                 },
                 user: user
             );
-            List<PixStatement> pixStatements = new List<PixStatement>();
+            List<PixStatement> statements = new List<PixStatement>();
             foreach (SubResource subResource in page)
             {
-                pixStatements.Add(subResource as PixStatement);
+                statements.Add(subResource as PixStatement);
             }
-            return (pixStatements, pageCursor);
+            return (statements, pageCursor);
         }
 
         /// <summary>
@@ -219,7 +251,7 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>user [Organization/Project object]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
         /// Return:

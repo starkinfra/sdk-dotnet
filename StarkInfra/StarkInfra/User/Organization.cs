@@ -11,14 +11,14 @@ namespace StarkInfra
     /// of your organization can register or change the Organization credentials.
     /// All requests to the Stark Infra API must be authenticated via an SDK user,
     /// which must have been previously created at the Stark Infra website
-    /// [https://web.sandbox.starkinfra.com] or [https://web.starkinfra.com]
+    /// [https://web.sandbox.starkbank.com] or [https://web.starkinfra.com]
     /// before you can use it in this SDK.Organizations may be passed as the user parameter on
     /// each request or may be defined as the default user at the start(See README).
     /// If you are accessing a specific Workspace using Organization credentials, you should
     /// specify the workspace ID when building the Organization object or by request, using
-    /// the Organization.Replace(organization, workspace_id) method, which creates a copy of the organization
+    /// the Organization.Replace(organization, workspaceId) method, which creates a copy of the organization
     /// object with the altered workspace ID. If you are listing or creating new Workspaces, the
-    /// workspace_id should be None.
+    /// workspaceId should be null.
     /// <br/>
     /// Properties:
     /// <list>
@@ -41,14 +41,14 @@ namespace StarkInfra
         /// of your organization can register or change the Organization credentials.
         /// All requests to the Stark Infra API must be authenticated via an SDK user,
         /// which must have been previously created at the Stark Infra website
-        /// [https://web.sandbox.starkinfra.com] or [https://web.starkinfra.com]
+        /// [https://web.sandbox.starkbank.com] or [https://web.starkbank.com]
         /// before you can use it in this SDK.Organizations may be passed as the user parameter on
         /// each request or may be defined as the default user at the start(See README).
         /// If you are accessing a specific Workspace using Organization credentials, you should
         /// specify the workspace ID when building the Organization object or by request, using
-        /// the Organization.Replace(organization, workspace_id) method, which creates a copy of the organization
+        /// the Organization.Replace(organization, workspaceId) method, which creates a copy of the organization
         /// object with the altered workspace ID. If you are listing or creating new Workspaces, the
-        /// workspace_id should be None.
+        /// workspaceId should be null.
         /// <br/>
         /// Parameters (required):
         /// <list>

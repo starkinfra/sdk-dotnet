@@ -16,7 +16,7 @@ namespace StarkInfraTests
         {
             List<PixReversal.Log> logs = PixReversal.Log.Query(
                 limit: 10,
-                types: new List<string> { "success" }
+                types: new List<string> { "canceled" }
                 ).ToList();
             Assert.Equal(10, logs.Count);
             Assert.True(logs.First().ID != logs.Last().ID);
@@ -24,7 +24,7 @@ namespace StarkInfraTests
             {
                 TestUtils.Log(log);
                 Assert.NotNull(log.ID);
-                Assert.Equal("success", log.Type);
+                Assert.Equal("canceled", log.Type);
             }
             PixReversal.Log getLog = PixReversal.Log.Get(id: logs.First().ID);
             Assert.Equal(getLog.ID, logs.First().ID);

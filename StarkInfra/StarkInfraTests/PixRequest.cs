@@ -4,7 +4,6 @@ using StarkInfra.Utils;
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using Microsoft.VisualBasic.CompilerServices;
 
 
 namespace StarkInfraTests
@@ -64,7 +63,7 @@ namespace StarkInfraTests
         public void QueryIds()
         {
             List<PixRequest> pixRequests = PixRequest.Query(limit: 10).ToList();
-            List<String> pixRequestsIdsExpected = new List<string>();
+            List<string> pixRequestsIdsExpected = new List<string>();
             Assert.Equal(10, pixRequests.Count);
             Assert.True(pixRequests.First().ID != pixRequests.Last().ID);
             foreach (PixRequest transaction in pixRequests)
@@ -74,7 +73,7 @@ namespace StarkInfraTests
             }
 
             List<PixRequest> pixRequestsResult = PixRequest.Query(limit:10, ids: pixRequestsIdsExpected).ToList();
-            List<String> pixRequestsIdsResult = new List<string>();
+            List<string> pixRequestsIdsResult = new List<string>();
             Assert.Equal(10, pixRequests.Count);
             Assert.True(pixRequests.First().ID != pixRequests.Last().ID);
             foreach (PixRequest transaction in pixRequestsResult)
@@ -180,7 +179,7 @@ namespace StarkInfraTests
                 receiverAccountNumber: "00000-1",
                 receiverBranchCode: "0001",
                 receiverAccountType: "checking",
-                endToEndId: EndToEndId.Create(ispb: Environment.GetEnvironmentVariable("SANDBOX_ISPB"))
+                endToEndId: EndToEndId.Create(bankCode: Environment.GetEnvironmentVariable("SANDBOX_BANKCODE"))
             );
         }
     }

@@ -7,7 +7,7 @@ namespace StarkInfra.Utils
 {
     static public class EndToEndId
     {
-        static public string Create(string ispb)
+        static public string Create(string bankCode)
         {
             string randomSource = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
             char[] charArr = randomSource.ToCharArray();
@@ -15,7 +15,7 @@ namespace StarkInfra.Utils
             
             string endToEndId = "E";
             
-            endToEndId += ispb;
+            endToEndId += bankCode;
             endToEndId += DateTime.Now.ToString(@"yyyyMMddhhmm");
             
             foreach (int i in range)

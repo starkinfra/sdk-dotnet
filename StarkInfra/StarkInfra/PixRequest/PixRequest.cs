@@ -15,42 +15,42 @@ namespace StarkInfra
     /// <br/>
     /// Properties:
     /// <list>
-    ///    <item>amount [integer]: amount in cents to be transferred. ex: 11234 (= R$ 112.34)</item>
-    ///    <item>externalId [string]: url safe string that must be unique among all your PixRequests. Duplicated external IDs will cause failures. By default, this parameter will block any PixRequests that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"</item>
-    ///    <item>senderName [string]: sender's full name. ex: "Anthony Edward Stark"</item>
-    ///    <item>senderTaxId [string]: sender's tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"</item>
-    ///    <item>senderBranchCode [string]: sender's bank account branch code. Use '-' in case there is a verifier digit. ex: "1357-9"</item>
-    ///    <item>senderAccountNumber [string]: sender's bank account number. Use '-' before the verifier digit. ex: "876543-2"</item>
-    ///    <item>senderAccountType [string, default "checking"]: sender's bank account type. ex: "checking", "savings", "salary" or "payment"</item>
-    ///    <item>receiverName [string]: receiver's full name. ex: "Anthony Edward Stark"</item>
-    ///    <item>receiverTaxId [string]: receiver's tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"</item>
-    ///    <item>receiverBankCode [string]: receiver's bank institution code in Brazil. ex: "20018183" or "341"</item>
-    ///    <item>receiverAccountNumber [string]: receiver's bank account number. Use '-' before the verifier digit. ex: "876543-2"</item>
-    ///    <item>receiverBranchCode [string]: receiver's bank account branch code. Use '-' in case there is a verifier digit. ex: "1357-9"</item>
-    ///    <item>receiverAccountType [string]: receiver's bank account type. ex: "checking", "savings", "salary" or "payment"</item>
-    ///    <item>endToEndId [string]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"</item>
-    ///    <item>receiverKeyId [string, default null]: receiver's dict key. ex: "20.018.183/0001-80"</item>
-    ///    <item>description [string, default null]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"</item>
-    ///    <item>reconciliationId [string, default null]: Reconciliation ID linked to this payment. ex: "b77f5236-7ab9-4487-9f95-66ee6eaf1781"</item>
-    ///    <item>initiatorTaxId [string, default null]: Payment initiator's tax id (CPF/CNPJ). ex: "01234567890" or "20.018.183/0001-80"</item>
-    ///    <item>cashAmount [integer, default null]: Amount to be withdrawal from the cashier in cents. ex: 1000 (= R$ 10.00)</item>
-    ///    <item>cashierBankCode [string, default null]: Cashier's bank code. ex: "00000000"</item>
-    ///    <item>cashierType [string, default null]: Cashier's type. ex: [merchant, other, participant]</item>
-    ///    <item>tags [list of strings, default null]: list of strings for reference when searching for PixRequests. ex: ["employees", "monthly"]</item>
-    ///    <item>method [string, default null]: execution  method for thr creation of the PIX. ex: "manual", "payerQrcode", "dynamicQrcode".</item>
-    ///    <item>id [string, default null]: unique id returned when the PixRequest is created. ex: "5656565656565656"</item>
-    ///    <item>fee [integer, default null]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)</item>
-    ///    <item>status [string, default null]: current PixRequest status. ex: "registered" or "paid"</item>
-    ///    <item>flow [string, default null]: direction of money flow. ex: "in" or "out"</item>
-    ///    <item>senderBankCode [string, default null]: sender's bank institution code in Brazil. If an ISPB (8 digits) is informed. ex: "20018183" or "341"</item>
-    ///    <item>created DateTime, default null]: creation datetime for the PixRequest. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)</item>
-    ///    <item>updated [DateTime, default null]: latest update datetime for the PixRequest. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///    <item>Amount [integer]: amount in cents to be transferred. ex: 11234 (= R$ 112.34)</item>
+    ///    <item>ExternalID [string]: url safe string that must be unique among all your PixRequests. Duplicated external IDs will cause failures. By default, this parameter will block any PixRequests that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"</item>
+    ///    <item>SenderName [string]: sender's full name. ex: "Anthony Edward Stark"</item>
+    ///    <item>SenderTaxId [string]: sender's tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"</item>
+    ///    <item>SenderBranchCode [string]: sender's bank account branch code. Use '-' in case there is a verifier digit. ex: "1357-9"</item>
+    ///    <item>SenderAccountNumber [string]: sender's bank account number. Use '-' before the verifier digit. ex: "876543-2"</item>
+    ///    <item>SenderAccountType [string, default "checking"]: sender's bank account type. ex: "checking", "savings", "salary" or "payment"</item>
+    ///    <item>ReceiverName [string]: receiver's full name. ex: "Anthony Edward Stark"</item>
+    ///    <item>ReceiverTaxId [string]: receiver's tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"</item>
+    ///    <item>ReceiverBankCode [string]: receiver's bank institution code in Brazil. ex: "20018183" or "341"</item>
+    ///    <item>ReceiverAccountNumber [string]: receiver's bank account number. Use '-' before the verifier digit. ex: "876543-2"</item>
+    ///    <item>ReceiverBranchCode [string]: receiver's bank account branch code. Use '-' in case there is a verifier digit. ex: "1357-9"</item>
+    ///    <item>ReceiverAccountType [string]: receiver's bank account type. ex: "checking", "savings", "salary" or "payment"</item>
+    ///    <item>EndToEndId [string]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"</item>
+    ///    <item>ReceiverKeyId [string, default null]: receiver's dict key. ex: "20.018.183/0001-80"</item>
+    ///    <item>Description [string, default null]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"</item>
+    ///    <item>ReconciliationId [string, default null]: Reconciliation ID linked to this payment. ex: "b77f5236-7ab9-4487-9f95-66ee6eaf1781"</item>
+    ///    <item>InitiatorTaxId [string, default null]: Payment initiator's tax id (CPF/CNPJ). ex: "01234567890" or "20.018.183/0001-80"</item>
+    ///    <item>CashAmount [integer, default null]: Amount to be withdrawal from the cashier in cents. ex: 1000 (= R$ 10.00)</item>
+    ///    <item>CashierBankCode [string, default null]: Cashier's bank code. ex: "00000000"</item>
+    ///    <item>CashierType [string, default null]: Cashier's type. ex: [merchant, other, participant]</item>
+    ///    <item>Tags [list of strings, default null]: list of strings for reference when searching for PixRequests. ex: new List<string>{ "employees", "monthly" }</item>
+    ///    <item>Method [string, default null]: execution  method for thr creation of the PIX. ex: "manual", "payerQrcode", "dynamicQrcode".</item>
+    ///    <item>ID [string, default null]: unique id returned when the PixRequest is created. ex: "5656565656565656"</item>
+    ///    <item>Fee [integer, default null]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)</item>
+    ///    <item>Status [string, default null]: current PixRequest status. ex: "registered" or "paid"</item>
+    ///    <item>Flow [string, default null]: direction of money flow. ex: "in" or "out"</item>
+    ///    <item>SenderBankCode [string, default null]: sender's bank institution code in Brazil. If an ISPB (8 digits) is informed. ex: "20018183" or "341"</item>
+    ///    <item>Created DateTime, default null]: creation datetime for the PixRequest. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///    <item>Updated [DateTime, default null]: latest update datetime for the PixRequest. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
     /// </summary>
     public partial class PixRequest : Utils.Resource
     {
         public long Amount { get; }
-        public string ExternalId { get; }
+        public string ExternalID { get; }
         public string SenderName { get; }
         public string SenderTaxId { get; }
         public string SenderBranchCode { get; }
@@ -62,7 +62,7 @@ namespace StarkInfra
         public string ReceiverAccountNumber { get; }
         public string ReceiverBranchCode { get; }
         public string ReceiverAccountType { get; }
-        public string EndToEndId { get; }
+        public string EndToEndID { get; }
         public string ReceiverKeyId { get; }
         public string Description { get; }
         public string ReconciliationId { get; }
@@ -112,18 +112,18 @@ namespace StarkInfra
         ///    <item>cashAmount [integer, default null]: Amount to be withdrawal from the cashier in cents. ex: 1000 (= R$ 10.00)</item>
         ///    <item>cashierBankCode [string, default null]: Cashier's bank code. ex: "00000000"</item>
         ///    <item>cashierType [string, default null]: Cashier's type. ex: [merchant, other, participant]</item>
-        ///    <item>tags [list of strings, default null]: list of strings for reference when searching for PixRequests. ex: ["employees", "monthly"]</item>
+        ///    <item>tags [list of strings, default null]: list of strings for reference when searching for PixRequests. ex: new List<string>{ "employees", "monthly" }</item>
         ///    <item>method [string, default null]: execution  method for thr creation of the PIX. ex: "manual", "payerQrcode", "dynamicQrcode".</item>
         /// </list>
         /// Attributes (return-only):
         /// <list>
-        ///    <item>id [string, default null]: unique id returned when the PixRequest is created. ex: "5656565656565656"</item>
-        ///    <item>fee [integer, default null]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)</item>
-        ///    <item>status [string, default null]: current PixRequest status. ex: "registered" or "paid"</item>
-        ///    <item>flow [string, default null]: direction of money flow. ex: "in" or "out"</item>
-        ///    <item>senderBankCode [string, default null]: sender's bank institution code in Brazil. If an ISPB (8 digits) is informed. ex: "20018183" or "341"</item>
-        ///    <item>created [DateTime, default null]: creation datetime for the PixRequest. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)</item>
-        ///    <item>updated [DateTime, default null]: latest update datetime for the PixRequest. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///    <item>id [string]: unique id returned when the PixRequest is created. ex: "5656565656565656"</item>
+        ///    <item>fee [integer]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)</item>
+        ///    <item>status [string]: current PixRequest status. ex: "registered" or "paid"</item>
+        ///    <item>flow [string]: direction of money flow. ex: "in" or "out"</item>
+        ///    <item>senderBankCode [string]: sender's bank institution code in Brazil. If an ISPB (8 digits) is informed. ex: "20018183" or "341"</item>
+        ///    <item>created [DateTime]: creation datetime for the PixRequest. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///    <item>updated [DateTime]: latest update datetime for the PixRequest. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
         public PixRequest(long amount, string externalId, string senderName, string senderTaxId, 
@@ -138,7 +138,7 @@ namespace StarkInfra
                 ) : base(id)
         {
             Amount = amount;
-            ExternalId = externalId;
+            ExternalID = externalId;
             SenderName = senderName;
             SenderTaxId = senderTaxId;
             SenderBranchCode = senderBranchCode;
@@ -150,7 +150,7 @@ namespace StarkInfra
             ReceiverAccountNumber = receiverAccountNumber;
             ReceiverBranchCode = receiverBranchCode;
             ReceiverAccountType = receiverAccountType;
-            EndToEndId = endToEndId;
+            EndToEndID = endToEndId;
             ReceiverKeyId = receiverKeyId;
             Description = description;
             ReconciliationId = reconciliationId;
@@ -175,12 +175,12 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (required):
         /// <list>
-        ///     <item>pixRequests [list of PixRequest objects]: list of PixRequest objects to be created in the API</item>
+        ///     <item>requests [list of PixRequest objects]: list of PixRequest objects to be created in the API</item>
         /// </list>
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>user [Organization/Project object]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
         /// Return:
@@ -188,13 +188,13 @@ namespace StarkInfra
         ///     <item>list of PixRequest objects with updated attributes</item>
         /// </list>
         /// </summary>
-        public static List<PixRequest> Create(List<PixRequest> pixRequests, User user = null)
+        public static List<PixRequest> Create(List<PixRequest> requests, User user = null)
         {
             (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
-                entities: pixRequests,
+                entities: requests,
                 user: user
             ).ToList().ConvertAll(o => (PixRequest)o);
         }
@@ -206,12 +206,12 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (required):
         /// <list>
-        ///     <item>pixRequests [list of Dictionaries]: list of Dictionaries representing the PixRequests to be created in the API</item>
+        ///     <item>requests [list of dictionaries]: list of dictionaries representing the PixRequests to be created in the API</item>
         /// </list>
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>user [Organization/Project object]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
         /// Return:
@@ -219,13 +219,13 @@ namespace StarkInfra
         ///     <item>list of PixRequest objects with updated attributes</item>
         /// </list>
         /// </summary>
-        public static List<PixRequest> Create(List<Dictionary<string, object>> pixRequests, User user = null)
+        public static List<PixRequest> Create(List<Dictionary<string, object>> requests, User user = null)
         {
             (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
-                entities: pixRequests,
+                entities: requests,
                 user: user
             ).ToList().ConvertAll(o => (PixRequest)o);
         }
@@ -242,7 +242,7 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>user [Organization/Project object]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
         /// Return:
@@ -268,12 +268,12 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>fields [list of strings, default null]: parameters to be retrieved from PixRequest objects. ex: ["amount", "id"]</item>
+        ///     <item>fields [list of strings, default null]: parameters to be retrieved from PixRequest objects. ex: new List<string>{ "amount", "id" }</item>
         ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
         ///     <item>after [DateTime, default null]: date filter for objects created or updated only after specified date. ex: datetime.date(2020, 3, 10)</item>
         ///     <item>before [DateTime, default null]: date filter for objects created or updated only before specified date. ex: datetime.date(2020, 3, 10)</item>
         ///     <item>status [string, default null]: filter for status of retrieved objects. ex: "success" or "failed"</item>
-        ///     <item>tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]</item>
+        ///     <item>tags [list of strings, default null]: tags to filter retrieved objects. ex: new List<string>{ "tony", "stark" }</item>
         ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]</item>
         ///     <item>endToEndIds [list of strings, default null]: central bank's unique transaction IDs. ex: ["E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX553UPxzx"]</item>
         ///     <item>externalIds [list of strings, default null]: url safe strings that must be unique among all your PixRequests. Duplicated external IDs will cause failures. By default, this parameter will block any PixRequests that repeats amount and receiver information on the same date. ex: ["my-internal-id-123456", "my-internal-id-654321"]</item>
@@ -302,8 +302,7 @@ namespace StarkInfra
                     { "tags", tags },
                     { "ids", ids },
                     { "endToEndIds", endToEndIds },
-                    { "externalIds", externalIds },
-                    { "user", user }
+                    { "externalIds", externalIds }
                 },
                 user: user
             ).Cast<PixRequest>();
@@ -332,7 +331,8 @@ namespace StarkInfra
         /// <br/>
         /// Return:
         /// <list>
-        ///     <item>list of PixRequest objects with updated attributes and cursor to retrieve the next page of PixRequest objects</item>
+        ///     <item>list of PixRequest objects with updated attributes</item>
+        ///     <item>cursor to retrieve the next page of PixRequest objects</item>
         /// </list>
         /// </summary>
         public static (List<PixRequest> page, string pageCursor) Page(string cursor = null, List<string>  fields = null, 
@@ -353,17 +353,16 @@ namespace StarkInfra
                     { "tags", tags },
                     { "ids", ids },
                     { "endToEndIds", endToEndIds },
-                    { "externalIds", externalIds },
-                    { "user", user }
+                    { "externalIds", externalIds }
                 },
                 user: user
             );
-            List<PixRequest> pixRequests = new List<PixRequest>();
+            List<PixRequest> requests = new List<PixRequest>();
             foreach (SubResource subResource in page)
             {
-                pixRequests.Add(subResource as PixRequest);
+                requests.Add(subResource as PixRequest);
             }
-            return (pixRequests, pageCursor);
+            return (requests, pageCursor);
         }
         
         /// <summary>
@@ -381,7 +380,7 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>user [Organization/Project object]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
         /// Return:

@@ -15,10 +15,10 @@ namespace StarkInfraTests
         public void QueryAndGet()
         {
             List<PixRequest.Log> logs = PixRequest.Log.Query(
-                limit: 10,
+                limit: 2,
                 types: new List<string> { "denied" }
             ).ToList();
-            Assert.Equal(10, logs.Count);
+            Assert.Equal(2, logs.Count);
             Assert.True(logs.First().ID != logs.Last().ID);
             foreach (PixRequest.Log log in logs)
             {

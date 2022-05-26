@@ -34,6 +34,17 @@
     <PackageReference Include="starkbank-ecdsa" Version="1.3.3" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="CreditNote\" />
+    <None Remove="InfractionReport\" />
+    <None Remove="ReversalRequest\" />
+    <None Remove="PixClaim\" />
+    <None Remove="PixDirector\" />
+    <None Remove="PixKey\" />
+    <None Remove="BrcodeCertificates\" />
+    <None Remove="Webhook\" />
+    <None Remove="CreditNote\Invoice\" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Utils\" />
     <Folder Include="User\" />
     <Folder Include="Event\" />
@@ -43,5 +54,14 @@
     <Folder Include="PixStatement\" />
     <Folder Include="Settings\" />
     <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
+    <Folder Include="CreditNote\" />
+    <Folder Include="PixInfraction\" />
+    <Folder Include="PixChargeback\" />
+    <Folder Include="PixClaim\" />
+    <Folder Include="PixDirector\" />
+    <Folder Include="PixKey\" />
+    <Folder Include="PixDomain\" />
+    <Folder Include="Webhook\" />
+    <Folder Include="CreditNote\Invoice\" />
   </ItemGroup>
 </Project>

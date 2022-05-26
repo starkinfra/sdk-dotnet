@@ -17,11 +17,11 @@ namespace StarkInfra
     /// <br/>
     /// Properties:
     /// <list>
-    ///     <item>Id [string]: unique id returned when the Event is created. ex: "5656565656565656"</item>
-    ///     <item>Log [Log]: a Log object from one the subscription services (TransferLog, BoletoLog, BoletoPaymentlog or UtilityPaymentLog)</item>
+    ///     <item>ID [string]: unique id returned when the Event is created. ex: "5656565656565656"</item>
+    ///     <item>Log [Log]: a Log object from one the subscription services ex: PixRequest.Log, PixReversal.Log</item>
     ///     <item>Created [DateTime]: creation datetime for the notification event. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>IsDelivered [bool]: true if the Event has been successfully delivered to the user url. ex: False</item>
-    ///     <item>Subscription [string]: service that triggered this event. ex: "transfer", "utility-payment"</item>
+    ///     <item>Subscription [string]: service that triggered this event. ex: "pix-request.in", "pix-request.out"</item>
     ///     <item>WorkspaceId [string]: ID of the Workspace that generated this Event. Mostly used when multiple Workspaces have Webhooks registered to the same endpoint. ex: "4545454545454545"
     /// </list>
     /// </summary>
@@ -43,10 +43,10 @@ namespace StarkInfra
         /// Attributes (return-only):
         /// <list>
         ///     <item>id [string]: unique id returned when the Event is created. ex: "5656565656565656"</item>
-        ///     <item>log [Log]: a Log object from one the subscription services (TransferLog, BoletoLog, BoletoPaymentlog or UtilityPaymentLog)</item>
+        ///     <item>log [Log]: a Log object from one the subscription services ex: PixRequest.Log, PixRversal.Log</item>
         ///     <item>created [DateTime]: creation datetime for the notification event. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>isDelivered [bool]: true if the Event has been successfully delivered to the user url. ex: False</item>
-        ///     <item>subscription [string]: service that triggered this event. ex: "transfer", "utility-payment"</item>
+        ///     <item>subscription [string]: service that triggered this event. ex: "pix-request.in", "pix-request.out"</item>
         ///     <item>workspaceId [string]: ID of the Workspace that generated this event. Mostly used when multiple Workspaces have Webhooks registered to the same endpoint. ex: "4545454545454545"</item>
         /// </list>
         /// </summary>
@@ -112,6 +112,22 @@ namespace StarkInfra
 
             Utils.Resource log = null;
             
+            if (subscription.Contains("pix-key"))
+            {
+                log = PixKey.Log.ResourceMaker(json.log);
+            }
+            if (subscription.Contains("pix-claim"))
+            {
+                log = PixClaim.Log.ResourceMaker(json.log);
+            }
+            if (subscription.Contains("pix-chargeback"))
+            {
+                log = PixChargeback.Log.ResourceMaker(json.log);
+            }
+            if (subscription.Contains("pix-infraction"))
+            {
+                log = PixInfraction.Log.ResourceMaker(json.log);
+            }
             if (subscription.Contains("pix-request"))
             {
                 log = PixRequest.Log.ResourceMaker(json.log);
@@ -119,6 +135,10 @@ namespace StarkInfra
             if (subscription.Contains("pix-reversal"))
             {
                 log = PixReversal.Log.ResourceMaker(json.log);
+            }
+            if (subscription.Contains("credit-note"))
+            {
+                log = CreditNote.Log.ResourceMaker(json.log);
             }
 
             return new Event(
