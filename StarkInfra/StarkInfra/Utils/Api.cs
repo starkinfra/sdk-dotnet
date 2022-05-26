@@ -10,11 +10,6 @@ namespace StarkInfra.Utils
     {
         internal delegate SubResource ResourceMaker(dynamic json);
 
-        internal static Dictionary<string, object> ApiJson(Resource entity)
-        {
-            return CastJsonToApiFormat(entity.ToJson());
-        }
-
         internal static Dictionary<string, object> ApiJson(SubResource entity)
         {
             return CastJsonToApiFormat(entity.ToJson());

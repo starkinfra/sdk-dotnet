@@ -21,6 +21,15 @@ This SDK version is compatible with the Stark Infra API v2.
 - [Resource listing and manual pagination](#resource-listing-and-manual-pagination)
 - [Testing in Sandbox](#testing-in-sandbox) 
 - [Usage](#usage)
+    - [Issuing](#issuing)
+        - [BINs](#query-issuingbins): View available sub-issuer BINs (a.k.a. card number ranges)
+        - [Holders](#create-issuingholders): Manage card holders
+        - [Cards](#create-issuingcards): Create virtual and/or physical cards
+        - [Purchases](#process-purchase-authorizations): Authorize and view your past purchases
+        - [Invoices](#create-issuinginvoices): Add money to your issuing balance
+        - [Withdrawals](#create-issuingwithdrawals): Send money back to your Workspace from your issuing balance
+        - [Balance](#get-your-issuingbalance): View your issuing balance
+        - [Transactions](#query-issuingtransactions): View the transactions that have affected your issuing balance
     - [Pix](#pix)
         - [PixRequests](#create-pixrequests): Create Pix transactions
         - [PixReversals](#create-pixreversals): Reverse Pix transactions
@@ -36,6 +45,9 @@ This SDK version is compatible with the Stark Infra API v2.
         - [CreditNote](#create-creditnotes): Create Credit Notes
     - [Webhook](#webhook):
         - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
+    - [Webhook Events](#webhook-events):
+        - [WebhookEvents](#process-webhook-events): Manage webhook events
+        - [WebhookEventAttempts](#query-failed-webhook-event-delivery-attempts-information): Query failed webhook event deliveries
 - [Handling errors](#handling-errors)
 - [Help and Feedback](#help-and-feedback)
 
@@ -234,7 +246,7 @@ If you are not worried about data volume or processing time, this is the way to 
 using System;
 using System.Collections.Generic;
 
-IEnumerable<StarkInfra.PixRequest> requests = StarkBank.PixRequest.Query(
+IEnumerable<StarkInfra.PixRequest> requests = StarkInfra.PixRequest.Query(
     after: DateTime.Today.Date.AddDays(-10),
     before: DateTime.Today.Date.AddDays(-1)
 );
@@ -284,9 +296,506 @@ In Production, you (or one of your clients) will need to actually pay this Invoi
 Here are a few examples on how to use the SDK. If you have any doubts, check out
 the function or class docstring to get more info or go straight to our [API docs].
 
+## Issuing
+
+### Query IssuingBins
+
+To take a look at the sub-issuer BINs available to you, just run the following:
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.IssuingBin> bins = StarkInfra.IssuingBin.Query()
+
+foreach (StarkInfra.IssuingBin bin in bins) {
+    Console.Write(bin);
+}
+```
+
+This will tell which card products and card number prefixes you have at your disposal.
+
+### Create IssuingHolders
+
+You can create card holders to which your cards will be bound.
+They support spending rules that will apply to all underlying cards.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+List<StarkInfra.IssuingHolder> holders = StarkInfra.IssuingHolder.Create(
+    new List<StarkInfra.IssuingHolder> {
+        new StarkInfra.IssuingHolder(
+            name: "Jamie Lanister",
+            externalId : "external_id_12345",
+            taxId : "012.345.678-90",
+            tags : new List<string> { "Traveler Employee" },
+            rules: new List<StarkInfra.IssuingRule> {
+                new StarkInfra.IssuingRule(
+                    name: "general",
+                    interval: "week",
+                    amount: 100000,
+                    currencyCode: "USD"
+                )
+            }
+        )
+    }
+);
+
+foreach (StarkInfra.IssuingHolder holder in holders) {
+    Console.Write(holder);   
+}
+```
+
+**Note**: Instead of using IssuingHolder and IssuingRule objects, you can also pass each element in dictionary format
+
+### Query IssuingHolders
+
+You can query multiple holders according to filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.IssuingHolder> holders = StarkInfra.IssuingHolder.Query(
+    after: new DateTime(2019, 1, 1),
+    before: new DateTime(2022, 3, 1)
+);
+
+foreach(StarkInfra.IssuingHolder holder in holders)
+{
+    Console.Write(holder);
+}
+```
+
+### Cancel an IssuingHolder
+
+To cancel a single Issuing Holder by its id, run:
+
+```c#
+using System;
+
+StarkInfra.IssuingHolder holder = StarkInfra.IssuingHolder.Cancel("5353197895942144");
+
+Console.Write(holder);
+```
+
+### Get an IssuingHolder
+
+To get a single Issuing Holder by its id, run:
+
+```c#
+using System;
+
+StarkInfra.IssuingHolder holder = StarkInfra.IssuingHolder.Get("5353197895942144");
+
+Console.Write(holder);
+```
+
+### Query IssuingHolder logs
+
+You can query holder logs to better understand holder life cycles.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.IssuingHolder.Log> logs = StarkInfra.IssuingHolder.Log.Query(limit: 10);
+
+foreach (StarkInfra.IssuingHolder.Log log in logs){
+    Console.Write(log);
+}
+```
+
+### Get an IssuingHolder log
+
+You can also get a specific log by its id.
+
+```c#
+using System;
+
+StarkInfra.IssuingHolder.Log log = StarkInfra.IssuingHolder.Log.Get("6299741604282368");
+
+Console.Write(log);
+```
+
+### Create IssuingCards
+
+You can issue cards with specific spending rules.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+List<StarkInfra.IssuingCard> cards = StarkInfra.IssuingCard.Create(
+    new List<StarkInfra.IssuingCard> {
+        new StarkInfra.IssuingCard(
+            holderName : "Developers",
+            holderTaxId : "012.345.678-90",
+            holderExternalID : "672",
+            rules: new List<StarkInfra.IssuingRule> {
+                new StarkInfra.IssuingRule(
+                    name: "general",
+                    interval: "week",
+                    amount: 100000,
+                    currencyCode: "USD"
+                )
+            }
+        )
+    }
+);
+
+foreach(StarkInfra.IssuingCard card in cards){
+    Console.Write(card);
+}
+```
+
+### Query IssuingCards
+
+You can get a list of created cards given some filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.IssuingCard> cards = StarkInfra.IssuingCard.Query(
+    after: new DateTime(2019, 1, 1),
+    before: new DateTime(2022, 3, 1)
+);
+
+foreach(StarkInfra.IssuingCard card in cards){
+    Console.Write(card);
+}
+```
+
+### Get an IssuingCard
+
+After its creation, information on a card may be retrieved by its id.
+
+```c#
+using System;
+
+StarkInfra.IssuingCard card = StarkInfra.IssuingCard.Get("5353197895942144");
+
+Console.Write(card);
+```
+
+### Update an IssuingCard
+
+You can update a specific card by its id.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+Dictionary<string, object> patchData = new Dictionary<string, object> {
+    { "status", "blocked" }
+};
+
+StarkInfra.IssuingCard card = StarkInfra.IssuingCard.Update("5353197895942144", patchData);
+
+Console.Write(card);
+
+```
+
+### Cancel an IssuingCard
+
+You can also cancel a card by its id.
+
+```c#
+using System;
+
+StarkInfra.IssuingCard card = StarkInfra.IssuingCard.Cancel("5353197895942144");
+
+Console.Write(card);
+```
+
+### Query IssuingCard logs
+
+You can query card logs to better understand card life cycles.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.IssuingCard.Log> logs = StarkInfra.IssuingCard.Log.Query(limit: 10);
+
+foreach (StarkInfra.IssuingCard.Log log in logs){
+    Console.Write(log);
+}
+```
+
+### Get an IssuingIssuingCardHolder log
+
+You can also get a specific log by its id.
+
+```c#
+using System;
+
+StarkInfra.IssuingCard.Log log = StarkInfra.IssuingCard.Log.Get("6299741604282368");
+
+Console.Write(log);
+```
+
+
+### Process Purchase authorizations
+
+It's easy to process purchase authorizations delivered to your endpoint.
+If you do not approve or decline the authorization within 2 seconds, the authorization will be denied.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+Response response = listen();  // this is the method you made to get the events posted to your webhook endpoint
+
+StarkInfra.IssuingAuthorization authorization = StarkInfra.IssuingAuthorization.ParseContent(
+    content: response.Content,
+    signature: response.Headers["Digital-Signature"]
+);
+
+sendResponse(  // you should also implement this method
+    StarkInfra.IssuingAuthorization.Response(  // this optional method just helps you build the response JSON
+        status: "accepted",
+        amount: authorization.amount,
+        tags= new List<string> { "my-purchase-id/123"}
+    )
+)
+
+// or 
+
+sendResponse(
+    StarkInfra.IssuingAuthorization.Response(
+        status: "denied",
+        reason: "other",
+        tags: new List<string> { "other-id/456" },
+    )
+)
+```
+
+### Query IssuingPurchases
+
+You can get a list of created purchases given some filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.IssuingPurchase> purchases = StarkInfra.IssuingPurchase.Query(
+    after: new DateTime(2019, 1, 1),
+    before: new DateTime(2022, 3, 1)
+);
+
+foreach (StarkInfra.IssuingPurchase purchase in purchases){
+    Console.Write(purchase);
+}
+```
+
+### Get an IssuingPurchase
+
+After its creation, information on a purchase may be retrieved by its id. 
+
+```c#
+using System;
+
+StarkInfra.IssuingPurchase purchase = StarkInfra.IssuingPurchase.Get("5642359077339136");
+
+Console.Write(purchase);
+```
+
+### Query IssuingPurchase logs
+
+Logs are pretty important to understand the life cycle of a purchase.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.IssuingPurchase.Log> logs = StarkInfra.IssuingPurchase.Log.Query(limit: 10);
+
+foreach (StarkInfra.IssuingPurchase.Log log in logs){
+    Console.Write(log);
+}
+```
+
+### Get an IssuingPurchase log
+
+You can get a single log by its id.
+
+```c#
+using System;
+
+StarkInfra.IssuingPurchase.Log log = StarkInfra.IssuingPurchase.Log.Get("6428086769811456");
+
+Console.Write(log);
+```
+
+
+### Create IssuingInvoices
+
+You can create Pix invoices to transfer money from accounts you have in any bank to your Issuing balance,
+allowing you to run your issuing operation.
+
+```c#
+using System;
+
+StarkInfra.IssuingInvoice invoice = StarkInfra.IssuingInvoice.Create(
+    new StarkInfra.IssuingInvoice(
+        amount: 10000
+    )
+);
+    
+Console.Write(invoice);
+```
+
+**Note**: Instead of using IssuingInvoice objects, you can also pass each element in dictionary format
+
+### Query IssuingInvoices
+
+You can get a list of created invoices given some filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.IssuingInvoice> invoices = StarkInfra.IssuingInvoice.Query(
+    after: new DateTime(2019, 1, 1),
+    before: new DateTime(2022, 3, 1)
+);
+
+foreach (StarkInfra.IssuingInvoice invoice in invoices){
+    Console.Write(invoice);
+}
+```
+
+### Get an IssuingInvoice
+
+After its creation, information on an invoice may be retrieved by its id. 
+Its status indicates whether it's been paid.
+
+```c#
+using System;
+
+StarkInfra.IssuingInvoice invoice = StarkInfra.IssuingInvoice.Get("5709933853016064");
+
+Console.Write(invoice);
+```
+
+### Query IssuingInvoice logs
+
+Logs are pretty important to understand the life cycle of an invoice.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.IssuingInvoice.Log> logs = StarkInfra.IssuingInvoice.Log.Query(limit: 10);
+
+foreach (StarkInfra.IssuingInvoice.Log log in logs){
+    Console.Write(log);
+}
+```
+
+### Create IssuingWithdrawals
+
+You can create withdrawals to send cash back from your Issuing balance to your Banking balance
+by using the Withdrawal resource.
+
+```c#
+using System;
+
+StarkInfra.IssuingWithdrawal withdrawal = StarkInfra.IssuingWithdrawal.Create(
+    new StarkInfra.IssuingWithdrawal(
+        amount: 10000,
+        externalId: "3257",
+        description: "Sending back"
+    )
+);
+
+Console.Write(withdrawal);
+```
+
+**Note**: Instead of using IssuingWithdrawal objects, you can also pass each element in dictionary format
+
+### Get an IssuingWithdrawal
+
+After its creation, information on a withdrawal may be retrieved by its id.
+
+```c#
+using System;
+
+StarkInfra.IssuingWithdrawal withdrawal = StarkInfra.IssuingWithdrawal.Get("5440727945314304");
+
+Console.Write(withdrawal);
+```
+
+### Query IssuingWithdrawals
+
+You can get a list of created invoices given some filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.IssuingWithdrawal> withdrawals = StarkInfra.IssuingWithdrawal.Query(
+    after: new DateTime(2019, 1, 1),
+    before: new DateTime(2022, 3, 1)
+);
+
+foreach (StarkInfra.IssuingWithdrawal withdrawal in withdrawals)
+{
+    Console.Write(withdrawal);
+}
+```
+
+### Get your IssuingBalance
+
+To know how much money you have available to run authorizations, run:
+
+```c#
+using System;
+
+StarkInfra.IssuingBalance balance = StarkInfra.IssuingBalance.Get();
+
+Console.Write(balance);
+```
+
+### Query IssuingTransactions
+
+To understand your balance changes (issuing statement), you can query
+transactions. Note that our system creates transactions for you when
+you make purchases, withdrawals, receive issuing invoice payments, for example.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.IssuingTransaction> transactions = StarkInfra.IssuingTransaction.Query(
+    after: new DateTime(2019, 1, 1),
+    before: new DateTime(2022, 3, 1)
+);
+
+foreach (StarkInfra.IssuingTransaction transaction in transactions)
+{
+    Console.Write(transaction);
+}
+```
+
+### Get an IssuingTransaction
+
+You can get a specific transaction by its id:
+
+```c#
+using System;
+
+StarkInfra.IssuingTransaction issuingTransaction = StarkInfra.IssuingTransaction.Get("6539944898068480");
+
+Console.Write(issuingTransaction);
+```
 ## Pix
 
-## Create PixRequests
+### Create PixRequests
 You can create a PixRequest to charge a user:
 
 ```c#
@@ -338,9 +847,9 @@ foreach(StarkInfra.PixRequest request in requests) {
 
 **Note**: Instead of using PixRequest objects, you can also pass each transaction element in dictionary format
 
-## Query PixRequests
+### Query PixRequests
 
-You can query multiple PixRequests according to filters.
+You can query multiple Pix requests according to filters.
 
 ```c#
 using System;
@@ -356,9 +865,9 @@ foreach(StarkInfra.PixRequest request in requests) {
 }
 ```
 
-## Get a PixRequest
+### Get a PixRequest
 
-After its creation, information on a PixRequest may be retrieved by its id. Its status indicates whether it has been paid.
+After its creation, information on a Pix request may be retrieved by its id. Its status indicates whether it has been paid.
 
 ```c#
 using System;
@@ -368,11 +877,10 @@ Starkinfra.PixRequest request = StarkInfra.PixRequest.Get("5155165527080960");
 Console.WriteLine(request);
 ```
 
-## Process PixRequest authorization requests
+### Process PixRequest authorization requests
 
 It's easy to process authorization requests that arrived in your handler. Remember to pass the
-signature header so the SDK can make sure it's StarkInfra that sent you
-the event.
+signature header so the SDK can make sure it's StarkInfra that sent you the event.
 
 ```c#
 using System;
@@ -387,9 +895,9 @@ StarkInfra.PixRequest request= StarkInfra.PixRequest.Parse(
 Console.WriteLine(request);
 ```
 
-## Query PixRequest logs
+### Query PixRequest logs
 
-You can query PixRequest logs to better understand PixRequest life cycles.
+You can query Pix request logs to better understand PixRequest life cycles.
 
 ```c#
 using System;
@@ -405,7 +913,7 @@ foreach(StarkInfra.PixRequest.Log log in logs) {
 }
 ```
 
-## Get a PixRequest log
+### Get a PixRequest log
 
 You can also get a specific log by its id.
 
@@ -417,9 +925,9 @@ StarkInfra.PixRequest.Log log = StarkInfra.PixRequest.Log.Get("4701727546671104"
 Console.WriteLine(log);
 ```
 
-## Create PixReversals
+### Create PixReversals
 
-You can reverse a PixRequest by whole or by a fraction of its amount using a PixReversal.
+You can reverse a Pix request by whole or by a fraction of its amount using a PixReversal.
 
 ```c#
 ```c#
@@ -442,9 +950,9 @@ foreach(StarkInfra.PixReversal reversal in reversals) {
 }
 ```
 
-## Query PixReversals 
+### Query PixReversals 
 
-You can query multiple PixReversals according to filters. 
+You can query multiple Pix reversals according to filters. 
 
 ```c#
 using System;
@@ -460,9 +968,9 @@ foreach(StarkInfra.PixReversal reversal in reversals) {
 }
 ```
 
-## Get a PixReversal
+### Get a PixReversal
 
-After its creation, information on a PixReversal may be retrieved by its id. Its status indicates whether it has been paid.
+After its creation, information on a Pix reversal may be retrieved by its id. Its status indicates whether it has been paid.
 
 ```c#
 using System;
@@ -472,11 +980,10 @@ Starkinfra.PixReversal reversal = StarkInfra.PixReversal.Get("5155165527080960")
 Console.WriteLine(reversal);
 ```
 
-## Process PixReversal authorization requests
+### Process PixReversal authorization requests
 
 It's easy to process authorization requests that arrived in your handler. Remember to pass the
-signature header so the SDK can make sure it's StarkInfra that sent you
-the event.
+signature header so the SDK can make sure it's StarkInfra that sent you the event.
 
 ```c#
 using System;
@@ -491,9 +998,9 @@ StarkInfra.PixReversal reversal= StarkInfra.PixReversal.Parse(
 Console.WriteLine(reversal);
 ```
 
-## Query PixReversal logs
+### Query PixReversal logs
 
-You can query PixReversal logs to better understand PixReversal life cycles. 
+You can query Pix reversal logs to better understand PixReversal life cycles. 
 
 ```c#
 using System;
@@ -509,7 +1016,7 @@ foreach(StarkInfra.PixReversal.Log log in logs) {
 }
 ```
 
-## Get a PixReversal log
+### Get a PixReversal log
 
 You can also get a specific log by its id.
 
@@ -521,7 +1028,7 @@ StarkInfra.PixReversal.Log log = StarkInfra.PixReversal.Log.Get("470172754667110
 Console.WriteLine(log);
 ```
 
-## Get your PixBalance 
+### Get your PixBalance 
 
 To know how much money you have in your workspace, run:
 
@@ -533,11 +1040,10 @@ Starkinfra.PixBalance balance = StarkInfra.PixBalance.Get();
 Console.WriteLine(reversal);
 ```
 
-## Create a PixStatement
+### Create a PixStatement
 
 Statements are only available for direct participants. To create a statement of all the transactions that happened on your workspace during a specific day, run:
 
-```c#
 ```c#
 using System;
 using System.Collections.Generic;
@@ -557,9 +1063,9 @@ foreach(StarkInfra.PixStatement statement in statements) {
 }
 ```
 
-## Query PixStatements
+### Query PixStatements
 
-You can query multiple PixStatements according to filters. 
+You can query multiple Pix statements according to filters. 
 
 ```c#
 using System;
@@ -576,9 +1082,9 @@ foreach(StarkInfra.PixStatement statement in statements) {
 }
 ```
 
-## Get a PixStatement
+### Get a PixStatement
 
-Statements are only available for direct participants. To get a PixStatement by its id:
+Statements are only available for direct participants. To get a Pix statement by its id:
 
 ```c#
 using System;
@@ -588,9 +1094,9 @@ Starkinfra.PixStatement statement = StarkInfra.PixStatement.Get("515516552708096
 Console.WriteLine(statement);
 ```
 
-## Get a PixStatement .csv file
+### Get a PixStatement .csv file
 
-To get a .csv file of a PixStatement using its id, run:
+To get a .csv file of a Pix statement using its id, run:
 
 ```c#
 using System;
@@ -602,7 +1108,7 @@ System.IO.File.WriteAllBytes("statement.zip", csv);
 
 ### Create a PixKey
 
-You can create a PixKey to link a bank account information to a key id:
+You can create a Pix key to link a bank account information to a key id:
 
 ```c#
 using System;
@@ -624,7 +1130,7 @@ Console.Write(pixKey);
 
 ### Query PixKeys
 
-You can query multiple PixKeys you own according to filters.
+You can query multiple Pix keys you own according to filters.
 
 ```c#
 using System;
@@ -646,7 +1152,7 @@ foreach (StarkInfra.PixKey key in keys){
 
 ### Get a PixKey
 
-Information on a PixKey may be retrieved by its id and the tax ID of the consulting agent.
+Information on a Pix key may be retrieved by its id and the tax ID of the consulting agent.
 An endToEndId must be informed so you can link any resulting purchases to this query,
 avoiding sweep blocks by the Central Bank.
 
@@ -667,7 +1173,7 @@ Console.Write(key);
 
 ### Patch a PixKey
 
-Update the account information linked to a PixKey.
+Update the account information linked to a Pix key.
 
 ```c#
 using System;
@@ -685,7 +1191,7 @@ Console.Write(key);
 
 ### Cancel a PixKey
 
-Cancel a specific PixKey using its id.
+Cancel a specific Pix key using its id.
 
 ```c#
 using System;
@@ -697,7 +1203,7 @@ Console.Write(key);
 
 ### Query PixKey logs
 
-You can query PixKey logs to better understand a PixKey life cycle. 
+You can query PixKey logs to better understand a Pix key life cycle. 
 
 ```c#
 using System;
@@ -731,7 +1237,7 @@ Console.Write(log);
 
 ### Create a PixClaim
 
-You can create a PixClaim to request the transfer of a PixKey from another bank to one of your accounts:
+You can create a Pix claim to request the transfer of a Pix key from another bank to one of your accounts:
 
 ```c#
 using System;
@@ -753,7 +1259,7 @@ Console.Write(claim);
 
 ### Query PixClaims
 
-You can query multiple PixClaims according to filters.
+You can query multiple Pix claims according to filters.
 
 ```c#
 using System;
@@ -778,7 +1284,7 @@ foreach(StarkInfra.PixClaim claim in claims){
 
 ### Get a PixClaim
 
-After its creation, information on a PixClaim may be retrieved by its id.
+After its creation, information on a Pix claim may be retrieved by its id.
 
 ```c#
 using System;
@@ -790,10 +1296,10 @@ Console.Write(claim);
 
 ### Update a PixClaim
 
-A PixClaim can be confirmed or canceled by patching its status.
-A received PixClaim must be confirmed by the donor to be completed.
-Ownership PixClaims can only be canceled by the donor if the reason is "fraud".
-A sent PixClaim can also be canceled.
+A Pix claim can be confirmed or canceled by patching its status.
+A received Pix claim must be confirmed by the donor to be completed.
+Ownership Pix claims can only be canceled by the donor if the reason is "fraud".
+A sent Pix claim can also be canceled.
 
 ```c#
 using System;
@@ -809,7 +1315,7 @@ Console.Write(claim);
 
 ### Query PixClaim logs
 
-You can query PixClaim logs to better understand PixClaim life cycles.
+You can query Pix claim logs to better understand Pix claim life cycles.
 
 ```c#
 using System;
@@ -864,8 +1370,8 @@ Console.Write(director);
 
 ### Create PixInfractions
 
-Infraction reports are used to report transactions that raise fraud suspicion, to request a refund or to 
-reverse a refund. Infraction reports can be created by either participant of a transaction.
+Pix infractions are used to report transactions that raise fraud suspicion, to request a refund or to 
+reverse a refund. Pix infractions can be created by either participant of a transaction.
 
 ```c#
 using System;
@@ -886,7 +1392,7 @@ foreach(StarkInfra.PixInfraction infraction in infractions){
 
 ### Query PixInfractions
 
-You can query multiple infraction reports according to filters.
+You can query multiple Pix infractions according to filters.
 
 ```c#
 using System;
@@ -907,7 +1413,7 @@ foreach(StarkInfra.PixInfraction infraction in infractions){
 
 ### Get a PixInfraction
 
-After its creation, information on an Infraction Report may be retrieved by its id.
+After its creation, information on a Pix infraction may be retrieved by its id.
 
 ```c#
 using System;
@@ -919,8 +1425,8 @@ Console.Write(infraction);
 
 ### Patch a PixInfraction
 
-A received Infraction Report can be confirmed or declined by patching its status.
-After an Infraction Report is patched, its status changes to closed.
+A received Pix infraction can be confirmed or declined by patching its status.
+After a Pix infraction is patched, its status changes to closed.
 
 ```c#
 using System;
@@ -932,7 +1438,7 @@ Console.Write(infraction);
 
 ### Cancel a PixInfraction
 
-Cancel a specific Infraction Report using its id.
+Cancel a specific Pix infraction using its id.
 
 ```c#
 using System;
@@ -943,7 +1449,7 @@ Console.Write(infraction);
 ```
 ### Query PixInfraction logs
 
-You can query infraction report logs to better understand their life cycles. 
+You can query Pix infraction logs to better understand their life cycles. 
 
 ```c#
 using System;
@@ -1000,7 +1506,7 @@ foreach(StarkInfra.PixChargeback chargeback in chargebacks){
 
 ### Query PixChargebacks
 
-You can query multiple reversal requests according to filters.
+You can query multiple Pix chargebacks according to filters.
 
 ```c#
 using System;
@@ -1020,7 +1526,7 @@ foreach(StarkInfra.PixChargeback chargeback in chargebacks){
 ```
 ### Get a PixChargeback
 
-After its creation, information on a Reversal Request may be retrieved by its.
+After its creation, information on a Pix chargebacks may be retrieved by its.
 
 ```c#
 using System;
@@ -1032,8 +1538,8 @@ Console.Write(chargeback);
 
 ### Patch a PixChargeback
 
-A received Reversal Request can be accepted or rejected by patching its status.
-After a Reversal Request is patched, its status changes to closed.
+A received Pix chargeback can be accepted or rejected by patching its status.
+After a Pix chargeback is patched, its status changes to closed.
 
 ```c#
 using System;
@@ -1052,7 +1558,7 @@ Console.Write(chargeback);
 
 ### Cancel a PixChargeback
 
-Cancel a specific Reversal Request using its id.
+Cancel a specific Pix reversal using its id.
 
 ```c#
 using System;
@@ -1064,7 +1570,7 @@ Console.Write(chargeback);
 
 ### Query PixChargeback logs
 
-You can query reversal request logs to better understand reversal request life cycles. 
+You can query Pix request logs to better understand Pix chargeback life cycles. 
 
 ```c#
 using System;
@@ -1113,7 +1619,7 @@ foreach (StarkInfra.PixDomain domain in domains){
 ## Credit Note
 
 ### Create CreditNotes
-You can create CreditNotes to generate a CCB contracts:
+You can create Credit notes to generate a CCB contracts:
 
 ```c#
 using System;
@@ -1365,6 +1871,88 @@ if (parsedEvent.Subscription.Contains("issuing-purchase") {
 }
 ```
 
+### Query webhook events
+
+To search for webhook events, run:
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.Event> events = StarkInfra.Event.Query(
+    after: DateTime.Today,
+    isDelivered: false
+);
+
+foreach(StarkInfra.Event eventObject in events) {
+    Console.WriteLine(eventObject);
+}
+```
+
+### Get a webhook event
+
+You can get a specific webhook event by its id.
+
+```c#
+using System;
+
+StarkInfra.Event eventObject = StarkInfra.Event.Get("10827361982368179");
+
+Console.WriteLine(eventObject);
+```
+
+### Delete a webhook event
+
+You can also delete a specific webhook event by its id.
+
+```c#
+using System;
+
+StarkInfra.Event eventObject = StarkInfra.Event.Delete("10827361982368179");
+
+Console.WriteLine(eventObject);
+```
+
+### Set webhook events as delivered
+
+This can be used in case you"ve lost events.
+With this function, you can manually set events retrieved from the API as
+"delivered" to help future event queries with `isDelivered: false`.
+
+```c#
+using System;
+
+StarkInfra.Event eventObject = StarkInfra.Event.Update("129837198237192", isDelivered: true);
+
+Console.WriteLine(eventObject);
+```
+
+### Query failed webhook event delivery attempts information
+
+You can also get information on failed webhook event delivery attempts.
+
+```c#
+using System;
+
+List<StarkInfra.Event.Attempt> attempts = StarkInfra.Event.Attempt.Query(after: "2020-03-20").ToList();
+
+foreach(StarkInfra.Event.Attempt attempt in attempts) {
+    Console.WriteLine(attempt);
+}
+```
+
+### Get a failed webhook event delivery attempt information
+
+To retrieve information on a single attempt, use the following function:
+
+```c#
+using System;
+
+StarkInfra.Event.Attempt attempt = StarkInfra.Event.Attempt.Get("1616161616161616");
+
+Console.WriteLine(attempt);
+```
+
 # Handling errors
 
 The SDK may raise one of four types of errors: __InputErrors__, __InternalServerError__, __UnknownError__, __InvalidSignatureError__
@@ -1377,7 +1965,7 @@ For example:
 ```c#
 using System;
 using System.Collections.Generic;
-using StarkInfra.Error;
+using System.Error;
 
 try {
     List<StarkInfra.PixReversal> reversal = StarkInfra.PixReversal.Create(

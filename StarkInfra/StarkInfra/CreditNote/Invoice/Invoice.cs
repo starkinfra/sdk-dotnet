@@ -33,7 +33,7 @@ namespace StarkInfra
     ///     <item>Status [string]: current Invoice status. ex: "registered" or "paid"</item>
     ///     <item>Fee [integer]: fee charged by this Invoice. ex: 200 (= R$ 2.00)</item>
     ///     <item>TransactionIds [list of strings]: ledger transaction ids linked to this Invoice (if there are more than one, all but the first are reversals or failed reversal chargebacks). ex: ["19827356981273"]</item>
-    ///     <item>Discounts [list of Discount objects]: list of Discount objects or dictionaries with "percentage":float and "due":datetime.datetime or string pairs</item>
+    ///     <item>Discounts [list of Discount objects]: list of Discount objects or dictionaries with "percentage":float and "due":DateTime or string pairs</item>
     ///     <item>Created [DateTime]: creation datetime for the Invoice. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>Updated [DateTime]: latest update datetime for the Invoice. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
@@ -96,7 +96,7 @@ namespace StarkInfra
         ///     <item>status [string]: current Invoice status. ex: "registered" or "paid"</item>
         ///     <item>fee [integer]: fee charged by this Invoice. ex: 200 (= R$ 2.00)</item>
         ///     <item>transactionIds [list of strings]: ledger transaction ids linked to this Invoice (if there are more than one, all but the first are reversals or failed reversal chargebacks). ex: ["19827356981273"]</item>
-        ///     <item>discounts [list of CreditNote.Invoice.Discount objects]: list of Discount objects or dictionaries with "percentage":float and "due":datetime.datetime or string pairs</item>
+        ///     <item>discounts [list of CreditNote.Invoice.Discount objects]: list of Discount objects or dictionaries with "percentage":float and "due":DateTime or string pairs</item>
         ///     <item>created [DateTime]: creation datetime for the Invoice. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>updated [DateTime]: latest update datetime for the Invoice. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>

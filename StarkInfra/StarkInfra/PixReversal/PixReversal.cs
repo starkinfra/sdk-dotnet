@@ -27,8 +27,8 @@ namespace StarkInfra
     ///     <item>Fee [string]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)</item>
     ///     <item>Status [string]: current PixReversal status. ex: "registered" or "paid"</item>
     ///     <item>Flow [string]: direction of money flow. ex: "in" or "out"</item>
-    ///     <item>Created [DateTime]: creation datetime for the PixReversal. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)</item>
-    ///     <item>Updated [DateTime]: latest update datetime for the PixReversal. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>Created [DateTime]: creation datetime for the PixReversal. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>Updated [DateTime]: latest update datetime for the PixReversal. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
     /// </summary>
     public partial class PixReversal : Utils.Resource
@@ -72,8 +72,8 @@ namespace StarkInfra
         ///     <item>fee [string]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)</item>
         ///     <item>status [string]: current PixReversal status. ex: "registered" or "paid"</item>
         ///     <item>flow [string]: direction of money flow. ex: "in" or "out"</item>
-        ///     <item>created [DateTime]: creation datetime for the PixReversal. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)</item>
-        ///     <item>updated [DateTime]: latest update datetime for the PixReversal. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>created [DateTime]: creation datetime for the PixReversal. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>updated [DateTime]: latest update datetime for the PixReversal. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
         public PixReversal(long amount, string externalId, string endToEndId, string reason, List<string> tags = null,  
@@ -196,8 +196,8 @@ namespace StarkInfra
         /// <list>
         ///     <item>fields [list of strings, default null]: parameters to be retrieved from PixReversal objects. ex: ["amount", "id"]</item>
         ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
-        ///     <item>after [DateTime, default null]: date filter for objects created or updated only after specified date. ex: datetime.date(2020, 3, 10)</item>
-        ///     <item>before [DateTime, default null]: date filter for objects created or updated only before specified date. ex: datetime.date(2020, 3, 10)</item>
+        ///     <item>after [DateTime, default null]: date filter for objects created or updated only after specified date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>before [DateTime, default null]: date filter for objects created or updated only before specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>status [string, default null]: filter for status of retrieved objects. ex: "success" or "failed"</item>
         ///     <item>tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]</item>
         ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]</item>
@@ -245,8 +245,8 @@ namespace StarkInfra
         ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
         ///     <item>fields [list of strings, default null]: parameters to be retrieved from PixReversal objects. ex: ["amount", "id"]</item>
         ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
-        ///     <item>after [DateTime, default null]: date filter for objects created or updated only after specified date. ex: datetime.date(2020, 3, 10)</item>
-        ///     <item>before [DateTime, default null]: date filter for objects created or updated only before specified date. ex: datetime.date(2020, 3, 10)</item>
+        ///     <item>after [DateTime, default null]: date filter for objects created or updated only after specified date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>before [DateTime, default null]: date filter for objects created or updated only before specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>status [string, default null]: filter for status of retrieved objects. ex: "success" or "failed"</item>
         ///     <item>tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]</item>
         ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]</item>

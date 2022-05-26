@@ -7,22 +7,26 @@ using System.Collections.Generic;
 
 namespace StarkInfraTests
 {
-    public class PixRequestLogTest
+    public class IssuingCardLogTest
     {
         public readonly User user = TestUser.SetDefaultProject();
 
         [Fact]
         public void QueryAndGet()
         {
-            List<PixRequest.Log> logs = PixRequest.Log.Query(limit: 10).ToList();
-            Assert.Equal(10, logs.Count);
+            List<IssuingCard.Log> logs = IssuingCard.Log.Query(
+                limit: 2,
+                types: new List<string> { "blocked" }
+            ).ToList();
+            Assert.Equal(2, logs.Count);
             Assert.True(logs.First().ID != logs.Last().ID);
-            foreach (PixRequest.Log log in logs)
+            foreach (IssuingCard.Log log in logs)
             {
                 TestUtils.Log(log);
                 Assert.NotNull(log.ID);
+                Assert.Equal("blocked", log.Type);
             }
-            PixRequest.Log getLog = PixRequest.Log.Get(id: logs.First().ID);
+            IssuingCard.Log getLog = IssuingCard.Log.Get(id: logs.First().ID);
             Assert.Equal(getLog.ID, logs.First().ID);
             TestUtils.Log(getLog);
         }
@@ -31,12 +35,12 @@ namespace StarkInfraTests
         public void Page()
         {
             List<string> ids = new List<string>();
-            List<PixRequest.Log> page;
+            List<IssuingCard.Log> page;
             string cursor = null;
             for (int i = 0; i < 2; i++)
             {
-                (page, cursor) = PixRequest.Log.Page(limit: 5, cursor: cursor);
-                foreach (PixRequest.Log entity in page)
+                (page, cursor) = IssuingCard.Log.Page(limit: 2, cursor: cursor);
+                foreach (IssuingCard.Log entity in page)
                 {
                     Assert.DoesNotContain(entity.ID, ids);
                     ids.Add(entity.ID);
@@ -46,7 +50,7 @@ namespace StarkInfraTests
                     break;
                 }
             }
-            Assert.True(ids.Count == 10);
+            Assert.True(ids.Count == 4);
         }
     }
 }

@@ -57,7 +57,7 @@ namespace StarkInfra
         /// <list>
         ///     <item>id [string]: unique id returned when the PixStatement is created. ex: "5656565656565656"</item>
         ///     <item>status [string]: current PixStatement status. ex: "success" or "failed"</item>
-        ///     <item>transactionCount [integer]: number of transactions that happened during the day that the PixStatement was requested. ex11</item>
+        ///     <item>transactionCount [integer]: number of transactions that happened during the day that the PixStatement was requested. ex: 11</item>
         ///     <item>created [DateTime]: creation datetime for the PixStatement. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>updated [DateTime]: latest update datetime for the PixStatement. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
