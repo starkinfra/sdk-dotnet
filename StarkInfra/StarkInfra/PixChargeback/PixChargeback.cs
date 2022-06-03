@@ -22,13 +22,13 @@ namespace StarkInfra
     ///     <item>ReferenceID [string]: endToEndId or returnId of the transaction to be reversed. ex: "E20018183202201201450u34sDGd19lz"</item>
     ///     <item>Reason [string]: reason why the reversal was requested. Options: "fraud", "flaw", "reversalChargeback"</item>
     ///     <item>Description [string, default null]: description for the PixChargeback.</item>
+    ///     <item>ID [string]: unique id returned when the PixChargeback is created. ex: "5656565656565656"</item>
     ///     <item>Analysis [string]: analysis that led to the result.</item>
     ///     <item>BacenID [string]: central bank's unique UUID that identifies the PixChargeback.</item>
     ///     <item>SenderBankCode [string]: bankCode of the Pix participant that created the PixChargeback. ex: "20018183"</item>
     ///     <item>ReceiverBankCode [string]: bankCode of the Pix participant that received the PixChargeback. ex: "20018183"</item>
     ///     <item>RejectionReason [string]: reason for the rejection of the PixChargeback. Options: "noBalance", "accountClosed", "unableToReverse"</item>
     ///     <item>ReversalReferenceID [string]: return id of the reversal transaction. ex: "D20018183202202030109X3OoBHG74wo".</item>
-    ///     <item>ID [string]: unique id returned when the PixChargeback is created. ex: "5656565656565656"</item>
     ///     <item>Result [string]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted"</item>
     ///     <item>Status [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".</item>
     ///     <item>Created [DateTime]: creation datetime for the PixChargeback. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
@@ -74,13 +74,13 @@ namespace StarkInfra
         /// </list>
         /// Attributes (return-only):
         /// <list>
+        ///     <item>id [string]: unique id returned when the PixChargeback is created. ex: "5656565656565656"</item>
         ///     <item>analysis [string]: analysis that led to the result.</item>
         ///     <item>bacenId [string]: central bank's unique UUID that identifies the PixChargeback.</item>
         ///     <item>senderBankCode [string]: bankCode of the Pix participant that created the PixChargeback. ex: "20018183"</item>
         ///     <item>receiverBankCode [string]: bankCode of the Pix participant that received the PixChargeback. ex: "20018183"</item>
         ///     <item>rejectionReason [string]: reason for the rejection of the PixChargeback. Options: "noBalance", "accountClosed", "unableToReverse"</item>
         ///     <item>reversalReferenceId [string]: return id of the reversal transaction. ex: "D20018183202202030109X3OoBHG74wo".</item>
-        ///     <item>id [string]: unique id returned when the PixChargeback is created. ex: "5656565656565656"</item>
         ///     <item>result [string]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted"</item>
         ///     <item>status [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".</item>
         ///     <item>created [DateTime]: creation datetime for the PixChargeback. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
@@ -212,7 +212,7 @@ namespace StarkInfra
         ///     <item>after [DateTime or string, default null]: date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>before [DateTime or string, default null]: date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545"]</item>
-        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Unlimited if null. ex: 35D20018183202202030109X3OoBhfkg7h</item>
+        ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
@@ -253,7 +253,7 @@ namespace StarkInfra
         ///     <item>after [DateTime or string, default null]: date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>before [DateTime or string, default null]: date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
-        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Unlimited if null. ex: 35D20018183202202030109X3OoBhfkg7h</item>
+        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>

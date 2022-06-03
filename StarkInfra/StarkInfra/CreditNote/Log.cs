@@ -138,7 +138,7 @@ namespace StarkInfra
             /// <list>
             ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
             ///     <item>ids [list of strings, default null]: Log ids to filter CreditNote Logs. ex: new List<string>{ "5656565656565656" }</item>
-            ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
+            ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
             ///     <item>after [DateTime, default null]: date filter for objects updated only after specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>before [DateTime, default null]: date filter for objects updated only before specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>types [list of strings, default null]: filter retrieved objects by types. ex: new List<string>{ "canceled", "updated", "expired", "failed", "refunded", "registered", "sending", "sent", "signed", "success" }</item>

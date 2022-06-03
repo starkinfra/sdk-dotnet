@@ -19,7 +19,7 @@ namespace StarkInfra
     /// <list>
     ///     <item>ReferenceID [string]: endToEndId or returnId of the transaction being reported. ex: "E20018183202201201450u34sDGd19lz"</item>
     ///     <item>Type [string]: type of infraction report. Options: "fraud", "reversal", "reversalChargeback"</item>
-    ///     <item>Description [string, Default null]: description for any details that can help with the infraction investigation.</item>
+    ///     <item>Description [string, default null]: description for any details that can help with the infraction investigation.</item>
     ///     <item>ID [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"</item>
     ///     <item>CreditedBankCode [string]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"</item>
     ///     <item>Agent [string]: Options: "reporter" if you created the PixInfraction, "reported" if you received the PixInfraction.</item>
@@ -67,16 +67,16 @@ namespace StarkInfra
         ///</list>
         /// Parameters (optional):
         /// <list>
-        ///     <item>description [string, Default null]: description for any details that can help with the infraction investigation.</item>
+        ///     <item>description [string, default null]: description for any details that can help with the infraction investigation.</item>
         /// </list>
         /// Attributes (return-only):
         /// <list>
+        ///     <item>id [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"</item>
         ///     <item>creditedBankCode [string]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"</item>
         ///     <item>agent [string]: Options: "reporter" if you created the PixInfraction, "reported" if you received the PixInfraction.</item>
         ///     <item>analysis [string]: analysis that led to the result.</item>
         ///     <item>bacenId [string]: central bank's unique UUID that identifies the infraction report.</item>
         ///     <item>debitedBankCode [string]: bankCode of the debited Pix participant in the reported transaction. ex: "20018183"</item>
-        ///     <item>id [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"</item>
         ///     <item>reportedBy [string]: agent that reported the PixInfraction. Options: "debited", "credited".</item>
         ///     <item>result [string]: result after the analysis of the PixInfraction by the receiving party. Options: "agreed", "disagreed"</item>
         ///     <item>status [string]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".</item>
@@ -204,7 +204,7 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35</item>
+        ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
         ///     <item>after [DateTime, default null]: date filter for objects created after a specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>before [DateTime, default null]: date filter for objects created before a specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".</item>
@@ -247,7 +247,7 @@ namespace StarkInfra
         /// Parameters (optional):
         /// <list>
         ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
-        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35</item>
+        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
         ///     <item>after [DateTime, default null]: date filter for objects created after a specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>before [DateTime, default null]: date filter for objects created before a specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".</item>

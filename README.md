@@ -1653,7 +1653,13 @@ List<StarkInfra.CreditNote> notes = StarkInfra.CreditNote.Create(
                     method: "link"
                 )
             },
-            externalId: "my_external_id_10"
+            externalId: "my_external_id_10",
+            streetLine1: "Av. Paulista, 200",
+            streetLine2: "10 andar",
+            district: "Bela Vista",
+            city: "São Paulo",
+            stateCode: "SP",
+            zipCode: "01310-000"
         )    
     }
 );
@@ -1796,7 +1802,7 @@ You can get a specific webhook by its id.
 ```c#
 using System;
 
-StarkInfra.Webhook webhook = StarkInfra.Webhook.Get("10827361982368179");
+StarkInfra.Webhook webhook = StarkInfra.Webhook.Get("1082736198236817");
 
 Console.Write(webhook);
 ```
@@ -1808,7 +1814,7 @@ You can also delete a specific webhook by its id.
 ```c#
 using System;
 
-StarkInfra.Webhook webhook = StarkInfra.Webhook.Delete("10827361982368179");
+StarkInfra.Webhook webhook = StarkInfra.Webhook.Delete("1082736198236817");
 
 Console.Write(webhook);
 ```
@@ -1896,7 +1902,7 @@ You can get a specific webhook event by its id.
 ```c#
 using System;
 
-StarkInfra.Event eventObject = StarkInfra.Event.Get("10827361982368179");
+StarkInfra.Event eventObject = StarkInfra.Event.Get("1082736198236817");
 
 Console.WriteLine(eventObject);
 ```
@@ -1908,7 +1914,7 @@ You can also delete a specific webhook event by its id.
 ```c#
 using System;
 
-StarkInfra.Event eventObject = StarkInfra.Event.Delete("10827361982368179");
+StarkInfra.Event eventObject = StarkInfra.Event.Delete("1082736198236817");
 
 Console.WriteLine(eventObject);
 ```
@@ -1922,7 +1928,7 @@ With this function, you can manually set events retrieved from the API as
 ```c#
 using System;
 
-StarkInfra.Event eventObject = StarkInfra.Event.Update("129837198237192", isDelivered: true);
+StarkInfra.Event eventObject = StarkInfra.Event.Update("1298371982371921", isDelivered: true);
 
 Console.WriteLine(eventObject);
 ```
@@ -1973,7 +1979,7 @@ try {
             new StarkIfnra.PixReversal(
                 amount: 100,
                 end_to_end_id: "E00000000202201060100rzsJzG9PzMg",
-                external_id: "17238435823958934",
+                external_id: "1723843582395893",
                 reason: "bankError"
             )
         }

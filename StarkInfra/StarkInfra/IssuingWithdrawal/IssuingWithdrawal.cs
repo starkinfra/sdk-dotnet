@@ -16,7 +16,7 @@ namespace StarkInfra
     ///     <item>Amount [long]: IssuingWithdrawal value in cents. Minimum = 0 (any value will be accepted). ex: 1234 (= R$ 12.34)</item>
     ///     <item>ExternalID [string] IssuingWithdrawal external ID. ex: "12345"</item>
     ///     <item>Description [string]: IssuingWithdrawal description. ex: "sending money back"</item>
-    ///     <item>Tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "tony", "stark" }</item>
+    ///     <item>Tags [list of strings, default []]: list of strings for tagging. ex: new List<string>{ "tony", "stark" }</item>
     ///     <item>ID[string]: unique id returned when IssuingWithdrawal is created. ex: "5656565656565656"</item>
     ///     <item>TransactionID [string]: Stark Bank ledger transaction ids linked to this IssuingWithdrawal</item>
     ///     <item>IssuingTransactionID [string]: issuing ledger transaction ids linked to this IssuingWithdrawal</item>
@@ -48,7 +48,7 @@ namespace StarkInfra
         ///</list>
         /// Parameters (optional):
         /// <list>
-        ///     <item>tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "tony", "stark" }</item>
+        ///     <item>tags [list of strings, default []]: list of strings for tagging. ex: new List<string>{ "tony", "stark" }</item>
         /// </list>
         /// Attributes (return-only):
         /// <list>
@@ -173,7 +173,7 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
+        ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
         ///     <item>externalIds [list of strings, default null]: external IDs. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
         ///     <item>after [DateTime or string, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>before [DateTime or string, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
@@ -213,7 +213,7 @@ namespace StarkInfra
         /// Parameters (optional):
         /// <list>
         ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
-        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
+        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
         ///     <item>externalIds [list of strings, default null]: external IDs. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
         ///     <item>after [DateTime or string, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>before [DateTime or string, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>

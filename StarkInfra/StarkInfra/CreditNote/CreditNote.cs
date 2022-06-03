@@ -21,11 +21,17 @@ namespace StarkInfra
     ///     <item>Name [string]: credit receiver's full name. ex: name="Edward Stark"</item>
     ///     <item>TaxID [string]: credit receiver's tax ID (CPF or CNPJ). ex: "20.018.183/0001-80"</item>
     ///     <item>NominalAmount [integer]: amount in cents transferred to the credit receiver, before deductions. ex: nominalAmount=11234 (= R$ 112.34)</item>
-    ///     <item>Scheduled [DateTime or string, default now]: date of payment execution. ex: scheduled=datetime(2020, 3, 10)</item>
+    ///     <item>Scheduled [DateTime or string]: date of payment execution. ex: scheduled=datetime(2020, 3, 10)</item>
     ///     <item>Invoices [list of CreditNote.Invoice objects]: list of Invoice objects or dictionaries to be created and sent to the credit receiver. ex: new List<CreditNote.Invoice>{ new CreditNote.InvoiceInvoice() }</item>
     ///     <item>Payment [CreditNote.Transfer object]: Transfer object or dictionary to be created and sent to the credit receiver. ex: payment=Transfer()</item>
     ///     <item>Signers [list of Signer objects]: list of Signer objects containing signer's information</item>
     ///     <item>ExternalID [string]: a string that must be unique among all your CreditNotes, used to avoid resource duplication. ex: "my-internal-id-123456"</item>
+    ///     <item>StreetLine1 [string]: credit receiver main address. ex: "Av. Paulista, 200"</item>
+    ///     <item>StreetLine2 [string]: credit receiver address complement. ex: "Apto. 123"</item>
+    ///     <item>District [string]: credit receiver address district / neighbourhood. ex: "Bela Vista"</item>
+    ///     <item>City [string]: credit receiver address city. ex: "Rio de Janeiro"</item>
+    ///     <item>StateCode [string]: credit receiver address state. ex: "GO"</item>
+    ///     <item>ZipCode [string]: credit receiver address zip code. ex: "01311-200"</item>
     ///     <item>PaymentType [string]: payment type, inferred from the payment parameter if it is not a dictionary. ex: "transfer"</item>
     ///     <item>RebateAmount [integer, default null]: credit analysis fee deducted from lent amount. ex: rebateAmount=11234 (= R$ 112.34)</item>
     ///     <item>Tags [list of strings, default null]: list of strings for reference when searching for CreditNotes. ex: tags=new List<string>{ "employees", "monthly" }</item>
@@ -54,6 +60,12 @@ namespace StarkInfra
         public Resource Payment { get; }
         public List<Signer> Signers { get; }
         public string ExternalID { get; }
+        public string StreetLine1 { get; }
+        public string StreetLine2 { get; }
+        public string District { get; }
+        public string City { get; }
+        public string StateCode { get; }
+        public string ZipCode { get; }
         public string PaymentType { get; }
         public long? RebateAmount { get; }
         public List<string> Tags { get; }
@@ -80,15 +92,21 @@ namespace StarkInfra
         ///     <item>name [string]: credit receiver's full name. ex: name="Edward Stark"</item>
         ///     <item>taxId [string]: credit receiver's tax ID (CPF or CNPJ). ex: "20.018.183/0001-80"</item>
         ///     <item>nominalAmount [integer]: amount in cents paid to the credit receiver, before deductions. ex: nominalAmount=11234 (= R$ 112.34)</item>
-        ///     <item>scheduled [DateTime or string, default now]: date of payment execution. ex: scheduled=datetime(2020, 3, 10)</item>
+        ///     <item>scheduled [DateTime or string]: date of payment execution. ex: scheduled=datetime(2020, 3, 10)</item>
         ///     <item>invoices [list of Invoice objects]: list of Invoice objects to be created and sent to the credit receiver. ex: new List<Invoice>{ new Invoice(), new Invoice() }</item>
         ///     <item>payment [Payment object]: Payment object to be created and sent to the credit receiver. ex: payment=Payment()</item>
         ///     <item>signers [List of Signer objects]: signer's name, e-mail and delivery method for the contract. ex: signers= new List<Signer>{ new Signer(name: "Tony Stark", contact: "tony@starkindustries.com", method: "link")}</item>
         ///     <item>externalId [string]: a string that must be unique among all your CreditNotes, used to avoid resource duplication. ex: "my-internal-id-123456"</item>
+        ///     <item>streetLine1 [string]: credit receiver main address. ex: "Av. Paulista, 200"</item>
+        ///     <item>streetLine2 [string]: credit receiver address complement. ex: "Apto. 123"</item>
+        ///     <item>district [string]: credit receiver address district / neighbourhood. ex: "Bela Vista"</item>
+        ///     <item>city [string]: credit receiver address city. ex: "Rio de Janeiro"</item>
+        ///     <item>stateCode [string]: credit receiver address state. ex: "GO"</item>
+        ///     <item>zipCode [string]: credit receiver address zip code. ex: "01311-200"</item>
         ///</list>
         /// Parameters (conditionally required):
         /// <list>
-        ///     <item>PaymentType [string]: payment type, inferred from the payment parameter if it is not a dictionary. ex: "transfer"</item>
+        ///     <item>paymentType [string]: payment type, inferred from the payment parameter if it is not a dictionary. ex: "transfer"</item>
         /// </list>
         /// Parameters (optional):
         /// <list>
@@ -97,23 +115,24 @@ namespace StarkInfra
         /// </list>
         /// Attributes (return-only):
         /// <list>
-        ///     <item>ID [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"</item>
-        ///     <item>Amount [integer]: CreditNote value in cents. ex: 1234 (= R$ 12.34)</item>
-        ///     <item>Expiration [integer]: time interval in seconds between due date and expiration date. ex: 123456789</item>
-        ///     <item>DocumentID [string]: ID of the signed document to execute this CreditNote. ex: "4545454545454545"</item>
-        ///     <item>Status [string]: current status of the CreditNote. ex: "canceled", "created", "expired", "failed", "processing", "signed", "success"</item>
-        ///     <item>TransactionIds [list of strings]: ledger transaction ids linked to this CreditNote. ex: ["19827356981273"]</item>
-        ///     <item>WorkspaceId [string]: ID of the Workspace that generated this CreditNote. ex: "4545454545454545"</item>
-        ///     <item>TaxAmount [integer]: tax amount included in the CreditNote. ex: 100</item>
-        ///     <item>Interest [float]: yearly effective interest rate of the credit note, in percentage. ex: 12.5</item>
-        ///     <item>Created [DateTime]: creation datetime for the CreditNote. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
-        ///     <item>Updated [DateTime]: latest update datetime for the CreditNote. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>id [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"</item>
+        ///     <item>amount [integer]: CreditNote value in cents. ex: 1234 (= R$ 12.34)</item>
+        ///     <item>expiration [integer]: time interval in seconds between due date and expiration date. ex: 123456789</item>
+        ///     <item>documentId [string]: ID of the signed document to execute this CreditNote. ex: "4545454545454545"</item>
+        ///     <item>status [string]: current status of the CreditNote. ex: "canceled", "created", "expired", "failed", "processing", "signed", "success"</item>
+        ///     <item>transactionIds [list of strings]: ledger transaction ids linked to this CreditNote. ex: ["19827356981273"]</item>
+        ///     <item>workspaceId [string]: ID of the Workspace that generated this CreditNote. ex: "4545454545454545"</item>
+        ///     <item>taxAmount [integer]: tax amount included in the CreditNote. ex: 100</item>
+        ///     <item>interest [float]: yearly effective interest rate of the credit note, in percentage. ex: 12.5</item>
+        ///     <item>created [DateTime]: creation datetime for the CreditNote. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>updated [DateTime]: latest update datetime for the CreditNote. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
         public CreditNote(string templateId, string name, string taxId, long nominalAmount, DateTime? scheduled, List<Invoice> invoices, Resource payment,
-            List<Signer> signers, string externalId, string paymentType, long? rebateAmount = null, List<string> tags = null, string id = null,
-            long? amount = null, string expiration = null, string documentId = null, string status = null, List<string> transactionIds = null, string workspaceId = null,
-            long? taxAmount = null, float? interest = null, DateTime? created = null, DateTime? updated = null)  : base(id)
+            List<Signer> signers, string externalId, string streetLine1, string streetLine2, string district, string city, string stateCode, string zipCode,
+            string paymentType, long? rebateAmount = null, List<string> tags = null, string id = null, long? amount = null, string expiration = null, 
+            string documentId = null, string status = null, List<string> transactionIds = null, string workspaceId = null, long? taxAmount = null, 
+            float? interest = null, DateTime? created = null, DateTime? updated = null)  : base(id)
         {
             TemplateID = templateId;
             Name = name;
@@ -124,6 +143,12 @@ namespace StarkInfra
             Payment = payment;
             Signers = signers;
             ExternalID = externalId;
+            StreetLine1 = streetLine1;
+            StreetLine2 = streetLine2;
+            District = district;
+            City = city;
+            StateCode = stateCode;
+            ZipCode = zipCode;
             PaymentType = paymentType;
             RebateAmount = rebateAmount;
             Tags = tags;
@@ -248,7 +273,7 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Unlimited if null. ex: 35D20018183202202030109X3OoBhfkg7h</item>
+        ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
         ///     <item>status [string, default null]: filter for status of retrieved objects. ex: "canceled", "created", "expired", "failed", "processing", "signed", "success"</item>
         ///     <item>tags [list of strings, default null]: tags to filter retrieved objects. ex: new List<string>{ "tony", "stark" }</item>
         ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
@@ -291,7 +316,7 @@ namespace StarkInfra
         /// Parameters (optional):
         /// <list>
         ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
-        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Unlimited if null. ex: 35D20018183202202030109X3OoBhfkg7h</item>
+        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
         ///     <item>status [string, default null]: filter for status of retrieved objects. ex: "canceled", "created", "expired", "failed", "processing", "signed", "success"</item>
         ///     <item>tags [list of strings, default null]: tags to filter retrieved objects. ex: new List<string>{ "tony", "stark" }</item>
         ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
@@ -378,6 +403,12 @@ namespace StarkInfra
             string scheduledString = json.scheduled;
             DateTime scheduled = Checks.CheckDateTime(scheduledString);
             string externalId = json.externalId;
+            string streetLine1 = json.streetLine1;
+            string streetLine2 = json.streetLine2;
+            string district = json.district;
+            string city = json.city;
+            string stateCode = json.stateCode;
+            string zipCode = json.zipCode;
             string paymentType = json.paymentType;
             long? rebateAmount = json.rebateAmount;
             List<string> tags = json.tags.ToObject<List<string>>();
@@ -400,8 +431,9 @@ namespace StarkInfra
 
             return new CreditNote(
                 id: id, templateId: templateId, name: name, taxId: taxId, nominalAmount: nominalAmount, scheduled: scheduled, invoices: invoices,
-                payment: payment, signers: signers, externalId: externalId, paymentType: paymentType, rebateAmount: rebateAmount, tags: tags,
-                amount: amount, expiration: expiration, documentId: documentId, status: status, transactionIds: transactionIds, workspaceId: workspaceId,
+                payment: payment, signers: signers, externalId: externalId, streetLine1: streetLine1, streetLine2: streetLine2, district: district, 
+                city: city, stateCode: stateCode, zipCode: zipCode, paymentType: paymentType, rebateAmount: rebateAmount, tags: tags, amount: amount, 
+                expiration: expiration, documentId: documentId, status: status, transactionIds: transactionIds, workspaceId: workspaceId,
                 taxAmount: taxAmount, interest: interest, created: created, updated: updated
             );
         }

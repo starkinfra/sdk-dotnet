@@ -123,7 +123,13 @@ namespace StarkInfraTests
                     method: "link"
                 )
             },
-            externalId: Guid.NewGuid().ToString()
+            externalId: Guid.NewGuid().ToString(),
+            streetLine1: "Rua ABC",
+            streetLine2: "Ap 123",
+            district: "Jardim Paulista",
+            city: "São Paulo",
+            stateCode: "SP",
+            zipCode: "01234-567"
         );
     }
 }

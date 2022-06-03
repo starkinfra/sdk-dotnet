@@ -13,7 +13,7 @@ namespace StarkInfra
     /// <br/>
     /// Properties:
     /// <list>
-    ///     <item>ID[string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"</item>
+    ///     <item>ID [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"</item>
     ///     <item>HolderName [string]: card holder name. ex: "Tony Stark"</item>
     ///     <item>CardID [string]: unique id returned when IssuingCard is created. ex: "5656565656565656"</item>
     ///     <item>CardEnding [string]: last 4 digits of the card number. ex: "1234"</item>
@@ -187,7 +187,7 @@ namespace StarkInfra
         ///     <item>after [DateTime or string, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>before [DateTime or string, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>ids [list of strings, default null]: purchase IDs</item>
-        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
+        ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
         ///     <item>tags [list of strings, default null]: tags to filter retrieved objects. ex: new List<string>{ "tony", "stark" }</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
@@ -236,7 +236,7 @@ namespace StarkInfra
         ///     <item>after [DateTime or string, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>before [DateTime or string, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>ids [list of strings, default null]: purchase IDs</item>
-        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
+        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
         ///     <item>tags [list of strings, default null]: tags to filter retrieved objects. ex: new List<string>{ "tony", "stark" }</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>

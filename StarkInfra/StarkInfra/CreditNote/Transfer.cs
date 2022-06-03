@@ -15,16 +15,16 @@ namespace StarkInfra
     /// <list>
     ///     <item>Name [string]: receiver full name. ex: "Anthony Edward Stark"</item>
     ///     <item>TaxID [string]: receiver tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"</item>
-    ///     <item>BankCode [string]: code of the receiver Infra institution in Brazil. If an BankCode (8 digits) is informed, a PIX transfer will be created, else a TED will be issued. ex: "20018183" or "341"</item>
+    ///     <item>BankCode [string]: code of the receiver Infra institution in Brazil. ex: "20018183"</item>
     ///     <item>BranchCode [string]: receiver Infra account branch. Use '-' in case there is a verifier digit. ex: "1357-9"</item>
     ///     <item>AccountNumber [string]: Receiver Infra account number. Use '-' before the verifier digit. ex: "876543-2"</item>
     ///     <item>AccountType [string, default "checking"]: Receiver Infra account type. This parameter only has effect on Pix Transfers. ex: "checking", "savings", "salary" or "payment"</item>
-    ///     <item>Tags [list of strings]: list of strings for reference when searching for transfers. ex: new List<string>{ "employees", "monthly" }</item>
+    ///     <item>Tags [list of strings, default []]: list of strings for reference when searching for transfers. ex: new List<string>{ "employees", "monthly" }</item>
+    ///     <item>ID [string]: unique id returned when the transfer is created. ex: "5656565656565656"</item>
     ///     <item>Amount [integer]: amount in cents to be transferred. ex: 1234 (= R$ 12.34)</item>
     ///     <item>ExternalID [string]: url safe string that must be unique among all your transfers. Duplicated external_ids will cause failures. By default, this parameter will block any transfer that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"</item>
     ///     <item>Scheduled [DateTime or string]: DateTime when the transfer will be processed. May be pushed to next business day if necessary. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>Description [string]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"</item>
-    ///     <item>ID [string]: unique id returned when the transfer is created. ex: "5656565656565656"</item>
     ///     <item>Fee [integer]: fee charged when the Transfer is processed. ex: 200 (= R$ 2.00)</item>
     ///     <item>Status [string]: current transfer status. ex: "success" or "failed"</item>
     ///     <item>TransactionIds [list of strings]: ledger Transaction IDs linked to this Transfer (if there are two, the second is the chargeback). ex: List<string>{ "19827356981273" }</item>
@@ -67,15 +67,15 @@ namespace StarkInfra
         /// Parameters (optional):
         /// <list>
         ///     <item>accountType [string, default "checking"]: Receiver Infra account type. This parameter only has effect on Pix Transfers. ex: "checking", "savings", "salary" or "payment"</item>
-        ///     <item>tags [list of strings]: list of strings for reference when searching for transfers. ex: new List<string>{ "employees", "monthly" }</item>
+        ///     <item>tags [list of strings, default []]: list of strings for reference when searching for transfers. ex: new List<string>{ "employees", "monthly" }</item>
         /// </list>
         /// Attributes (return-only):
         /// <list>
+        ///     <item>id [string]: unique id returned when the transfer is created. ex: "5656565656565656"</item>
         ///     <item>amount [integer]: amount in cents to be transferred. ex: 1234 (= R$ 12.34)</item>
         ///     <item>externalId [string]: url safe string that must be unique among all your transfers. Duplicated external_ids will cause failures. By default, this parameter will block any transfer that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"</item>
         ///     <item>scheduled [DateTime or string]: DateTime when the transfer will be processed. May be pushed to next business day if necessary. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>description [string]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"</item>
-        ///     <item>id [string]: unique id returned when the transfer is created. ex: "5656565656565656"</item>
         ///     <item>fee [integer]: fee charged when the Transfer is processed. ex: 200 (= R$ 2.00)</item>
         ///     <item>status [string]: current transfer status. ex: "success" or "failed"</item>
         ///     <item>transactionIds [list of strings]: ledger Transaction IDs linked to this Transfer (if there are two, the second is the chargeback). ex: List<string>{ "19827356981273" }</item>
