@@ -134,7 +134,7 @@ namespace StarkInfra
         /// Parameters (optional):
         /// <list>
         ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
-        ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
+        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
         ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>isDelivered [bool, default null]: bool to filter successfully delivered events. ex: True or False</item>

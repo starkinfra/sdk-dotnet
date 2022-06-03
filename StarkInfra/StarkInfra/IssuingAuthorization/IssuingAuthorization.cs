@@ -37,7 +37,7 @@ namespace StarkInfra
     ///     <item>HolderTags [list of strings]: tags of the IssuingHolder responsible for this purchase. ex: new List<string>{ "technology", "john snow" }</item>
     /// </list>
     /// </summary>
-    public partial class IssuingAuthorization : Resource
+    public partial class IssuingAuthorization : SubResource
     {
         public string EndToEndID { get; }
         public long Amount { get; }
@@ -91,11 +91,11 @@ namespace StarkInfra
         ///     <item>holderTags [list of strings]: tags of the IssuingHolder responsible for this purchase. ex: new List<string>{ "technology", "john snow" }</item>
         /// </list>
         /// </summary>
-        public IssuingAuthorization(string id, string endToEndId, long amount, int tax, string cardId, long issuerAmount, string issuerCurrencyCode,
+        public IssuingAuthorization(string endToEndId, long amount, int tax, string cardId, long issuerAmount, string issuerCurrencyCode,
             long merchantAmount, string merchantCurrencyCode, string merchantCategoryCode, string merchantCountryCode, string acquirerId, string merchantId,
             string merchantName, int merchantFee, string walletId, string methodCode, float? score, bool? isPartialAllowed, string purpose, List<string> cardTags,
             List<string> holderTags
-        ) : base(id)
+        )
         {
             EndToEndID = endToEndId;
             Amount = amount;
@@ -143,8 +143,8 @@ namespace StarkInfra
         /// </summary>
         public static IssuingAuthorization ParseContent(string content, string signature, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            return Parse.ParseAndVerify(content, signature, resourceName, resourceMaker, user) as IssuingAuthorization;;
+            (string resourceName, Api.ResourceMaker resourceMaker) = SubResource();
+            return Parse.ParseAndVerify(content, signature, resourceName, resourceMaker, user) as IssuingAuthorization;
         }
 
         /// <summary>
@@ -181,14 +181,13 @@ namespace StarkInfra
             return JsonConvert.SerializeObject(json);
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, Api.ResourceMaker resourceMaker) SubResource()
         {
             return (resourceName: "IssuingAuthorization", resourceMaker: ResourceMaker);
         }
 
-        internal static Resource ResourceMaker(dynamic json)
+        internal static SubResource ResourceMaker(dynamic json)
         {
-            string id = json.id;
             string endToEndId = json.endToEndId;
             long amount = json.amount;
             int tax = json.tax;
@@ -212,7 +211,7 @@ namespace StarkInfra
             List<string> holderTags = json.holderTags.ToObject<List<string>>();
 
             return new IssuingAuthorization(
-                id: id, endToEndId: endToEndId, amount: amount, tax: tax, cardId: cardId, issuerAmount: issuerAmount, issuerCurrencyCode: issuerCurrencyCode,
+                endToEndId: endToEndId, amount: amount, tax: tax, cardId: cardId, issuerAmount: issuerAmount, issuerCurrencyCode: issuerCurrencyCode,
                 merchantAmount: merchantAmount, merchantCurrencyCode: merchantCurrencyCode, merchantCategoryCode: merchantCategoryCode,
                 merchantCountryCode: merchantCountryCode, acquirerId: acquirerId, merchantId: merchantId, merchantName: merchantName, merchantFee: merchantFee,
                 walletId: walletId, methodCode: methodCode, score: score, isPartialAllowed: isPartialAllowed, purpose: purpose, cardTags: cardTags,

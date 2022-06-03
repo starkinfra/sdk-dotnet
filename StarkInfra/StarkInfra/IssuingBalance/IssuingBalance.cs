@@ -16,10 +16,10 @@ namespace StarkInfra
     /// <br/>
     /// Properties:
     /// <list>
-    ///     <item>ID [string, default null]: unique id returned when IssuingBalance is created. ex: "5656565656565656"</item>
-    ///     <item>Amount [long, default null]: current balance amount of the Workspace in cents. ex: 200 (= R$ 2.00)</item>
-    ///     <item>Currency [string, default null]: currency of the current Workspace. Expect others to be added eventually. ex: "BRL"</item>
-    ///     <item>Updated [DateTime, default null]: latest update datetime for the IssuingBalance. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>ID [string]: unique id returned when IssuingBalance is created. ex: "5656565656565656"</item>
+    ///     <item>Amount [long]: current balance amount of the Workspace in cents. ex: 200 (= R$ 2.00)</item>
+    ///     <item>Currency [string]: currency of the current Workspace. Expect others to be added eventually. ex: "BRL"</item>
+    ///     <item>Updated [DateTime]: latest update datetime for the IssuingBalance. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
     /// </summary>
     public class IssuingBalance : Resource

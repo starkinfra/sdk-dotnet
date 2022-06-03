@@ -13,7 +13,7 @@ namespace StarkInfra
     /// <br/>
     /// Properties:
     /// <list>
-    ///     <item>ID[string]: unique id returned when IssuingTransaction is created. ex: "5656565656565656"</item>
+    ///     <item>ID [string]: unique id returned when IssuingTransaction is created. ex: "5656565656565656"</item>
     ///     <item>Amount [long]: IssuingTransaction value in cents. ex: 1234 (= R$ 12.34)</item>
     ///     <item>Balance [integer]: balance amount of the Workspace at the instant of the Transaction in cents. ex: 200 (= R$ 2.00)</item>
     ///     <item>Description [string]: IssuingTransaction description. ex: "Buying food"</item>
@@ -101,7 +101,7 @@ namespace StarkInfra
         ///     <item>before [DateTime or string, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>status [string, default null]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"</item>
         ///     <item>ids [list of strings, default null]: purchase IDs</item>
-        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
+        ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
@@ -146,7 +146,7 @@ namespace StarkInfra
         ///     <item>before [DateTime or string, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>status [string, default null]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"</item>
         ///     <item>ids [list of strings, default null]: purchase IDs</item>
-        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
+        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>

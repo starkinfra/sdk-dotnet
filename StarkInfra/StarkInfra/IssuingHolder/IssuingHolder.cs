@@ -16,8 +16,8 @@ namespace StarkInfra
     ///     <item>Name [string]: card holder name.</item>
     ///     <item>TaxID [string]: card holder tax ID</item>
     ///     <item>ExternalID [string] card holder external ID</item>
-    ///     <item>Rules [list of IssuingRule objects, default null]: [EXPANDABLE] list of holder spending rules</item>
-    ///     <item>Tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "travel", "food" }</item>
+    ///     <item>Rules [list of IssuingRule objects, default []]: [EXPANDABLE] list of holder spending rules</item>
+    ///     <item>Tags [list of strings, default []]: list of strings for tagging. ex: new List<string>{ "travel", "food" }</item>
     ///     <item>ID [string]: unique id returned when IssuingHolder is created. ex: "5656565656565656"</item>
     ///     <item>Status [string]: current IssuingHolder status. ex: "active", "blocked" or "canceled"</item>
     ///     <item>Updated [DateTime]: latest update datetime for the IssuingHolder. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
@@ -48,8 +48,8 @@ namespace StarkInfra
         ///</list>
         /// Parameters (optional):
         /// <list>
-        ///     <item>rules [list of Rules, default null]: [EXPANDABLE] list of holder spending rules</item>
-        ///     <item>tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "travel", "food" }</item>
+        ///     <item>rules [list of Rules, default []]: [EXPANDABLE] list of holder spending rules</item>
+        ///     <item>tags [list of strings, default []]: list of strings for tagging. ex: new List<string>{ "travel", "food" }</item>
         /// </list>
         /// Attributes (return-only):
         /// <list>
@@ -193,7 +193,7 @@ namespace StarkInfra
         ///     <item>before [DateTime or string, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>tags [list of strings, default null]: tags to filter retrieved objects. ex: new List<string>{ "tony", "stark" }</item>
         ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: List<string>{ "5656565656565656", "4545454545454545"}</item>
-        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Unlimited if null. ex: "35D20018183202202030109X3OoBhfkg7h"</item>
+        ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
         ///     <item>expand [list of strings, default null]: fields to expand information. ex: new List<string>{ "rules" }</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
@@ -237,7 +237,7 @@ namespace StarkInfra
         ///     <item>before [DateTime or string, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>tags [list of strings, default null]: tags to filter retrieved objects. ex: new List<string>{"tony", "stark" }</item>
         ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
-        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Unlimited if null. ex: 35D20018183202202030109X3OoBhfkg7h"]</item>
+        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
         ///     <item>expand [list of strings, default null]: fields to expand information. ex: new List<string>{"rules"}</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>

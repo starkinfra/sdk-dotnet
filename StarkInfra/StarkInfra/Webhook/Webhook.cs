@@ -49,7 +49,7 @@ namespace StarkInfra
         /// <summary>
         /// Create Webhook subscription
         /// <br/>
-        /// Send a single Webhook subscription for creation in the Stark Bank API
+        /// Send a single Webhook subscription for creation in the Stark Infra API
         /// <br/>
         /// Parameters (required):
         /// <list>
@@ -82,7 +82,7 @@ namespace StarkInfra
         /// <summary>
         /// Retrieve a specific Webhook
         /// <br/>
-        /// Receive a single Webhook subscription object previously created in the Stark Bank API by its id
+        /// Receive a single Webhook subscription object previously created in the Stark Infra API by its id
         /// <br/>
         /// Parameters (required):
         /// <list>
@@ -117,7 +117,7 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35</item>
+        ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
@@ -149,7 +149,7 @@ namespace StarkInfra
         /// Parameters (optional):
         /// <list>
         ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
-        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35</item>
+        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>

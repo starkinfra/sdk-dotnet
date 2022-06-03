@@ -59,7 +59,7 @@ namespace StarkInfra
             /// <summary>
             /// Retrieve a specific Event.Attempt
             /// <br/>
-            /// Receive a single Event.Attempt object previously created by the Stark Bank API by its id
+            /// Receive a single Event.Attempt object previously created by the Stark Infra API by its id
             /// <br/>
             /// Parameters (required):
             /// <list>
@@ -90,7 +90,7 @@ namespace StarkInfra
             /// <summary>
             /// Retrieve Event.Attempts
             /// <br/>
-            /// Receive an IEnumerable of Event.Attempt objects previously created in the Stark Bank API
+            /// Receive an IEnumerable of Event.Attempt objects previously created in the Stark Infra API
             /// <br/>
             /// Parameters (optional):
             /// <list>
@@ -128,13 +128,13 @@ namespace StarkInfra
             /// <summary>
             /// Retrieve paged Event.Attempts
             /// <br/>
-            /// Receive a list of up to 100 Event.Attempt objects previously created in the Stark Bank API and the cursor to the next page.
+            /// Receive a list of up to 100 Event.Attempt objects previously created in the Stark Infra API and the cursor to the next page.
             /// Use this function instead of query if you want to manually page your requests.
             /// <br/>
             /// Parameters (optional):
             /// <list>
             ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
-            ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
+            ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
             ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>eventIds [list of strings, default null]: list of Event ids to filter attempts. ex: ["5656565656565656", "4545454545454545"]</item>

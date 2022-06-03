@@ -15,18 +15,19 @@ namespace StarkInfra
     /// <list>
     ///     <item>Name [string]: rule name. ex: "Travel" or "Food"</item>
     ///     <item>Amount [integer]: maximum amount that can be spent in the informed interval. ex: 200000 (= R$ 2000.00)</item>
-    ///     <item>Interval [string]: interval after which the rule amount counter will be reset to 0. ex: "instant", "day", "week", "month", "year" or "lifetime"</item>
+    ///     <item>ID [string, default null]: unique id returned when an IssuingRule is created, used to update a specific IssuingRule. ex: "5656565656565656"
+    ///     <item>Interval [string, default "lifetime"]: interval after which the rule amount counter will be reset to 0. ex: "instant", "day", "week", "month", "year" or "lifetime"</item>
     ///     <item>CurrencyCode [string, default "BRL"]: code of the currency that the rule amount refers to. ex: "BRL" or "USD"</item>
-    ///     <item>Categories [list of strings, default null]: merchant categories accepted by the rule. ex: new List<string>{ "eatingPlacesRestaurants", "travelAgenciesTourOperators" }</item>
-    ///     <item>Countries [list of strings, default null]: countries accepted by the rule. ex: new List<string>{ "BRA", "USA" }</item>
-    ///     <item>Methods [list of strings, default null]: card purchase methods accepted by the rule. ex: new List<string>{ "chip", "token", "server", "manual", "magstripe", "contactless" }</item>
+    ///     <item>Categories [list of strings, default []]: merchant categories accepted by the rule. ex: new List<string>{ "eatingPlacesRestaurants", "travelAgenciesTourOperators" }</item>
+    ///     <item>Countries [list of strings, default []]: countries accepted by the rule. ex: new List<string>{ "BRA", "USA" }</item>
+    ///     <item>Methods [list of strings, default []]: card purchase methods accepted by the rule. ex: new List<string>{ "chip", "token", "server", "manual", "magstripe", "contactless" }</item>
     ///     <item>CounterAmount [integer]: current rule spent amount. ex: 1000</item>
     ///     <item>CurrencySymbol [string]: currency symbol. ex: "R$""</item>
     ///     <item>CurrencyName [string]: currency name. ex: "Brazilian Real"</item>
     /// </list>
     /// </summary>
     ///
-    public partial class IssuingRule : SubResource
+    public partial class IssuingRule : Resource
     {
         public string Name { get; }
         public long Amount { get; }
@@ -46,27 +47,28 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (required):
         /// <list>
-        ///     <item>Name [string]: rule name. ex: "Travel" or "Food"</item>
-        ///     <item>Amount [integer]: maximum amount that can be spent in the informed interval. ex: 200000 (= R$ 2000.00)</item>
-        ///     <item>Interval [string]: interval after which the rule amount counter will be reset to 0. ex: "instant", "day", "week", "month", "year" or "lifetime"</item>
+        ///     <item>name [string]: rule name. ex: "Travel" or "Food"</item>
+        ///     <item>amount [integer]: maximum amount that can be spent in the informed interval. ex: 200000 (= R$ 2000.00)</item>
         ///</list>
         /// Parameters (optional):
         /// <list>
-        ///     <item>CurrencyCode [string, default "BRL"]: code of the currency that the rule amount refers to. ex: "BRL" or "USD"</item>
-        ///     <item>Categories [list of strings, default null]: merchant categories accepted by the rule. ex: new List<string>{ "eatingPlacesRestaurants", "travelAgenciesTourOperators" }</item>
-        ///     <item>Countries [list of strings, default null]: countries accepted by the rule. ex: new List<string>{ "BRA", "USA" }</item>
-        ///     <item>Methods [list of strings, default null]: card purchase methods accepted by the rule. ex: new List<string>{ "chip", "token", "server", "manual", "magstripe", "contactless" }</item>
+        ///     <item>id [string, default null]: unique id returned when an IssuingRule is created, used to update a specific IssuingRule. ex: "5656565656565656"
+        ///     <item>interval [string, default "lifetime"]: interval after which the rule amount counter will be reset to 0. ex: "instant", "day", "week", "month", "year" or "lifetime"</item>
+        ///     <item>currencyCode [string, default "BRL"]: code of the currency that the rule amount refers to. ex: "BRL" or "USD"</item>
+        ///     <item>categories [list of strings, default []]: merchant categories accepted by the rule. ex: new List<string>{ "eatingPlacesRestaurants", "travelAgenciesTourOperators" }</item>
+        ///     <item>countries [list of strings, default []]: countries accepted by the rule. ex: new List<string>{ "BRA", "USA" }</item>
+        ///     <item>methods [list of strings, default []]: card purchase methods accepted by the rule. ex: new List<string>{ "chip", "token", "server", "manual", "magstripe", "contactless" }</item>
         /// </list>
         /// Attributes (return-only):
         /// <list>
-        ///     <item>CounterAmount [integer]: current rule spent amount. ex: 1000</item>
-        ///     <item>CurrencySymbol [string]: currency symbol. ex: "R$""</item>
-        ///     <item>CurrencyName [string]: currency name. ex: "Brazilian Real"</item>
+        ///     <item>counterAmount [integer]: current rule spent amount. ex: 1000</item>
+        ///     <item>currencySymbol [string]: currency symbol. ex: "R$""</item>
+        ///     <item>currencyName [string]: currency name. ex: "Brazilian Real"</item>
         /// </list>
         /// </summary>
-        ///
         public IssuingRule(string name, long amount, string interval, string currencyCode = "BRL", List<string> categories = null, List<string> countries = null,
-            List<string> methods = null, string counterAmount = null, string currencySymbol = null, string currencyName = null)
+            string id = null, List<string> methods = null, string counterAmount = null, string currencySymbol = null, string currencyName = null
+        ) : base(id)
         { 
             Name = name;
             Amount = amount;
@@ -96,8 +98,9 @@ namespace StarkInfra
             return (resourceName: "IssuingRule", resourceMaker: ResourceMaker);
         }
 
-        internal static SubResource ResourceMaker(dynamic json)
+        internal static Resource ResourceMaker(dynamic json)
         {
+            string id = json.id;
             string name = json.name;
             long amount = json.amount;
             string interval = json.interval;
@@ -121,7 +124,7 @@ namespace StarkInfra
             string currencyName = json.currencyName;
 
             return new IssuingRule(
-                name: name, amount: amount, interval: interval, currencyCode: currencyCode, categories: categories, countries: countries,
+                id: id, name: name, amount: amount, interval: interval, currencyCode: currencyCode, categories: categories, countries: countries,
                 methods: methods, counterAmount: counterAmount, currencySymbol: currencySymbol, currencyName: currencyName
             );
         }

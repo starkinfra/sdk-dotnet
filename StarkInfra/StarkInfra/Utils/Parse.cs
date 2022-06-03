@@ -9,7 +9,7 @@ namespace StarkInfra.Utils
 {
     internal static class Parse
     {
-        internal static Resource ParseAndVerify(string content, string signature, string resourceName, 
+        internal static SubResource ParseAndVerify(string content, string signature, string resourceName, 
             Api.ResourceMaker resourceMaker, User user, string key = null)
         {
             dynamic json = Utils.Json.Decode(content);

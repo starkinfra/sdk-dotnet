@@ -21,7 +21,7 @@ namespace StarkInfra
     ///    <item>SenderTaxID [string]: sender's tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"</item>
     ///    <item>SenderBranchCode [string]: sender's bank account branch code. Use '-' in case there is a verifier digit. ex: "1357-9"</item>
     ///    <item>SenderAccountNumber [string]: sender's bank account number. Use '-' before the verifier digit. ex: "876543-2"</item>
-    ///    <item>SenderAccountType [string, default "checking"]: sender's bank account type. ex: "checking", "savings", "salary" or "payment"</item>
+    ///    <item>SenderAccountType [string]: sender's bank account type. ex: "checking", "savings", "salary" or "payment"</item>
     ///    <item>ReceiverName [string]: receiver's full name. ex: "Anthony Edward Stark"</item>
     ///    <item>ReceiverTaxId [string]: receiver's tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"</item>
     ///    <item>ReceiverBankCode [string]: receiver's bank institution code in Brazil. ex: "20018183" or "341"</item>
@@ -38,13 +38,13 @@ namespace StarkInfra
     ///    <item>CashierType [string, default null]: Cashier's type. ex: [merchant, other, participant]</item>
     ///    <item>Tags [list of strings, default null]: list of strings for reference when searching for PixRequests. ex: new List<string>{ "employees", "monthly" }</item>
     ///    <item>Method [string, default null]: execution  method for thr creation of the PIX. ex: "manual", "payerQrcode", "dynamicQrcode".</item>
-    ///    <item>ID [string, default null]: unique id returned when the PixRequest is created. ex: "5656565656565656"</item>
-    ///    <item>Fee [integer, default null]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)</item>
-    ///    <item>Status [string, default null]: current PixRequest status. ex: "registered" or "paid"</item>
-    ///    <item>Flow [string, default null]: direction of money flow. ex: "in" or "out"</item>
-    ///    <item>SenderBankCode [string, default null]: sender's bank institution code in Brazil. If an ISPB (8 digits) is informed. ex: "20018183" or "341"</item>
-    ///    <item>Created DateTime, default null]: creation datetime for the PixRequest. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
-    ///    <item>Updated [DateTime, default null]: latest update datetime for the PixRequest. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///    <item>ID [string]: unique id returned when the PixRequest is created. ex: "5656565656565656"</item>
+    ///    <item>Fee [integer]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)</item>
+    ///    <item>Status [string]: current PixRequest status. ex: "registered" or "paid"</item>
+    ///    <item>Flow [string]: direction of money flow. ex: "in" or "out"</item>
+    ///    <item>SenderBankCode [string]: sender's bank institution code in Brazil. If an ISPB (8 digits) is informed. ex: "20018183" or "341"</item>
+    ///    <item>Created DateTime]: creation datetime for the PixRequest. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///    <item>Updated [DateTime]: latest update datetime for the PixRequest. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
     /// </summary>
     public partial class PixRequest : Utils.Resource
@@ -94,7 +94,7 @@ namespace StarkInfra
         ///    <item>senderTaxId [string]: sender's tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"</item>
         ///    <item>senderBranchCode [string]: sender's bank account branch code. Use '-' in case there is a verifier digit. ex: "1357-9"</item>
         ///    <item>senderAccountNumber [string]: sender's bank account number. Use '-' before the verifier digit. ex: "876543-2"</item>
-        ///    <item>senderAccountType [string, default "checking"]: sender's bank account type. ex: "checking", "savings", "salary" or "payment"</item>
+        ///    <item>senderAccountType [string]: sender's bank account type. ex: "checking", "savings", "salary" or "payment"</item>
         ///    <item>receiverName [string]: receiver's full name. ex: "Anthony Edward Stark"</item>
         ///    <item>receiverTaxId [string]: receiver's tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"</item>
         ///    <item>receiverBankCode [string]: receiver's bank institution code in Brazil. ex: "20018183" or "341"</item>
@@ -318,7 +318,7 @@ namespace StarkInfra
         /// <list>
         ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
         ///     <item>fields [list of strings, default null]: parameters to be retrieved from PixRequest objects. ex: ["amount", "id"]</item>
-        ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
+        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
         ///     <item>after [DateTime, default null]: date filter for objects created or updated only after specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>before [DateTime, default null]: date filter for objects created or updated only before specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>status [string, default null]: filter for status of retrieved objects. ex: "success" or "failed"</item>

@@ -9,7 +9,7 @@ namespace StarkInfra
     /// <summary>
     /// IssuingBin object
     /// <br/>
-    /// The IssuingBin object displays the informations of BINs registered to your Workspace.
+    /// The IssuingBin object displays information of BINs registered to your Workspace.
     /// They represent a group of cards that begin with the same numbers (BIN) and offer the same product to end customers.
     /// <br/>
     /// Properties:
@@ -68,7 +68,7 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>limit [integer, unlimited if null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
+        ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
@@ -98,7 +98,7 @@ namespace StarkInfra
         /// Parameters (optional):
         /// <list>
         ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
-        ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
+        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>

@@ -18,7 +18,7 @@ namespace StarkInfraTests
             List<IssuingInvoice.Log> logs = IssuingInvoice.Log.Query(
                 limit: 2,
                 types: new List<string> { "created" }
-                ).ToList();
+            ).ToList();
             Assert.Equal(2, logs.Count);
             Assert.True(logs.First().ID != logs.Last().ID);
             foreach (IssuingInvoice.Log log in logs)
