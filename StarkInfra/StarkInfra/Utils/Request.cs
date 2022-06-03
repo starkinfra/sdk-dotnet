@@ -38,7 +38,7 @@ namespace StarkInfra.Utils
         private static HttpClient makeClient()
         {
             HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Add("User-Agent", $".NET-{Environment.Version}-SDK-infra-0.0.2");
+            client.DefaultRequestHeaders.Add("User-Agent", $".NET-{Environment.Version}-SDK-Infra-0.1.0");
             return client;
         }
 
