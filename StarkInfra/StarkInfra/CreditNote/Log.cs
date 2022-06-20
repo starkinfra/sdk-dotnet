@@ -18,7 +18,7 @@ namespace StarkInfra
         /// Properties:
         /// <list>
         ///     <item>ID [string]: unique id returned when the log is updated. ex: "5656565656565656"</item>
-        ///     <item>Updated [DateTime]: Updated datetime for the log. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>Created [DateTime]: Created datetime for the log. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>Type [string]: type of the CreditNote event which triggered the log creation. ex: "canceled", "updated", "expired", "failed", "refunded", "registered", "sending", "sent", "signed", "success"</item>
         ///     <item>Errors [list of strings]: list of errors linked to this CreditNote event</item>
         ///     <item>Note [CreditNote]: CreditNote entity to which the log refers to.</item>
@@ -26,7 +26,7 @@ namespace StarkInfra
         /// </summary>
         public class Log : Resource
         {
-            public DateTime Updated { get; }
+            public DateTime Created { get; }
             public string Type { get; }
             public List<Dictionary<string, object>> Errors { get; }
             public CreditNote Note { get; }
@@ -41,7 +41,7 @@ namespace StarkInfra
             /// Attributes (return-only):
             /// <list>
             ///     <item>id [string]: unique id returned when the log is updated. ex: "5656565656565656"</item>
-            ///     <item>updated [DateTime]: creation datetime for the log. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+            ///     <item>created [DateTime]: creation datetime for the log. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
             ///     <item>type [string]: type of the CreditNote event which triggered the log creation. ex: "canceled", "updated", "expired", "failed", "refunded", "registered", "sending", "sent", "signed", "success"</item>
             ///     <item>errors [list of strings]: list of errors linked to this CreditNote event</item>
             ///     <item>agent [string]: agent that modified the CreditNote resulting in the Log. Options: "noteer", "noteed".</item>
@@ -49,9 +49,9 @@ namespace StarkInfra
             ///     <item>note [CreditNote]: CreditNote entity to which the log refers to.</item>
             /// </list>
             /// </summary>
-            public Log(string id, DateTime updated, string type, List<Dictionary<string, object>> errors, CreditNote note) : base(id)
+            public Log(string id, DateTime created, string type, List<Dictionary<string, object>> errors, CreditNote note) : base(id)
             {
-                Updated = updated;
+                Created = created;
                 Type = type;
                 Errors = errors;
                 Note = note;
@@ -187,12 +187,12 @@ namespace StarkInfra
             {
                 List<Dictionary<string, object>> errors = json.errors.ToObject<List<Dictionary<string, object>>>();
                 string id = json.id;
-                string updatedString = json.updated;
-                DateTime updated = Checks.CheckDateTime(updatedString);
+                string createdString = json.created;
+                DateTime created = Checks.CheckDateTime(createdString);
                 string type = json.type;
                 CreditNote note = CreditNote.ResourceMaker(json.note);
 
-                return new Log(id: id, updated: updated, type: type, errors: errors, note: note);
+                return new Log(id: id, created: created, type: type, errors: errors, note: note);
             }
         }
     }
