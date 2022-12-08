@@ -12,12 +12,12 @@ namespace StarkInfraTests
         [Fact]
         public void Get()
         {
-            PixBalance pixBalance = PixBalance.Get();
-            Assert.NotNull(pixBalance.ID);
-            Assert.True(pixBalance.Amount >= 0);
-            Assert.Equal(3, pixBalance.Currency.Length);
-            Assert.True(pixBalance.Updated <= DateTime.UtcNow);
-            TestUtils.Log(pixBalance);
+            PixBalance balance = PixBalance.Get();
+            Assert.NotNull(balance.ID);
+            Assert.True(balance.Amount >= 0);
+            Assert.Equal(3, balance.Currency.Length);
+            Assert.True(balance.Updated <= DateTime.UtcNow);
+            TestUtils.Log(balance);
         }
     }
 }

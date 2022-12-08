@@ -86,17 +86,17 @@ namespace StarkInfra.Utils
             ).ByteContent;
         }
 
-        static internal IEnumerable<Resource> Post(string resourceName, Api.ResourceMaker resourceMaker, IEnumerable<Resource> entities, User user, Dictionary<string, object> query = null)
+        static internal IEnumerable<SubResource> Post(string resourceName, Api.ResourceMaker resourceMaker, IEnumerable<SubResource> entities, User user, Dictionary<string, object> query = null)
         {
             List<Dictionary<string, object>> jsons = new List<Dictionary<string, object>>();
-            foreach (Resource entity in entities)
+            foreach (SubResource entity in entities)
             {
                 jsons.Add(Api.ApiJson(entity));
             }
             return PrivatePost(resourceName, resourceMaker, jsons, user, query);
         }
 
-        static internal IEnumerable<Resource> Post(string resourceName, Api.ResourceMaker resourceMaker, IEnumerable<Dictionary<string, object>> entities, User user, Dictionary<string, object> query = null)
+        static internal IEnumerable<SubResource> Post(string resourceName, Api.ResourceMaker resourceMaker, IEnumerable<Dictionary<string, object>> entities, User user, Dictionary<string, object> query = null)
         {
             List<Dictionary<string, object>> jsons = new List<Dictionary<string, object>>();
             foreach (Dictionary<string, object> entity in entities)
@@ -106,7 +106,7 @@ namespace StarkInfra.Utils
             return PrivatePost(resourceName, resourceMaker, jsons, user, query);
         }
 
-        static private IEnumerable<Resource> PrivatePost(string resourceName, Api.ResourceMaker resourceMaker, IEnumerable<Dictionary<string, object>> entities, User user, Dictionary<string, object> query = null)
+        static private IEnumerable<SubResource> PrivatePost(string resourceName, Api.ResourceMaker resourceMaker, IEnumerable<Dictionary<string, object>> entities, User user, Dictionary<string, object> query = null)
         {
             Dictionary<string, object> payload = new Dictionary<string, object>
             {
@@ -121,7 +121,7 @@ namespace StarkInfra.Utils
                 payload: payload
             ).Json()[Api.LastNamePlural(resourceName)];
 
-            List<Resource> returnedEntities = new List<Resource>();
+            List<SubResource> returnedEntities = new List<SubResource>();
             foreach (dynamic json in fetchedJsons)
             {
                 returnedEntities.Add(Api.FromApiJson(resourceMaker, json));
@@ -129,7 +129,7 @@ namespace StarkInfra.Utils
             return returnedEntities;
         }
 
-        static internal Resource PostSingle(string resourceName, Api.ResourceMaker resourceMaker, Resource entity, User user)
+        static internal SubResource PostSingle(string resourceName, Api.ResourceMaker resourceMaker, SubResource entity, User user)
         {
             dynamic json = Request.Fetch(
                 user: user,
@@ -140,7 +140,7 @@ namespace StarkInfra.Utils
             return Api.FromApiJson(resourceMaker, json);
         }
         
-        static internal Resource PostSingle(string resourceName, Api.ResourceMaker resourceMaker, Dictionary<string, object> entity, User user)
+        static internal SubResource PostSingle(string resourceName, Api.ResourceMaker resourceMaker, Dictionary<string, object> entity, User user)
         {
             dynamic json = Request.Fetch(
                 user: user,
@@ -151,7 +151,7 @@ namespace StarkInfra.Utils
             return Api.FromApiJson(resourceMaker, json);
         }
 
-        static internal Resource DeleteId(string resourceName, Api.ResourceMaker resourceMaker, string id, User user)
+        static internal SubResource DeleteId(string resourceName, Api.ResourceMaker resourceMaker, string id, User user)
         {
             dynamic json = Request.Fetch(
                 user: user,
@@ -161,7 +161,7 @@ namespace StarkInfra.Utils
             return Api.FromApiJson(resourceMaker, json);
         }
 
-        static internal Resource PatchId(string resourceName, Api.ResourceMaker resourceMaker, string id, Dictionary<string, object> payload, User user)
+        static internal SubResource PatchId(string resourceName, Api.ResourceMaker resourceMaker, string id, Dictionary<string, object> payload, User user)
         {
             dynamic json = Request.Fetch(
                 user: user,

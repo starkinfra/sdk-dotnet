@@ -1,11 +1,8 @@
 ﻿using Xunit;
 using StarkInfra;
-using StarkInfra.Utils;
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using Microsoft.VisualBasic.CompilerServices;
-using System.Diagnostics;
 
 
 namespace StarkInfraTests
@@ -17,38 +14,42 @@ namespace StarkInfraTests
         [Fact]
         public void CreateGet()
         {
-            List<CreditNote> creditNotes = CreditNote.Create(new List<CreditNote>() { Example() });
-            CreditNote creditNote = creditNotes.First();
-            Assert.NotNull(creditNote.ID);
-            CreditNote getCreditNote = CreditNote.Get(id: creditNote.ID);
-            Assert.Equal(getCreditNote.ID, creditNote.ID);
-            TestUtils.Log(creditNote);
+            List<CreditNote> notes = CreditNote.Create(new List<CreditNote>() { Example() });
+            CreditNote note = notes.First();
+            Assert.NotNull(note.ID);
+            CreditNote getCreditNote = CreditNote.Get(id: note.ID);
+            Assert.Equal(getCreditNote.ID, note.ID);
+            TestUtils.Log(note);
         }
 
         [Fact]
         public void CreateGetAndCancel()
         {
-            List<CreditNote> creditNotes = CreditNote.Create(new List<CreditNote>() { Example() });
-            CreditNote creditNote = creditNotes.First();
-            TestUtils.Log(creditNote);
-            CreditNote getCreditNote = CreditNote.Get(id: creditNote.ID);
-            Assert.Equal(getCreditNote.ID, creditNote.ID);
-            CreditNote cancelCreditNote = CreditNote.Cancel(id: creditNote.ID);
-            Assert.Equal(cancelCreditNote.ID, creditNote.ID);
-            TestUtils.Log(creditNote);
+            List<CreditNote> notes = CreditNote.Create(new List<CreditNote>() { Example() });
+            CreditNote note = notes.First();
+            TestUtils.Log(note);
+            CreditNote getCreditNote = CreditNote.Get(id: note.ID);
+            Assert.Equal(getCreditNote.ID, note.ID);
+            CreditNote cancelCreditNote = CreditNote.Cancel(id: note.ID);
+            Assert.Equal(cancelCreditNote.ID, note.ID);
+            TestUtils.Log(note);
         }
 
         [Fact]
         public void Query()
         {
-            List<CreditNote> creditNotes = CreditNote.Query(limit: 5).ToList();
-            Assert.True(creditNotes.Count <= 101);
-            Assert.True(creditNotes.First().ID != creditNotes.Last().ID);
-            foreach (CreditNote creditNote in creditNotes)
+            List<CreditNote> notes = CreditNote.Query(limit: 5, status: new List<string> { "canceled" }).ToList();
+            Assert.True(notes.Count <= 101);
+            Assert.True(notes.First().ID != notes.Last().ID);
+            foreach (CreditNote note in notes)
             {
-                TestUtils.Log(creditNote);
-                Assert.NotNull(creditNote.ID);
-                foreach(Invoice invoice in creditNote.Invoices)
+                TestUtils.Log(note);
+                Assert.NotNull(note.ID);
+                foreach (CreditSigner signer in note.Signers)
+                {
+                    TestUtils.Log(signer);
+                }
+                foreach(Invoice invoice in note.Invoices)
                 {
                     TestUtils.Log(invoice);
 
@@ -88,9 +89,9 @@ namespace StarkInfraTests
         }
 
         internal static CreditNote Example() => new CreditNote(
-            templateId: "5707012469948416",
+            templateID: "5707012469948416",
             name: "Jamie Lannister",
-            taxId: "012.345.678-90",
+            taxID: "012.345.678-90",
             nominalAmount: 100000,
             scheduled: DateTime.Now.AddDays(5),
             invoices: new List<Invoice> {
@@ -108,22 +109,21 @@ namespace StarkInfraTests
                 branchCode: "1234",
                 accountNumber: "129340-1",
                 name: "Jamie Lannister",
-                taxId: "012.345.678-90"
+                taxID: "012.345.678-90"
             ),
-            paymentType: "transfer",
-            signers: new List<Signer>{
-                new Signer(
+            signers: new List<CreditSigner>{
+                new CreditSigner(
                     name: "Jamie Lannister",
                     contact: "jamie.lannister.invaliddomain@invaliddomain.com",
                     method: "link"
                 ),
-                new Signer(
+                new CreditSigner(
                     name: "Arya Stark",
                     contact: "arya.stark.invaliddomain@invaliddomain.com",
                     method: "link"
                 )
             },
-            externalId: Guid.NewGuid().ToString(),
+            externalID: Guid.NewGuid().ToString(),
             streetLine1: "Rua ABC",
             streetLine2: "Ap 123",
             district: "Jardim Paulista",

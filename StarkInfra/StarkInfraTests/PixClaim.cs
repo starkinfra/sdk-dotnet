@@ -15,14 +15,14 @@ namespace StarkInfraTests
         [Fact]
         public void Query()
         {
-            List<PixClaim> pixClaims = PixClaim.Query(limit: 101, status: "canceled").ToList();
-            Assert.True(pixClaims.Count <= 101);
-            Assert.True(pixClaims.First().ID != pixClaims.Last().ID);
-            foreach (PixClaim pixClaim in pixClaims)
+            List<PixClaim> claims = PixClaim.Query(limit: 101, status: "canceled").ToList();
+            Assert.True(claims.Count <= 101);
+            Assert.True(claims.First().ID != claims.Last().ID);
+            foreach (PixClaim claim in claims)
             {
-                TestUtils.Log(pixClaim);
-                Assert.NotNull(pixClaim.ID);
-                Assert.Equal("canceled", pixClaim.Status);
+                TestUtils.Log(claim);
+                Assert.NotNull(claim.ID);
+                Assert.Equal("canceled", claim.Status);
             }
         }
 
@@ -51,32 +51,33 @@ namespace StarkInfraTests
         [Fact]
         public void Update()
         {
-            List<PixClaim> pixClaims = PixClaim.Query(limit: 2, status: "delivered").ToList();
-            Assert.Equal(2, pixClaims.Count);
-            Assert.True(pixClaims.First().ID != pixClaims.Last().ID);
-            Dictionary<string, object> patchData = new Dictionary<string, object> {
-                { "reason", "userRequested" }
-            };
-            foreach (PixClaim pixClaim in pixClaims)
+            List<PixClaim> claims = PixClaim.Query(limit: 2, status: "delivered").ToList();
+            Assert.Equal(2, claims.Count);
+            Assert.True(claims.First().ID != claims.Last().ID);
+            
+            foreach (PixClaim claim in claims)
             {
-                TestUtils.Log(pixClaim);
-                Assert.NotNull(pixClaim.ID);
-                Assert.Equal("delivered", pixClaim.Status);
-                PixClaim updatedPixClaim = PixClaim.Update(id: pixClaim.ID, status: "canceled", patchData: patchData);
+                Dictionary<string, object> patchData = new Dictionary<string, object> {
+                    { "reason", "fraud" }
+                };
+                TestUtils.Log(claim);
+                Assert.NotNull(claim.ID);
+                Assert.Equal("delivered", claim.Status);
+                PixClaim updatedPixClaim = PixClaim.Update(id: claim.ID, status: "canceled", patchData: patchData);
                 TestUtils.Log(updatedPixClaim);
-                Assert.Equal(updatedPixClaim.ID, pixClaim.ID);
+                Assert.Equal(updatedPixClaim.ID, claim.ID);
             }
         }
 
         [Fact]
         public void CreateGet()
         {
-            PixClaim pixClaim = PixClaim.Create(Example());
-            TestUtils.Log(pixClaim);
-            TestUtils.Log(pixClaim);
-            PixClaim getPixClaim = PixClaim.Get(id: pixClaim.ID);
-            Assert.Equal(getPixClaim.ID, pixClaim.ID);
-            TestUtils.Log(pixClaim);
+            PixClaim claim = PixClaim.Create(Example());
+            TestUtils.Log(claim);
+            TestUtils.Log(claim);
+            PixClaim getPixClaim = PixClaim.Get(id: claim.ID);
+            Assert.Equal(getPixClaim.ID, claim.ID);
+            TestUtils.Log(claim);
         }
 
         internal static PixClaim Example()
@@ -86,9 +87,10 @@ namespace StarkInfraTests
                 accountNumber: "5692908409716736",
                 accountType: "checking",
                 branchCode: "0000",
-                keyId: TestUtils.RandomPhoneNumber(),
+                keyID: TestUtils.RandomPhoneNumber(),
                 name: "testKey",
-                taxId: "012.345.678-90"
+                taxID: "012.345.678-90",
+                tags: new List<string> { "teste sdk" }
             );
         }
     }

@@ -18,18 +18,18 @@ namespace StarkInfra
         /// Properties:
         /// <list>
         ///     <item>ID [string]: unique id returned when the log is created. ex: "5656565656565656"</item>
-        ///     <item>PixReversal [PixReversal]: PixReversal entity to which the log refers to.</item>
-        ///     <item>Errors [list of strings]: list of errors linked to this PixReversal event.</item>
+        ///     <item>Reversal [PixReversal]: PixReversal entity to which the log refers to.</item>
         ///     <item>Type [string]: type of the PixReversal event which triggered the log creation. ex: "processing" or "success"</item>
-        ///     <item>Created [DateTime]: creation datetime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>Errors [list of strings]: list of errors linked to this PixReversal event.</item>
+        ///     <item>Created [DateTime]: creation DateTime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
         public class Log : Resource
         {
-            public DateTime Created { get; }
+            public PixReversal Reversal { get; }
             public string Type { get; }
             public List<Dictionary<string, object>>  Errors { get; }
-            public PixReversal Reversal { get; }
+            public DateTime Created { get; }
 
             /// <summary>
             /// PixReversal.Log object
@@ -42,23 +42,23 @@ namespace StarkInfra
             /// <list>
             ///     <item>id [string]: unique id returned when the log is created. ex: "5656565656565656"</item>
             ///     <item>reversal [PixReversal]: PixReversal entity to which the log refers to.</item>
-            ///     <item>errors [list of strings]: list of errors linked to this PixReversal event.</item>
             ///     <item>type [string]: type of the PixReversal event which triggered the log creation. ex: "processing" or "success"</item>
-            ///     <item>created [DateTime]: creation datetime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+            ///     <item>errors [list of strings]: list of errors linked to this PixReversal event.</item>
+            ///     <item>created [DateTime]: creation DateTime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
             /// </list>
             /// </summary>
-            public Log(string id, DateTime created, string type, List<Dictionary<string, object>> errors, PixReversal reversal) : base(id)
+            public Log(string id, PixReversal reversal, string type, List<Dictionary<string, object>> errors, DateTime created) : base(id)
             {
-                Created = created;
+                Reversal = reversal;
                 Type = type;
                 Errors = errors;
-                Reversal = reversal;
+                Created = created;
             }
 
             /// <summary>
-            /// Retrieve a specific Log
+            /// Retrieve a specific PixReversal.Log by its id
             /// <br/>
-            /// Receive a single Log object previously created by the Stark Infra API by passing its id
+            /// Receive a single PixReversal.Log object previously created by the Stark Infra API by passing its id
             /// <br/>
             /// Parameters (required):
             /// <list>
@@ -72,7 +72,7 @@ namespace StarkInfra
             /// <br/>
             /// Return:
             /// <list>
-            ///     <item>Log object with updated attributes</item>
+            ///     <item>PixReversal.Log object that corresponds to the given id.</item>
             /// </list>
             /// </summary>
             public static Log Get(string id, User user = null)
@@ -87,7 +87,7 @@ namespace StarkInfra
             }
 
             /// <summary>
-            /// Retrieve Logs
+            /// Retrieve PixReversal.Log objects
             /// <br/>
             /// Receive an IEnumerable of Log objects previously created in the Stark Infra API
             /// <br/>
@@ -103,7 +103,7 @@ namespace StarkInfra
             /// <br/>
             /// Return:
             /// <list>
-            ///     <item>list of Log objects with updated attributes</item>
+            ///     <item>IEnumerable of PixReversal.Log objects with updated attributes</item>
             /// </list>
             /// </summary>
             public static IEnumerable<Log> Query(int? limit = null, DateTime? after = null, DateTime? before = null,
@@ -125,7 +125,7 @@ namespace StarkInfra
             }
 
             /// <summary>
-            /// Retrieve paged Logs
+            /// Retrieve paged Log objects
             /// <br/>
             /// Receive a list of up to 100 Log objects previously created in the Stark Infra API and the cursor to the next page.
             /// Use this function instead of query if you want to manually page your requests.
@@ -133,7 +133,7 @@ namespace StarkInfra
             /// Parameters (optional):
             /// <list>
             ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
-            ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
+            ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35.</item>
             ///     <item>after [DateTime, default null]: date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>before [DateTime, default null]: date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>types [list of strings, default null]: filter retrieved objects by types. ex: new List<string>{ "success" or "failed" }</item>
@@ -179,12 +179,12 @@ namespace StarkInfra
 
             internal static Utils.Resource ResourceMaker(dynamic json)
             {
-                List<Dictionary<string, object>> errors = json.errors.ToObject<List<Dictionary<string, object>>>();
                 string id = json.id;
+                PixReversal reversal = PixReversal.ResourceMaker(json.reversal);
+                string type = json.type;
+                List<Dictionary<string, object>> errors = json.errors.ToObject<List<Dictionary<string, object>>>();
                 string createdString = json.created;
                 DateTime created = Checks.CheckDateTime(createdString);
-                string type = json.type;
-                PixReversal reversal = PixReversal.ResourceMaker(json.reversal);
 
                 return new Log(id: id, created: created, type: type, errors: errors, reversal: reversal);
             }
