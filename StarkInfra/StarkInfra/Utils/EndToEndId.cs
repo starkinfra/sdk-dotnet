@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace StarkInfra.Utils
 {
-    static public class EndToEndId
+    static public class EndToEndID
     {
         static public string Create(string bankCode)
         {
@@ -13,19 +13,19 @@ namespace StarkInfra.Utils
             char[] charArr = randomSource.ToCharArray();
             int[] range = Enumerable.Range(1, 11).ToArray();
             
-            string endToEndId = "E";
+            string endToEndID = "E";
             
-            endToEndId += bankCode;
-            endToEndId += DateTime.Now.ToString(@"yyyyMMddhhmm");
+            endToEndID += bankCode;
+            endToEndID += DateTime.Now.ToString(@"yyyyMMddhhmm");
             
             foreach (int i in range)
             {
                 Random rnd = new Random();
                 int index = rnd.Next(charArr.Length);
-                endToEndId += randomSource[index];
+                endToEndID += randomSource[index];
             }
 
-            return endToEndId;
+            return endToEndID;
         }
     }
 }

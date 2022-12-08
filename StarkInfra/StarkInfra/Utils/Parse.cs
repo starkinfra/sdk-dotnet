@@ -9,15 +9,20 @@ namespace StarkInfra.Utils
 {
     internal static class Parse
     {
-        internal static SubResource ParseAndVerify(string content, string signature, string resourceName, 
+        internal static SubResource ParseAndVerify(string content, string signature, string resourceName,
             Api.ResourceMaker resourceMaker, User user, string key = null)
         {
-            dynamic json = Utils.Json.Decode(content);
+            string verifiedContent = Verify(content, signature, user);
+            dynamic json = Utils.Json.Decode(verifiedContent);
             if (key != null)
             {
                 json = json[key]; 
             }
+            return Api.FromApiJson(resourceMaker, json);
+        }
 
+        internal static string Verify(string content, string signature, User user)
+        {
             Signature signatureObject;
             try
             {
@@ -28,10 +33,10 @@ namespace StarkInfra.Utils
             }
 
             if (VerifySignature(content, signatureObject, user)) {
-                return Api.FromApiJson(resourceMaker, json);
+                return content;
             }
             if (VerifySignature(content, signatureObject, user, true)) {
-                return Api.FromApiJson(resourceMaker, json);
+                return content;
             }
 
             throw new Error.InvalidSignatureError("The provided signature and content do not match the Stark Infra public key");

@@ -15,24 +15,24 @@ namespace StarkInfraTests
         [Fact]
         public void CreateGet()
         {
-            IssuingInvoice issuingInvoice = IssuingInvoice.Create(Example());
-            Assert.NotNull(issuingInvoice.ID);
-            IssuingInvoice getIssuingInvoice = IssuingInvoice.Get(id: issuingInvoice.ID);
-            Assert.Equal(getIssuingInvoice.ID, issuingInvoice.ID);
-            TestUtils.Log(issuingInvoice);
+            IssuingInvoice invoice = IssuingInvoice.Create(Example());
+            Assert.NotNull(invoice.ID);
+            IssuingInvoice getIssuingInvoice = IssuingInvoice.Get(id: invoice.ID);
+            Assert.Equal(getIssuingInvoice.ID, invoice.ID);
+            TestUtils.Log(invoice);
         }
 
         [Fact]
         public void Query()
         {
-            List<IssuingInvoice> issuingInvoices = IssuingInvoice.Query(limit: 3, status: "paid").ToList();
-            Assert.True(issuingInvoices.Count <= 3);
-            Assert.True(issuingInvoices.First().ID != issuingInvoices.Last().ID);
-            foreach (IssuingInvoice issuingInvoice in issuingInvoices)
+            List<IssuingInvoice> invoices = IssuingInvoice.Query(limit: 3, status: "paid").ToList();
+            Assert.True(invoices.Count <= 3);
+            Assert.True(invoices.First().ID != invoices.Last().ID);
+            foreach (IssuingInvoice invoice in invoices)
             {
-                TestUtils.Log(issuingInvoice);
-                Assert.NotNull(issuingInvoice.ID);
-                Assert.Equal("paid", issuingInvoice.Status);
+                TestUtils.Log(invoice);
+                Assert.NotNull(invoice.ID);
+                Assert.Equal("paid", invoice.Status);
             }
         }
 

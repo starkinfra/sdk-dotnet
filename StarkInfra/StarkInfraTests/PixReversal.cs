@@ -14,25 +14,25 @@ namespace StarkInfraTests
         [Fact]
         public void CreateGet()
         {
-            List<PixReversal> pixReversals = PixReversal.Create(new List<PixReversal>() { Example() });
-            PixReversal pixReversal = pixReversals.First();
-            Assert.NotNull(pixReversals.First().ID);
-            PixReversal getPixReversal = PixReversal.Get(id: pixReversal.ID);
-            Assert.Equal(getPixReversal.ID, pixReversal.ID);
-            TestUtils.Log(pixReversal);
+            List<PixReversal> reversals = PixReversal.Create(new List<PixReversal>() { Example() });
+            PixReversal reversal = reversals.First();
+            Assert.NotNull(reversals.First().ID);
+            PixReversal getPixReversal = PixReversal.Get(id: reversal.ID);
+            Assert.Equal(getPixReversal.ID, reversal.ID);
+            TestUtils.Log(reversal);
         }
 
         [Fact]
         public void Query()
         {
-            List<PixReversal> pixReversals = PixReversal.Query(limit: 101, status: "success").ToList();
-            Assert.True(pixReversals.Count <= 101);
-            Assert.True(pixReversals.First().ID != pixReversals.Last().ID);
-            foreach (PixReversal pixReversal in pixReversals)
+            List<PixReversal> reversals = PixReversal.Query(limit: 101, status: new List<string> { "success" }).ToList();
+            Assert.True(reversals.Count <= 101);
+            Assert.True(reversals.First().ID != reversals.Last().ID);
+            foreach (PixReversal reversal in reversals)
             {
-                TestUtils.Log(pixReversal);
-                Assert.NotNull(pixReversal.ID);
-                Assert.Equal("success", pixReversal.Status);
+                TestUtils.Log(reversal);
+                Assert.NotNull(reversal.ID);
+                Assert.Equal("success", reversal.Status);
             }
         }
 
@@ -61,46 +61,45 @@ namespace StarkInfraTests
         [Fact]
         public void QueryIds()
         {
-            List<PixReversal> pixReversals = PixReversal.Query(limit: 10).ToList();
-            List<String> pixReversalsIdsExpected = new List<string>();
-            Assert.Equal(10, pixReversals.Count);
-            Assert.True(pixReversals.First().ID != pixReversals.Last().ID);
-            foreach (PixReversal transaction in pixReversals)
+            List<PixReversal> reversals = PixReversal.Query(limit: 10).ToList();
+            List<String> reversalsIdsExpected = new List<string>();
+            Assert.Equal(10, reversals.Count);
+            Assert.True(reversals.First().ID != reversals.Last().ID);
+            foreach (PixReversal transaction in reversals)
             {
                 Assert.NotNull(transaction.ID);
-                pixReversalsIdsExpected.Add(transaction.ID);
+                reversalsIdsExpected.Add(transaction.ID);
             }
 
-            List<PixReversal> pixReversalsResult = PixReversal.Query(limit:10, ids: pixReversalsIdsExpected).ToList();
-            List<String> pixReversalsIdsResult = new List<string>();
-            Assert.Equal(10, pixReversals.Count);
-            Assert.True(pixReversals.First().ID != pixReversals.Last().ID);
-            foreach (PixReversal transaction in pixReversalsResult)
+            List<PixReversal> reversalsResult = PixReversal.Query(limit:10, ids: reversalsIdsExpected).ToList();
+            List<String> reversalsIdsResult = new List<string>();
+            Assert.Equal(10, reversals.Count);
+            Assert.True(reversals.First().ID != reversals.Last().ID);
+            foreach (PixReversal transaction in reversalsResult)
             {
                 Assert.NotNull(transaction.ID);
-                pixReversalsIdsResult.Add(transaction.ID);
+                reversalsIdsResult.Add(transaction.ID);
             }
 
-            pixReversalsIdsExpected.Sort();
-            pixReversalsIdsResult.Sort();
-            Assert.Equal(pixReversalsIdsExpected, pixReversalsIdsResult);
+            reversalsIdsExpected.Sort();
+            reversalsIdsResult.Sort();
+            Assert.Equal(reversalsIdsExpected, reversalsIdsResult);
         }
         
         [Fact]
         public void QueryParams()
         {
-            List<PixReversal> pixReversals = PixReversal.Query(
-                fields: new List<string> {"amount", "id"},
+            List<PixReversal> reversals = PixReversal.Query(
                 limit: 10,
                 after: new DateTime(2022, 01, 01),
                 before: new DateTime(2022, 01, 02),
-                status: "success",
+                status: new List<string> { "success" },
                 tags: new List<string> {"iron", "bank"},
                 ids: new List<string> {"1", "2"},
                 externalIds: new List<string> {"1", "2"},
                 returnIds: new List<string> { "98236508236008632", "2352352352353" }
             ).ToList();
-            Assert.True(pixReversals.Count == 0);
+            Assert.True(reversals.Count == 0);
         }
         
         [Fact]
@@ -109,11 +108,10 @@ namespace StarkInfraTests
             List<PixReversal> page;
             (page, _) = PixReversal.Page(
                 cursor: null,
-                fields: new List<string> {"amount", "id"},
                 limit: 10,
                 after: new DateTime(2022, 01, 01),
                 before: new DateTime(2022, 01, 02),
-                status: "success",
+                status: new List<string> { "success" },
                 tags: new List<string> {"iron", "bank"},
                 ids: new List<string> {"1", "2"},
                 externalIds: new List<string> {"1", "2"},
@@ -122,16 +120,15 @@ namespace StarkInfraTests
             Assert.True(page.Count == 0);
         }
         
-        public readonly string Content = "";
-        public readonly string GoodSignature = "";
-        public readonly string BadSignature = "";
+        public readonly string Content = "{\"status\": \"processing\", \"returnId\": \"D34052649202212081809BSc6b12oLsF\", \"amount\": 10, \"updated\": \"2022-12-08T18:09:38.344943+00:00\", \"tags\": [\"lannister\", \"chargeback\"], \"reason\": \"fraud\", \"created\": \"2022-12-08T18:09:38.344936+00:00\", \"flow\": \"in\", \"id\": \"5685338043318272\", \"endToEndId\": \"E35547753202201201450oo8srGorhf1\"}";
+        public readonly string GoodSignature = "MEQCIFiONlW6TV4+U3XWfACP2IttNrxPi8E++FCuXEsf1NjuAiAD2wktgT1tTzxcz+MMJWDPuw3PZjp2kJG+Wf9yF1lcGg==";
+        public readonly string BadSignature = "MEQCIFiONlW6TV4+U3XWdACP2IttNrxPi8E++FCuXEsf1NjuAiAD2wktgT1tTzxcz+MMJWDPuw3PZjp2kJG+Wf9yF1lcGg==";
 
         [Fact]
         public void ParseWithRightSignature()
         {
             PixReversal parsedPixReversal = PixReversal.Parse(Content, GoodSignature);
             Assert.NotNull(parsedPixReversal.ID);
-            // Assert.NotNull(parsedPixReversal.Log);
             TestUtils.Log(parsedPixReversal);
         }
 
@@ -161,13 +158,20 @@ namespace StarkInfraTests
             }
             throw new Exception("failed to raise InvalidSignatureError");
         }
-        
+
+        [Fact]
+        public void SendResponse()
+        {
+            string response = PixReversal.Response(status: "accepted");
+            TestUtils.Log(response);
+        }
+
         internal static PixReversal Example(bool schedule = true)
         {
             return new PixReversal(
                 amount: new Random().Next(1, 5),
-                externalId: Convert.ToString(new Random().Next(1, 999999999)),
-                endToEndId: TestUtils.GetEndToEndId(),
+                externalID: Convert.ToString(new Random().Next(1, 999999999)),
+                endToEndID: TestUtils.GetEndToEndID(),
                 reason: "fraud"
             );
         }

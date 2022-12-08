@@ -16,11 +16,10 @@ namespace StarkInfraTests
         public void QueryAndGet()
         {
             List<CreditNote.Log> logs = CreditNote.Log.Query(
-                limit: 10,
+                limit: 1,
                 types: new List<string> { "created" }
             ).ToList();
-            Assert.Equal(10, logs.Count);
-            Assert.True(logs.First().ID != logs.Last().ID);
+            Assert.Equal(1, logs.Count);
             foreach (CreditNote.Log log in logs)
             {
                 TestUtils.Log(log);
@@ -40,7 +39,7 @@ namespace StarkInfraTests
             string cursor = null;
             for (int i = 0; i < 2; i++)
             {
-                (page, cursor) = CreditNote.Log.Page(limit: 5, cursor: cursor);
+                (page, cursor) = CreditNote.Log.Page(limit: 2, cursor: cursor);
                 foreach (CreditNote.Log entity in page)
                 {
                     Assert.DoesNotContain(entity.ID, ids);
@@ -51,7 +50,7 @@ namespace StarkInfraTests
                     break;
                 }
             }
-            Assert.True(ids.Count == 10);
+            Assert.True(ids.Count == 4);
         }
     }
 }

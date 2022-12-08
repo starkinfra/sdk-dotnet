@@ -14,23 +14,23 @@ namespace StarkInfraTests
         [Fact]
         public void CreateGet()
         {
-            IssuingWithdrawal issuingWithdrawal = IssuingWithdrawal.Create(Example());
-            Assert.NotNull(issuingWithdrawal.ID);
-            IssuingWithdrawal getIssuingWithdrawal = IssuingWithdrawal.Get(id: issuingWithdrawal.ID);
-            Assert.Equal(getIssuingWithdrawal.ID, issuingWithdrawal.ID);
-            TestUtils.Log(issuingWithdrawal);
+            IssuingWithdrawal withdrawal = IssuingWithdrawal.Create(Example());
+            Assert.NotNull(withdrawal.ID);
+            IssuingWithdrawal getIssuingWithdrawal = IssuingWithdrawal.Get(id: withdrawal.ID);
+            Assert.Equal(getIssuingWithdrawal.ID, withdrawal.ID);
+            TestUtils.Log(withdrawal);
         }
 
         [Fact]
         public void Query()
         {
-            List<IssuingWithdrawal> issuingWithdrawals = IssuingWithdrawal.Query(limit: 3).ToList();
-            Assert.True(issuingWithdrawals.Count <= 3);
-            Assert.True(issuingWithdrawals.First().ID != issuingWithdrawals.Last().ID);
-            foreach (IssuingWithdrawal issuingWithdrawal in issuingWithdrawals)
+            List<IssuingWithdrawal> withdrawals = IssuingWithdrawal.Query(limit: 3).ToList();
+            Assert.True(withdrawals.Count <= 3);
+            Assert.True(withdrawals.First().ID != withdrawals.Last().ID);
+            foreach (IssuingWithdrawal withdrawal in withdrawals)
             {
-                TestUtils.Log(issuingWithdrawal);
-                Assert.NotNull(issuingWithdrawal.ID);
+                TestUtils.Log(withdrawal);
+                Assert.NotNull(withdrawal.ID);
             }
         }
 
@@ -61,7 +61,7 @@ namespace StarkInfraTests
         {
             return new IssuingWithdrawal(
                 amount: 10000,
-                externalId : Guid.NewGuid().ToString(),
+                externalID : Guid.NewGuid().ToString(),
                 description : "Sending back"
             );
         }

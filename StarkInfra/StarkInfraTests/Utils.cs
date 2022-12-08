@@ -13,25 +13,25 @@ namespace StarkInfraTests
             Console.WriteLine(log);
         }
         
-        static public string GetEndToEndId()
+        static public string GetEndToEndID()
         {
-            string endToEndId = "";
+            string endToEndID = "";
             List<PixRequest> page;
             string cursor = null;
-            while (endToEndId == "")
+            while (endToEndID == "")
             {
                 (page, cursor) = PixRequest.Page(limit: 5, cursor: cursor);
                 foreach (PixRequest entity in page)
                 {
                     if ((entity.Amount > 5) && (entity.Flow == "in") && (entity.Status == "success"))
                     {
-                        endToEndId = entity.EndToEndID;
+                        endToEndID = entity.EndToEndID;
                     }
                 }
 
                 if (cursor == null) { break; }
             }
-            return endToEndId;
+            return endToEndID;
         }
 
         public static string RandomPhoneNumber()

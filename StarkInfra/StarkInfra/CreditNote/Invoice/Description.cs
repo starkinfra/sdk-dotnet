@@ -1,20 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 using StarkInfra.Utils;
 
 
 namespace StarkInfra
 {
     /// <summary>
-    /// CreditNot.Invoice.Description object
+    /// CreditNote.Invoice.Description object
     /// <br/>
-    /// Description object for the invoice 
+    /// Invoice description information.
     /// <br/>
     /// Properties:
     /// <list>
     ///     <item>Key [string]: Description for the value. ex: "Taxes"</item>
-    ///     <item>Value [string]: amount related to the described key. ex: "R$100,00"</item>
+    ///     <item>Value [string, default ""]: amount related to the described key. ex: "R$100,00"</item>
     /// </list>
     /// </summary>
     public partial class Description : SubResource
@@ -23,9 +23,9 @@ namespace StarkInfra
         public string Value { get; }
 
         /// <summary>
-        /// CreditNot.Invoice.Description object
+        /// CreditNote.Invoice.Description object
         /// <br/>
-        /// Description object for the invoice 
+        /// Invoice description information.
         /// <br/>
         /// Parameters (required):
         /// <list>
@@ -34,10 +34,10 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>value [string]: amount related to the described key. ex: "R$100,00"</item>
+        ///     <item>value [string, default ""]: amount related to the described key. ex: "R$100,00"</item>
         /// </list>
         /// </summary>
-        public Description(string key, string value)
+        public Description(string key, string value = null)
         {
             Key = key;
             Value = value;

@@ -15,9 +15,9 @@ namespace StarkInfraTests
         [Fact]
         public void Create()
         {
-            PixDirector pixDirector = PixDirector.Create(Example());
-            Assert.NotNull(pixDirector.ID);
-            TestUtils.Log(pixDirector);
+            PixDirector director = PixDirector.Create(Example());
+            Assert.NotNull(director.Status);
+            TestUtils.Log(director);
         }
 
         internal static PixDirector Example()
@@ -27,7 +27,7 @@ namespace StarkInfraTests
                 name: "Jon Snow",
                 password: "12345678",
                 phone: "+551141164616",
-                taxId: "123.456.789-0",
+                taxID: "123.456.789-0",
                 teamEmail: "bacen@starkbank.com",
                 teamPhones: new List<string>(){
                     "+551141164616"

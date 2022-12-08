@@ -8,19 +8,20 @@ using System.Linq;
 
 namespace StarkInfraTests
 {
-    public class IssuingBinTest
+    public class IssuingProductTest
     {
         public readonly User user = TestUser.SetDefaultProject();
 
         [Fact]
         public void Query()
         {
-            List<IssuingBin> IssuingBins = IssuingBin.Query(limit: 101).ToList();
-            Assert.True(IssuingBins.Count <= 101);
-            Assert.True(IssuingBins.First().ID != IssuingBins.Last().ID);
-            foreach (IssuingBin IssuingBin in IssuingBins)
+            List<IssuingProduct> products = IssuingProduct.Query(limit: 101).ToList();
+            Assert.True(products.Count <= 101);
+            Assert.True(products.First().ID != products.Last().ID);
+            foreach (IssuingProduct product in products)
             {
-                Assert.NotNull(IssuingBin.ID);
+                Assert.NotNull(product.ID);
+                TestUtils.Log(product);
             }
         }
 
@@ -28,12 +29,12 @@ namespace StarkInfraTests
         public void Page()
         {
             List<string> ids = new List<string>();
-            List<IssuingBin> page;
+            List<IssuingProduct> page;
             string cursor = null;
             for (int i = 0; i < 2; i++)
             {
-                (page, cursor) = IssuingBin.Page(limit: 1, cursor: cursor);
-                foreach (IssuingBin entity in page)
+                (page, cursor) = IssuingProduct.Page(limit: 1, cursor: cursor);
+                foreach (IssuingProduct entity in page)
                 {
                     TestUtils.Log(entity);
                     Assert.DoesNotContain(entity.ID, ids);

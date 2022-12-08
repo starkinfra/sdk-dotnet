@@ -12,10 +12,14 @@ namespace StarkInfra
     /// A Webhook is used to subscribe to notification events on a user-selected endpoint.
     /// Currently, available services for subscription are contract, credit-note, signer, issuing-card, issuing-invoice, issuing-purchase, pix-request.in, pix-request.out, pix-reversal.in, pix-reversal.out, pix-claim, pix-key, pix-chargeback, pix-infraction
     /// <br/>
-    /// Properties:
+    /// Parameters (required):
     /// <list>
     ///     <item>Url [string]: URL that will be notified when an event occurs.</item>
     ///     <item>Subscriptions [list of strings]: list of any non-empty combination of the available services. ex: new List<string>{ "contract", "credit-note", "signer", "issuing-card", "issuing-invoice", "issuing-purchase", "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-claim", "pix-key", "pix-chargeback", "pix-infraction" }</item>
+    /// </list>
+    /// Attributes (return-only):
+    /// <list>
+    ///     <item>Id [string]: unique id returned when the webhook is created. ex: "5656565656565656"</item>
     /// </list>
     /// </summary>
     public partial class Webhook : Resource
@@ -34,10 +38,9 @@ namespace StarkInfra
         ///     <item>url [string]: Url that will be notified when an event occurs.</item>
         ///     <item>subscriptions [list of strings]: list of any non-empty combination of the available services. ex: new List<string>{ "contract", "credit-note", "signer", "issuing-card", "issuing-invoice", "issuing-purchase", "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-claim", "pix-key", "pix-chargeback", "pix-infraction" }</item>
         ///</list>
-        /// Parameters (optional):
+        /// Attributes (return-only):
         /// <list>
-        ///     <item>description [string, Default null]: description for any details that can help with the infraction investigation.</item>
-        ///     <item>creditedBankCode [string, Default null]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"</item>
+        ///     <item>id [string]: unique id returned when the webhook is created. ex: "5656565656565656"</item>
         /// </list>
         /// </summary>
         public Webhook(string url, List<string> subscriptions, string id = null) : base(id)
@@ -53,7 +56,7 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (required):
         /// <list>
-        ///     <item>url [string]: url to which notification events will be sent to. ex: "https://webhook.site/60e9c18e-4b5c-4369-bda1-ab5fcd8e1b29"
+        ///     <item>url [string]: url to which notification events will be sent to. ex: "https://webhook.site/60e9c18e-4b5c-4369-bda1-ab5fcd8e1b29"</item>
         ///     <item>subscriptions [list of strings]: list of any non-empty combination of the available services. ex: new List<string>{"contract", "credit-note", "signer" }</item>
         /// </list>
         /// <br/>
@@ -111,7 +114,7 @@ namespace StarkInfra
         }
 
         /// <summary>
-        /// Retrieve Webhooks
+        /// Retrieve Webhook objects
         /// <br/>
         /// Receive a IEnumerable of Webhook objects previously created in the Stark Infra API
         /// <br/>
@@ -141,7 +144,7 @@ namespace StarkInfra
         }
 
         /// <summary>
-        /// Retrieve paged Webhooks
+        /// Retrieve paged Webhook objects
         /// <br/>
         /// Receive a list of up to 100 Webhook objects previously created in the Stark Infra API and the cursor to the next page.
         /// Use this function instead of query if you want to manually page your requests.
@@ -149,7 +152,7 @@ namespace StarkInfra
         /// Parameters (optional):
         /// <list>
         ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
-        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
+        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35.</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>

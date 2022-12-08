@@ -19,7 +19,7 @@ namespace StarkInfra
     ///     <item>ID [string]: unique id returned when PixBalance is created. ex: "5656565656565656"</item>
     ///     <item>Amount [long]: current balance amount of the workspace in cents. ex: 200 (= R$ 2.00)</item>
     ///     <item>Currency [string]: currency of the current workspace. Expect others to be added eventually. ex: "BRL"</item>
-    ///     <item>Updated [DateTime]: update datetime for the balance. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>Updated [DateTime]: latest update datetime for the balance. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
     /// </summary>
     public class PixBalance : Resource
@@ -41,7 +41,7 @@ namespace StarkInfra
         ///     <item>id [string]: unique id returned when the PixBalance is created. ex: "5656565656565656"</item>
         ///     <item>amount [long]: current balance amount of the workspace in cents. ex: 200 (= R$ 2.00)</item>
         ///     <item>currency [string]: currency of the current workspace. Expect others to be added eventually. ex: "BRL"</item>
-        ///     <item>updated [DateTime]: update datetime for the balance. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>updated [DateTime]: latest update datetime for the balance. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
         public PixBalance(string id, long amount, string currency, DateTime updated) : base(id)

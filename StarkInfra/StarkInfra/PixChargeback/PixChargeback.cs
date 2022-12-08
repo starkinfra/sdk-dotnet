@@ -9,9 +9,10 @@ namespace StarkInfra
     /// <summary>
     /// PixChargeback object
     /// <br/>
-    /// Pix Chargebacks can be created when fraud is detected on a transaction or a system malfunction
+    /// A Pix Chargeback can be created when fraud is detected on a transaction or a system malfunction
     /// results in an erroneous transaction.
-    /// It notifies another participant of your request to reverse the payment they have received.
+    /// It notifies another participant of your request to reverse the payment  they have received.
+    /// <br/>
     /// When you initialize a PixChargeback, the entity will not be automatically
     /// created in the Stark Infra API. The 'create' function sends the objects
     /// to the Stark Infra API and returns the created object.
@@ -19,20 +20,21 @@ namespace StarkInfra
     /// Properties:
     /// <list>
     ///     <item>Amount [long]: amount in cents to be reversed. ex: 11234 (= R$ 112.34)</item>
-    ///     <item>ReferenceID [string]: endToEndId or returnId of the transaction to be reversed. ex: "E20018183202201201450u34sDGd19lz"</item>
+    ///     <item>ReferenceID [string]: endToEndID or returnID of the transaction to be reversed. ex: "E20018183202201201450u34sDGd19lz"</item>
     ///     <item>Reason [string]: reason why the reversal was requested. Options: "fraud", "flaw", "reversalChargeback"</item>
     ///     <item>Description [string, default null]: description for the PixChargeback.</item>
+    ///     <item>Tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "travel", "food" }</item>
     ///     <item>ID [string]: unique id returned when the PixChargeback is created. ex: "5656565656565656"</item>
     ///     <item>Analysis [string]: analysis that led to the result.</item>
-    ///     <item>BacenID [string]: central bank's unique UUID that identifies the PixChargeback.</item>
     ///     <item>SenderBankCode [string]: bankCode of the Pix participant that created the PixChargeback. ex: "20018183"</item>
     ///     <item>ReceiverBankCode [string]: bankCode of the Pix participant that received the PixChargeback. ex: "20018183"</item>
     ///     <item>RejectionReason [string]: reason for the rejection of the PixChargeback. Options: "noBalance", "accountClosed", "unableToReverse"</item>
-    ///     <item>ReversalReferenceID [string]: return id of the reversal transaction. ex: "D20018183202202030109X3OoBHG74wo".</item>
+    ///     <item>ReversalReferenceID [string]: returnID or endToEndID of the reversal transaction. ex: "D20018183202202030109X3OoBHG74wo".</item>
     ///     <item>Result [string]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted"</item>
+    ///     <item>Flow [string]: direction of the Pix Chargeback. Options: "in" for received chargebacks, "out" for chargebacks you requested</item>
     ///     <item>Status [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".</item>
-    ///     <item>Created [DateTime]: creation datetime for the PixChargeback. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
-    ///     <item>Updated [DateTime]: latest update datetime for the PixChargeback. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>Created [DateTime]: creation DateTime for the PixChargeback. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>Updated [DateTime]: latest update DateTime for the PixChargeback. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
     /// </summary>
     public partial class PixChargeback : Resource
@@ -41,16 +43,17 @@ namespace StarkInfra
         public string ReferenceID { get; }
         public string Reason { get; }
         public string Description { get; }
+        public List<string> Tags { get; }
         public string Analysis { get; }
-        public string BacenID { get; }
         public string SenderBankCode { get; }
         public string ReceiverBankCode { get; }
         public string RejectionReason { get; }
         public string ReversalReferenceID { get; }
         public string Result { get; }
+        public string Flow { get; }
         public string Status { get; }
-        public DateTime? Updated { get; }
         public DateTime? Created { get; }
+        public DateTime? Updated { get; }
 
         /// <summary>
         /// PixChargeback object
@@ -58,6 +61,7 @@ namespace StarkInfra
         /// A Pix chargeback can be created when fraud is detected on a transaction or a system malfunction
         /// results in an erroneous transaction.
         /// It notifies another participant of your request to reverse the payment they have received.
+        /// <br/>
         /// When you initialize a PixChargeback, the entity will not be automatically
         /// created in the Stark Infra API. The 'create' function sends the objects
         /// to the Stark Infra API and returns the created object.
@@ -65,53 +69,59 @@ namespace StarkInfra
         /// Parameters (required):
         /// <list>
         ///     <item>amount [long]: amount in cents to be reversed. ex: 11234 (= R$ 112.34)</item>
-        ///     <item>referenceId [string]: endToEndId or returnId of the transaction to be reversed. ex: "E20018183202201201450u34sDGd19lz"</item>
+        ///     <item>referenceID [string]: endToEndID or returnID of the transaction to be reversed. ex: "E20018183202201201450u34sDGd19lz"</item>
         ///     <item>reason [string]: reason why the reversal was requested. Options: "fraud", "flaw", "reversalChargeback"</item>
         ///</list>
         /// Parameters (optional):
         /// <list>
         ///     <item>description [string, default null]: description for the PixChargeback.</item>
+        ///     <item>tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "travel", "food" }</item>
         /// </list>
         /// Attributes (return-only):
         /// <list>
         ///     <item>id [string]: unique id returned when the PixChargeback is created. ex: "5656565656565656"</item>
         ///     <item>analysis [string]: analysis that led to the result.</item>
-        ///     <item>bacenId [string]: central bank's unique UUID that identifies the PixChargeback.</item>
         ///     <item>senderBankCode [string]: bankCode of the Pix participant that created the PixChargeback. ex: "20018183"</item>
         ///     <item>receiverBankCode [string]: bankCode of the Pix participant that received the PixChargeback. ex: "20018183"</item>
         ///     <item>rejectionReason [string]: reason for the rejection of the PixChargeback. Options: "noBalance", "accountClosed", "unableToReverse"</item>
-        ///     <item>reversalReferenceId [string]: return id of the reversal transaction. ex: "D20018183202202030109X3OoBHG74wo".</item>
+        ///     <item>reversalReferenceID [string]: returnID or endToEndID of the reversal transaction. ex: "D20018183202202030109X3OoBHG74wo".</item>
         ///     <item>result [string]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted"</item>
+        ///     <item>flow [string]: direction of the Pix Chargeback. Options: "in" for received chargebacks, "out" for chargebacks you requested</item>
         ///     <item>status [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".</item>
-        ///     <item>created [DateTime]: creation datetime for the PixChargeback. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
-        ///     <item>updated [DateTime]: latest update datetime for the PixChargeback. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>created [DateTime]: creation DateTime for the PixChargeback. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>updated [DateTime]: latest update DateTime for the PixChargeback. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
-        public PixChargeback(long amount, string referenceId, string reason, string description = null, string analysis = null, string bacenId = null,
-            string senderBankCode = null, string receiverBankCode = null, string rejectionReason = null, string reversalReferenceId = null,
-            string result = null, string status = null, DateTime? updated = null, DateTime? created = null, string id = null
+        public PixChargeback(
+            long amount, string referenceID, string reason, string description = null, 
+            List<string> tags = null, string id = null, string analysis = null, 
+            string senderBankCode = null, string receiverBankCode = null, 
+            string rejectionReason = null, string reversalReferenceID = null, 
+            string result = null, string flow = null, string status = null, 
+            DateTime? updated = null, DateTime? created = null
         ) : base(id)
         {
             Amount = amount;
-            ReferenceID = referenceId;
+            ReferenceID = referenceID;
             Reason = reason;
             Description = description;
+            Tags = tags;
             Analysis = analysis;
-            BacenID = bacenId;
             SenderBankCode = senderBankCode;
             ReceiverBankCode = receiverBankCode;
             RejectionReason = rejectionReason;
-            ReversalReferenceID = reversalReferenceId;
+            ReversalReferenceID = reversalReferenceID;
             Result = result;
+            Flow = flow;
             Status = status;
             Updated = updated;
             Created = created;
         }
 
         /// <summary>
-        /// Create PixChargebacks
+        /// Create PixChargeback objects
         /// <br/>
-        /// Send a list of PixChargeback objects for creation in the Stark Infra API
+        /// Create PixChargeback objects in the Stark Infra API
         /// <br/>
         /// Parameters (required):
         /// <list>
@@ -140,13 +150,13 @@ namespace StarkInfra
         }
 
         /// <summary>
-        /// Create PixChargebacks
+        /// Create PixChargeback objects
         /// <br/>
-        /// Send a list of PixChargeback dictionaries objects for creation in the Stark Infra API
+        /// Create PixChargeback objects in the Stark Infra API
         /// <br/>
         /// Parameters (required):
         /// <list>
-        ///     <item>chargebacks [list of dictionaries]: list of Dictionaries representing the PixChargeback to be created in the API</item>
+        ///     <item>chargebacks [list of Dictionaries]: list of Dictionaries representing the PixChargeback to be created in the API</item>
         /// </list>
         /// <br/>
         /// Parameters (optional):
@@ -171,9 +181,9 @@ namespace StarkInfra
         }
 
         /// <summary>
-        /// Retrieve a specific PixChargeback
+        /// Retrieve a PixChargeback object
         /// <br/>
-        /// Receive a single PixChargeback object previously created in the Stark Infra API by passing its id
+        /// Retrieve a PixChargeback object linked to your Workspace in the Stark Infra API using its id.
         /// <br/>
         /// Parameters (required):
         /// <list>
@@ -187,7 +197,7 @@ namespace StarkInfra
         /// <br/>
         /// Return:
         /// <list>
-        ///     <item>PixChargeback object with updated attributes</item>
+        ///     <item>PixChargeback object that corresponds to the given id.</item>
         /// </list>
         /// </summary>
         public static PixChargeback Get(string id, User user = null)
@@ -202,17 +212,19 @@ namespace StarkInfra
         }
 
         /// <summary>
-        /// Retrieve PixChargebacks
+        /// Retrieve PixChargeback objects
         /// <br/>
         /// Receive an IEnumerable of PixChargeback objects previously created in the Stark Infra API
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>status [string, default null]: filter for status of retrieved objects. ex: "created", "failed", "delivered", "closed", "canceled"</item>
-        ///     <item>after [DateTime or string, default null]: date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
-        ///     <item>before [DateTime or string, default null]: date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
-        ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545"]</item>
         ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
+        ///     <item>after [DateTime, default null]: date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>before [DateTime, default null]: date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>status [string, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled"</item>
+        ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
+        ///     <item>flow [string, default null]: direction of the Pix Chargeback. Options: "in" for received chargebacks, "out" for chargebacks you requested</item>
+        ///     <item>tags [list of strings, default null]: filter for tags of retrieved objects. ex: new List<string>{ "travel", "food" }</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
@@ -221,27 +233,31 @@ namespace StarkInfra
         ///     <item>IEnumerable of PixChargeback objects with updated attributes</item>
         /// </list>
         /// </summary>
-        public static IEnumerable<PixChargeback> Query(string status = null, DateTime? after = null, DateTime? before = null, 
-            List<string> ids = null, int? limit = null,User user = null)
+        public static IEnumerable<PixChargeback> Query(
+            int? limit = null, DateTime? after = null, DateTime? before = null, 
+            string status = null, List<string> ids = null, string flow = null, 
+            List<string> tags = null, User user = null
+        )
         {
             (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
-                    { "status", status },
+                    { "limit", limit },
                     { "after", after },
                     { "before", before },
+                    { "status", status },
                     { "ids", ids },
-                    { "limit", limit },
-                    { "user", user }
+                    { "flow", flow },
+                    { "tags", tags }
                 },
                 user: user
             ).Cast<PixChargeback>();
         }
 
         /// <summary>
-        /// Retrieve paged PixChargebacks
+        /// Retrieve paged PixChargeback objects
         /// <br/>
         /// Receive a list of up to 100 PixChargeback objects previously created in the Stark Infra API and the cursor to the next page.
         /// Use this function instead of query if you want to manually page your requests.
@@ -249,11 +265,13 @@ namespace StarkInfra
         /// Parameters (optional):
         /// <list>
         ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
-        ///     <item>status [string, default null]: filter for status of retrieved objects. ex: "created", "failed", "delivered", "closed", "canceled"</item>
-        ///     <item>after [DateTime or string, default null]: date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
-        ///     <item>before [DateTime or string, default null]: date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35.</item>
+        ///     <item>after [DateTime, default null]: date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>before [DateTime, default null]: date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>status [string, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled"</item>
         ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
-        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
+        ///     <item>flow [string, default null]: direction of the Pix Chargeback. Options: "in" for received chargebacks, "out" for chargebacks you requested</item>
+        ///     <item>tags [list of strings, default null]: filter for tags of retrieved objects. ex: new List<string>{ "travel", "food" }</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
@@ -263,8 +281,11 @@ namespace StarkInfra
         ///     <item>cursor to retrieve the next page of PixChargeback objects</item>
         /// </list>
         /// </summary>
-        public static (List<PixChargeback> page, string pageCursor) Page(string cursor = null, string status = null, DateTime? after = null, DateTime? before = null, 
-            List<string> ids = null, int? limit = null,User user = null)
+        public static (List<PixChargeback> page, string pageCursor) Page(
+            string cursor = null, int? limit = null, DateTime? after = null, 
+            DateTime? before = null, string status = null, List<string> ids = null, 
+            string flow = null, List<string> tags = null, User user = null
+        )
         {
             (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
             (List<SubResource> page, string pageCursor) = Rest.GetPage(
@@ -272,12 +293,13 @@ namespace StarkInfra
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
                     { "cursor", cursor },
-                    { "status", status },
+                    { "limit", limit },
                     { "after", after },
                     { "before", before },
+                    { "status", status },
                     { "ids", ids },
-                    { "limit", limit },
-                    { "user", user }
+                    { "flow", flow },
+                    { "tags", tags }
                 },
                 user: user
             );
@@ -298,22 +320,25 @@ namespace StarkInfra
         /// <list>
         ///     <item>id[string]: object unique id. ex: "5656565656565656"</item>
         ///     <item>result [string]: result after the analysis of the PixChargeback. Options: "rejected", "accepted", "partiallyAccepted".</item>
-        ///     <item>patchData [dictionary]: Dictionary of optional and conditionaly required parameters</item>
+        ///     <item>patchData [dictionary]: Dictionary of optional and conditionally required parameters</item>
         ///     <list>
         ///         <item>rejectionReason[string, default null]: if the PixChargeback is rejected a rejectionReason is required. Options: "noBalance", "accountClosed", "unableToReverse"</item>
-        ///         <item>reversalReferenceId[string, default null]: if the PixChargeback is accepted a reversalReferenceId is required. ex: "D20018183202201201450u34sDGd19lz"</item>
-        ///         <item>analysis[string, default null]: description of the analysis that led to the result.</item>
+        ///         <item>reversalReferenceID[string, default null]: if the PixChargeback is accepted a reversalReferenceID is required. ex: "D20018183202201201450u34sDGd19lz"</item>
         ///     </list>
         /// </list>
         /// <br/>
         /// Parameters (optional):
         /// <list>
+        ///     <item>patchData [dictionary]: Dictionary of optional and conditionally required parameters</item>
+        ///     <list>
+        ///         <item>analysis[string, default null]: description of the analysis that led to the result.</item>
+        ///     </list>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings. User was set before function call</item>
         /// </list>
         /// <br/>
         /// Return:
         /// <list>
-        ///     <item>target PixChargeback with updated attributes</item>
+        ///     <item>PixChargeback object with updated attributes</item>
         /// </list>
         /// </summary>
         public static PixChargeback Update(string id, string result, Dictionary<string, object> patchData, User user = null)
@@ -325,7 +350,7 @@ namespace StarkInfra
                 resourceMaker: resourceMaker,
                 id: id,
                 payload: patchData,
-            user: user
+                user: user
             ) as PixChargeback;
         }
 
@@ -336,7 +361,7 @@ namespace StarkInfra
         /// <br/>
         /// Parameters(required):
         /// <list>
-        ///     <item>id[string]: PixChargeback unique id. ex: "5656565656565656"</item>
+        ///     <item>id[string]: object unique id. ex: "5656565656565656"</item>
         /// </list>
         /// <br/>
         /// Parameters(optional):
@@ -369,16 +394,17 @@ namespace StarkInfra
         {
             string id = json.id;
             long amount = json.amount;
-            string referenceId = json.referenceId;
+            string referenceID = json.referenceId;
             string reason = json.reason;
             string description = json.description;
+            List<string> tags = json.tags?.ToObject<List<string>>();
             string analysis = json.analysis;
-            string bacenId = json.bacenId;
             string senderBankCode = json.senderBankCode;
             string receiverBankCode = json.receiverBankCode;
             string rejectionReason = json.rejectionReason;
-            string reversalReferenceId = json.reversalReferenceId;
+            string reversalReferenceID = json.reversalReferenceId;
             string result = json.result;
+            string flow = json.flow;
             string status = json.status;
             string createdString = json.created;
             DateTime created = Checks.CheckDateTime(createdString);
@@ -386,10 +412,10 @@ namespace StarkInfra
             DateTime updated = Checks.CheckDateTime(updatedString);
 
             return new PixChargeback(
-                id: id, amount: amount, referenceId: referenceId, reason: reason, description: description,
-                analysis: analysis, bacenId: bacenId, senderBankCode: senderBankCode, receiverBankCode: receiverBankCode,
-                rejectionReason: rejectionReason, reversalReferenceId: reversalReferenceId, result: result, status: status,
-                updated: updated, created: created
+                id: id, amount: amount, referenceID: referenceID, reason: reason, description: description,
+                tags: tags, analysis: analysis, senderBankCode: senderBankCode, receiverBankCode: receiverBankCode,
+                rejectionReason: rejectionReason, reversalReferenceID: reversalReferenceID, result: result, 
+                status: status, flow: flow, updated: updated, created: created
             );
         }
     }

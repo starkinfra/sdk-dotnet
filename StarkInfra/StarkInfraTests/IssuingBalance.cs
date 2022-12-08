@@ -13,12 +13,12 @@ namespace StarkInfraTests
         [Fact]
         public void Get()
         {
-            IssuingBalance issuingBalance = IssuingBalance.Get();
-            Assert.NotNull(issuingBalance.ID);
-            Assert.True(issuingBalance.Amount >= 0);
-            Assert.Equal(3, issuingBalance.Currency.Length);
-            Assert.True(issuingBalance.Updated <= DateTime.UtcNow);
-            TestUtils.Log(issuingBalance);
+            IssuingBalance balance = IssuingBalance.Get();
+            Assert.NotNull(balance.ID);
+            Assert.True(balance.Amount >= 0);
+            Assert.Equal(3, balance.Currency.Length);
+            Assert.True(balance.Updated <= DateTime.UtcNow);
+            TestUtils.Log(balance);
         }
     }
 }

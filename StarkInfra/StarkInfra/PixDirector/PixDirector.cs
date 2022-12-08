@@ -8,30 +8,30 @@ namespace StarkInfra
     /// PixDirector object
     /// <br/>
     /// Mandatory data that must be registered within the Central Bank for emergency contact purposes.
+    /// <br/>
     /// When you initialize a PixDirector, the entity will not be automatically
     /// created in the Stark Infra API. The 'create' function sends the objects
     /// to the Stark Infra API and returns the list of created objects.
     /// <br/>
     /// Properties:
     /// <list>
-    ///     <item>name [string]: name of the PixDirector. ex: "Edward Stark".</item>
-    ///     <item>taxId [string]: tax ID (CPF) of the PixDirector. ex: "012.345.678-90"</item>
-    ///     <item>phone [string]: phone of the PixDirector. ex: "+551198989898"</item>
-    ///     <item>email [string]: email of the PixDirector. ex: "ned.stark@starkbank.com"</item>
-    ///     <item>password [string]: password of the PixDirector. ex: "12345678"</item>
-    ///     <item>teamEmail [string]: team email. ex: "pix.team@company.com"</item>
-    ///     <item>teamPhones [list of strings]: list of phones of the team. ex: new List<string>{ "+5511988889999", "+5511988889998" }</item>
-    ///     <item>id [string]: unique id returned when the PixDirector is created. ex: "5656565656565656"</item>
-    ///     <item>status [string]: current PixDirector status. ex: "success"</item>
+    ///     <item>Name [string]: name of the PixDirector. ex: "Edward Stark".</item>
+    ///     <item>TaxID [string]: tax ID (CPF) of the PixDirector. ex: "012.345.678-90"</item>
+    ///     <item>Phone [string]: phone of the PixDirector. ex: "+551198989898"</item>
+    ///     <item>Email [string]: email of the PixDirector. ex: "ned.stark@starkbank.com"</item>
+    ///     <item>Password [string]: password of the PixDirector. ex: "12345678"</item>
+    ///     <item>TeamEmail [string]: team email. ex: "pix.team@company.com"</item>
+    ///     <item>TeamPhones [list of strings]: list of phones of the team. ex: new List<string>{ "+5511988889999", "+5511988889998" }</item>
+    ///     <item>Status [string]: current PixDirector status. ex: "success"</item>
     /// </list>
     /// </summary>
-    public partial class PixDirector : Resource
+    public partial class PixDirector : SubResource
     {
-        public string Email { get; }
         public string Name { get; }
-        public string Password { get; }
-        public string Phone { get; }
         public string TaxID { get; }
+        public string Phone { get; }
+        public string Email { get; }
+        public string Password { get; }
         public string TeamEmail { get; }
         public List<string> TeamPhones { get; }
         public string Status { get; }
@@ -40,6 +40,7 @@ namespace StarkInfra
         /// PixDirector object
         /// <br/>
         /// Mandatory data that must be registered within the Central Bank for emergency contact purposes.
+        /// <br/>
         /// When you initialize a PixDirector, the entity will not be automatically
         /// created in the Stark Infra API. The 'create' function sends the objects
         /// to the Stark Infra API and returns the list of created objects.
@@ -47,7 +48,7 @@ namespace StarkInfra
         /// Parameters (required):
         /// <list>
         ///     <item>name [string]: name of the PixDirector. ex: "Edward Stark".</item>
-        ///     <item>taxId [string]: tax ID (CPF) of the PixDirector. ex: "012.345.678-90"</item>
+        ///     <item>taxID [string]: tax ID (CPF) of the PixDirector. ex: "012.345.678-90"</item>
         ///     <item>phone [string]: phone of the PixDirector. ex: "+551198989898"</item>
         ///     <item>email [string]: email of the PixDirector. ex: "ned.stark@starkbank.com"</item>
         ///     <item>password [string]: password of the PixDirector. ex: "12345678"</item>
@@ -56,18 +57,18 @@ namespace StarkInfra
         ///</list>
         /// Attributes (return-only):
         /// <list>
-        ///     <item>id [string]: unique id returned when the PixDirector is created. ex: "5656565656565656"</item>
-        ///     <item>status [string]: current PixDirector status. </item>
+        ///     <item>status [string]: current PixDirector status. ex: "success"</item>
         /// </list>
         /// </summary>
-        public PixDirector(string email, string name, string password, string phone, string taxId, string teamEmail, List<string> teamPhones,
-            string id = null, string status = null) : base(id)
-        {
-            Email = email;
+        public PixDirector(
+            string name, string taxID, string phone, string email, string password, 
+            string teamEmail, List<string> teamPhones, string status = null
+        ) {
             Name = name;
-            Password = password;
+            TaxID = taxID;
             Phone = phone;
-            TaxID = taxId;
+            Email = email;
+            Password = password;
             TeamEmail = teamEmail;
             TeamPhones = teamPhones;
             Status = status;
@@ -140,21 +141,21 @@ namespace StarkInfra
             return (resourceName: "PixDirector", resourceMaker: ResourceMaker);
         }
 
-        internal static Resource ResourceMaker(dynamic json)
+        internal static SubResource ResourceMaker(dynamic json)
         {
-            string id = json.id;
-            string email = json.email;
             string name = json.name;
-            string password = json.password;
+            string taxID = json.taxId;
             string phone = json.phone;
-            string taxId = json.taxId;
+            string email = json.email;
+            string password = json.password;
             string teamEmail = json.teamEmail;
             List<string> teamPhones = json.teamPhones;
             string status = json.status;
 
             return new PixDirector(
-                id: id, email: email, name: name, password: password, phone: phone, taxId: taxId, teamEmail: teamEmail,
-                teamPhones: teamPhones, status: status
+                name: name, taxID: taxID, phone: phone, email: email, 
+                password: password, teamEmail: teamEmail, teamPhones: teamPhones, 
+                status: status
             );
         }
     }
