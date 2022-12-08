@@ -11,17 +11,21 @@ namespace StarkInfra
     /// <br/>
     /// The IssuingHolder describes a card holder that may group several cards.
     /// <br/>
+    /// When you initialize a IssuingHolder, the entity will not be automatically
+    /// created in the Stark Infra API. The 'create' function sends the objects
+    /// to the Stark Infra API and returns the created object.
+    /// <br/>
     /// Properties:
     /// <list>
-    ///     <item>Name [string]: card holder name.</item>
-    ///     <item>TaxID [string]: card holder tax ID</item>
-    ///     <item>ExternalID [string] card holder external ID</item>
-    ///     <item>Rules [list of IssuingRule objects, default []]: [EXPANDABLE] list of holder spending rules</item>
-    ///     <item>Tags [list of strings, default []]: list of strings for tagging. ex: new List<string>{ "travel", "food" }</item>
+    ///     <item>Name [string]: card holder name. ex: "Jaime Lannister"</item>
+    ///     <item>TaxID [string]: card holder's tax ID. ex: "012.345.678-90"</item>
+    ///     <item>ExternalID [string] card holder's external ID. ex: "my-external-id"</item>
+    ///     <item>Rules [list of IssuingRule objects, default null]: [EXPANDABLE] list of holder spending rules</item>
+    ///     <item>Tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "travel", "food" }</item>
     ///     <item>ID [string]: unique id returned when IssuingHolder is created. ex: "5656565656565656"</item>
     ///     <item>Status [string]: current IssuingHolder status. ex: "active", "blocked" or "canceled"</item>
-    ///     <item>Updated [DateTime]: latest update datetime for the IssuingHolder. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
-    ///     <item>Created [DateTime]: creation datetime for the IssuingHolder. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>Updated [DateTime]: latest update DateTime for the IssuingHolder. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>Created [DateTime]: creation DateTime for the IssuingHolder. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
     /// </summary>
     public partial class IssuingHolder : Resource
@@ -29,9 +33,9 @@ namespace StarkInfra
         public string Name { get; }
         public string TaxID { get; }
         public string ExternalID { get; }
-        public string Status { get; }
         public List<IssuingRule> Rules { get; }
         public List<string> Tags { get; }
+        public string Status { get; }
         public DateTime? Updated { get; }
         public DateTime? Created { get; }
 
@@ -40,41 +44,45 @@ namespace StarkInfra
         /// <br/>
         /// The IssuingHolder describes a card holder that may group several cards.
         /// <br/>
+        /// When you initialize a IssuingHolder, the entity will not be automatically
+        /// created in the Stark Infra API. The 'create' function sends the objects
+        /// to the Stark Infra API and returns the created object.
+        /// <br/>
         /// Parameters (required):
         /// <list>
-        ///     <item>name [string]: card holder name</item>
-        ///     <item>taxId [string]: card holder tax ID</item>
-        ///     <item>externalId [string] card holder external ID</item>
+        ///     <item>name [string]: card holder's name. ex: "Jaime Lannister</item>
+        ///     <item>taxID [string]: card holder's tax ID. ex: "012.345.678-90"</item>
+        ///     <item>externalID [string] card holder external ID. ex: "my-external-id"</item>
         ///</list>
         /// Parameters (optional):
         /// <list>
-        ///     <item>rules [list of Rules, default []]: [EXPANDABLE] list of holder spending rules</item>
-        ///     <item>tags [list of strings, default []]: list of strings for tagging. ex: new List<string>{ "travel", "food" }</item>
+        ///     <item>rules [list of Rules, default null]: [EXPANDABLE] list of holder spending rules</item>
+        ///     <item>tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "travel", "food" }</item>
         /// </list>
         /// Attributes (return-only):
         /// <list>
         ///     <item>id [string]: unique id returned when IssuingHolder is created. ex: "5656565656565656"</item>
         ///     <item>status [string]: current IssuingHolder status. ex: "active", "blocked" or "canceled"</item>
-        ///     <item>updated [DateTime]: latest update datetime for the IssuingHolder. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
-        ///     <item>created [DateTime]: creation datetime for the IssuingHolder. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>updated [DateTime]: latest update DateTime for the IssuingHolder. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>created [DateTime]: creation DateTime for the IssuingHolder. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
-        public IssuingHolder(string name, string taxId, string externalId, List<IssuingRule> rules = null, List<string> tags = null, 
+        public IssuingHolder(string name, string taxID, string externalID, List<IssuingRule> rules = null, List<string> tags = null, 
             string id = null, string status = null, DateTime? updated = null, DateTime? created = null
         ) : base(id)
         {
             Name = name;
-            TaxID = taxId;
-            ExternalID = externalId;
-            Status = status;
+            TaxID = taxID;
+            ExternalID = externalID;
             Rules = rules;
             Tags = tags;
+            Status = status;
             Updated = updated;
             Created = created;
         }
 
         /// <summary>
-        /// Create IssuingHolders
+        /// Create IssuingHolder objects
         /// <br/>
         /// Send a list of IssuingHolder objects for creation in the Stark Infra API
         /// <br/>
@@ -110,13 +118,13 @@ namespace StarkInfra
         }
 
         /// <summary>
-        /// Create IssuingHolders
+        /// Create IssuingHolder objects
         /// <br/>
         /// Send a list of IssuingHolder objects for creation in the Stark Infra API
         /// <br/>
         /// Parameters (required):
         /// <list>
-        ///     <item>holders [list of dictionaries]: list of dictionaries representing the IssuingHolders to be created in the API</item>
+        ///     <item>holders [list of Dictionaries]: list of dictionaries representing the IssuingHolder objects to be created in the API</item>
         /// </list>
         /// <br/>
         /// Parameters (optional):
@@ -146,7 +154,7 @@ namespace StarkInfra
         }
 
         /// <summary>
-        /// Retrieve a specific IssuingHolder
+        /// Retrieve a specific IssuingHolder by its id
         /// <br/>
         /// Receive a single IssuingHolder object previously created in the Stark Infra API by passing its id
         /// <br/>
@@ -166,7 +174,7 @@ namespace StarkInfra
         /// <br/>
         /// Return:
         /// <list>
-        ///     <item>IssuingHolder object with updated attributes</item>
+        ///     <item>IssuingHolder object that corresponds to the given id.</item>
         /// </list>
         /// </summary>
         public static IssuingHolder Get(string id, Dictionary<string, object> parameters = null, User user = null)
@@ -182,18 +190,18 @@ namespace StarkInfra
         }
 
         /// <summary>
-        /// Retrieve IssuingHolders
+        /// Retrieve IssuingHolder objects
         /// <br/>
         /// Receive an IEnumerable of IssuingHolder objects previously created in the Stark Infra API
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>status [string, default null]: filter for status of retrieved objects. ex: "active", "blocked", "canceled".</item>
-        ///     <item>after [DateTime or string, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
-        ///     <item>before [DateTime or string, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
-        ///     <item>tags [list of strings, default null]: tags to filter retrieved objects. ex: new List<string>{ "tony", "stark" }</item>
-        ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: List<string>{ "5656565656565656", "4545454545454545"}</item>
         ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
+        ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: List<string>{ "5656565656565656", "4545454545454545"}</item>
+        ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>status [string, default null]: filter for status of retrieved objects. ex: "active", "blocked", "canceled".</item>
+        ///     <item>tags [list of strings, default null]: list of tags to filter retrieved objects. ex: new List<string>{ "tony", "stark" }</item>
         ///     <item>expand [list of strings, default null]: fields to expand information. ex: new List<string>{ "rules" }</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
@@ -203,20 +211,21 @@ namespace StarkInfra
         ///     <item>IEnumerable of IssuingHolder objects with updated attributes</item>
         /// </list>
         /// </summary>
-        public static IEnumerable<IssuingHolder> Query(string status = null, DateTime? after = null, DateTime? before = null, List<string> tags = null,
-            List<string> ids = null, int? limit = null, List<string> expand = null, User user = null)
-        {
+        public static IEnumerable<IssuingHolder> Query(int? limit = null, List<string> ids = null, DateTime? after = null, 
+            DateTime? before = null, string status = null, List<string> tags = null,List<string> expand = null, 
+            User user = null
+        ) {
             (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
-                    { "status", status },
+                    { "limit", limit },
+                    { "ids", ids },
                     { "after", after },
                     { "before", before },
+                    { "status", status },
                     { "tags", tags },
-                    { "ids", ids },
-                    { "limit", limit },
                     { "expand", expand }
                 },
                 user: user
@@ -224,7 +233,7 @@ namespace StarkInfra
         }
 
         /// <summary>
-        /// Retrieve paged IssuingHolders
+        /// Retrieve paged IssuingHolder objects
         /// <br/>
         /// Receive a list of up to 100 IssuingHolder objects previously created in the Stark Infra API and the cursor to the next page.
         /// Use this function instead of query if you want to manually page your requests.
@@ -232,36 +241,38 @@ namespace StarkInfra
         /// Parameters (optional):
         /// <list>
         ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
-        ///     <item>status [string, default null]: filter for status of retrieved objects. ex: "active", "blocked", "canceled"</item>
-        ///     <item>after [DateTime or string, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
-        ///     <item>before [DateTime or string, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
-        ///     <item>tags [list of strings, default null]: tags to filter retrieved objects. ex: new List<string>{"tony", "stark" }</item>
+        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35.</item>
         ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
-        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
+        ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>status [string, default null]: filter for status of retrieved objects. ex: "active", "blocked", "canceled"</item>
+        ///     <item>tags [list of strings, default null]: list of tags to filter retrieved objects. ex: new List<string>{"tony", "stark" }</item>
         ///     <item>expand [list of strings, default null]: fields to expand information. ex: new List<string>{"rules"}</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
         /// Return:
         /// <list>
-        ///     <item>list of IssuingHolder objects with updated attributes and cursor to retrieve the next page of IssuingHolder objects</item>
+        ///     <item>list of IssuingHolder objects with updated attributes</item>
+        ///     <item>cursor to retrieve the next page of IssuingHolder objects</item>
         /// </list>
         /// </summary>
-        public static (List<IssuingHolder> page, string pageCursor) Page(string cursor = null, string status = null, DateTime? after = null, DateTime? before = null, 
-            List<string> tags = null, List<string> ids = null, int? limit = null, List<string> expand = null, User user = null)
-        {
+        public static (List<IssuingHolder> page, string pageCursor) Page(string cursor = null, int? limit = null, 
+            List<string> ids = null, DateTime? after = null, DateTime? before = null, string status = null, 
+            List<string> tags = null, List<string> expand = null, User user = null
+        ) {
             (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
             (List<SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
                     { "cursor", cursor },
-                    { "status", status },
+                    { "limit", limit },
+                    { "ids", ids },
                     { "after", after },
                     { "before", before },
+                    { "status", status },
                     { "tags", tags },
-                    { "ids", ids },
-                    { "limit", limit },
                     { "expand", expand }
                 },
                 user: user
@@ -281,15 +292,15 @@ namespace StarkInfra
         /// <br/>
         /// Parameters(required):
         /// <list>
-        ///     <item>id[string]: object unique id. ex: "5656565656565656"</item>
+        ///     <item>id[string]: IssuingHolder id. ex: "5656565656565656"</item>
         /// </list>
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>status [string, defautl null]: you may cancel the IssuingHolder by passing "canceled" in the status. ex: "canceled"</item>
-        ///     <item>name [string, default null]: card holder name</item>
-        ///     <item>rules [list of IssuingRule, default null]: list of IssuingRule with "amount": int, "currencyCode": string, "id": string, "interval": string, "name": string pairs.</item>
+        ///     <item>status [string, default null]: You may block the IssuingHolder by passing 'blocked' in the status. ex: "blocked"</item>
+        ///     <item>name [string, default null]: card holder name. ex: "Jaime Lannister"</item>
         ///     <item>tags [list of strings, default null]: list of strings for tagging</item>
+        ///     <item>rules [list of dictionaries, default null]: list of dictionaries with "amount": int, "currencyCode": string, "id": string, "interval": string, "name": string pairs.</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
@@ -348,21 +359,21 @@ namespace StarkInfra
 
         internal static Resource ResourceMaker(dynamic json)
         {
-            string id = json.id;
             string name = json.name;
-            string taxId = json.taxId;
-            string externalId = json.externalId;
+            string taxID = json.taxId;
+            string externalID = json.externalId;
             List<IssuingRule> rules = IssuingRule.ParseRules(json.rules);
-            List<string> tags = json.tags.ToObject<List<string>>();
+            List<string> tags = json.tags?.ToObject<List<string>>();
+            string id = json.id;
             string status = json.status;
-            string createdString = json.created;
-            DateTime created = Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
             DateTime updated = Checks.CheckDateTime(updatedString);
+            string createdString = json.created;
+            DateTime created = Checks.CheckDateTime(createdString);
 
             return new IssuingHolder(
-                id: id, name: name, taxId: taxId, externalId: externalId, status: status,
-                rules: rules, tags: tags, updated: updated, created: created
+                name: name, taxID: taxID, externalID: externalID, rules: rules, 
+                tags: tags, id: id, status: status, updated: updated, created: created             
             );
         }
     }

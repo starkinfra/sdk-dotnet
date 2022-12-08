@@ -16,13 +16,13 @@ namespace StarkInfraTests
         [Fact]
         public void Query()
         {
-            List<PixKey> pixKeys = PixKey.Query(limit: 101).ToList();
-            Assert.True(pixKeys.Count <= 101);
-            Assert.True(pixKeys.First().ID != pixKeys.Last().ID);
-            foreach (PixKey pixKey in pixKeys)
+            List<PixKey> keys = PixKey.Query(limit: 101).ToList();
+            Assert.True(keys.Count <= 101);
+            Assert.True(keys.First().ID != keys.Last().ID);
+            foreach (PixKey key in keys)
             {
-                TestUtils.Log(pixKey);
-                Assert.NotNull(pixKey.ID);
+                TestUtils.Log(key);
+                Assert.NotNull(key.ID);
             }
         }
 
@@ -52,18 +52,18 @@ namespace StarkInfraTests
         [Fact]
         public void Update()
         {
-            List<PixKey> pixKeys = PixKey.Query(limit: 2, status: "registered").ToList();
-            Assert.Equal(2, pixKeys.Count);
-            Assert.True(pixKeys.First().ID != pixKeys.Last().ID);
+            List<PixKey> keys = PixKey.Query(limit: 2, status: "registered").ToList();
+            Assert.Equal(2, keys.Count);
+            Assert.True(keys.First().ID != keys.Last().ID);
             string expectedStatus = "reconciliation";
-            foreach (PixKey pixKey in pixKeys)
+            foreach (PixKey key in keys)
             {
-                TestUtils.Log(pixKey);
-                Assert.NotNull(pixKey.ID);
+                TestUtils.Log(key);
+                Assert.NotNull(key.ID);
                 Dictionary<string, object> patchData = new Dictionary<string, object> {
                     { "name", "John Snow" }
                 };
-                PixKey updatedPixKey = PixKey.Update(id: pixKey.ID, reason: expectedStatus, patchData);
+                PixKey updatedPixKey = PixKey.Update(id: key.ID, reason: expectedStatus, patchData);
                 TestUtils.Log(updatedPixKey);
                 Assert.Equal("John Snow", updatedPixKey.Name);
             }
@@ -72,16 +72,17 @@ namespace StarkInfraTests
         [Fact]
         public void CreateGetAndCancel()
         {
-            PixKey pixKey = PixKey.Create(Example());
-            TestUtils.Log(pixKey);
+            PixKey key = PixKey.Create(Example());
+            TestUtils.Log(key);
             Dictionary<string, object> parameters = new Dictionary<string, object> {
-                { "endToEndId", EndToEndId.Create(bankCode: Environment.GetEnvironmentVariable("SANDBOX_BANKCODE")) }
+                { "endToEndID", EndToEndID.Create(bankCode: Environment.GetEnvironmentVariable("SANDBOX_BANKCODE")) }
             };
-            PixKey getPixKey = PixKey.Get(id: pixKey.ID, payerId: pixKey.TaxID, parameters: parameters);
-            Assert.Equal(getPixKey.ID, pixKey.ID);
-            PixKey canceledKey = PixKey.Cancel(id: pixKey.ID);
-            Assert.Equal(canceledKey.ID, pixKey.ID);
-            TestUtils.Log(pixKey);
+            System.Threading.Thread.Sleep(4000);
+            PixKey getPixKey = PixKey.Get(id: key.ID, payerID: key.TaxID, parameters: parameters);
+            Assert.Equal(getPixKey.ID, key.ID);
+            PixKey canceledKey = PixKey.Cancel(id: key.ID);
+            Assert.Equal(canceledKey.ID, key.ID);
+            TestUtils.Log(key);
         }
 
         internal static PixKey Example()
@@ -92,7 +93,7 @@ namespace StarkInfraTests
                 accountType: "savings",
                 branchCode: TestUtils.RandomNumberString(1000, 9999),
                 name: "Jamie Lannster",
-                taxId: "012.345.678-90",
+                taxID: "012.345.678-90",
                 id: TestUtils.RandomPhoneNumber()
             );
         }

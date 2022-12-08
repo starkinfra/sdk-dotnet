@@ -16,9 +16,9 @@ namespace StarkInfra
     /// each request or may be defined as the default user at the start(See README).
     /// If you are accessing a specific Workspace using Organization credentials, you should
     /// specify the workspace ID when building the Organization object or by request, using
-    /// the Organization.Replace(organization, workspaceId) method, which creates a copy of the organization
+    /// the Organization.Replace(organization, workspaceID) method, which creates a copy of the organization
     /// object with the altered workspace ID. If you are listing or creating new Workspaces, the
-    /// workspaceId should be null.
+    /// workspaceID should be null.
     /// <br/>
     /// Properties:
     /// <list>
@@ -46,9 +46,9 @@ namespace StarkInfra
         /// each request or may be defined as the default user at the start(See README).
         /// If you are accessing a specific Workspace using Organization credentials, you should
         /// specify the workspace ID when building the Organization object or by request, using
-        /// the Organization.Replace(organization, workspaceId) method, which creates a copy of the organization
+        /// the Organization.Replace(organization, workspaceID) method, which creates a copy of the organization
         /// object with the altered workspace ID. If you are listing or creating new Workspaces, the
-        /// workspaceId should be null.
+        /// workspaceID should be null.
         /// <br/>
         /// Parameters (required):
         /// <list>

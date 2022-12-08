@@ -9,25 +9,28 @@ namespace StarkInfra
     /// <summary>
     /// PixStatement object
     /// <br/>
-    /// When you initialize a PixStatement it will not be created in the Stark Infra API.
-    /// The 'create' function sends the objects to the Stark Infra API and returns the list of
-    /// created objects. The PixStatement object stores information about all the transactions
-    /// that happened on a specific day at the workspace. It must be created by the user before
-    /// it can be accessed by the user. This feature is only available for direct participants.
+    /// The PixStatement object stores information about all the transactions that
+    /// happened on a specific day at your settlement account according to the Central Bank.
+    /// It must be created by the user before it can be accessed.
+    /// This feature is only available for direct participants.
+    /// <br/>
+    /// When you initialize a PixStatement, the entity will not be automatically
+    /// created in the Stark Infra API. The 'create' function sends the objects
+    /// to the Stark Infra API and returns the created object.
     /// <br/>
     /// Properties:
     /// <list>
-    ///     <item>After [DateTime]: transactions that happened at this date are stored in the PixStatement, must be the same as before. ex: (2022-01-01)</item>
-    ///     <item>Before [DateTime]: transactions that happened at this date are stored in the PixStatement, must be the same as after. ex: (2022-01-01)</item>
-    ///     <item>Type [string]: types of entities to include in statement. Options: ["interchange", "interchangeTotal", "transaction"]</item>
+    ///     <item>After [DateTime]: transactions that happened at this date are stored in the PixStatement, must be the same as before. ex: DateTime(2022, 01, 01)</item>
+    ///     <item>Before [DateTime]: transactions that happened at this date are stored in the PixStatement, must be the same as after. ex: DateTime(2022, 01, 01)</item>
+    ///     <item>Type [string]: types of entities to include in statement. Options: new List<string>{ "interchange", "interchangeTotal", "transaction" }</item>
     ///     <item>ID [string]: unique id returned when the PixStatement is created. ex: "5656565656565656"</item>
     ///     <item>Status [string]: current PixStatement status. ex: "success" or "failed"</item>
     ///     <item>TransactionCount [integer]: number of transactions that happened during the day that the PixStatement was requested. ex: 11</item>
-    ///     <item>Created [DateTime]: creation datetime for the PixStatement. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
-    ///     <item>Updated [DateTime]: latest update datetime for the PixStatement. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>Created [DateTime]: creation DateTime for the PixStatement. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>Updated [DateTime]: latest update DateTime for the PixStatement. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
     /// </summary>
-    public partial class PixStatement : Utils.Resource
+    public partial class PixStatement : Resource
     {
         public DateTime? After { get; }
         public DateTime? Before { get; }
@@ -40,17 +43,20 @@ namespace StarkInfra
         /// <summary>
         /// PixStatement object
         /// <br/>
-        /// When you initialize a PixStatement it will not be created in the Stark Infra API.
-        /// The 'create' function sends the objects to the Stark Infra API and returns the list of
-        /// created objects. The PixStatement object stores information about all the transactions
-        /// that happened on a specific day at the Workspace. It must be created by the user before
-        /// it can be accessed by the user. This feature is only available for direct participants.
+        /// The PixStatement object stores information about all the transactions that
+        /// happened on a specific day at your settlement account according to the Central Bank.
+        /// It must be created by the user before it can be accessed.
+        /// This feature is only available for direct participants.
+        /// <br/>
+        /// When you initialize a PixStatement, the entity will not be automatically
+        /// created in the Stark Infra API. The 'create' function sends the objects
+        /// to the Stark Infra API and returns the created object.
         /// <br/>
         /// Parameters (required):
         /// <list>
         ///     <item>after [DateTime]: transactions that happened at this date are stored in the PixStatement, must be the same as before. ex: (2022-01-01)</item>
         ///     <item>before [DateTime]: transactions that happened at this date are stored in the PixStatement, must be the same as after. ex: (2022-01-01)</item>
-        ///     <item>type [string]: types of entities to include in statement. Options: ["interchange", "interchangeTotal", "transaction"]</item>
+        ///     <item>type [string]: types of entities to include in statement. Options: new List<string>{ "interchange", "interchangeTotal", "transaction" }</item>
         /// </list>
         /// <br/>
         /// Attributes (return-only):
@@ -58,8 +64,8 @@ namespace StarkInfra
         ///     <item>id [string]: unique id returned when the PixStatement is created. ex: "5656565656565656"</item>
         ///     <item>status [string]: current PixStatement status. ex: "success" or "failed"</item>
         ///     <item>transactionCount [integer]: number of transactions that happened during the day that the PixStatement was requested. ex: 11</item>
-        ///     <item>created [DateTime]: creation datetime for the PixStatement. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
-        ///     <item>updated [DateTime]: latest update datetime for the PixStatement. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>created [DateTime]: creation DateTime for the PixStatement. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>updated [DateTime]: latest update DateTime for the PixStatement. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
         public PixStatement(DateTime? after, DateTime? before, string type, string id = null, string status = null, 
@@ -81,7 +87,7 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (required):
         /// <list>
-        ///     <item>statement [list of dictionaries]: list of dictionaries representing the PixStatements to be created in the API</item>
+        ///     <item>statement [PixStatement object]: PixStatement object to be created in the API.</item>
         /// </list>
         /// <br/>
         /// Parameters (optional):
@@ -112,7 +118,7 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (required):
         /// <list>
-        ///     <item>statement [dictionary]: PixStatement to be created in the API</item>
+        ///     <item>statement [dictionary]: Dictionary representing the PixStatement to be created in the API</item>
         /// </list>
         /// <br/>
         /// Parameters (optional):
@@ -137,9 +143,9 @@ namespace StarkInfra
         }
 
         /// <summary>
-        /// Retrieve a specific PixStatement
+        /// Retrieve a PixStatement object
         /// <br/>
-        /// Receive a single PixStatement object previously created in the Stark Infra API by passing its id
+        /// Retrieve the PixStatement object linked to your Workspace in the Stark Infra API by its id.
         /// <br/>
         /// Parameters (required):
         /// <list>
@@ -153,7 +159,7 @@ namespace StarkInfra
         /// <br/>
         /// Return:
         /// <list>
-        ///     <item>PixStatement object with updated attributes</item>
+        ///     <item>PixStatement object that corresponds to the given id.</item>
         /// </list>
         /// </summary>
         public static PixStatement Get(string id, User user = null)
@@ -168,14 +174,14 @@ namespace StarkInfra
         }
         
         /// <summary>
-        /// Retrieve PixStatements
+        /// Retrieve PixStatement objects
         /// <br/>
         /// Receive an IEnumerable of PixStatement objects previously created in the Stark Infra API
         /// <br/>
         /// Parameters (optional):
         /// <list>
         ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
-        ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]</item>
+        ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
@@ -199,7 +205,7 @@ namespace StarkInfra
         }
         
         /// <summary>
-        /// Retrieve paged PixStatements
+        /// Retrieve paged PixStatement objects
         /// <br/>
         /// Receive a list of up to 100 PixStatement objects previously created in the Stark Infra API and the cursor to the next page.
         /// Use this function instead of query if you want to manually page your requests.
@@ -207,8 +213,8 @@ namespace StarkInfra
         /// Parameters (optional):
         /// <list>
         ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
-        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
-        ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]</item>
+        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35.</item>
+        ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
@@ -240,9 +246,9 @@ namespace StarkInfra
         }
 
         /// <summary>
-        /// Retrieve a specific PixStatement csv file
+        /// Retrieve a .csv PixStatement by its id
         /// <br/>
-        /// Receive a single PixStatement csv receipt file generated in the Stark Infra API by passing its id.
+        /// Retrieve a specific PixStatement by its ID in a .csv file.
         /// <br/>
         /// Parameters (required):
         /// <list>
@@ -256,7 +262,7 @@ namespace StarkInfra
         /// <br/>
         /// Return:
         /// <list>
-        ///     <item>PixStatement csv zipped file file</item>
+        ///     <item>.zip file containing a PixStatement in .csv format</item>
         /// </list>
         /// </summary>
         public static byte[] Csv(string id, User user = null)

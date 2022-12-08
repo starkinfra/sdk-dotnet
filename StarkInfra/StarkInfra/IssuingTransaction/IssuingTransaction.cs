@@ -9,7 +9,7 @@ namespace StarkInfra
     /// <summary>
     /// IssuingTransaction object
     /// <br/>
-    /// The IssuingTransaction object displays the information of the cards created in your Workspace.
+    /// The IssuingTransaction objects created in your Workspace to represent each balance shift.
     /// <br/>
     /// Properties:
     /// <list>
@@ -19,7 +19,7 @@ namespace StarkInfra
     ///     <item>Description [string]: IssuingTransaction description. ex: "Buying food"</item>
     ///     <item>Source [string]: source of the transaction. ex: "issuing-purchase/5656565656565656"</item>
     ///     <item>Tags [list of strings]: list of strings inherited from the source resource. ex: new List<string>{ "tony", "stark" }</item>
-    ///     <item>Created [DateTime]: creation datetime for the IssuingTransaction. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>Created [DateTime]: creation DateTime for the IssuingTransaction. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
     /// </summary>
     public partial class IssuingTransaction : Resource
@@ -34,7 +34,7 @@ namespace StarkInfra
         /// <summary>
         /// IssuingTransaction object
         /// <br/>
-        /// Displays the IssuingTransaction objects created in your Workspace.
+        /// The IssuingTransaction objects created in your Workspace to represent each balance shift.
         /// <br/>
         /// Attributes (return-only):
         /// <list>
@@ -44,7 +44,7 @@ namespace StarkInfra
         ///     <item>description [string]: IssuingTransaction description. ex: "Buying food"</item>
         ///     <item>source [string]: source of the transaction. ex: "issuing-purchase/5656565656565656"</item>
         ///     <item>tags [list of strings]: list of strings inherited from the source resource. ex: new List<string>{ "tony", "stark" }</item>
-        ///     <item>created [DateTime]: creation datetime for the IssuingTransaction. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>created [DateTime]: creation DateTime for the IssuingTransaction. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
         public IssuingTransaction(long amount, long balance, string description, string source, List<string> tags, DateTime? created = null, string id = null) : base(id)
@@ -58,7 +58,7 @@ namespace StarkInfra
         }
 
         /// <summary>
-        /// Retrieve a specific IssuingTransaction
+        /// Retrieve a specific IssuingTransaction by its id
         /// <br/>
         /// Receive a single IssuingTransaction object previously created in the Stark Infra API by passing its id
         /// <br/>
@@ -74,7 +74,7 @@ namespace StarkInfra
         /// <br/>
         /// Return:
         /// <list>
-        ///     <item>IssuingTransaction object with updated attributes</item>
+        ///     <item>IssuingTransaction object that corresponds to the given id.</item>
         /// </list>
         /// </summary>
         public static IssuingTransaction Get(string id, User user = null)
@@ -89,18 +89,18 @@ namespace StarkInfra
         }
 
         /// <summary>
-        /// Retrieve IssuingTransactions
+        /// Retrieve IssuingTransaction objects
         /// <br/>
         /// Receive an IEnumerable of IssuingTransaction objects previously created in the Stark Infra API
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>tags [list of strings, default null]: tags to filter retrieved objects. ex: new List<string>{ "tony", "stark" }</item>
+        ///     <item>tags [list of strings, default null]: list of tags to filter retrieved objects. ex: new List<string>{ "tony", "stark" }</item>
         ///     <item>externalIds [list of strings, default null]: external IDs. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
-        ///     <item>after [DateTime or string, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
-        ///     <item>before [DateTime or string, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>status [string, default null]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"</item>
-        ///     <item>ids [list of strings, default null]: purchase IDs</item>
+        ///     <item>ids [list of strings, default null]: purchase IDs. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
         ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
@@ -132,46 +132,47 @@ namespace StarkInfra
         }
 
         /// <summary>
-        /// Retrieve paged IssuingTransactions
+        /// Retrieve paged IssuingTransaction objects
         /// <br/>
         /// Receive a list of up to 100 IssuingTransaction objects previously created in the Stark Infra API and the cursor to the next page.
         /// Use this function instead of query if you want to manually page your requests.
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
-        ///     <item>tags [list of strings, default null]: tags to filter retrieved objects. ex: new List<string>{ "tony", "stark" }</item>
+        ///     <item>tags [list of strings, default null]: list of tags to filter retrieved objects. ex: new List<string>{ "tony", "stark" }</item>
         ///     <item>externalIds [list of strings, default null]: external IDs. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
-        ///     <item>after [DateTime or string, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
-        ///     <item>before [DateTime or string, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>status [string, default null]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"</item>
-        ///     <item>ids [list of strings, default null]: purchase IDs</item>
-        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
+        ///     <item>ids [list of strings, default null]: purchase IDs. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
+        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35.</item>
+        ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
         /// Return:
         /// <list>
-        ///     <item>list of IssuingTransaction objects with updated attributes and cursor to retrieve the next page of IssuingTransaction objects</item>
+        ///     <item>list of IssuingTransaction objects with updated attributes</item>
+        ///     <item>cursor to retrieve the next page of IssuingTransaction objects</item>
         /// </list>
         /// </summary>
-        public static (List<IssuingTransaction> page, string pageCursor) Page(string cursor = null, List<string> tags = null, 
+        public static (List<IssuingTransaction> page, string pageCursor) Page(List<string> tags = null, 
             List<string> externalIds = null, DateTime? after = null, DateTime? before = null, string status = null,
-            int? limit = 1, List<string> ids = null, User user = null)
+            List<string> ids = null, string cursor = null, int? limit = 1, User user = null)
         {
             (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
             (List<SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
-                    { "cursor", cursor },
                     { "tags" , tags },
                     { "externalIds" , externalIds },
                     { "after" , after },
                     { "before" , before },
                     { "status" , status },
                     { "ids" , ids },
-                    { "limit" , limit }
+                    { "limit" , limit },
+                    { "cursor", cursor }
                 },
                 user: user
             );
@@ -195,7 +196,7 @@ namespace StarkInfra
             long balance = json.balance;
             string description = json.description;
             string source = json.source;
-            List<string> tags = json.tags.ToObject<List<string>>();
+            List<string> tags = json.tags?.ToObject<List<string>>();
             string createdString = json.created;
             DateTime created = Checks.CheckDateTime(createdString);
 

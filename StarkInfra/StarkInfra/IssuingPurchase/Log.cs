@@ -20,17 +20,19 @@ namespace StarkInfra
         /// <list>
         ///     <item>ID[string]: unique id returned when the log is created. ex: "5656565656565656"</item>
         ///     <item>Purchase [IssuingPurchase]: IssuingPurchase entity to which the log refers to.</item>
-        ///     <item>Errors [list of strings]: list of errors linked to this BoletoPayment event.</item>
+        ///     <item>IssuingTransactionID [string]: transaction ID related to the IssuingCard.</item>
+        ///     <item>Errors [list of strings]: list of errors linked to this IssuingPurchase event.</item>
         ///     <item>Type [string]: type of the IssuingPurchase event which triggered the log creation. ex: "approved", "canceled", "confirmed", "denied", "reversed" and "voided"</item>
-        ///     <item>Created [DateTime]: creation datetime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>Created [DateTime]: creation DateTime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
         public class Log : Resource
         {
-            public DateTime Created { get; }
+            public IssuingPurchase Purchase { get; }
+            public string IssuingTransactionID { get; }
             public string Type { get; }
             public List<Dictionary<string, object>> Errors { get; }
-            public IssuingPurchase Purchase { get; }
+            public DateTime Created { get; }
 
             /// <summary>
             /// IssuingPurchase.Log object
@@ -43,9 +45,10 @@ namespace StarkInfra
             /// <list>
             ///     <item>id [string]: unique id returned when the log is created. ex: "5656565656565656"</item>
             ///     <item>purchase [IssuingPurchase]: IssuingPurchase entity to which the log refers to.</item>
+            ///     <item>issuingTransactionID [string]: transaction ID related to the IssuingCard.</item>
             ///     <item>errors [list of strings]: list of errors linked to this IssuingPurchase event.</item>
             ///     <item>type [string]: type of the IssuingPurchase event which triggered the log creation. ex: "approved", "canceled", "confirmed", "denied", "reversed" and "voided"</item>
-            ///     <item>created [DateTime]: creation datetime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+            ///     <item>created [DateTime]: creation DateTime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
             /// </list>
             /// </summary>
             public Log(string id, DateTime created, string type, List<Dictionary<string, object>> errors, IssuingPurchase purchase) : base(id)
@@ -88,17 +91,18 @@ namespace StarkInfra
             }
 
             /// <summary>
-            /// Retrieve Logs
+            /// Retrieve Log objects
             /// <br/>
             /// Receive an IEnumerable of Log objects previously created in the Stark Infra API
             /// <br/>
             /// Parameters (optional):
             /// <list>
+            ///     <item>ids [list of strings, default null]: list of IssuingPurchase ids to filter logs. ex: new List<string>{"5656565656565656", "4545454545454545" }</item>
             ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
             ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>types [list of strings, default null]: filter retrieved objects by types. ex: new List<string>{ "approved", "canceled", "confirmed", "denied", "reversed" and "voided" }</item>
-            ///     <item>purchaseIds [list of strings, default null]: list of IssuingPurchase ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
+            ///     <item>purchaseIds [list of strings, default null]: list of Purchase ids to filter logs. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
             ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
             /// </list>
             /// <br/>
@@ -126,7 +130,7 @@ namespace StarkInfra
             }
 
             /// <summary>
-            /// Retrieve paged Logs
+            /// Retrieve paged Log objects
             /// <br/>
             /// Receive a list of up to 100 Log objects previously created in the Stark Infra API and the cursor to the next page.
             /// Use this function instead of query if you want to manually page your purchases.
@@ -134,17 +138,19 @@ namespace StarkInfra
             /// Parameters (optional):
             /// <list>
             ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
-            ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
+            ///     <item>ids [list of strings, default null]: list of IssuingPurchase ids to filter logs. ex: new List<string>{"5656565656565656", "4545454545454545" }</item>
+            ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35.</item>
             ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>types [list of strings, default null]: filter retrieved objects by types. ex: new List<string>{ "approved", "canceled", "confirmed", "denied", "reversed" and "voided" }</item>
-            ///     <item>purchaseIds [list of strings, default null]: list of IssuingPurchase ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
+            ///     <item>purchaseIds [list of strings, default null]: list of Purchase ids to filter logs. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
             ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
             /// </list>
             /// <br/>
             /// Return:
             /// <list>
-            ///     <item>list of Log objects with updated attributes and cursor to retrieve the next page of Log objects</item>
+            ///     <item>list of Log objects with updated attributes</item>
+            ///     <item>cursor to retrieve the next page of Log objects</item>
             /// </list>
             /// </summary>
             public static (List<Log> page, string pageCursor) Page(string cursor = null, int? limit = null, DateTime? after = null,

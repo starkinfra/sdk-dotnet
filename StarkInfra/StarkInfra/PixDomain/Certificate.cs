@@ -13,7 +13,7 @@ namespace StarkInfra
     /// <br/>
     /// Properties:
     /// <list>
-    ///     <item>content [string]: certificate of a Pix participant in PEM format.
+    ///     <item>content [string]: certificate of a Pix participant in PEM format.</item>
     /// </list>
     /// </summary>
     public partial class Certificate : SubResource
@@ -27,7 +27,7 @@ namespace StarkInfra
         /// <br/>
         /// Properties:
         /// <list>
-        ///     <item>content [string]: certificate of the Pix participant in PEM format.
+        ///     <item>content [string]: certificate of the Pix participant in PEM format.</item>
         /// </list>
         /// </summary>
         public Certificate(string content)

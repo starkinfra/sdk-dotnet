@@ -1,7 +1,6 @@
 ﻿using System;
 using StarkInfra;
 using Xunit;
-using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -92,8 +91,8 @@ namespace StarkInfraTests
         {
             return new IssuingHolder(
                 name: "Iron Bank S.A.",
-                externalId: Guid.NewGuid().ToString(),
-                taxId: "012.345.678-90",
+                externalID: Guid.NewGuid().ToString(),
+                taxID: "012.345.678-90",
                 tags: new List<string> { "Traveler Employee" },
                 rules: new List<StarkInfra.IssuingRule> {
                     new StarkInfra.IssuingRule(

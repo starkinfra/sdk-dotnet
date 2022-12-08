@@ -13,6 +13,44 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- BrcodePreview resource
+- CreditPreview sub-resource
+- CreditNotePreview sub-resource
+- code attribute to IssuingProduct resource
+- default to fee, externalId and tags in parse method of PixRequest and PixReversal resources
+- tags parameter to PixClaim, PixInfraction, Pix Chargeback, DynamicBrcode and StaticBrcode resources
+- tags parameter to query and page methods in PixChargeback, PixClaim and PixInfraction resources
+- flow parameter to PixClaim resource
+- flow parameter to query and page methods of PixClaim
+- zipCode, purchase, isPartialAllowed, cardTags and holderTags attributes to IssuingPurchase resource
+- brcode, link and due attributes to IssuingInvoice resource
+- StaticBrcode resource
+- DynamicBrcode resource
+- IssuingRule.Method sub-resource
+- IssuingRule.Country sub-resource
+- IssuingRule.Category sub-resource
+- parse method to IssuingPurchase resource
+- response method to PixRequest, PixReversal and IssuingPurchase resources
+- nominalInterest attribute to CreditNote resource
+### Changed
+- PixDirector from resource to sub-resource
+- IssuingBin resource to IssuingProduct
+- settlement parameter to fundingType in IssuingProduct resource
+- client parameter to holderType in IssuingProduct resource
+- agent parameter to flow in PixInfraction and PixChargeback resources
+- agent parameter to flow in query and page methods of PixInfraction and PixChargeback resources
+- bankCode parameter to claimerBankCode in PixClaim resource
+- fine and interest attributes to return only in CreditNote.Invoice sub-resource
+- expiration from returned-only to optional parameter in the CreditNote resource 
+- CreditNote.Signer sub-resource to CreditSigner resource
+### Removed
+- category parameter from IssuingProduct resource
+- bacenId parameter from PixChargeback and PixInfraction resources
+- agent parameter from PixClaim.Log resource
+- IssuingAuthorization resource
+- bankCode attribute from PixReversal resource
+
 
 ## [0.1.0] - 2022-06-03
 ### Added

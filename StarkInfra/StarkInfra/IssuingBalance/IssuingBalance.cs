@@ -17,9 +17,9 @@ namespace StarkInfra
     /// Properties:
     /// <list>
     ///     <item>ID [string]: unique id returned when IssuingBalance is created. ex: "5656565656565656"</item>
-    ///     <item>Amount [long]: current balance amount of the Workspace in cents. ex: 200 (= R$ 2.00)</item>
+    ///     <item>Amount [long]: current issuing balance amount of the Workspace in cents. ex: 200 (= R$ 2.00)</item>
     ///     <item>Currency [string]: currency of the current Workspace. Expect others to be added eventually. ex: "BRL"</item>
-    ///     <item>Updated [DateTime]: latest update datetime for the IssuingBalance. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>Updated [DateTime]: latest update DateTime for the IssuingBalance. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
     /// </summary>
     public class IssuingBalance : Resource
@@ -39,12 +39,12 @@ namespace StarkInfra
         /// Attributes(return-only):
         /// <list>
         ///     <item>id [string]: unique id returned when IssuingBalance is created. ex: "5656565656565656"</item>
-        ///     <item>amount [long]: current balance amount of the Workspace in cents. ex: 200 (= R$ 2.00)</item>
+        ///     <item>amount [long]: current issuing balance amount of the Workspace in cents. ex: 200 (= R$ 2.00)</item>
         ///     <item>currency [string]: currency of the current Workspace. Expect others to be added eventually. ex: "BRL"</item>
-        ///     <item>updated [DateTime]: latest update datetime for the IssuingBalance. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>updated [DateTime]: latest update DateTime for the IssuingBalance. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
-        public IssuingBalance(string id, long amount, string currency, DateTime updated) : base(id)
+        public IssuingBalance(string id, long amount, string currency, DateTime? updated) : base(id)
         {
             Amount = amount;
             Currency = currency;
@@ -54,7 +54,7 @@ namespace StarkInfra
         /// <summary>
         /// Retrieve the IssuingBalance object
         /// <br/>
-        /// Receive the IssuingBalance object linked to your workspace in the Stark Infra API
+        /// Receive the IssuingBalance object linked to your Workspace in the Stark Infra API
         /// <br/>
         /// Parameters(optional):
         /// <list>

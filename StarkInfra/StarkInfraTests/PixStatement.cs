@@ -15,23 +15,23 @@ namespace StarkInfraTests
         [Fact]
         public void CreateGet()
         {
-            PixStatement pixStatement = PixStatement.Create( Example());
-            Assert.NotNull(pixStatement.ID);
-            PixStatement getPixStatement = PixStatement.Get(id: pixStatement.ID);
-            Assert.Equal(getPixStatement.ID, pixStatement.ID);
-            TestUtils.Log(pixStatement);
+            PixStatement statement = PixStatement.Create( Example());
+            Assert.NotNull(statement.ID);
+            PixStatement getPixStatement = PixStatement.Get(id: statement.ID);
+            Assert.Equal(getPixStatement.ID, statement.ID);
+            TestUtils.Log(statement);
         }
 
         [Fact]
         public void Query()
         {
-            List<PixStatement> pixStatements = PixStatement.Query(limit: 12).ToList();
-            Assert.True(pixStatements.Count <= 12);
-            Assert.True(pixStatements.First().ID != pixStatements.Last().ID);
-            foreach (PixStatement pixStatement in pixStatements)
+            List<PixStatement> statements = PixStatement.Query(limit: 12).ToList();
+            Assert.True(statements.Count <= 12);
+            Assert.True(statements.First().ID != statements.Last().ID);
+            foreach (PixStatement statement in statements)
             {
-                TestUtils.Log(pixStatement);
-                Assert.NotNull(pixStatement.ID);
+                TestUtils.Log(statement);
+                Assert.NotNull(statement.ID);
             }
         }
 
@@ -60,39 +60,39 @@ namespace StarkInfraTests
         [Fact]
         public void QueryIds()
         {
-            List<PixStatement> pixStatements = PixStatement.Query(limit: 10).ToList();
-            List<string> pixStatementsIdsExpected = new List<string>();
-            Assert.Equal(10, pixStatements.Count);
-            Assert.True(pixStatements.First().ID != pixStatements.Last().ID);
-            foreach (PixStatement transaction in pixStatements)
+            List<PixStatement> statements = PixStatement.Query(limit: 10).ToList();
+            List<string> statementsIdsExpected = new List<string>();
+            Assert.Equal(10, statements.Count);
+            Assert.True(statements.First().ID != statements.Last().ID);
+            foreach (PixStatement transaction in statements)
             {
                 Assert.NotNull(transaction.ID);
-                pixStatementsIdsExpected.Add(transaction.ID);
+                statementsIdsExpected.Add(transaction.ID);
             }
 
-            List<PixStatement> pixStatementsResult = PixStatement.Query(limit:10, ids: pixStatementsIdsExpected).ToList();
-            List<string> pixStatementsIdsResult = new List<string>();
-            Assert.Equal(10, pixStatements.Count);
-            Assert.True(pixStatements.First().ID != pixStatements.Last().ID);
-            foreach (PixStatement transaction in pixStatementsResult)
+            List<PixStatement> statementsResult = PixStatement.Query(limit:10, ids: statementsIdsExpected).ToList();
+            List<string> statementsIdsResult = new List<string>();
+            Assert.Equal(10, statements.Count);
+            Assert.True(statements.First().ID != statements.Last().ID);
+            foreach (PixStatement transaction in statementsResult)
             {
                 Assert.NotNull(transaction.ID);
-                pixStatementsIdsResult.Add(transaction.ID);
+                statementsIdsResult.Add(transaction.ID);
             }
 
-            pixStatementsIdsExpected.Sort();
-            pixStatementsIdsResult.Sort();
-            Assert.Equal(pixStatementsIdsExpected, pixStatementsIdsResult);
+            statementsIdsExpected.Sort();
+            statementsIdsResult.Sort();
+            Assert.Equal(statementsIdsExpected, statementsIdsResult);
         }
         
         [Fact]
         public void QueryParams()
         {
-            List<PixStatement> pixStatements = PixStatement.Query(
+            List<PixStatement> statements = PixStatement.Query(
                 limit: 10,
                 ids: new List<string> {"1", "2"}
             ).ToList();
-            Assert.True(pixStatements.Count == 0);
+            Assert.True(statements.Count == 0);
         }
         
         [Fact]

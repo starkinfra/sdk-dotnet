@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 using StarkInfra.Utils;
 
 
@@ -9,12 +9,12 @@ namespace StarkInfra
     /// <summary>
     /// CreditNote.Invoice.Discount object
     /// <br/>
-    /// Discount object for the Invoice
+    /// Invoice discount information.
     /// <br/>
     /// Properties:
     /// <list>
-    ///     <item>Percentage [float]: percentage of discount applied until specified due date</item>
-    ///     <item>Due [DateTime, or string]: due datetime for the discount</item>
+    ///     <item>Percentage [float]: percentage of discount applied until specified due date. ex: 2.5</item>
+    ///     <item>Due [DateTime]: due DateTime for the discount. ex: new DateTime(2022, 01, 10)</item>
     /// </list>
     /// </summary>
     public partial class Discount : SubResource
@@ -25,12 +25,13 @@ namespace StarkInfra
         /// <summary>
         /// CreditNote.Invoice.Discount object
         /// <br/>
-        /// Discount object for the Invoice
+        /// Invoice discount information.
         /// <br/>
         /// Parameters (required):
         /// <list>
-        ///     <item>Percentage [float]: percentage of discount applied until specified due date</item>
-        ///     <item>Due [DateTime, or string]: due datetime for the discount</item>
+        ///     <item>Percentage [float]: percentage of discount applied until specified due date. ex: 2.5</item>
+        ///     <item>Due [DateTime]: due DateTime for the discount. ex: new DateTime(2022, 01, 10)</item>
+        /// </list>
         /// </summary>
         public Discount(float? percentage, DateTime? due)
         {

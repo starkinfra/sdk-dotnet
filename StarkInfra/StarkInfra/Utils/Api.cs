@@ -67,7 +67,7 @@ namespace StarkInfra.Utils
                         value = casted;
                     }
                 }
-                if (value is Resource) {
+                if (value is SubResource) {
                     value = ApiJson(value);
                 }
 

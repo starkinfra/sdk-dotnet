@@ -15,12 +15,12 @@ namespace StarkInfra
     /// <list>
     ///     <item>Name [string]: rule name. ex: "Travel" or "Food"</item>
     ///     <item>Amount [integer]: maximum amount that can be spent in the informed interval. ex: 200000 (= R$ 2000.00)</item>
-    ///     <item>ID [string, default null]: unique id returned when an IssuingRule is created, used to update a specific IssuingRule. ex: "5656565656565656"
+    ///     <item>ID [string, default null]: unique id returned when an IssuingRule is created, used to update a specific IssuingRule. ex: "5656565656565656"</item>
     ///     <item>Interval [string, default "lifetime"]: interval after which the rule amount counter will be reset to 0. ex: "instant", "day", "week", "month", "year" or "lifetime"</item>
     ///     <item>CurrencyCode [string, default "BRL"]: code of the currency that the rule amount refers to. ex: "BRL" or "USD"</item>
-    ///     <item>Categories [list of strings, default []]: merchant categories accepted by the rule. ex: new List<string>{ "eatingPlacesRestaurants", "travelAgenciesTourOperators" }</item>
-    ///     <item>Countries [list of strings, default []]: countries accepted by the rule. ex: new List<string>{ "BRA", "USA" }</item>
-    ///     <item>Methods [list of strings, default []]: card purchase methods accepted by the rule. ex: new List<string>{ "chip", "token", "server", "manual", "magstripe", "contactless" }</item>
+    ///     <item>Categories [list of MerchantCategories, default null]: merchant categories accepted by the rule. ex: new List<string>{ new MerchantCategory() }</item>
+    ///     <item>Countries [list of MerchantCountries, default null]: countries accepted by the rule. ex: new List<string>{ new MerchantCountry() }</item>
+    ///     <item>Methods [list of CardMethods, default null]: card purchase methods accepted by the rule. ex: new List<string>{ new CardMethod() }</item>
     ///     <item>CounterAmount [integer]: current rule spent amount. ex: 1000</item>
     ///     <item>CurrencySymbol [string]: currency symbol. ex: "R$""</item>
     ///     <item>CurrencyName [string]: currency name. ex: "Brazilian Real"</item>
@@ -33,9 +33,9 @@ namespace StarkInfra
         public long Amount { get; }
         public string Interval { get; }
         public string CurrencyCode { get; }
-        public List<string> Categories { get; }
-        public List<string> Countries { get; }
-        public List<string> Methods { get; }
+        public List<MerchantCategory> Categories { get; }
+        public List<MerchantCountry> Countries { get; }
+        public List<CardMethod> Methods { get; }
         public string CounterAmount { get; }
         public string CurrencySymbol { get; }
         public string CurrencyName { get; }
@@ -52,12 +52,12 @@ namespace StarkInfra
         ///</list>
         /// Parameters (optional):
         /// <list>
-        ///     <item>id [string, default null]: unique id returned when an IssuingRule is created, used to update a specific IssuingRule. ex: "5656565656565656"
+        ///     <item>id [string, default null]: unique id returned when an IssuingRule is created, used to update a specific IssuingRule. ex: "5656565656565656"</item>
         ///     <item>interval [string, default "lifetime"]: interval after which the rule amount counter will be reset to 0. ex: "instant", "day", "week", "month", "year" or "lifetime"</item>
         ///     <item>currencyCode [string, default "BRL"]: code of the currency that the rule amount refers to. ex: "BRL" or "USD"</item>
-        ///     <item>categories [list of strings, default []]: merchant categories accepted by the rule. ex: new List<string>{ "eatingPlacesRestaurants", "travelAgenciesTourOperators" }</item>
-        ///     <item>countries [list of strings, default []]: countries accepted by the rule. ex: new List<string>{ "BRA", "USA" }</item>
-        ///     <item>methods [list of strings, default []]: card purchase methods accepted by the rule. ex: new List<string>{ "chip", "token", "server", "manual", "magstripe", "contactless" }</item>
+        ///     <item>categories [list of MerchantCategories, default null]: merchant categories accepted by the rule. ex: new List<string>{ new MerchantCategory() }</item>
+        ///     <item>countries [list of MerchantCountries, default null]: countries accepted by the rule. ex: new List<string>{ new MerchantCountry() }</item>
+        ///     <item>methods [list of CardMethods, default null]: card purchase methods accepted by the rule. ex: new List<string>{ new CardMethod() }</item>
         /// </list>
         /// Attributes (return-only):
         /// <list>
@@ -66,8 +66,8 @@ namespace StarkInfra
         ///     <item>currencyName [string]: currency name. ex: "Brazilian Real"</item>
         /// </list>
         /// </summary>
-        public IssuingRule(string name, long amount, string interval, string currencyCode = "BRL", List<string> categories = null, List<string> countries = null,
-            string id = null, List<string> methods = null, string counterAmount = null, string currencySymbol = null, string currencyName = null
+        public IssuingRule(string name, long amount, string interval, string currencyCode = "BRL", List<MerchantCategory> categories = null, List<MerchantCountry> countries = null,
+            string id = null, List<CardMethod> methods = null, string counterAmount = null, string currencySymbol = null, string currencyName = null
         ) : base(id)
         { 
             Name = name;
@@ -105,20 +105,9 @@ namespace StarkInfra
             long amount = json.amount;
             string interval = json.interval;
             string currencyCode = json.currencyCode;
-            List<string> categories = null;
-            if (json.categories != null)
-            {
-                categories = json.categories.ToObject<List<string>>();
-            }
-            List<string> countries = null;
-            if (json.countries != null) {
-                json.countries.ToObject<List<string>>();
-            }
-            List<string> methods = null;
-            if (json.methods != null)
-            {
-                methods = json.methods.ToObject<List<string>>();
-            }
+            List<MerchantCategory> categories = MerchantCategory.ParseCategories(json.categories);
+            List<MerchantCountry> countries = MerchantCountry.ParseCountries(json.countries);
+            List<CardMethod> methods = CardMethod.ParseMethods(json.methods);
             string counterAmount = json.counterAmount;
             string currencySymbol = json.currencySymbol;
             string currencyName = json.currencyName;

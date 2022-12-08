@@ -49,9 +49,8 @@
     <Folder Include="PixInfraction\" />
     <Folder Include="PixChargeback\" />
     <Folder Include="PixDirector\" />
-    <Folder Include="IssuingAuthorization\" />
     <Folder Include="IssuingBalance\" />
-    <Folder Include="IssuingBin\" />
+    <Folder Include="IssuingProduct\" />
     <Folder Include="IssuingCard\" />
     <Folder Include="IssuingHolder\" />
     <Folder Include="IssuingPurchase\" />

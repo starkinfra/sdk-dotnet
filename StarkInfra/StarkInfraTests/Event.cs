@@ -125,7 +125,7 @@ namespace StarkInfraTests
             Assert.Equal(getEventItem.ID, eventItem.ID);
             TestUtils.Log(getEventItem);
             Debug.Write(getEventItem);
-            Event canceledEventItem = Event.Cancel(id: eventItem.ID);
+            Event canceledEventItem = Event.Delete(id: eventItem.ID);
             Assert.Equal(canceledEventItem.ID, eventItem.ID);
             TestUtils.Log(canceledEventItem);
             Debug.Write(canceledEventItem);

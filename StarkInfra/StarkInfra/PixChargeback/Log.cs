@@ -19,17 +19,17 @@ namespace StarkInfra
         /// <list>
         ///     <item>ID [string]: unique id returned when the log is created. ex: "5656565656565656"</item>
         ///     <item>Chargeback [PixChargeback]: PixChargeback entity to which the log refers to.</item>
-        ///     <item>Errors [list of strings]: list of errors linked to this PixChargeback event.</item>
         ///     <item>Type [string]: type of the PixChargeback event which triggered the log creation. ex: "created", "failed", "delivering", "delivered", "closed", "canceled"</item>
-        ///     <item>Created [DateTime]: creation datetime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>Errors [list of strings]: list of errors linked to this PixChargeback event.</item>
+        ///     <item>Created [DateTime]: creation DateTime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
         public class Log : Resource
         {
-            public DateTime Created { get; }
+            public PixChargeback Chargeback { get; }
             public string Type { get; }
             public List<Dictionary<string, object>> Errors { get; }
-            public PixChargeback Chargeback { get; }
+            public DateTime Created { get; }
 
             /// <summary>
             /// PixChargeback.Log object
@@ -42,21 +42,21 @@ namespace StarkInfra
             /// <list>
             ///     <item>id [string]: unique id returned when the log is created. ex: "5656565656565656"</item>
             ///     <item>chargeback [PixChargeback]: PixChargeback entity to which the log refers to.</item>
-            ///     <item>errors [list of strings]: list of errors linked to this PixChargeback event.</item>
             ///     <item>type [string]: type of the PixChargeback event which triggered the log creation. ex: "created", "failed", "delivering", "delivered", "closed", "canceled"</item>
-            ///     <item>created [DateTime]: creation datetime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+            ///     <item>errors [list of strings]: list of errors linked to this PixChargeback event.</item>
+            ///     <item>created [DateTime]: creation DateTime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
             /// </list>
             /// </summary>
-            public Log(string id, DateTime created, string type, List<Dictionary<string, object>> errors, PixChargeback chargeback) : base(id)
+            public Log(string id, PixChargeback chargeback, string type, List<Dictionary<string, object>> errors, DateTime created) : base(id)
             {
-                Created = created;
-                Type = type;
-                Errors = errors;
                 Chargeback = chargeback;
+                Errors = errors;
+                Type = type;
+                Created = created;
             }
 
             /// <summary>
-            /// Retrieve a specific Log
+            /// Retrieve a specific PixChargeback.Log by its id
             /// <br/>
             /// Receive a single Log object previously created by the Stark Infra API by passing its id
             /// <br/>
@@ -72,7 +72,7 @@ namespace StarkInfra
             /// <br/>
             /// Return:
             /// <list>
-            ///     <item>Log object with updated attributes</item>
+            ///     <item>PixChargeback.Log object that corresponds to the given id.</item>
             /// </list>
             /// </summary>
             public static Log Get(string id, User user = null)
@@ -87,9 +87,9 @@ namespace StarkInfra
             }
 
             /// <summary>
-            /// Retrieve Logs
+            /// Retrieve PixChargeback.Log objects
             /// <br/>
-            /// Receive an IEnumerable of Log objects previously created in the Stark Infra API
+            /// Receive an IEnumerable of PixChargeback.Log objects previously created in the Stark Infra API
             /// <br/>
             /// Parameters (optional):
             /// <list>
@@ -104,7 +104,7 @@ namespace StarkInfra
             /// <br/>
             /// Return:
             /// <list>
-            ///     <item>IEnumerable of Log objects with updated attributes</item>
+            ///     <item>IEnumerable of PixChargeback.Log objects with updated attributes</item>
             /// </list>
             /// </summary>
             public static IEnumerable<Log> Query(int? limit = null, DateTime? after = null, DateTime? before = null,
@@ -127,15 +127,15 @@ namespace StarkInfra
             }
 
             /// <summary>
-            /// Retrieve paged Logs
+            /// Retrieve paged PixChargeback.Log objects
             /// <br/>
-            /// Receive a list of up to 100 Log objects previously created in the Stark Infra API and the cursor to the next page.
+            /// Receive a list of up to 100 PixChargeback.Log objects previously created in the Stark Infra API and the cursor to the next page.
             /// Use this function instead of query if you want to manually page your chargebacks.
             /// <br/>
             /// Parameters (optional):
             /// <list>
             ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
-            ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
+            ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35.</item>
             ///     <item>after [DateTime, default null]: date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>before [DateTime, default null]: date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>ids [list of strings, default null]: Log ids to filter PixChargeback Logs. ex: new List<string>{ "5656565656565656" }</item>
@@ -146,8 +146,8 @@ namespace StarkInfra
             /// <br/>
             /// Return:
             /// <list>
-            ///     <item>list of Log objects with updated attributes</item>
-            ///     <item>cursor to retrieve the next page of Log objects</item>
+            ///     <item>list of PixChargeback.Log objects with updated attributes</item>
+            ///     <item>cursor to retrieve the next page of PixChargeback.Log objects</item>
             /// </list>
             /// </summary>
             public static (List<Log> page, string pageCursor) Page(string cursor = null, int? limit = null, DateTime? after = null,
@@ -183,14 +183,17 @@ namespace StarkInfra
 
             internal static Utils.Resource ResourceMaker(dynamic json)
             {
-                List<Dictionary<string, object>> errors = json.errors.ToObject<List<Dictionary<string, object>>>();
                 string id = json.id;
+                PixChargeback chargeback = PixChargeback.ResourceMaker(json.chargeback);
+                string type = json.type;
+                List<Dictionary<string, object>> errors = json.errors.ToObject<List<Dictionary<string, object>>>();
                 string createdString = json.created;
                 DateTime created = Checks.CheckDateTime(createdString);
-                string type = json.type;
-                PixChargeback chargeback = PixChargeback.ResourceMaker(json.chargeback);
 
-                return new Log(id: id, created: created, type: type, errors: errors, chargeback: chargeback);
+                return new Log(
+                    id: id, chargeback: chargeback, type: type, errors: errors, 
+                    created: created
+                );
             }
         }
     }

@@ -19,10 +19,10 @@ namespace StarkInfra
     /// <list>
     ///     <item>ID [string]: unique id returned when the Event is created. ex: "5656565656565656"</item>
     ///     <item>Log [Log]: a Log object from one the subscription services ex: PixRequest.Log, PixReversal.Log</item>
-    ///     <item>Created [DateTime]: creation datetime for the notification event. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>Created [DateTime]: creation DateTime for the notification event. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>IsDelivered [bool]: true if the Event has been successfully delivered to the user url. ex: False</item>
-    ///     <item>Subscription [string]: service that triggered this event. ex: "pix-request.in", "pix-request.out"</item>
-    ///     <item>WorkspaceId [string]: ID of the Workspace that generated this Event. Mostly used when multiple Workspaces have Webhooks registered to the same endpoint. ex: "4545454545454545"
+    ///     <item>Subscription [string]: service that triggered this Event. Options: "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-key", "pix-claim", "pix-infraction", "pix-chargeback", "issuing-card", "issuing-invoice", "issuing-purchase", "credit-note"</item>
+    ///     <item>WorkspaceID [string]: ID of the Workspace that generated this Event. Mostly used when multiple Workspaces have Webhooks registered to the same endpoint. ex: "4545454545454545"</item>
     /// </list>
     /// </summary>
     public partial class Event : Resource
@@ -31,7 +31,7 @@ namespace StarkInfra
         public DateTime? Created { get; }
         public bool? IsDelivered { get; }
         public string Subscription { get; }
-        public string WorkspaceId { get; }
+        public string WorkspaceID { get; }
 
         /// <summary>
         /// Webhook Event object
@@ -44,24 +44,24 @@ namespace StarkInfra
         /// <list>
         ///     <item>id [string]: unique id returned when the Event is created. ex: "5656565656565656"</item>
         ///     <item>log [Log]: a Log object from one the subscription services ex: PixRequest.Log, PixRversal.Log</item>
-        ///     <item>created [DateTime]: creation datetime for the notification event. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>created [DateTime]: creation DateTime for the notification event. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>isDelivered [bool]: true if the Event has been successfully delivered to the user url. ex: False</item>
-        ///     <item>subscription [string]: service that triggered this event. ex: "pix-request.in", "pix-request.out"</item>
-        ///     <item>workspaceId [string]: ID of the Workspace that generated this event. Mostly used when multiple Workspaces have Webhooks registered to the same endpoint. ex: "4545454545454545"</item>
+        ///     <item>subscription [string]: service that triggered this Event. Options: "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-key", "pix-claim", "pix-infraction", "pix-chargeback", "issuing-card", "issuing-invoice", "issuing-purchase", "credit-note"</item>
+        ///     <item>workspaceID [string]: ID of the Workspace that generated this event. Mostly used when multiple Workspaces have Webhooks registered to the same endpoint. ex: "4545454545454545"</item>
         /// </list>
         /// </summary>
-        public Event(string id, Resource log, bool? isDelivered, string subscription, string workspaceId,
+        public Event(string id, Resource log, bool? isDelivered, string subscription, string workspaceID,
             DateTime? created = null) : base(id)
         {
             Log = log;
             Created = created;
             IsDelivered = isDelivered;
             Subscription = subscription;
-            WorkspaceId = workspaceId;
+            WorkspaceID = workspaceID;
         }
 
         /// <summary>
-        /// Retrieve a specific notification Event
+        /// Retrieve a specific notification Event by its id
         /// <br/>
         /// Receive a single notification Event object previously created in the Stark Infra API by passing its id
         /// <br/>
@@ -91,7 +91,7 @@ namespace StarkInfra
             ) as Event;
         }
         /// <summary>
-        /// Retrieve notification Events
+        /// Retrieve notification Event objects
         /// <br/>
         /// Receive an IEnumerable of notification Event objects previously created in the Stark Infra API
         /// <br/>
@@ -101,7 +101,7 @@ namespace StarkInfra
         ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>isDelivered [bool, default null]: bool to filter successfully delivered events. ex: True or False</item>
-        ///     <item>user [Project object, default null]: Project object. Not necessary if StarkInfra.User.Default was set before function call</item>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.User.Default was set before function call.</item>
         /// </list>
         /// <br/>
         /// Return:
@@ -134,16 +134,16 @@ namespace StarkInfra
         /// Parameters (optional):
         /// <list>
         ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
-        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
+        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35.</item>
         ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>isDelivered [bool, default null]: bool to filter successfully delivered events. ex: True or False</item>
-        ///     <item>user [Project object, default null]: Project object. Not necessary if StarkInfra.User.Default was set before function call</item>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.User.Default was set before function call.</item>
         /// </list>
         /// <br/>
         /// Return:
         /// <list>
-        ///     <item>list of Event objects with updated attributes and cursor to retrieve the next page of Event objects</item>
+        ///     <item>list of Event objects with updated attributes</item>
         /// </list>
         /// </summary>
         public static (List<Event> page, string pageCursor) Page(string cursor = null, int? limit = null, DateTime? after = null,
@@ -170,9 +170,9 @@ namespace StarkInfra
             return (events, pageCursor);
         }
         /// <summary>
-        /// Cancel a notification Event
+        /// Delete a Webhook Event entity
         /// <br/>
-        /// Cancel a of notification Event entity previously created in the Stark Infra API by its ID
+        /// Delete a of notification Event entity previously created in the Stark Infra API by its ID
         /// <br/>
         /// Parameters (required):
         /// <list>
@@ -186,10 +186,10 @@ namespace StarkInfra
         /// <br/>
         /// Return:
         /// <list>
-        ///     <item>canceled Event object</item>
+        ///     <item>deleted Event object</item>
         /// </list>
         /// </summary>
-        public static Event Cancel(string id, User user = null)
+        public static Event Delete(string id, User user = null)
         {
             (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
             return Rest.DeleteId(
@@ -240,7 +240,7 @@ namespace StarkInfra
         /// <br/>
         /// Create a single Event object received from event listening at subscribed user endpoint.
         /// If the provided digital signature does not check out with the StarkInfra public key, a
-        /// starkinfra.exception.InvalidSignatureException will be raised.
+        /// Error.InvalidSignatureException will be raised.
         /// <br/>
         /// Parameters (required):
         /// <list>
@@ -281,8 +281,8 @@ namespace StarkInfra
             string id = json.id;
             bool? isDelivered = json.isDelivered;
             string subscription = json.subscription;
+            string workspaceID = json.workspaceId;
             string createdString = json.created;
-            string workspaceId = json.workspaceId;
             DateTime created = Checks.CheckDateTime(createdString);
 
             Resource log = null;
@@ -330,7 +330,7 @@ namespace StarkInfra
 
             return new Event(
                 id: id, isDelivered: isDelivered, subscription: subscription, created: created, log: log,
-                workspaceId: workspaceId
+                workspaceID: workspaceID
             );
         }
     }

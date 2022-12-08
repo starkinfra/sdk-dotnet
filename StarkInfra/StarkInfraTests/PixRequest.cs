@@ -15,32 +15,32 @@ namespace StarkInfraTests
         [Fact]
         public void CreateGet()
         {
-            List<PixRequest> pixRequests = PixRequest.Create(new List<PixRequest>() { Example() });
-            PixRequest pixRequest = pixRequests.First();
-            Assert.NotNull(pixRequests.First().ID);
-            PixRequest getPixRequest = PixRequest.Get(id: pixRequest.ID);
-            Assert.Equal(getPixRequest.ID, pixRequest.ID);
-            TestUtils.Log(pixRequest);
+            List<PixRequest> requests = PixRequest.Create(new List<PixRequest>() { Example() });
+            PixRequest request = requests.First();
+            Assert.NotNull(requests.First().ID);
+            PixRequest getPixRequest = PixRequest.Get(id: request.ID);
+            Assert.Equal(getPixRequest.ID, request.ID);
+            TestUtils.Log(request);
         }
 
         [Fact]
         public void Query()
         {
-            List<PixRequest> pixRequests = PixRequest.Query(limit: 101, status: "success").ToList();
-            Assert.True(pixRequests.Count <= 101);
-            Assert.True(pixRequests.First().ID != pixRequests.Last().ID);
-            foreach (PixRequest pixRequest in pixRequests)
+            List<PixRequest> requests = PixRequest.Query(limit: 101, status: new List<string> { "success" }).ToList();
+            Assert.True(requests.Count <= 101);
+            Assert.True(requests.First().ID != requests.Last().ID);
+            foreach (PixRequest request in requests)
             {
-                TestUtils.Log(pixRequest);
-                Assert.NotNull(pixRequest.ID);
-                Assert.Equal("success", pixRequest.Status);
+                TestUtils.Log(request);
+                Assert.NotNull(request.ID);
+                Assert.Equal("success", request.Status);
             }
         }
 
         [Fact]
         public void Page()
         {
-            List<string> ids = new List<string>();
+            List<PixRequest> requests = new List<PixRequest>();
             List<PixRequest> page;
             string cursor = null;
             for (int i = 0; i < 2; i++)
@@ -48,60 +48,59 @@ namespace StarkInfraTests
                 (page, cursor) = PixRequest.Page(limit: 5, cursor: cursor);
                 foreach (PixRequest entity in page)
                 {
-                    Assert.DoesNotContain(entity.ID, ids);
-                    ids.Add(entity.ID);
+                    Assert.DoesNotContain(entity, requests);
+                    requests.Add(entity);
                 }
                 if (cursor == null)
                 {
                     break;
                 }
             }
-            Assert.True(ids.Count == 10);
+            Assert.True(requests.Count == 10);
         }
 
         [Fact]
         public void QueryIds()
         {
-            List<PixRequest> pixRequests = PixRequest.Query(limit: 10).ToList();
-            List<string> pixRequestsIdsExpected = new List<string>();
-            Assert.Equal(10, pixRequests.Count);
-            Assert.True(pixRequests.First().ID != pixRequests.Last().ID);
-            foreach (PixRequest transaction in pixRequests)
+            List<PixRequest> requests = PixRequest.Query(limit: 10).ToList();
+            List<string> requestsIdsExpected = new List<string>();
+            Assert.Equal(10, requests.Count);
+            Assert.True(requests.First().ID != requests.Last().ID);
+            foreach (PixRequest transaction in requests)
             {
                 Assert.NotNull(transaction.ID);
-                pixRequestsIdsExpected.Add(transaction.ID);
+                requestsIdsExpected.Add(transaction.ID);
             }
 
-            List<PixRequest> pixRequestsResult = PixRequest.Query(limit:10, ids: pixRequestsIdsExpected).ToList();
-            List<string> pixRequestsIdsResult = new List<string>();
-            Assert.Equal(10, pixRequests.Count);
-            Assert.True(pixRequests.First().ID != pixRequests.Last().ID);
-            foreach (PixRequest transaction in pixRequestsResult)
+            List<PixRequest> requestsResult = PixRequest.Query(limit:10, ids: requestsIdsExpected).ToList();
+            List<string> requestsIdsResult = new List<string>();
+            Assert.Equal(10, requests.Count);
+            Assert.True(requests.First().ID != requests.Last().ID);
+            foreach (PixRequest transaction in requestsResult)
             {
                 Assert.NotNull(transaction.ID);
-                pixRequestsIdsResult.Add(transaction.ID);
+                requestsIdsResult.Add(transaction.ID);
             }
 
-            pixRequestsIdsExpected.Sort();
-            pixRequestsIdsResult.Sort();
-            Assert.Equal(pixRequestsIdsExpected, pixRequestsIdsResult);
+            requestsIdsExpected.Sort();
+            requestsIdsResult.Sort();
+            Assert.Equal(requestsIdsExpected, requestsIdsResult);
         }
         
         [Fact]
         public void QueryParams()
         {
-            List<PixRequest> pixRequests = PixRequest.Query(
-                fields: new List<string> {"amount", "id"},
+            List<PixRequest> requests = PixRequest.Query(
                 limit: 10,
                 after: new DateTime(2022, 01, 01),
                 before: new DateTime(2022, 01, 02),
-                status: "success",
+                status: new List<string> { "success" },
                 tags: new List<string> {"iron", "bank"},
                 ids: new List<string> {"1", "2"},
                 externalIds: new List<string> {"1", "2"},
                 endToEndIds: new List<string> { "98236508236008632", "2352352352353" }
             ).ToList();
-            Assert.True(pixRequests.Count == 0);
+            Assert.True(requests.Count == 0);
         }
         
         [Fact]
@@ -111,11 +110,10 @@ namespace StarkInfraTests
             string cursor = null;
             (page, cursor) = PixRequest.Page(
                 cursor: null,
-                fields: new List<string> {"amount", "id"},
                 limit: 10,
                 after: new DateTime(2022, 01, 01),
                 before: new DateTime(2022, 01, 02),
-                status: "success",
+                status: new List<string> { "success" },
                 tags: new List<string> {"iron", "bank"},
                 ids: new List<string> {"1", "2"},
                 externalIds: new List<string> {"1", "2"},
@@ -162,24 +160,31 @@ namespace StarkInfraTests
             }
             throw new Exception("failed to raise InvalidSignatureError");
         }
-        
-        internal static PixRequest Example(bool schedule = true)
+
+        [Fact]
+        public void SendResponse()
+        {
+            string response = PixRequest.Response(status: "accepted");
+            TestUtils.Log(response);
+        }
+
+        internal static PixRequest Example()
         {
             return new PixRequest(
                 amount: new Random().Next(1, 1000),
-                externalId: Convert.ToString(new Random().Next(1, 999999999)),
+                externalID: Convert.ToString(new Random().Next(1, 999999999)),
                 senderName: "Arya",
-                senderTaxId: "01234567890",
+                senderTaxID: "01234567890",
                 senderBranchCode: "0000",
                 senderAccountNumber: "00000-0",
                 senderAccountType: "checking",
                 receiverName: "maria",
-                receiverTaxId: "01234567890",
-                receiverBankCode: "0001",
-                receiverAccountNumber: "00000-1",
+                receiverTaxID: "01234567890",
+                receiverBankCode: "20018183",
                 receiverBranchCode: "0001",
+                receiverAccountNumber: "00000-1",
                 receiverAccountType: "checking",
-                endToEndId: EndToEndId.Create(bankCode: Environment.GetEnvironmentVariable("SANDBOX_BANKCODE"))
+                endToEndID: "E35547753205" + Convert.ToString(new Random().Next(111111111, 999999999)) + "u34sDGd19l2"
             );
         }
     }

@@ -16,14 +16,14 @@ namespace StarkInfraTests
         [Fact]
         public void Query()
         {
-            List<PixChargeback> pixChargebacks = PixChargeback.Query(limit: 101, status: "canceled").ToList();
-            Assert.True(pixChargebacks.Count <= 101);
-            Assert.True(pixChargebacks.First().ID != pixChargebacks.Last().ID);
-            foreach (PixChargeback pixChargeback in pixChargebacks)
+            List<PixChargeback> chargebacks = PixChargeback.Query(limit: 101, status: "canceled").ToList();
+            Assert.True(chargebacks.Count <= 101);
+            Assert.True(chargebacks.First().ID != chargebacks.Last().ID);
+            foreach (PixChargeback chargeback in chargebacks)
             {
-                TestUtils.Log(pixChargeback);
-                Assert.NotNull(pixChargeback.ID);
-                Assert.Equal("canceled", pixChargeback.Status);
+                TestUtils.Log(chargeback);
+                Assert.NotNull(chargeback.ID);
+                Assert.Equal("canceled", chargeback.Status);
             }
         }
 
@@ -52,20 +52,20 @@ namespace StarkInfraTests
         [Fact]
         public void Update()
         {
-            List<PixChargeback> pixChargebacks = PixChargeback.Query(limit: 2, status: "delivered").ToList();
-            Assert.Equal(2, pixChargebacks.Count); 
-            Assert.True(pixChargebacks.First().ID != pixChargebacks.Last().ID);
+            List<PixChargeback> chargebacks = PixChargeback.Query(limit: 2, status: "delivered").ToList();
+            Assert.Equal(2, chargebacks.Count); 
+            Assert.True(chargebacks.First().ID != chargebacks.Last().ID);
             string expected = "delivered";
             string expectedResult = "canceled";
             Dictionary<string, object> patchData = new Dictionary<string, object> {
                 { "rejectionReason", "noBalance" }
             };
-            foreach (PixChargeback pixChargeback in pixChargebacks)
+            foreach (PixChargeback chargeback in chargebacks)
             {
-                TestUtils.Log(pixChargeback);
-                Assert.NotNull(pixChargeback.ID);
-                Assert.Equal(expected, pixChargeback.Status);
-                PixChargeback updatedPixChargeback = PixChargeback.Update(id: pixChargeback.ID, result: "rejected", patchData);
+                TestUtils.Log(chargeback);
+                Assert.NotNull(chargeback.ID);
+                Assert.Equal(expected, chargeback.Status);
+                PixChargeback updatedPixChargeback = PixChargeback.Update(id: chargeback.ID, result: "rejected", patchData);
                 TestUtils.Log(updatedPixChargeback);
                 Assert.Equal(expectedResult, updatedPixChargeback.Status);
             }
@@ -74,22 +74,23 @@ namespace StarkInfraTests
         [Fact]
         public void CreateGetAndCancel()
         {
-            List<PixChargeback> pixChargeback = PixChargeback.Create(new List<PixChargeback> {Example()});
-            TestUtils.Log(pixChargeback);
-            PixChargeback getPixChargeback = PixChargeback.Get(id: pixChargeback.First().ID);
-            Assert.Equal(getPixChargeback.ID, pixChargeback.First().ID);
+            List<PixChargeback> chargeback = PixChargeback.Create(new List<PixChargeback> {Example()});
+            TestUtils.Log(chargeback);
+            PixChargeback getPixChargeback = PixChargeback.Get(id: chargeback.First().ID);
+            Assert.Equal(getPixChargeback.ID, chargeback.First().ID);
             PixChargeback cancelPixChargeback = PixChargeback.Cancel(id: getPixChargeback.ID);
             Assert.Equal(cancelPixChargeback.ID, getPixChargeback.ID);
-            TestUtils.Log(pixChargeback);
+            TestUtils.Log(chargeback);
         }
 
         internal static PixChargeback Example()
         {
-            List<PixRequest> request = PixRequest.Query(limit: 1).ToList();
+            List<PixRequest> request = PixRequest.Query(limit: 1, status: new List<string> { "success" }).ToList();
             return new PixChargeback(
                 amount : 100,
-                referenceId : request[0].EndToEndID,
-                reason : "fraud"
+                referenceID : request[0].EndToEndID,
+                reason : "fraud",
+                tags: new List<string> { "teste sdk" }
             );
         }
     }

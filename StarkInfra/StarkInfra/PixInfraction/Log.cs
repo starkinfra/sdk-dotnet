@@ -16,10 +16,11 @@ namespace StarkInfra
         /// <br/>
         /// Properties:
         /// <list>
+        ///     <item>ID [string]: unique id returned when the log is created. ex: "5656565656565656"</item>
         ///     <item>Infraction [PixInfraction]: PixInfraction entity to which the log refers to.</item>
         ///     <item>Errors [list of strings]: list of errors linked to this PixInfraction event.</item>
         ///     <item>Type [string]: type of the PixInfraction event which triggered the log creation. ex: "created", "failed", "delivering", "delivered", "closed", "canceled"</item>
-        ///     <item>Created [DateTime]: creation datetime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>Created [DateTime]: creation DateTime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
         public class Log : Resource
@@ -38,10 +39,11 @@ namespace StarkInfra
             /// <br/>
             /// Attributes (return-only):
             /// <list>
+            ///     <item>id [string]: unique id returned when the log is created. ex: "5656565656565656"</item>
             ///     <item>infraction [PixInfraction]: PixInfraction entity to which the log refers to.</item>
             ///     <item>errors [list of strings]: list of errors linked to this PixInfraction event.</item>
             ///     <item>type [string]: type of the PixInfraction event which triggered the log creation. ex: "created", "failed", "delivering", "delivered", "closed", "canceled"</item>
-            ///     <item>created [DateTime]: creation datetime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+            ///     <item>created [DateTime]: creation DateTime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
             /// </list>
             /// </summary>
             public Log(string id, DateTime created, string type, List<Dictionary<string, object>> errors, PixInfraction infraction) : base(id)
@@ -84,7 +86,7 @@ namespace StarkInfra
             }
 
             /// <summary>
-            /// Retrieve Logs
+            /// Retrieve Log objects
             /// <br/>
             /// Receive an IEnumerable of Log objects previously created in the Stark Infra API
             /// <br/>
@@ -124,7 +126,7 @@ namespace StarkInfra
             }
 
             /// <summary>
-            /// Retrieve paged Logs
+            /// Retrieve paged Log objects
             /// <br/>
             /// Receive a list of up to 100 Log objects previously created in the Stark Infra API and the cursor to the next page.
             /// Use this function instead of query if you want to manually page your infractions.
@@ -133,7 +135,7 @@ namespace StarkInfra
             /// <list>
             ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
             ///     <item>ids [list of strings, default null]: Log ids to filter PixInfraction Logs. ex: new List<string>{ "5656565656565656" }</item>
-            ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
+            ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35.</item>
             ///     <item>after [DateTime, default null]: date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>before [DateTime, default null]: date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>types [list of strings, default null]: filter retrieved objects by types. ex: new List<string>{ "created", "failed", "delivering", "delivered", "closed", "canceled" }</item>

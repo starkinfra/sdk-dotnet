@@ -19,17 +19,17 @@ namespace StarkInfra
         /// <list>
         ///     <item>ID[string]: unique id returned when the log is created. ex: "5656565656565656"</item>
         ///     <item>Request [PixRequest]: PixRequest entity to which the log refers to.</item>
+        ///     <item>Type [string]: type of the PixRequest event which triggered the log creation. Options: "sent", "denied", "failed", "created", "success", "approved", "credited", "refunded", “processing"</item>
         ///     <item>Errors [list of strings]: list of errors linked to this PixRequest event.</item>
-        ///     <item>Type [string]: type of the PixRequest event which triggered the log creation. ex: "processing" or "success"</item>
-        ///     <item>Created [DateTime]: creation datetime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>Created [DateTime]: creation DateTime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
         public class Log : Resource
         {
-            public DateTime Created { get; }
+            public PixRequest Request { get; }
             public string Type { get; }
             public List<Dictionary<string, object>>  Errors { get; }
-            public PixRequest Request { get; }
+            public DateTime Created { get; }
 
             /// <summary>
             /// PixRequest.Log object
@@ -42,23 +42,23 @@ namespace StarkInfra
             /// <list>
             ///     <item>id [string]: unique id returned when the log is created. ex: "5656565656565656"</item>
             ///     <item>request [PixRequest]: PixRequest entity to which the log refers to.</item>
+            ///     <item>type [string]: type of the PixRequest event which triggered the log creation. ex: "sent", "denied", "failed", "created", "success", "approved", "credited", "refunded", “processing"</item>
             ///     <item>errors [list of strings]: list of errors linked to this PixRequest event.</item>
-            ///     <item>type [string]: type of the PixRequest event which triggered the log creation. ex: "processing" or "success"</item>
-            ///     <item>created [DateTime]: creation datetime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+            ///     <item>created [DateTime]: creation DateTime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
             /// </list>
             /// </summary>
-            public Log(string id, DateTime created, string type, List<Dictionary<string, object>> errors, PixRequest request) : base(id)
+            public Log(string id, PixRequest request, string type, List<Dictionary<string, object>> errors, DateTime created) : base(id)
             {
-                Created = created;
+                Request = request;
                 Type = type;
                 Errors = errors;
-                Request = request;
+                Created = created;
             }
 
             /// <summary>
-            /// Retrieve a specific Log
+            /// Retrieve a specific PixRequest.Log by its id
             /// <br/>
-            /// Receive a single Log object previously created by the Stark Infra API by passing its id
+            /// Receive a single PixRequest.Log object previously created by the Stark Infra API by passing its id
             /// <br/>
             /// Parameters (required):
             /// <list>
@@ -72,7 +72,7 @@ namespace StarkInfra
             /// <br/>
             /// Return:
             /// <list>
-            ///     <item>Log object with updated attributes</item>
+            ///     <item>PixRequest.Log object that corresponds to the given id.</item>
             /// </list>
             /// </summary>
             public static Log Get(string id, User user = null)
@@ -87,9 +87,9 @@ namespace StarkInfra
             }
 
             /// <summary>
-            /// Retrieve Logs
+            /// Retrieve PixRequest.Log objects
             /// <br/>
-            /// Receive an IEnumerable of Log objects previously created in the Stark Infra API
+            /// Receive an IEnumerable of PixRequest.Log objects previously created in the Stark Infra API
             /// <br/>
             /// Parameters (optional):
             /// <list>
@@ -98,16 +98,17 @@ namespace StarkInfra
             ///     <item>before [DateTime, default null]: date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>types [list of strings, default null]: filter retrieved objects by types. ex: new List<string>{ "success" or "failed" }</item>
             ///     <item>requestIds [list of strings, default null]: list of PixRequest ids to filter retrieved objects. ex: new List<string>{ 5656565656565656", "4545454545454545"]</item>
+            ///     <item>reconciliationID [string]: PixRequest reconciliation id to filter retrieved objects. ex: "b77f5236-7ab9-4487-9f95-66ee6eaf1781"</item>
             ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
             /// </list>
             /// <br/>
             /// Return:
             /// <list>
-            ///     <item>list of Log objects with updated attributes</item>
+            ///     <item>IEnumerable of PixRequest.Log objects with updated attributes</item>
             /// </list>
             /// </summary>
             public static IEnumerable<Log> Query(int? limit = null, DateTime? after = null, DateTime? before = null,
-                List<string> types = null, List<string> requestIds = null, User user = null)
+                List<string> types = null, string reconciliationID = null, List<string> requestIds = null, User user = null)
             {
                 (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
                 return Rest.GetList(
@@ -118,14 +119,15 @@ namespace StarkInfra
                         { "after", new StarkDate(after) },
                         { "before", new StarkDate(before) },
                         { "types", types },
-                        { "requestIds", requestIds }
+                        { "requestIds", requestIds },
+                        { "reconciliationID", reconciliationID },
                     },
                     user: user
                 ).Cast<Log>();
             }
 
             /// <summary>
-            /// Retrieve paged Logs
+            /// Retrieve paged PixRequest.Log objects
             /// <br/>
             /// Receive a list of up to 100 Log objects previously created in the Stark Infra API and the cursor to the next page.
             /// Use this function instead of query if you want to manually page your requests.
@@ -133,11 +135,12 @@ namespace StarkInfra
             /// Parameters (optional):
             /// <list>
             ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
-            ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
+            ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35.</item>
             ///     <item>after [DateTime, default null]: date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>before [DateTime, default null]: date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>types [list of strings, default null]: filter retrieved objects by types. ex: new List<string>{ "success" or "failed" }</item>
             ///     <item>requestIds [list of strings, default null]: list of PixRequest ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
+            ///     <item>reconciliationID [string]: PixRequest reconciliation id to filter retrieved objects. ex: "b77f5236-7ab9-4487-9f95-66ee6eaf1781"</item>
             ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
             /// </list>
             /// <br/>
@@ -148,7 +151,8 @@ namespace StarkInfra
             /// </list>
             /// </summary>
             public static (List<Log> page, string pageCursor) Page(string cursor = null, int? limit = null, DateTime? after = null,
-                DateTime? before = null, List<string> types = null, List<string> requestIds = null, User user = null)
+                DateTime? before = null, List<string> types = null, List<string> requestIds = null, string reconciliationID = null,
+                User user = null)
             {
                 (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
                 (List<SubResource> page, string pageCursor) = Rest.GetPage(
@@ -160,7 +164,8 @@ namespace StarkInfra
                         { "after", new StarkDate(after) },
                         { "before", new StarkDate(before) },
                         { "types", types },
-                        { "requestIds", requestIds }
+                        { "requestIds", requestIds },
+                        { "reconciliationID", reconciliationID }
                     },
                     user: user
                 );
@@ -179,14 +184,16 @@ namespace StarkInfra
 
             internal static Utils.Resource ResourceMaker(dynamic json)
             {
-                List<Dictionary<string, object>> errors = json.errors.ToObject<List<Dictionary<string, object>>>();
                 string id = json.id;
+                PixRequest request = PixRequest.ResourceMaker(json.request);
+                string type = json.type;
+                List<Dictionary<string, object>> errors = json.errors.ToObject<List<Dictionary<string, object>>>();
                 string createdString = json.created;
                 DateTime created = Checks.CheckDateTime(createdString);
-                string type = json.type;
-                PixRequest request = PixRequest.ResourceMaker(json.request);
 
-                return new Log(id: id, created: created, type: type, errors: errors, request: request);
+                return new Log(
+                    id: id, request: request, type: type, errors: errors, created: created
+                );
             }
         }
     }

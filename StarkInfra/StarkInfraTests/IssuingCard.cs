@@ -15,7 +15,7 @@ namespace StarkInfraTests
         [Fact]
         public void Query()
         {
-            List<IssuingCard> cards = IssuingCard.Query(limit: 4, status: "active", expand: new List<string> { "rules" } ).ToList();
+            List<IssuingCard> cards = IssuingCard.Query(limit: 4, status: new List<string> { "active" }, expand: new List<string> { "rules" } ).ToList();
             Assert.True(cards.Count <= 4);
             foreach (IssuingCard card in cards)
             {
@@ -56,7 +56,7 @@ namespace StarkInfraTests
         [Fact]
         public void Update()
         {
-            List<IssuingCard> cards = IssuingCard.Query(limit: 2, status: "active").ToList();
+            List<IssuingCard> cards = IssuingCard.Query(limit: 2, status: new List<string> { "active" }).ToList();
             Assert.True(2 >= cards.Count);
             Dictionary<string, object> patchData = new Dictionary<string, object>
             {
@@ -99,15 +99,16 @@ namespace StarkInfraTests
 
             string generatedHolderName = holder.Name;
             string generatedHolderTaxID = holder.TaxID;
-            string generatedHolderExternalId = Convert.ToString(new Random().Next(1, 999999999));
+            string generatedHolderExternalID = Convert.ToString(new Random().Next(1, 999999999));
 
             return new IssuingCard(
                 city: "Sao Paulo",
                 displayName: "ANTHONY STARK",
+                productID: "52233227",
                 district: "Bela Vista",
-                holderExternalId: generatedHolderExternalId,
+                holderExternalID: generatedHolderExternalID,
                 holderName: generatedHolderName,
-                holderTaxId: generatedHolderTaxID,
+                holderTaxID: generatedHolderTaxID,
                 rules: new List<StarkInfra.IssuingRule>{
                     new StarkInfra.IssuingRule(
                         name: "general",
