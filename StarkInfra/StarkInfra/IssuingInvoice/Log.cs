@@ -86,7 +86,7 @@ namespace StarkInfra
             /// <summary>
             /// Retrieve IssuingInvoice.Log objects
             /// <br/>
-            /// Receive an IEnumerable of Log objects previously created in the Stark Infra API
+            /// Receive an IEnumerable of IssuingInvoice.Log objects previously created in the Stark Infra API
             /// <br/>
             /// Parameters (optional):
             /// <list>
@@ -94,13 +94,13 @@ namespace StarkInfra
             ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>types [list of strings, default null]: filter for log event types. ex: new List<string>{  "created", "credited", "expired", "overdue", "paid" }</item>
-            ///     <item>ids [list of strings, default null]: list of Logs ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
+            ///     <item>ids [list of strings, default null]: list of IssuingInvoice.Log objects ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
             ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
             /// </list>
             /// <br/>
             /// Return:
             /// <list>
-            ///     <item>IEnumerable of Log objects with updated attributes</item>
+            ///     <item>IEnumerable of IssuingInvoice.Log objects with updated attributes</item>
             /// </list>
             /// </summary>
             public static IEnumerable<Log> Query(int? limit = null, DateTime? after = null, DateTime? before = null,
@@ -134,14 +134,14 @@ namespace StarkInfra
             ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>types [list of strings, default null]: filter retrieved objects by types. ex: new List<string>{ "created", "credited", "expired", "overdue", "paid" }</item>
-            ///     <item>ids [list of strings, default null]: list of Logs ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
+            ///     <item>ids [list of strings, default null]: list of IssuingInvoice.Log objects ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
             ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
             /// </list>
             /// <br/>
             /// Return:
             /// <list>
             ///     <item>list of IssuingInvoice.Log objects with updated attributes</item>
-            ///     <item>cursor to retrieve the next page of Log objects</item>
+            ///     <item>cursor to retrieve the next page of IssuingInvoice.Log objects</item>
             /// </list>
             /// </summary>
             public static (List<Log> page, string pageCursor) Page(string cursor = null, int? limit = null, DateTime? after = null,

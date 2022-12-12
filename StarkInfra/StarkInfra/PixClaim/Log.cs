@@ -21,7 +21,7 @@ namespace StarkInfra
         ///     <item>Claim [PixClaim]: PixClaim entity to which the log refers to.</item>
         ///     <item>Type [string]: type of the PixClaim event which triggered the log creation. ex: "created", "failed", "delivering", "delivered", "confirming", "confirmed", "success", "canceling" and "canceled"</item>
         ///     <item>Errors [list of strings]: list of errors linked to this PixClaim event</item>
-        ///     <item>Reason [string]: reason why the PixClaim was modified, resulting in the Log. Options: "fraud", "userRequested", "accountClosure", "defaultOperation", "reconciliation".</item>
+        ///     <item>Reason [string]: reason why the PixClaim was modified, resulting in the PixClaim.Log. Options: "fraud", "userRequested", "accountClosure", "defaultOperation", "reconciliation".</item>
         ///     <item>Created [DateTime]: creation DateTime for the log. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
@@ -46,7 +46,7 @@ namespace StarkInfra
             ///     <item>claim [PixClaim]: PixClaim entity to which the log refers to.</item>
             ///     <item>type [string]: type of the PixClaim event which triggered the log creation. ex: "created", "failed", "delivering", "delivered", "confirming", "confirmed", "success", "canceling" and "canceled"</item>
             ///     <item>errors [list of strings]: list of errors linked to this PixClaim event</item>
-            ///     <item>reason [string]: reason why the PixClaim was modified, resulting in the Log. Options: "fraud", "userRequested", "accountClosure", "defaultOperation", "reconciliation".</item>
+            ///     <item>reason [string]: reason why the PixClaim was modified, resulting in the PixClaim.Log. Options: "fraud", "userRequested", "accountClosure", "defaultOperation", "reconciliation".</item>
             ///     <item>created [DateTime]: creation DateTime for the log. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
             /// </list>
             /// </summary>
@@ -93,14 +93,14 @@ namespace StarkInfra
             /// <summary>
             /// Retrieve PixClaim.Log objects
             /// <br/>
-            /// Receive an IEnumerable of Log objects previously created in the Stark Infra API
+            /// Receive an IEnumerable of PixClaim.Log objects previously created in the Stark Infra API
             /// <br/>
             /// Parameters (optional):
             /// <list>
             ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
             ///     <item>after [DateTime, default null]: date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>before [DateTime, default null]: date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
-            ///     <item>ids [list of strings, default null]: Log ids to filter PixClaim Logs. ex: new List<string>{ "5656565656565656" }</item>
+            ///     <item>ids [list of strings, default null]: Log ids to filter PixClaim.Log objects. ex: new List<string>{ "5656565656565656" }</item>
             ///     <item>types [list of strings, default null]: filter retrieved objects by types. ex: new List<string>{ "created", "failed", "delivering", "delivered", "confirming", "confirmed", "success", "canceling" and "canceled" }</item>
             ///     <item>claimIds [list of strings, default null]: list of PixClaim ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
             ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.User.Default was set before function call</item>
@@ -131,9 +131,9 @@ namespace StarkInfra
             }
 
             /// <summary>
-            /// Retrieve paged Log objects
+            /// Retrieve paged PixClaim.Log objects
             /// <br/>
-            /// Receive a list of up to 100 Log objects previously created in the Stark Infra API and the cursor to the next page.
+            /// Receive a list of up to 100 PixClaim.Log objects previously created in the Stark Infra API and the cursor to the next page.
             /// Use this function instead of query if you want to manually page your claims.
             /// <br/>
             /// Parameters (optional):
@@ -142,7 +142,7 @@ namespace StarkInfra
             ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35.</item>
             ///     <item>after [DateTime, default null]: date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>before [DateTime, default null]: date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
-            ///     <item>ids [list of strings, default null]: Log ids to filter PixClaim Logs. ex: new List<string>{ "5656565656565656" }</item>
+            ///     <item>ids [list of strings, default null]: Log ids to filter PixClaim.Log objects. ex: new List<string>{ "5656565656565656" }</item>
             ///     <item>types [list of strings, default null]: filter retrieved objects by types. ex: new List<string>{ "created", "failed", "delivering", "delivered", "confirming", "confirmed", "success", "canceling" and "canceled" }</item>
             ///     <item>claimIds [list of strings, default null]: list of PixClaim ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
             ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.User.Default was set before function call</item>
@@ -150,8 +150,8 @@ namespace StarkInfra
             /// <br/>
             /// Return:
             /// <list>
-            ///     <item>list of Log objects with updated attributes</item>
-            ///     <item>cursor to retrieve the next page of Log objects</item>
+            ///     <item>list of PixClaim.Log objects with updated attributes</item>
+            ///     <item>cursor to retrieve the next page of PixClaim.Log objects</item>
             /// </list>
             /// </summary>
             public static (List<Log> page, string pageCursor) Page(string cursor = null, int? limit = null, DateTime? after = null,

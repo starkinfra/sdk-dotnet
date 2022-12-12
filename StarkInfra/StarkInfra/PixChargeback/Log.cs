@@ -58,7 +58,7 @@ namespace StarkInfra
             /// <summary>
             /// Retrieve a specific PixChargeback.Log by its id
             /// <br/>
-            /// Receive a single Log object previously created by the Stark Infra API by passing its id
+            /// Receive a single PixChargeback.Log object previously created by the Stark Infra API by passing its id
             /// <br/>
             /// Parameters (required):
             /// <list>
@@ -96,7 +96,7 @@ namespace StarkInfra
             ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
             ///     <item>after [DateTime, default null]: date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>before [DateTime, default null]: date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
-            ///     <item>ids [list of strings, default null]: Log ids to filter PixChargeback Logs. ex: new List<string>{ "5656565656565656" }</item>
+            ///     <item>ids [list of strings, default null]: Log ids to filter PixChargeback.Log objects. ex: new List<string>{ "5656565656565656" }</item>
             ///     <item>types [list of strings, default null]: filter retrieved objects by types. ex: new List<string>{ "created", "failed", "delivering", "delivered", "closed", "canceled" }</item>
             ///     <item>chargebackIds [list of strings, default null]: list of PixChargeback ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
             ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.User.Default was set before function call</item>
@@ -138,7 +138,7 @@ namespace StarkInfra
             ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35.</item>
             ///     <item>after [DateTime, default null]: date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>before [DateTime, default null]: date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
-            ///     <item>ids [list of strings, default null]: Log ids to filter PixChargeback Logs. ex: new List<string>{ "5656565656565656" }</item>
+            ///     <item>ids [list of strings, default null]: Log ids to filter PixChargeback.Log objects. ex: new List<string>{ "5656565656565656" }</item>
             ///     <item>types [list of strings, default null]: filter retrieved objects by types. ex: new List<string>{ "created", "failed", "delivering", "delivered", "closed", "canceled" }</item>
             ///     <item>chargebackIds [list of strings, default null]: list of PixChargeback ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
             ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.User.Default was set before function call</item>

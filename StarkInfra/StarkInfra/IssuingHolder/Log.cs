@@ -103,7 +103,7 @@ namespace StarkInfra
             /// <br/>
             /// Return:
             /// <list>
-            ///     <item>IEnumerable of Log objects with updated attributes</item>
+            ///     <item>IEnumerable of IssuingHolder.Log objects with updated attributes</item>
             /// </list>
             /// </summary>
             public static IEnumerable<Log> Query(int? limit = null, List<string> ids = null, DateTime? after = null, DateTime? before = null,
@@ -126,9 +126,9 @@ namespace StarkInfra
             }
 
             /// <summary>
-            /// Retrieve paged Log objects
+            /// Retrieve paged IssuingHolder.Log objects
             /// <br/>
-            /// Receive a list of up to 100 Log objects previously created in the Stark Infra API and the cursor to the next page.
+            /// Receive a list of up to 100 IssuingHolder.Log objects previously created in the Stark Infra API and the cursor to the next page.
             /// Use this function instead of query if you want to manually page your holders.
             /// <br/>
             /// Parameters (optional):
@@ -145,8 +145,8 @@ namespace StarkInfra
             /// <br/>
             /// Return:
             /// <list>
-            ///     <item>list of Log objects with updated attributes</item>
-            ///     <item>cursor to retrieve the next page of Log objects</item>
+            ///     <item>list of IssuingHolder.Log objects with updated attributes</item>
+            ///     <item>cursor to retrieve the next page of IssuingHolder.Log objects</item>
             /// </list>
             /// </summary>
             public static (List<Log> page, string pageCursor) Page(string cursor = null, int? limit = null, List<string> ids = null, DateTime? after = null,
