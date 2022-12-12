@@ -89,7 +89,7 @@ namespace StarkInfra
             /// <summary>
             /// Retrieve PixReversal.Log objects
             /// <br/>
-            /// Receive an IEnumerable of Log objects previously created in the Stark Infra API
+            /// Receive an IEnumerable of PixReversal.Log objects previously created in the Stark Infra API
             /// <br/>
             /// Parameters (optional):
             /// <list>
@@ -125,9 +125,9 @@ namespace StarkInfra
             }
 
             /// <summary>
-            /// Retrieve paged Log objects
+            /// Retrieve paged PixReversal.Log objects
             /// <br/>
-            /// Receive a list of up to 100 Log objects previously created in the Stark Infra API and the cursor to the next page.
+            /// Receive a list of up to 100 PixReversal.Log objects previously created in the Stark Infra API and the cursor to the next page.
             /// Use this function instead of query if you want to manually page your requests.
             /// <br/>
             /// Parameters (optional):
@@ -143,8 +143,8 @@ namespace StarkInfra
             /// <br/>
             /// Return:
             /// <list>
-            ///     <item>list of Log objects with updated attributes</item>
-            ///     <item>cursor to retrieve the next page of Log objects</item>
+            ///     <item>list of PixReversal.Log objects with updated attributes</item>
+            ///     <item>cursor to retrieve the next page of PixReversal.Log objects</item>
             /// </list>
             /// </summary>
             public static (List<Log> page, string pageCursor) Page(string cursor = null, int? limit = null, DateTime? after = null,

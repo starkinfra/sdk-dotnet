@@ -87,9 +87,9 @@ namespace StarkInfra
             }
 
             /// <summary>
-            /// Retrieve CreditNote.Logs
+            /// Retrieve CreditNote.Log objects
             /// <br/>
-            /// Receive an IEnumerable of Log objects previously created in the Stark Infra API
+            /// Receive an IEnumerable of CreditNote.Log objects previously created in the Stark Infra API
             /// <br/>
             /// Parameters (optional):
             /// <list>
@@ -103,7 +103,7 @@ namespace StarkInfra
             /// <br/>
             /// Return:
             /// <list>
-            ///     <item>IEnumerable of Log objects with updated attributes</item>
+            ///     <item>IEnumerable of CreditNote.Log objects with updated attributes</item>
             /// </list>
             /// </summary>
             public static IEnumerable<Log> Query(int? limit = null, DateTime? after = null, DateTime? before = null,
@@ -127,7 +127,7 @@ namespace StarkInfra
             /// <summary>
             /// Retrieve paged CreditNote.Log
             /// <br/>
-            /// Receive a list of up to 100 Log objects previously updated in the Stark Infra API and the cursor to the next page.
+            /// Receive a list of up to 100 CreditNote.Log objects previously updated in the Stark Infra API and the cursor to the next page.
             /// Use this function instead of query if you want to manually page your notes.
             /// <br/>
             /// Parameters (optional):
@@ -144,7 +144,7 @@ namespace StarkInfra
             /// Return:
             /// <list>
             ///     <item>list of CreditNote.Log objects with updated attributes</item>
-            ///     <item>cursor to retrieve the next page of Log objects</item>
+            ///     <item>cursor to retrieve the next page of CreditNote.Log objects</item>
             /// </list>
             /// </summary>
             public static (List<Log> page, string pageCursor) Page(string cursor = null, int? limit = null, DateTime? after = null,

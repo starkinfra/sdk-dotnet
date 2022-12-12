@@ -14,6 +14,10 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 ### Added
+- IssuingDesign resource
+- IssuingEmbossingRequest resource
+- IssuingRestock resource 
+- IssuingStock resource
 - BrcodePreview resource
 - CreditPreview sub-resource
 - CreditNotePreview sub-resource

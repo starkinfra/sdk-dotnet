@@ -25,6 +25,10 @@ This SDK version is compatible with the Stark Infra API v2.
         - [Products](#query-issuingproducts): View available sub-issuer card products (a.k.a. card number ranges or BINs)
         - [Holders](#create-issuingholders): Manage card holders
         - [Cards](#create-issuingcards): Create virtual and/or physical cards
+        - [Design](#query-issuingdesigns): View your current card or package designs
+        - [Stock](#query-issuingstocks): View your current stock of a certain IssuingDesign linked to an Embosser on the workspace
+        - [Restock](#create-issuingrestocks): Create restock orders of a specific IssuingStock object
+        - [EmbossingRequest](#create-issuingembossingrequests): Create embossing requests
         - [Purchases](#process-purchase-authorizations): Authorize and view your past purchases
         - [Invoices](#create-issuinginvoices): Add money to your issuing balance
         - [Withdrawals](#create-issuingwithdrawals): Send money back to your Workspace from your issuing balance
@@ -595,6 +599,264 @@ using StarkInfra;
 
 
 StarkInfra.IssuingCard.Log log = StarkInfra.IssuingCard.Log.Get("6299741604282368");
+
+Console.Write(log);
+```
+
+### Query IssuingDesigns
+
+You can get a list of available designs given some filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.IssuingDesign> designs = StarkInfra.IssuingDesign.Query(limit: 10);
+
+foreach (StarkInfra.IssuingDesign design in designs) {
+    Console.Write(design);
+}
+```
+
+### Get an IssuingDesign
+
+Information on a design may be retrieved by its id.
+
+```c#
+using System;
+
+StarkInfra.IssuingDesign design = StarkInfra.IssuingDesign.Get("5353197895942144");
+
+Console.Write(design);
+```
+
+### Query IssuingStocks
+
+You can get a list of available stocks given some filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.IssuingStock> stocks = StarkInfra.IssuingStock.Query(
+    after: new DateTime(2020, 1, 1),
+    before: new DateTime(2022, 3, 1)
+);
+
+foreach (StarkInfra.IssuingStock stock in stocks) {
+    Console.Write(stock);
+}
+```
+
+### Get an IssuingStock
+
+Information on a stock may be retrieved by its id.
+
+```c#
+using System;
+
+StarkInfra.IssuingStock stock = StarkInfra.IssuingStock.Get("5353197895942144");
+
+Console.Write(stock);
+```
+
+### Query IssuingStock logs
+
+Logs are pretty important to understand the life cycle of a stock.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.IssuingStock.Log> logs = StarkInfra.IssuingStock.Log.Query(limit: 10);
+
+foreach (StarkInfra.IssuingStock.Log log in logs){
+    Console.Write(log);
+}
+```
+
+### Get an IssuingStock log
+
+You can get a single log by its id.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+StarkInfra.IssuingStock.Log log = StarkInfra.IssuingStock.Log.Get("5353197895942144");
+
+Console.Write(log);
+```
+
+### Create IssuingRestocks
+
+You can order restocks for a specific IssuingStock.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+List<StarkInfra.IssuingRestock> restocks = StarkInfra.IssuingRestock.Create( 
+    new List<IssuingRestock>{
+        new IssuingRestock(
+            count: 100,
+            id: "5136459887542272"
+        )
+    };
+);
+           
+foreach (StarkInfra.IssuingRestock restock in restocks){
+    Console.Write(restock);
+}
+```
+
+### Query IssuingRestocks
+
+You can get a list of created restocks given some filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.IssuingRestock> restocks = StarkInfra.IssuingRestock.Query(
+    after: new DateTime(2020, 1, 1),
+    before: new DateTime(2022, 3, 1)
+);
+
+foreach (StarkInfra.IssuingRestock restock in restocks){
+    Console.Write(restock);
+}
+```
+
+### Get an IssuingRestock
+
+After its creation, information on a restock may be retrieved by its id.
+
+```c#
+using System;
+
+StarkInfra.IssuingRestock restock = StarkInfra.IssuingRestock.Get("5353197895942144");
+
+Console.Write(restock);
+```
+
+### Query IssuingRestock logs
+
+Logs are pretty important to understand the life cycle of a restock.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.IssuingRestock.Log> logs = StarkInfra.IssuingRestock.Log.Query(limit: 50);
+
+foreach (StarkInfra.IssuingRestock.Log log in logs){
+    Console.Write(log);
+}
+```
+
+### Get an IssuingRestock log
+
+You can get a single log by its id.
+
+```c#
+using System;
+
+StarkInfra.IssuingRestock.Log log = StarkInfra.IssuingRestock.Log.Get("5353197895942144");
+
+Console.Write(log);
+```
+
+### Create IssuingEmbossingRequests
+
+You can create a request to emboss a physical card.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+List<StarkInfra.IssuingEmbossingRequest> requests = StarkInfra.IssuingEmbossingRequest.Create(
+    new List<IssuingEmbossingRequest>() { 
+        new IssuingEmbossingRequest(
+            cardID: "5714424132272128", 
+            cardDesignID: "5648359658356736", 
+            displayName1: "Antonio Stark", 
+            envelopeDesignID: "5747368922185728", 
+            shippingCity: "Sao Paulo", 
+            shippingCountryCode: "BRA", 
+            shippingDistrict: "Bela Vista", 
+            shippingService: "loggi", 
+            shippingStateCode: "SP", 
+            shippingStreetLine1: "Av. Paulista, 200", 
+            shippingStreetLine2: "10 andar", 
+            shippingTrackingNumber: "My_custom_tracking_number", 
+            shippingZipCode: "12345-678",
+            embosserID: "5746980898734080"
+        );
+    }
+);
+
+foreach (StarkInfra.IssuingEmbossingRequest request in requests){
+    Console.Write(request);
+}
+```
+
+### Query IssuingEmbossingRequests
+
+You can get a list of created embossing requests given some filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.IssuingEmbossingRequest> requests = StarkInfra.IssuingEmbossingRequest.Query(
+    after: new DateTime(2020, 1, 1),
+    before: new DateTime(2022, 3, 1)
+);
+
+foreach (StarkInfra.IssuingEmbossingRequest request in requests){
+    Console.Write(request);
+}
+```
+
+### Get an IssuingEmbossingRequest
+
+After its creation, information on an embossing request may be retrieved by its id.
+
+```c#
+using System;
+
+StarkInfra.IssuingEmbossingRequest request = StarkInfra.IssuingEmbossingRequest.Get("5353197895942144");
+
+Console.Write(request);
+```
+
+### Query IssuingEmbossingRequest logs
+
+Logs are pretty important to understand the life cycle of an embossing request.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.IssuingEmbossingRequest.Log> logs = StarkInfra.IssuingEmbossingRequest.Log.Query(
+    after: new DateTime(2020, 1, 1),
+    before: new DateTime(2022, 3, 1)
+);
+
+foreach (StarkInfra.IssuingEmbossingRequest.Log log in logs){
+    Console.Write(log);
+}
+```
+
+### Get an IssuingEmbossingRequest log
+
+You can get a single log by its id.
+
+```c#
+using System;
+
+StarkInfra.IssuingEmbossingRequest.Log log = StarkInfra.IssuingEmbossingRequest.Log.Get("5353197895942144");
 
 Console.Write(log);
 ```

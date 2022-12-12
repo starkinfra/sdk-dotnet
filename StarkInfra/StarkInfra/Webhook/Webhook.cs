@@ -19,7 +19,7 @@ namespace StarkInfra
     /// </list>
     /// Attributes (return-only):
     /// <list>
-    ///     <item>Id [string]: unique id returned when the webhook is created. ex: "5656565656565656"</item>
+    ///     <item>ID [string]: unique id returned when the webhook is created. ex: "5656565656565656"</item>
     /// </list>
     /// </summary>
     public partial class Webhook : Resource

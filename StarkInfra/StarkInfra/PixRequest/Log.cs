@@ -129,7 +129,7 @@ namespace StarkInfra
             /// <summary>
             /// Retrieve paged PixRequest.Log objects
             /// <br/>
-            /// Receive a list of up to 100 Log objects previously created in the Stark Infra API and the cursor to the next page.
+            /// Receive a list of up to 100 PixRequest.Log objects previously created in the Stark Infra API and the cursor to the next page.
             /// Use this function instead of query if you want to manually page your requests.
             /// <br/>
             /// Parameters (optional):
@@ -146,8 +146,8 @@ namespace StarkInfra
             /// <br/>
             /// Return:
             /// <list>
-            ///     <item>list of Log objects with updated attributes</item>
-            ///     <item>cursor to retrieve the next page of Log objects</item>
+            ///     <item>list of PixRequest.Log objects with updated attributes</item>
+            ///     <item>cursor to retrieve the next page of PixRequest.Log objects</item>
             /// </list>
             /// </summary>
             public static (List<Log> page, string pageCursor) Page(string cursor = null, int? limit = null, DateTime? after = null,

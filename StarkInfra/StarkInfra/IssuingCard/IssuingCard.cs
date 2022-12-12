@@ -426,7 +426,6 @@ namespace StarkInfra
 
         internal static Resource ResourceMaker(dynamic json)
         {
-            
             string holderName = json.holderName;
             string holderTaxID = json.holderTaxId;
             string holderExternalID = json.holderExternalId;
