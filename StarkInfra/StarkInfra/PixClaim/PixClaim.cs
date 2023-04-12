@@ -385,7 +385,7 @@ namespace StarkInfra
             string name = json.name;
             string taxID = json.taxId;
             string keyID = json.keyId;
-            List<string> tags = json.tags?.ToObject<List<string>>();;
+            List<string> tags = json.tags?.ToObject<List<string>>();
             string id = json.id;
             string status = json.status;
             string type = json.type;

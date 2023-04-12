@@ -7,55 +7,55 @@ using StarkInfra.Utils;
 namespace StarkInfra
 {
     /// <summary>
-    /// IssuingDesign object
+    /// IssuingEmbossingKit object
     /// <br/>
-    /// The IssuingDesign object displays information on the card and card package designs available to your Workspace.
+    /// The IssuingEmbossingKit object displays information on the card and card package designs available to your Workspace.
     /// <br/>
     /// Properties:
     /// <list>
-    ///     <item>ID [string]: unique id returned when IssuingDesign is created. ex: "5656565656565656"</item>
+    ///     <item>ID [string]: unique id returned when IssuingEmbossingKit is created. ex: "5656565656565656"</item>
     ///     <item>Name [string]: card or package design name. ex: "stark-plastic-dark-001"</item>
-    ///     <item>EmbosserIds [list of strings] list of embosser unique ids. ex: new List<string> { "5136459887542272", "5136459887542273" }</item>
-    ///     <item>Updated [DateTime]: latest update datetime for the IssuingDesign. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
-    ///     <item>Created [DateTime]: creation datetime for the IssuingDesign. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>Designs [list of IssuingDesign objects]: list of IssuingDesign objects. ex: new List<IssuingDesign> {IssuingDesign(), IssuingDesign() }</item>
+    ///     <item>Updated [DateTime]: latest update datetime for the IssuingEmbossingKit. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>Created [DateTime]: creation datetime for the IssuingEmbossingKit. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
     /// </summary>
-    public partial class IssuingDesign : Resource
+    public partial class IssuingEmbossingKit : Resource
     {
         public string Name { get; }
-        public List<string> EmbosserIds { get; }
+        public List<IssuingDesign> Designs { get; }
         public DateTime? Updated { get;  }
         public DateTime? Created { get; }
 
         /// <summary>
-        /// IssuingDesign object
+        /// IssuingEmbossingKit object
         /// <br/>
-        /// The IssuingDesign object displays information on the card and card package designs available to your Workspace.
+        /// The IssuingEmbossingKit object displays information on the card and card package designs available to your Workspace.
         /// <br/>
         /// Attributes (return-only):
         /// <list>
-        ///     <item>id [string]: unique id returned when IssuingDesign is created. ex: "5656565656565656"</item>
+        ///     <item>id [string]: unique id returned when IssuingEmbossingKit is created. ex: "5656565656565656"</item>
         ///     <item>name [string]: card or package design name. ex: "stark-plastic-dark-001" </item>
-        ///     <item>embosserIds [list of strings]: list of embosser unique ids. ex: new List<string> { "5136459887542272", "5136459887542273" }</item>
-        ///     <item>updated [DateTime]: latest update datetime for the IssuingDesign. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
-        ///     <item>created [DateTime]: creation datetime for the IssuingDesign. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>designs [list of IssuingDesign objects]: list of IssuingDesign objects. ex: new List<IssuingDesign> {IssuingDesign(), IssuingDesign() }</item>
+        ///     <item>updated [DateTime]: latest update datetime for the IssuingEmbossingKit. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>created [DateTime]: creation datetime for the IssuingEmbossingKit. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
-        public IssuingDesign(
-            string id = null, string name = null, List<string> embosserIds = null, 
+        public IssuingEmbossingKit(
+            string id = null, string name = null, List<IssuingDesign> designs = null, 
             DateTime? updated = null, DateTime? created = null
         ) : base(id)
         {
             Name = name;
-            EmbosserIds = embosserIds;
+            Designs = designs;
             Updated = updated;
             Created = created;
         }
 
         /// <summary>
-        /// Retrieve a specific IssuingDesign object
+        /// Retrieve a specific IssuingEmbossingKit object
         /// <br/>
-        /// Receive a single IssuingDesign object previously created in the Stark Infra API by passing its id
+        /// Receive a single IssuingEmbossingKit object previously created in the Stark Infra API by passing its id
         /// <br/>
         /// Parameters (required):
         /// <list>
@@ -69,10 +69,10 @@ namespace StarkInfra
         /// <br/>
         /// Return:
         /// <list>
-        ///     <item>IssuingDesign object with updated attributes</item>
+        ///     <item>IssuingEmbossingKit object with updated attributes</item>
         /// </list>
         /// </summary>
-        public static IssuingDesign Get(string id, User user = null)
+        public static IssuingEmbossingKit Get(string id, User user = null)
         {
             (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
@@ -80,13 +80,13 @@ namespace StarkInfra
                 resourceMaker: resourceMaker,
                 id: id,
                 user: user
-            ) as IssuingDesign;
+            ) as IssuingEmbossingKit;
         }
 
         /// <summary>
-        /// Retrieve IssuingDesign objects
+        /// Retrieve IssuingEmbossingKit objects
         /// <br/>
-        /// Receive an IEnumerable of IssuingDesign objects previously created in the Stark Infra API
+        /// Receive an IEnumerable of IssuingEmbossingKit objects previously created in the Stark Infra API
         /// <br/>
         /// Parameters (optional):
         /// <list>
@@ -97,10 +97,10 @@ namespace StarkInfra
         /// <br/>
         /// Return:
         /// <list>
-        ///     <item>IEnumerable of IssuingDesign objects with updated attributes</item>
+        ///     <item>IEnumerable of IssuingEmbossingKit objects with updated attributes</item>
         /// </list>
         /// </summary>
-        public static IEnumerable<IssuingDesign> Query(List<string> ids = null, int? limit = null,
+        public static IEnumerable<IssuingEmbossingKit> Query(List<string> ids = null, int? limit = null,
             User user = null)
         {
             (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
@@ -112,13 +112,13 @@ namespace StarkInfra
                     { "limit", limit },
                 },
                 user: user
-            ).Cast<IssuingDesign>();
+            ).Cast<IssuingEmbossingKit>();
         }
 
         /// <summary>
-        /// Retrieve paged IssuingDesign objects
+        /// Retrieve paged IssuingEmbossingKit objects
         /// <br/>
-        /// Receive a list of up to 100 IssuingDesign objects previously created in the Stark Infra API and the cursor to the next page.
+        /// Receive a list of up to 100 IssuingEmbossingKit objects previously created in the Stark Infra API and the cursor to the next page.
         /// Use this function instead of query if you want to manually page your requests.
         /// <br/>
         /// Parameters (optional):
@@ -131,11 +131,11 @@ namespace StarkInfra
         /// <br/>
         /// Return:
         /// <list>
-        ///     <item>list of IssuingDesign objects with updated attributes</item>
-        ///     <item>cursor to retrieve the next page of IssuingDesign objects</item>
+        ///     <item>list of IssuingEmbossingKit objects with updated attributes</item>
+        ///     <item>cursor to retrieve the next page of IssuingEmbossingKit objects</item>
         /// </list>
         /// </summary>
-        public static (List<IssuingDesign> page, string pageCursor) Page(string cursor = null, List<string> ids = null, int? limit = null, 
+        public static (List<IssuingEmbossingKit> page, string pageCursor) Page(string cursor = null, List<string> ids = null, int? limit = null, 
             User user = null)
         {
             (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
@@ -149,18 +149,18 @@ namespace StarkInfra
                 },
                 user: user
             );
-            List<IssuingDesign> designs = new List<IssuingDesign>();
+            List<IssuingEmbossingKit> designs = new List<IssuingEmbossingKit>();
             foreach (SubResource subResource in page)
             {
-                designs.Add(subResource as IssuingDesign);
+                designs.Add(subResource as IssuingEmbossingKit);
             }
             return (designs, pageCursor);
         }
         
         /// <summary>
-        /// Retrieve a specific IssuingDesign pdf file
+        /// Retrieve a specific IssuingEmbossingKit pdf file
         /// <br/>
-        /// Receive a single IssuingDesign pdf file generated in the Stark Infra API by its id.
+        /// Receive a single IssuingEmbossingKit pdf file generated in the Stark Infra API by its id.
         /// <br/>
         /// Parameters (required):
         /// <list>
@@ -174,7 +174,7 @@ namespace StarkInfra
         /// <br/>
         /// Return:
         /// <list>
-        ///     <item>IssuingDesign .pdf file</item>
+        ///     <item>IssuingEmbossingKit .pdf file</item>
         /// </list>
         /// </summary>
         public static byte[] Pdf(string id, User user = null)
@@ -191,23 +191,39 @@ namespace StarkInfra
 
         internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
         {
-            return (resourceName: "IssuingDesign", resourceMaker: ResourceMaker);
+            return (resourceName: "IssuingEmbossingKit", resourceMaker: ResourceMaker);
         }
 
         internal static Resource ResourceMaker(dynamic json)
         {
             string id = json.id;
             string name = json.name;
-            List<string> embosserIds = json.embosserIds.ToObject<List<string>>();
+            List<IssuingDesign> designs = ParseIssuingDesign(json.designs);
             string createdString = json.created;
             DateTime created = Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
             DateTime updated = Checks.CheckDateTime(updatedString);
 
-            return new IssuingDesign(
-                id: id, name: name, embosserIds: embosserIds, updated: updated, 
+            return new IssuingEmbossingKit(
+                id: id, name: name, designs: designs, updated: updated, 
                 created: created
             );
+        }
+
+        private static List<IssuingDesign> ParseIssuingDesign(dynamic json)
+        {
+            if (json == null)
+            {
+                return null;
+            }
+
+            List<IssuingDesign> designs = new List<IssuingDesign>();
+
+            foreach (dynamic design in json)
+            {
+                designs.Add(IssuingDesign.ResourceMaker(design));
+            }
+            return designs;
         }
     }
 }

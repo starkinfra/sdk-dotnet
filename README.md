@@ -26,6 +26,7 @@ This SDK version is compatible with the Stark Infra API v2.
         - [Holders](#create-issuingholders): Manage card holders
         - [Cards](#create-issuingcards): Create virtual and/or physical cards
         - [Design](#query-issuingdesigns): View your current card or package designs
+        - [EmbossingKit](#query-issuingembossingkits): View your current embossing kits
         - [Stock](#query-issuingstocks): View your current stock of a certain IssuingDesign linked to an Embosser on the workspace
         - [Restock](#create-issuingrestocks): Create restock orders of a specific IssuingStock object
         - [EmbossingRequest](#create-issuingembossingrequests): Create embossing requests
@@ -49,10 +50,13 @@ This SDK version is compatible with the Stark Infra API v2.
         - [StaticBrcode](#create-staticbrcodes): Create static Pix BR codes
         - [DynamicBrcode](#create-dynamicbrcodes): Create dynamic Pix BR codes
         - [BrcodePreview](#create-brcodepreviews): Read data from BR Codes before paying them
-    - [Credit Note](#credit-note)
-        - [CreditNote](#create-creditnotes): Create Credit Notes
-    - [Credit Preview](#credit-preview)
-        - [CreditNotePreview](#create-creditnotepreviews): Create credit note previews
+    - [Lending](#lending)
+        - [CreditNote](#create-creditnotes): Create credit notes
+        - [CreditPreview](#create-creditpreviews): Create credit previews
+        - [CreditHolmes](#create-creditholmes): Create credit holmes debt verification
+    - [Identity](#identity)
+        - [IndividualIdentity](#create-individualidentities): Create individual identities
+        - [IndividualDocument](#create-individualdocuments): Create individual documents
     - [Webhook](#webhook):
         - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
         - [WebhookEvents](#process-webhook-events): Manage webhook events
@@ -630,6 +634,41 @@ StarkInfra.IssuingDesign design = StarkInfra.IssuingDesign.Get("5353197895942144
 Console.Write(design);
 ```
 
+### Query IssuingEmbossingKits
+
+You can get a list of existing embossing kits given some filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.IssuingEmbossingKit> kits = StarkInfra.IssuingEmbossingKit.Query(
+    after: new DateTime(2022, 01, 01),
+    before: new DateTime(2022, 12, 01)
+);
+
+foreach (StarkInfra.IssuingEmbossingKit kit in kits)
+{
+    Console.Write(kit);
+}
+```
+
+### Get an IssuingEmbossingKit
+
+After its creation, information on an embossing kit may be retrieved by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IssuingEmbossingKit kit = StarkInfra.IssuingEmbossingKit.Get("5155165527080960");
+
+Console.Write(kit);
+```
+
 ### Query IssuingStocks
 
 You can get a list of available stocks given some filters.
@@ -1116,7 +1155,6 @@ To know how much money you have available to run authorizations, run:
 
 ```c#
 using System;
-using StarkInfra;
 using StarkInfra;
 
 
@@ -2456,7 +2494,21 @@ foreach (StarkInfra.BrcodePreview preview in previews)
 }
 ```
 
-## Credit Note
+## Lending
+If you want to establish a lending operation, you can use Stark Infra to
+create a CCB contract. This will enable your business to lend money without
+requiring a banking license, as long as you use a Credit Fund 
+or Securitization company.
+
+The required steps to initiate the operation are:
+ 1. Have funds in your Credit Fund or Securitization account
+ 2. Request the creation of an [Identity Check](#create-individualidentities)
+for the credit receiver (make sure you have their documents and express authorization)
+ 3. (Optional) Create a [Credit Simulation](#create-creditpreviews) 
+with the desired installment plan to display information for the credit receiver
+ 4. Create a [Credit Note](#create-creditnotes)
+with the desired installment plan
+
 
 ### Create CreditNotes
 You can create CreditNotes to generate a CCB contracts:
@@ -2529,7 +2581,7 @@ IEnumerable<StarkInfra.CreditNote> notes = StarkInfra.CreditNote.Query(
     after: new DateTime(2022, 01, 01),
     before: new DateTime(2022, 12, 01),
     status: new List<string>{ "signed" },
-    tags: new List<string>{ "iron", "suit" },
+    tags: new List<string>{ "iron", "suit" }
 );
 
 foreach(StarkInfra.CreditNote note in notes)
@@ -2561,7 +2613,7 @@ using System;
 using StarkInfra;
 
 
-StarkInfra.CreditNote note = StarkInfra.CreditNote.Cancel(id: creditNote.ID);
+StarkInfra.CreditNote note = StarkInfra.CreditNote.Cancel("5155165527080960");
 
 Console.Write(note);
 ```
@@ -2579,7 +2631,7 @@ using StarkInfra;
 IEnumerable<StarkInfra.CreditNote.Log> logs = StarkInfra.CreditNote.Log.Query(
     limit: 50, 
     after: new DateTime(2022, 01, 01),
-    before: new DateTime(2022, 12, 01),
+    before: new DateTime(2022, 12, 01)
 );
 
 foreach (StarkInfra.CreditNote.Log log in logs)
@@ -2602,13 +2654,9 @@ StarkInfra.CreditNote.Log log = StarkInfra.CreditNote.Log.Get("5155165527080960"
 Console.Write(log);
 ```
 
-## Credit Preview
+### Create CreditPreviews
 
-You can preview different types of credits before creating them (Currently we only have CreditNote previews):
-
-### Create CreditNotePreviews
-
-You can preview CreditNotes before the creation CCB contracts:
+You can preview a credit operation before creating them (Currently we only have CreditNote / CCB previews):
 
 ```c#
 using System;
@@ -2697,6 +2745,383 @@ foreach (StarkInfra.CreditPreview preview in previews)
 ```
 
 **Note**: Instead of using CreditPreview objects, you can also pass each element in dictionary format
+
+### Create CreditHolmes
+
+Before you request a credit operation, you may want to check previous credit operations
+the credit receiver has taken.
+
+For that, open up a CreditHolmes investigation to receive information on all debts and credit
+operations registered for that individual or company inside the Central Bank's SCR.
+
+```c#
+using System;
+using StarkInfra;
+
+List<StarkInfra.CreditHolmes> holmes = StarkInfra.CreditHolmes.Create(
+    new List<StarkInfra.CreditHolmes>() {
+        new StarkInfra.CreditHolmes(
+            taxID: "123.456.789-00",
+            competence: "2022-09"
+        ),
+        new StarkInfra.CreditHolmes(
+            taxID: "123.456.789-00",
+            competence: "2022-08"
+        ),
+        new StarkInfra.CreditHolmes(
+            taxID: "123.456.789-00",
+            competence: "2022-07"
+        )
+    }
+);
+
+foreach (StarkInfra.CreditHolmes sherlock in holmes)
+{
+    Console.Write(sherlock);
+}
+```
+
+### Query CreditHolmes
+
+You can query multiple credit holmes according to filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.CreditHolmes> holmes = StarkInfra.CreditHolmes.Query(
+    limit: 10,
+    after: new DateTime(2022, 01, 01),
+    before: new DateTime(2022, 12, 01),
+    status: new List<string>{ "success" }
+);
+
+foreach(StarkInfra.CreditHolmes sherlock in holmes)
+{
+    Console.Write(sherlock);
+}
+```
+
+### Get a CreditHolmes
+
+After its creation, information on a credit holmes may be retrieved by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.CreditHolmes holmes = StarkInfra.CreditHolmes.Get("5657818854064128");
+
+Console.Write(holmes);
+```
+
+### Query CreditHolmes logs
+
+You can query credit holmes logs to better understand their life cycles. 
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.CreditHolmes.Log> logs = StarkInfra.CreditHolmes.Log.Query(
+    limit: 50, 
+    ids: new List<string>{ "5729405850615808" },
+    after: new DateTime(2022, 01, 01),
+    before: new DateTime(2022, 12, 01),
+    types: new List<string>{ "created" }
+);
+
+foreach (StarkInfra.CreditHolmes.Log log in logs)
+{
+    Console.Write(log);
+}
+```
+
+### Get a CreditHolmes log
+
+You can also get a specific log by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.CreditNote.Log log = StarkInfra.CreditNote.Log.Get("5155165527080960");
+
+Console.Write(log);
+```
+
+## Identity
+Several operations, especially credit ones, require that the identity
+of a person or business is validated beforehand.
+
+Identities are validated according to the following sequence:
+1. The Identity resource is created for a specific Tax ID
+2. Documents are attached to the Identity resource
+3. The Identity resource is updated to indicate that all documents have been attached
+4. The Identity is sent for validation and returns a webhook notification to reflect
+the success or failure of the operation
+
+### Create IndividualIdentities
+
+You can create an IndividualIdentity to validate a document of a natural person
+
+```c#
+using System;
+using StarkInfra;
+
+
+List<StarkInfra.IndividualIdentity> identities = StarkInfra.IndividualIdentity.Create(
+    new List<StarkInfra.IndividualIdentity>() { 
+        new StarkInfra.IndividualIdentity(
+            name: "Walter White",
+            taxID: "012.345.678-90",
+            tags: new List<string>{ "breaking", "bad" }
+        );
+    }
+);
+
+foreach(StarkInfra.IndividualIdentity identity in identities)
+{
+    Console.Write(identity);
+}
+```
+
+**Note**: Instead of using IndividualIdentity objects, you can also pass each element in dictionary format
+
+### Query IndividualIdentity
+
+You can query multiple individual identities according to filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.IndividualIdentity> identities = StarkInfra.IndividualIdentity.Query(
+    limit: 10,
+    after: new DateTime(2022, 01, 01),
+    before: new DateTime(2022, 12, 01),
+    status: new List<string>{ "success" },
+    tags: new List<string>{ "breaking", "bad" }
+);
+
+foreach(StarkInfra.IndividualIdentity identity in identities)
+{
+    Console.Write(identity);
+}
+```
+
+### Get an IndividualIdentity
+
+After its creation, information on an individual identity may be retrieved by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IndividualIdentity identity = StarkInfra.IndividualIdentity.Get("5155165527080960");
+
+Console.Write(identity);
+```
+
+### Update an IndividualIdentity
+
+You can update a specific identity status to "processing" for send it to validation.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IndividualIdentity identity = StarkInfra.IndividualIdentity.Update("5155165527080960", "processing");
+
+Console.Write(identity);
+```
+
+**Note**: Before sending your individual identity to validation by patching its status, you must send all the required documents using the create method of the CreditDocument resource. Note that you must reference the individual identity in the create method of the CreditDocument resource by its id.
+
+### Cancel an IndividualIdentity
+
+You can cancel an individual identity before updating its status to processing.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IndividualIdentity identity = StarkInfra.IndividualIdentity.Cancel("5155165527080960");
+
+Console.Write(identity);
+```
+
+### Query IndividualIdentity logs
+
+You can query individual identity logs to better understand individual identity life cycles. 
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.IndividualIdentity.Log> logs = StarkInfra.IndividualIdentity.Log.Query(
+    limit: 50, 
+    after: new DateTime(2022, 01, 01),
+    before: new DateTime(2022, 12, 01)
+);
+
+foreach (StarkInfra.IndividualIdentity.Log log in logs)
+{
+    Console.Write(log);
+}
+```
+
+### Get an IndividualIdentity log
+
+You can also get a specific log by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IndividualIdentity.Log log = StarkInfra.IndividualIdentity.Log.Get("5155165527080960");
+
+Console.Write(log);
+```
+
+### Create IndividualDocuments
+
+You can create an individual document to attach images of documents to a specific individual Identity.
+You must reference the desired individual identity by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+List<StarkInfra.IndividualDocument> documents = StarkInfra.IndividualDocument.Create(
+    new List<StarkInfra.IndividualDocument>() { 
+        new StarkInfra.IndividualDocument(
+            type: "identity-front",
+            content: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAASABIAAD...",
+            identityID: '5155165527080960',
+            tags: new List<string>{ "breaking", "bad" }
+        )
+    }
+);
+
+documents = StarkInfra.IndividualDocument.Create(
+    new List<StarkInfra.IndividualDocument>() { 
+        new StarkInfra.IndividualDocument(
+            type: "identity-back",
+            content: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAASABIAAD...",
+            identityID: '5155165527080960',
+            tags: new List<string>{ "breaking", "bad" }
+        )
+    }
+);
+
+documents = StarkInfra.IndividualDocument.Create(
+    new List<StarkInfra.IndividualDocument>() { 
+        new StarkInfra.IndividualDocument(
+            type: "selfie",
+            content: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAASABIAAD...",
+            identityID: '5155165527080960',
+            tags: new List<string>{ "breaking", "bad" }
+        )
+    }
+);
+
+foreach(StarkInfra.CreditNote document in documents)
+{
+    Console.Write(document);
+}
+```
+
+**Note**: Instead of using IndividualDocument objects, you can also pass each element in dictionary format
+
+### Query IndividualDocuments
+
+You can query multiple individual documents according to filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.IndividualDocument> documents = StarkInfra.IndividualDocument.Query(
+    limit: 10,
+    after: new DateTime(2022, 01, 01),
+    before: new DateTime(2022, 12, 01),
+    status: new List<string>{ "success" },
+    tags: new List<string>{ "breaking", "bad" }
+);
+
+foreach(StarkInfra.IndividualDocument document in documents)
+{
+    Console.Write(document);
+}
+```
+
+### Get an IndividualDocument
+
+After its creation, information on an individual document may be retrieved by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IndividualDocument document = StarkInfra.IndividualDocument.Get("5155165527080960");
+
+Console.Write(document);
+```
+  
+### Query IndividualDocument logs
+
+You can query individual document logs to better understand individual document life cycles. 
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.IndividualDocument.Log> logs = StarkInfra.IndividualDocument.Log.Query(
+    limit: 50, 
+    after: new DateTime(2022, 01, 01),
+    before: new DateTime(2022, 12, 01)
+);
+
+foreach (StarkInfra.IndividualDocument.Log log in logs)
+{
+    Console.Write(log);
+}
+```
+
+### Get an IndividualDocument log
+
+You can also get a specific log by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IndividualDocument.Log log = StarkInfra.IndividualDocument.Log.Get("5155165527080960");
+
+Console.Write(log);
+```
 
 ## Webhook
 
