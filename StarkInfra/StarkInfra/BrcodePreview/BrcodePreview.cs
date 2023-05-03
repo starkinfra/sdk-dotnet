@@ -19,6 +19,8 @@ namespace StarkInfra
     /// Properties:
     /// <list>
     ///     <item>ID [string]: BR Code string for the Pix payment. This is also the information directly encoded in a QR Code. ex: "00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A"</item>
+    ///     <item>PayerID [string]: tax id (CPF/CNPJ) of the individual or business requesting the PixKey information. This id is used by the Central Bank to limit request rates. ex: "20.018.183/0001-80"
+    ///     <item>EndToEndID [string]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
     ///     <item>AccountNumber [string]: Payment receiver account number. ex: "1234567"</item>
     ///     <item>AccountType [string]: Payment receiver account type. ex: "checking"</item>
     ///     <item>Amount [integer]: Value in cents that this payment is expecting to receive. If 0, any value is accepted. ex: 123 (= R$1,23)</item>
@@ -43,6 +45,8 @@ namespace StarkInfra
     /// </summary>
     public partial class BrcodePreview : Resource
     {
+        public string PayerID { get; }
+        public string EndToEndID { get; }
         public string AccountNumber { get; }
         public string AccountType { get; }
         public int? Amount { get; }
@@ -76,6 +80,11 @@ namespace StarkInfra
         /// Parameters (required):
         /// <list>
         ///     <item>id [string]: BR Code string for the Pix payment. This is also the information directly encoded in a QR Code. ex: "00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A"</item>
+        ///     <item>payerID [string]: tax id (CPF/CNPJ) of the individual or business requesting the PixKey information. This id is used by the Central Bank to limit request rates. ex: "20.018.183/0001-80"
+        /// </list>
+        /// Parameters (optional):
+        /// <list>
+        ///     <item>endToEndID [string, default null]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
         /// </list>
         /// Attributes (return-only):
         /// <list>
@@ -102,8 +111,8 @@ namespace StarkInfra
         /// </list>
         /// </summary>
         public BrcodePreview( 
-            string id, string accountNumber = null, string accountType = null, 
-            int? amount = null, string amountType = null, string bankCode = null, 
+            string id, string payerID, string endToEndID = null, string accountNumber = null, 
+            string accountType = null, int? amount = null, string amountType = null, string bankCode = null, 
             string branchCode = null, int? cashAmount = null, string cashierBankCode = null, 
             string cashierType = null, int? discountAmount = null, int? fineAmount = null, 
             int? interestAmount = null, string keyID = null, string name = null, 
@@ -111,6 +120,8 @@ namespace StarkInfra
             DateTime? scheduled = null, string status = null, string taxID = null
         ) : base(id)
         {
+            PayerID = payerID;
+            EndToEndID = endToEndID;
             AccountNumber = accountNumber;
             AccountType = accountType;
             Amount = amount;
@@ -202,6 +213,8 @@ namespace StarkInfra
         internal static Resource ResourceMaker(dynamic json)
         {
             string id = json.id;
+            string payerID = json.payerID;
+            string endToEndID = json.endToEndID;
             string accountNumber = json.accountNumber;
             string accountType = json.accountType;
             int? amount = json.amount;
@@ -224,7 +237,7 @@ namespace StarkInfra
             string taxID = json.taxId;
 
             return new BrcodePreview(
-                id: id, accountNumber: accountNumber, accountType: accountType, 
+                id: id, payerID: payerID, endToEndID: endToEndID, accountNumber: accountNumber, accountType: accountType, 
                 amount: amount, amountType: amountType, bankCode: bankCode, 
                 branchCode: branchCode, cashAmount: cashAmount, cashierBankCode: cashierBankCode, 
                 cashierType: cashierType, discountAmount: discountAmount, fineAmount: fineAmount, 

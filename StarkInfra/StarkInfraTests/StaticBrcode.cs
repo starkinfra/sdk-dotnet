@@ -63,7 +63,9 @@ namespace StarkInfraTests
             return new StaticBrcode(
                 name: "Jamie Lannister",
                 keyID: "+5511989898989",
-                city: "Rio de Janeiro"
+                city: "Rio de Janeiro",
+                cashierBankCode: "20018183",
+                description: "A StaticBrcode"
             );
         }
     }

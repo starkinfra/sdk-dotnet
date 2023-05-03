@@ -19,16 +19,20 @@ namespace StarkInfraTests
             List<BrcodePreview> brcodes = new List<BrcodePreview>
             {
                 new BrcodePreview(
-                        id: staticBrcodes[0].ID
+                        id: staticBrcodes[0].ID,
+                        payerID: "20.018.183/0001-80"
                     ),
                 new BrcodePreview(
-                        id: staticBrcodes[1].ID
+                        id: staticBrcodes[1].ID,
+                        payerID: "20.018.183/0001-80"
                     ),
                 new BrcodePreview(
-                        id: dynamicBrcodes[0].ID
+                        id: dynamicBrcodes[0].ID,
+                        payerID: "20.018.183/0001-80"
                     ),
                 new BrcodePreview(
-                        id: dynamicBrcodes[1].ID
+                        id: dynamicBrcodes[1].ID,
+                        payerID: "20.018.183/0001-80"
                     )
             };
 

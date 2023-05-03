@@ -2480,10 +2480,12 @@ List<StarkInfra.BrcodePreview> previews = StarkInfra.BrcodePreview.Create(
     new List<StarkInfra.BrcodePreview>
     {
         new StarkInfra.BrcodePreview(
-            id: "00020126420014br.gov.bcb.pix0120nedstark@hotmail.com52040000530398654075000.005802BR5909Ned Stark6014Rio de Janeiro621605126674869738606304FF71"
+            id: "00020126420014br.gov.bcb.pix0120nedstark@hotmail.com52040000530398654075000.005802BR5909Ned Stark6014Rio de Janeiro621605126674869738606304FF71",
+            payerID: "20.018.183/0001-80"
         ),
         new StarkInfra.BrcodePreview(
-            id: "00020126430014br.gov.bcb.pix0121aryastark@hotmail.com5204000053039865406100.005802BR5910Arya Stark6014Rio de Janeiro6216051262678188104863042BA4"
+            id: "00020126430014br.gov.bcb.pix0121aryastark@hotmail.com5204000053039865406100.005802BR5910Arya Stark6014Rio de Janeiro6216051262678188104863042BA4",
+            payerID: "20.018.183/0001-80"
         )
     }
 );

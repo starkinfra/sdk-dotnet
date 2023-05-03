@@ -18,6 +18,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - IndividualDocument resource
 - IssuingEmbossingKit resource
 - CreditHolmes resource
+- payer_id and end_to_end_id parameter to BrcodePreview resource
+- cashier_bank_code and description parameter to StaticBrcode resource
 ### Changed
 - cardDesingID and envelopID to kitID attribute
 
