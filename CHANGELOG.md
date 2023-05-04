@@ -22,6 +22,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - cashier_bank_code and description parameter to StaticBrcode resource
 ### Changed
 - cardDesingID and envelopID to kitID attribute
+- change nominal_amount and amount parameter to conditionally required to CreditNote resource
 
 ## [0.2.0] - 2022-12-12
 ### Added
