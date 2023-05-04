@@ -20,7 +20,6 @@ namespace StarkInfra
     ///     <item>TemplateID [string]: ID of the contract template on which the CreditNote will be based. ex: "0123456789101112"</item>
     ///     <item>Name [string]: credit receiver's full name. ex: "Edward Stark"</item>
     ///     <item>TaxID [string]: credit receiver's tax ID (CPF or CNPJ). ex: "20.018.183/0001-80"</item>
-    ///     <item>NominalAmount [integer]: amount in cents transferred to the credit receiver, before deductions. ex: 11234 (= R$ 112.34)</item>
     ///     <item>Scheduled [DateTime]: date of payment execution. ex: DateTime(2020, 3, 10)</item>
     ///     <item>Invoices [list of CreditNote.Invoice objects]: list of Invoice objects or dictionaries to be created and sent to the credit receiver. ex: new List<CreditNote.Invoice>{ new CreditNote.InvoiceInvoice() }</item>
     ///     <item>Payment [CreditNote.Transfer object]: Payment entity to be created and sent to the credit receiver. ex: Transfer()</item>
@@ -32,12 +31,13 @@ namespace StarkInfra
     ///     <item>City [string]: credit receiver address city. ex: "Rio de Janeiro"</item>
     ///     <item>StateCode [string]: credit receiver address state. ex: "GO"</item>
     ///     <item>ZipCode [string]: credit receiver address zip code. ex: "01311-200"</item>
+    ///     <item>Amount [integer]: amount in cents transferred to the credit receiver, before deductions. The amount parameter is required when nominal_amount is not sent. ex: 1234 (= R$ 12.34)</item>
+    ///     <item>NominalAmount [integer]: CreditNote value in cents. The nominal_amount parameter is required when amount is not sent. ex: 1234 (= R$ 12.34)</item>
     ///     <item>PaymentType [string]: payment type, inferred from the payment parameter if it is not a dictionary. ex: "transfer"</item>
     ///     <item>RebateAmount [integer, default null]: credit analysis fee deducted from lent amount. ex: 11234  R$ 112.34)</item>
     ///     <item>Tags [list of strings, default null]: list of strings for reference when searching for CreditNotes. ex: new List<string>{ "employees", "monthly" }</item>
     ///     <item>Expiration [integer, default 604800 (7 days)]: time interval in seconds between scheduled date and expiration. ex: 123456789</item>
     ///     <item>ID [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"</item>
-    ///     <item>Amount [integer]: CreditNote value in cents. ex: 1234 (= R$ 12.34)</item>
     ///     <item>DocumentID [string]: ID of the signed document to execute this CreditNote. ex: "4545454545454545"</item>
     ///     <item>Status [string]: current status of the CreditNote. ex: "canceled", "created", "expired", "failed", "processing", "signed", "success"</item>
     ///     <item>TransactionIds [list of strings]: ledger transaction ids linked to this CreditNote. ex: new List<string>{ "19827356981273" }</item>
@@ -110,8 +110,8 @@ namespace StarkInfra
         /// Parameters (conditionally required):
         /// <list>
         ///     <item>paymentType [string]: payment type, inferred from the payment parameter if it is not a dictionary. ex: "transfer"</item>
-        ///     <item>nominalAmount [integer]: amount in cents paid to the credit receiver, before deductions. ex: 11234 (= R$ 112.34)</item>
-        ///     <item>amount [integer]: CreditNote value in cents. ex: 1234 (= R$ 12.34)</item>
+        ///     <item>nominalAmount [integer]: CreditNote value in cents. The nominal_amount parameter is required when amount is not sent. ex: 1234 (= R$ 12.34)</item>
+        ///     <item>amount [integer]: amount in cents transferred to the credit receiver, before deductions. The amount parameter is required when nominal_amount is not sent. ex: 1234 (= R$ 12.34)</item>
         /// </list>
         /// Parameters (optional):
         /// <list>
