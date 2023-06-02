@@ -87,7 +87,7 @@ namespace StarkInfraTests
                 accountNumber: "5692908409716736",
                 accountType: "checking",
                 branchCode: "0000",
-                keyID: TestUtils.RandomPhoneNumber(),
+                keyID: "+5523933276344",
                 name: "testKey",
                 taxID: "012.345.678-90",
                 tags: new List<string> { "teste sdk" }

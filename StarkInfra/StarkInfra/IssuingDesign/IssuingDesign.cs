@@ -196,13 +196,15 @@ namespace StarkInfra
 
         internal static Resource ResourceMaker(dynamic json)
         {
+
             string id = json.id;
             string name = json.name;
-            List<string> embosserIds = json.embosserIds.ToObject<List<string>>();
+
+            List<string> embosserIds = json.embosserIds?.ToObject<List<string>>();
             string createdString = json.created;
-            DateTime created = Checks.CheckDateTime(createdString);
+            DateTime? created = Checks.CheckNullableDateTime(createdString);
             string updatedString = json.updated;
-            DateTime updated = Checks.CheckDateTime(updatedString);
+            DateTime? updated = Checks.CheckNullableDateTime(updatedString);
 
             return new IssuingDesign(
                 id: id, name: name, embosserIds: embosserIds, updated: updated, 

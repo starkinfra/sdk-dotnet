@@ -2,6 +2,7 @@ using StarkInfra;
 using Xunit;
 using System.Linq;
 using System.Collections.Generic;
+using System;
 
 
 namespace StarkInfraTests
@@ -29,7 +30,7 @@ namespace StarkInfraTests
             string cursor = null;
             for (int i = 0; i < 2; i++)
             {
-                (page, cursor) = IssuingEmbossingKit.Page(limit: 2, cursor: cursor);
+                (page, cursor) = IssuingEmbossingKit.Page(limit: 1, cursor: cursor);
                 foreach (IssuingEmbossingKit entity in page)
                 {
                     TestUtils.Log(entity);

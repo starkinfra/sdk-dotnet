@@ -108,7 +108,7 @@ namespace StarkInfraTests
                 district: "Bela Vista",
                 holderExternalID: generatedHolderExternalID,
                 holderName: generatedHolderName,
-                holderTaxID: generatedHolderTaxID,
+                holderTaxID: "586.589.770-56",
                 rules: new List<StarkInfra.IssuingRule>{
                     new StarkInfra.IssuingRule(
                         name: "general",

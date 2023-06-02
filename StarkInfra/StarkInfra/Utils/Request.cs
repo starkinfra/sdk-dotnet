@@ -60,7 +60,7 @@ namespace StarkInfra.Utils
             }
             if (user.Environment == "sandbox")
             {
-                url = "https://sandbox.api.starkinfra.com/";
+                url = "https://development.api.starkinfra.com/";
             }
             url += "v2/" + path;
 
@@ -106,7 +106,7 @@ namespace StarkInfra.Utils
             }
             if (response.Status == 400)
             {
-                throw new Error.InputErrors(response.Content);
+                 throw new Error.InputErrors(response.Content);
             }
             if (response.Status != 200)
             {

@@ -196,8 +196,9 @@ namespace StarkInfra
 
         internal static Resource ResourceMaker(dynamic json)
         {
+
             string id = json.id;
-            string name = json.name;
+            string name = json.name; 
             List<IssuingDesign> designs = ParseIssuingDesign(json.designs);
             string createdString = json.created;
             DateTime created = Checks.CheckDateTime(createdString);

@@ -109,7 +109,7 @@ namespace StarkInfraTests
             PixRequest request = PixRequest.Get(createdRequest[0].ID);
             return new List<PixInfraction>{
                 new PixInfraction(
-                    referenceID: request.EndToEndID,
+                    referenceID: "E340526492022101714362hylhjAaQa7",
                     type: "fraud",
                     tags: new List<string> { "teste sdk" }
                 )
