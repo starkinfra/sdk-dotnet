@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using StarkInfra.Utils;
 
 
@@ -32,6 +33,7 @@ namespace StarkInfra
     ///     <item>AcquirerID [string]: acquirer ID. ex: "5656565656565656"</item>
     ///     <item>MerchantID [string]: merchant ID. ex: "5656565656565656"</item>
     ///     <item>MerchantName [string]: merchant name. ex: "Google Cloud Platform"</item>
+    ///     <item>metadata [dictionary]: dictionary object used to store additional information about the IssuingPurchase object. ex: { authorizationId: 'OjZAqj' }
     ///     <item>merchantFee [integer]: fee charged by the merchant to cover specific costs, such as ATM withdrawal logistics, etc. ex: 200 (= R$ 2.00)</item>
     ///     <item>WalletID [string]: virtual wallet ID. ex: "5656565656565656"</item>
     ///     <item>MethodCode [string]: method code. Options: "chip", "token", "server", "manual", "magstripe" or "contactless"</item>
@@ -67,6 +69,7 @@ namespace StarkInfra
         public string AcquirerID { get; }
         public string MerchantID { get; }
         public string MerchantName { get; }
+        public Dictionary<string, object> Metadata { get; }
         public int? MerchantFee { get; }
         public string WalletID { get; }
         public string MethodCode { get; }
@@ -107,6 +110,7 @@ namespace StarkInfra
         ///     <item>acquirerID [string]: acquirer ID. ex: "5656565656565656"</item>
         ///     <item>merchantID [string]: merchant ID. ex: "5656565656565656"</item>
         ///     <item>merchantName [string]: merchant name. ex: "Google Cloud Platform"</item>
+        ///     <item>metadata [dictionary]: dictionary object used to store additional information about the IssuingPurchase object. ex: { authorizationId: 'OjZAqj' }
         ///     <item>merchantFee [integer]: fee charged by the merchant to cover specific costs, such as ATM withdrawal logistics, etc. ex: 200 (= R$ 2.00)</item>
         ///     <item>walletID [string]: virtual wallet ID. ex: "5656565656565656"</item>
         ///     <item>methodCode [string]: method code. Options: "chip", "token", "server", "manual", "magstripe" or "contactless"</item>
@@ -133,7 +137,7 @@ namespace StarkInfra
             string purpose = null, long? amount = null, int? tax = null, long? issuerAmount = null, string issuerCurrencyCode = null,  
             string issuerCurrencySymbol = null, long? merchantAmount = null,  string merchantCurrencyCode = null,  
             string merchantCurrencySymbol = null,  string merchantCategoryCode = null,  string merchantCountryCode = null,  
-            string acquirerID = null,  string merchantID = null,  string merchantName = null,  int? merchantFee = null,  
+            string acquirerID = null,  string merchantID = null,  string merchantName = null, Dictionary<string, object> metadata = null, int? merchantFee = null,  
             string walletID = null,  string methodCode = null,  float? score = null,  string endToEndID = null,  List<string> tags = null,  
             string zipCode = null,  List<string> issuingTransactionIds = null, string status = null, DateTime? updated = null, 
             DateTime? created = null, bool? isPartialAllowed = null, List<string> cardTags = null, List<string> holderTags = null           
@@ -156,6 +160,7 @@ namespace StarkInfra
             AcquirerID = acquirerID;
             MerchantID = merchantID;
             MerchantName = merchantName;
+            Metadata = metadata;
             MerchantFee = merchantFee;
             WalletID = walletID;
             MethodCode = methodCode;
@@ -405,6 +410,7 @@ namespace StarkInfra
             string acquirerID = json.acquirerId;
             string merchantID = json.merchantId;
             string merchantName = json.merchantName;
+            Dictionary<string, object> metadata = json.metadata?.ToObject<Dictionary<string, object>>();
             int? merchantFee = json.merchantFee;
             string walletID = json.walletId;
             string methodCode = json.methodCode;
@@ -424,17 +430,18 @@ namespace StarkInfra
 
             return new IssuingPurchase(
                 id: id, holderName: holderName, cardID: cardID, cardEnding: cardEnding,
-                purpose: purpose, amount: amount, tax: tax, issuerAmount: issuerAmount, 
-                issuerCurrencyCode: issuerCurrencyCode, issuerCurrencySymbol: issuerCurrencySymbol, 
-                merchantAmount: merchantAmount, merchantCurrencyCode: merchantCurrencyCode, 
-                merchantCurrencySymbol: merchantCurrencySymbol, merchantCategoryCode: merchantCategoryCode, 
-                merchantCountryCode: merchantCountryCode, acquirerID: acquirerID, 
-                merchantID: merchantID, merchantName: merchantName, merchantFee: merchantFee, 
-                walletID: walletID, methodCode: methodCode, score: score, endToEndID: endToEndID, 
-                tags: tags, zipCode: zipCode, issuingTransactionIds: issuingTransactionIds, 
-                status: status, created: created, updated: updated, isPartialAllowed: isPartialAllowed, 
+                purpose: purpose, amount: amount, tax: tax, issuerAmount: issuerAmount,
+                issuerCurrencyCode: issuerCurrencyCode, issuerCurrencySymbol: issuerCurrencySymbol,
+                merchantAmount: merchantAmount, merchantCurrencyCode: merchantCurrencyCode,
+                merchantCurrencySymbol: merchantCurrencySymbol, merchantCategoryCode: merchantCategoryCode,
+                merchantCountryCode: merchantCountryCode, acquirerID: acquirerID,
+                merchantID: merchantID, merchantName: merchantName, metadata: metadata, merchantFee: merchantFee,
+                walletID: walletID, methodCode: methodCode, score: score, endToEndID: endToEndID,
+                tags: tags, zipCode: zipCode, issuingTransactionIds: issuingTransactionIds,
+                status: status, created: created, updated: updated, isPartialAllowed: isPartialAllowed,
                 cardTags: cardTags, holderTags: holderTags
-            );
+            ); ; ;
         }
     }
 }
+ 
