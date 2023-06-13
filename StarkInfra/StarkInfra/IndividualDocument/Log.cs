@@ -20,13 +20,15 @@ namespace StarkInfra
         /// <list>
         ///     <item>ID [string]: unique id returned when the log is created. ex: "5656565656565656"</item>
         ///     <item>Document [IndividualDocument]: IndividualDocument entity to which the log refers to.</item>
-        ///     <item>Type [string]: type of the IndividualDocument event which triggered the log creation. ex: "blocked", "canceled", "created", "expired", "unblocked", "updated"</item>
+        ///     <item>errors [list of strings]: list of errors linked to this CreditHolmes event.<item>
+        ///     <item>Type [string]: type of the IndividualDocument event which triggered the log creation. ex: "created", "canceled", "processing", "failed", "success"</item>
         ///     <item>Created [DateTime]: creation DateTime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
         public class Log : Resource
         {
             public IndividualDocument Document  { get; }
+            public List<String> Errors { get; }
             public string Type { get; }
             public DateTime Created { get; }
 
@@ -42,15 +44,17 @@ namespace StarkInfra
             /// <list>
             ///     <item>id [string]: unique id returned when the log is created. ex: "5656565656565656"</item>
             ///     <item>document [IndividualDocument]: IndividualDocument entity to which the log refers to.</item>
-            ///     <item>type [string]: type of the IndividualDocument event which triggered the log creation. ex: "blocked", "canceled", "created", "expired", "unblocked", "updated"</item>
+            ///     <item>errors [list of strings]: list of errors linked to this CreditHolmes event.<item>
+            ///     <item>type [string]: type of the IndividualDocument event which triggered the log creation. ex: "created", "canceled", "processing", "failed", "success"</item>
             ///     <item>created [DateTime]: creation DateTime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
             /// </list>
             /// </summary>
-            public Log(string id, DateTime created, string type, IndividualDocument document) : base(id)
+            public Log(string id, DateTime created, string type, List<String> errors, IndividualDocument document) : base(id)
             {
                 Document = document;
                 Type = type;
                 Created = created;
+                Errors = errors;
             }
 
             /// <summary>
@@ -95,7 +99,7 @@ namespace StarkInfra
             ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
             ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
-            ///     <item>types [list of strings, default null]: filter for log event types. ex: new List<string>{  "blocked", "canceled", "created", "expired", "unblocked", "updated" }</item>
+            ///     <item>types [list of strings, default null]: filter for log event types. ex: new List<string>{  "created", "canceled", "processing", "failed", "success" }</item>
             ///     <item>documentIds [list of strings, default null]: list of IndividualDocument ids to filter logs. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
             ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
             /// </list>
@@ -105,7 +109,7 @@ namespace StarkInfra
             ///     <item>IEnumerable of IndividualDocument.Log objects with updated attributes</item>
             /// </list>
             /// </summary>
-            public static IEnumerable<Log> Query(List<string> ids = null, int? limit = null, DateTime? after = null, DateTime? before = null,
+            public static IEnumerable<Log> Query(int? limit = null, DateTime? after = null, DateTime? before = null,
                 List<string> types = null, List<string> documentIds = null, User user = null)
             {
                 (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
@@ -113,7 +117,6 @@ namespace StarkInfra
                     resourceName: resourceName,
                     resourceMaker: resourceMaker,
                     query: new Dictionary<string, object> {
-                        { "ids", ids },
                         { "limit", limit },
                         { "after", new StarkDate(after) },
                         { "before", new StarkDate(before) },
@@ -137,7 +140,7 @@ namespace StarkInfra
             ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
             ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
             ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
-            ///     <item>types [list of strings, default null]: filter for log event types. ex: new List<string>{ "blocked", "canceled", "created", "expired", "unblocked", "updated" }</item>
+            ///     <item>types [list of strings, default null]: filter for log event types. ex: new List<string>{ "created", "canceled", "processing", "failed", "success" }</item>
             ///     <item>documentIds [list of strings, default null]: list of IndividualDocument ids to filter logs. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
             ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
             /// </list>
@@ -149,7 +152,7 @@ namespace StarkInfra
             /// </list>
             /// </summary>
             public static (List<Log> page, string pageCursor) Page(string cursor = null, int? limit = null, DateTime? after = null,
-                DateTime? before = null, List<string> ids = null, List<string> types = null, List<string> documentIds = null,
+                DateTime? before = null, List<string> types = null, List<string> documentIds = null,
                 User user = null)
             {
                 (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
@@ -158,7 +161,6 @@ namespace StarkInfra
                     resourceMaker: resourceMaker,
                     query: new Dictionary<string, object> {
                         { "cursor", cursor },
-                        { "ids", ids },
                         { "limit", limit },
                         { "after", new StarkDate(after) },
                         { "before", new StarkDate(before) },
@@ -187,8 +189,9 @@ namespace StarkInfra
                 string type = json.type;
                 string createdString = json.created;
                 DateTime created = Checks.CheckDateTime(createdString);
+                List<String> errors = json.errors;
 
-                return new Log(id: id, document: document, type: type, created: created);
+                return new Log(id: id, document: document, type: type, created: created, errors: errors);
             }
         }
     }

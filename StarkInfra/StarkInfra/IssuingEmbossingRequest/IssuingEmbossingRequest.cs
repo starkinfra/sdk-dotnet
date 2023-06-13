@@ -70,7 +70,6 @@ namespace StarkInfra
         /// <list>
         ///     <item>cardID [string]: id of the IssuingCard to be embossed. ex "5656565656565656"</item>
         ///     <item>kitID [string]: card embossing kit id. ex "5656565656565656"</item>
-        ///     <item>envelopeDesignID [string]: envelope IssuingDesign id. ex "5656565656565656"</item>
         ///     <item>displayName1 [string]: card displayed name. ex: "ANTHONY STARK"</item>
         ///     <item>shippingCity [string]: shipping city. ex: "NEW YORK"</item>
         ///     <item>shippingCountryCode [string]: shipping country code. ex: "US"</item>

@@ -9,12 +9,12 @@ namespace StarkInfra
     /// <summary>
     /// IssuingEmbossingKit object
     /// <br/>
-    /// The IssuingEmbossingKit object displays information on the card and card package designs available to your Workspace.
+    /// The IssuingEmbossingKit object displays information on the embossing kits available to your Workspace.
     /// <br/>
     /// Properties:
     /// <list>
     ///     <item>ID [string]: unique id returned when IssuingEmbossingKit is created. ex: "5656565656565656"</item>
-    ///     <item>Name [string]: card or package design name. ex: "stark-plastic-dark-001"</item>
+    ///     <item>Name [string]: embossing kit name. ex: "stark-plastic-dark-001"</item>
     ///     <item>Designs [list of IssuingDesign objects]: list of IssuingDesign objects. ex: new List<IssuingDesign> {IssuingDesign(), IssuingDesign() }</item>
     ///     <item>Updated [DateTime]: latest update datetime for the IssuingEmbossingKit. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>Created [DateTime]: creation datetime for the IssuingEmbossingKit. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
@@ -30,12 +30,12 @@ namespace StarkInfra
         /// <summary>
         /// IssuingEmbossingKit object
         /// <br/>
-        /// The IssuingEmbossingKit object displays information on the card and card package designs available to your Workspace.
+        /// The IssuingEmbossingKit object displays information on the embossing kits available to your Workspace.
         /// <br/>
         /// Attributes (return-only):
         /// <list>
         ///     <item>id [string]: unique id returned when IssuingEmbossingKit is created. ex: "5656565656565656"</item>
-        ///     <item>name [string]: card or package design name. ex: "stark-plastic-dark-001" </item>
+        ///     <item>name [string]: embossing kit name. ex: "stark-plastic-dark-001" </item>
         ///     <item>designs [list of IssuingDesign objects]: list of IssuingDesign objects. ex: new List<IssuingDesign> {IssuingDesign(), IssuingDesign() }</item>
         ///     <item>updated [DateTime]: latest update datetime for the IssuingEmbossingKit. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>created [DateTime]: creation datetime for the IssuingEmbossingKit. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
@@ -90,7 +90,11 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
+        ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35.</item>
+        ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>status [list of strings, default None]: filter for status of retrieved objects. Options: ["created", "canceled", "processing", "failed", "success"]</item>
+        ///     <item>designIds [list of string, default None]: list of designIds to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]<item>
         ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
@@ -100,16 +104,21 @@ namespace StarkInfra
         ///     <item>IEnumerable of IssuingEmbossingKit objects with updated attributes</item>
         /// </list>
         /// </summary>
-        public static IEnumerable<IssuingEmbossingKit> Query(List<string> ids = null, int? limit = null,
-            User user = null)
+        public static IEnumerable<IssuingEmbossingKit> Query(int? limit = null, List<String> designIds = null, 
+            DateTime? after = null, DateTime? before = null, List<string> status = null, List<string> ids = null, User user = null
+        )
         {
             (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
-                    { "ids", ids },
                     { "limit", limit },
+                    { "after", after },
+                    { "before", before },
+                    { "status", status },
+                    { "designIds", designIds },
+                    { "ids", ids }
                 },
                 user: user
             ).Cast<IssuingEmbossingKit>();
@@ -125,6 +134,9 @@ namespace StarkInfra
         /// <list>
         ///     <item>cursor [string, default null]: cursor returned on the previous page function call</item>
         ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50</item>
+        ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>status [list of strings, default None]: filter for status of retrieved objects. Options: ["created", "canceled", "processing", "failed", "success"]</item>
         ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: new List<string> { "5656565656565656", "4545454545454545" }</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
@@ -135,8 +147,9 @@ namespace StarkInfra
         ///     <item>cursor to retrieve the next page of IssuingEmbossingKit objects</item>
         /// </list>
         /// </summary>
-        public static (List<IssuingEmbossingKit> page, string pageCursor) Page(string cursor = null, List<string> ids = null, int? limit = null, 
-            User user = null)
+        public static (List<IssuingEmbossingKit> page, string pageCursor) Page(string cursor = null, int? limit = null, List<String> designIds = null,
+            DateTime? after = null, DateTime? before = null, List<string> status = null, List<string> ids = null, User user = null
+        )
         {
             (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
             (List<SubResource> page, string pageCursor) = Rest.GetPage(
@@ -144,17 +157,21 @@ namespace StarkInfra
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
                     { "cursor", cursor },
-                    { "ids", ids },
                     { "limit", limit },
+                    { "after", after },
+                    { "before", before },
+                    { "status", status },
+                    { "designIds", designIds },
+                    { "ids", ids },
                 },
                 user: user
             );
-            List<IssuingEmbossingKit> designs = new List<IssuingEmbossingKit>();
+            List<IssuingEmbossingKit> kits = new List<IssuingEmbossingKit>();
             foreach (SubResource subResource in page)
             {
-                designs.Add(subResource as IssuingEmbossingKit);
+                kits.Add(subResource as IssuingEmbossingKit);
             }
-            return (designs, pageCursor);
+            return (kits, pageCursor);
         }
         
         /// <summary>

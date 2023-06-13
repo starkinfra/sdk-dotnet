@@ -21,6 +21,7 @@ namespace StarkInfra
     /// <list>
     ///     <item>Type [string]: type of the IndividualDocument. Options: "drivers-license-front", "drivers-license-back", "identity-front", "identity-back" or "selfie"
     ///     <item>Content [string]: Base64 data url of the picture. ex: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAASABIAAD...</item>
+    ///     <item>contentType [string]: content MIME type. This parameter is required as input only. ex: "image/png" or "image/jpeg"<item>
     ///     <item>IdentityID [string]: Unique id of IndividualIdentity. ex: "5656565656565656"</item>
     ///     <item>Tags [list of strings, default []]: list of strings for reference when searching for IndividualDocuments. ex: List<string>{ "employees", "monthly" }</item>
     ///     <item>Id [string]: unique id returned when the IndividualDocument is created. ex: "5656565656565656"</item>
@@ -32,6 +33,7 @@ namespace StarkInfra
     {
         public string Type { get; }
         public string Content { get; }
+        public string ContentType { get; }
         public string IdentityID { get; }
         public List<string> Tags { get; }
         public string Id { get; }
@@ -53,6 +55,7 @@ namespace StarkInfra
         /// <list>
         ///     <item>type [string]: type of the IndividualDocument. Options: "drivers-license-front", "drivers-license-back", "identity-front", "identity-back" or "selfie"</item>
         ///     <item>content [string]: Base64 data url of the picture. ex: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAASABIAAD...</item>
+        ///     <item>contentType [string]: content MIME type. This parameter is required as input only. ex: "image/png" or "image/jpeg"<item>
         ///     <item>identityID [string]: Unique id of IndividualIdentity. ex: "5656565656565656"</item>
         ///</list>
         /// Parameters (optional):
@@ -67,12 +70,13 @@ namespace StarkInfra
         /// </list>
         /// </summary>
         public IndividualDocument(
-            string type, string content, string identityID, List<string> tags = null, 
+            string type, string content, string identityID, string contentType = null, List<string> tags = null, 
             string id = null, string status = null, DateTime? created = null
         ) : base(id)
         {
             Type = type;
             Content = content;
+            ContentType = contentType;
             IdentityID = identityID;
             Tags = tags;
             Status = status;
@@ -224,7 +228,7 @@ namespace StarkInfra
         ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
         ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
-        ///     <item>status [list of string, default null]: filter for status of retrieved objects. ex: "active", "blocked", "expired" or "canceled"</item>
+        ///     <item>status [list of strings, default None]: filter for status of retrieved objects. Options: ["created", "canceled", "processing", "failed", "success"]</item>
         ///     <item>tags [list of strings, default null]: list of tags to filter retrieved objects. ex: new List<string>{ "tony", "stark" }</item>
         ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
@@ -267,7 +271,7 @@ namespace StarkInfra
         ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35.</item>
         ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
-        ///     <item>status [list of string, default null]: filter for status of retrieved objects. ex: "active", "blocked", "expired" or "canceled"</item>
+        ///     <item>status [list of strings, default None]: filter for status of retrieved objects. Options: ["created", "canceled", "processing", "failed", "success"]</item>
         ///     <item>tags [list of strings, default null]: list of tags to filter retrieved objects. ex: new List<string>{ "tony", "stark" }</item>
         ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>

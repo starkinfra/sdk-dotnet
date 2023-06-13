@@ -81,6 +81,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - PixInfraction resource for Indirect and Direct Participants
 - PixChargeback resource for Indirect and Direct Participants
 - CreditNote resource for money lending with Stark's Infra endorsement.
+- IssuingEmbossingRequest remove CardDesignID, EnvelopeDesignID
 - IssuingAuthorization resource for Sub Issuers
 - IssuingBalance resource for Sub Issuers
 - IssuingBin resource for Sub Issuers

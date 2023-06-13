@@ -636,7 +636,7 @@ Console.Write(design);
 
 ### Query IssuingEmbossingKits
 
-You can get a list of existing embossing kits given some filters.
+You can get a list of created embossing kits given some filters.
 
 ```c#
 using System;

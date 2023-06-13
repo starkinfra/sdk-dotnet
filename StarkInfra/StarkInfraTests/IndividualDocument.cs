@@ -66,10 +66,10 @@ namespace StarkInfraTests
         [Fact]
         public void Query()
         {
-            List<IndividualDocument> identities = IndividualDocument.Query(limit: 5).ToList();
-            Assert.True(identities.Count <= 101);
-            Assert.True(identities.First().ID != identities.Last().ID);
-            foreach (IndividualDocument identity in identities)
+            List<IndividualDocument> documents = IndividualDocument.Query(limit: 5).ToList();
+            Assert.True(documents.Count <= 101);
+            Assert.True(documents.First().ID != documents.Last().ID);
+            foreach (IndividualDocument identity in documents)
             {
                 TestUtils.Log(identity);
                 Assert.NotNull(identity.ID);

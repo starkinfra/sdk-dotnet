@@ -68,7 +68,7 @@ namespace StarkInfra
         /// </list>
         /// </summary>
         public IndividualIdentity(
-            string name = null, string taxID = null, List<string> tags = null, string id = null, 
+            string name, string taxID, List<string> tags = null, string id = null, 
             string status = null, DateTime? created = null
         ) : base(id)
         {
@@ -249,6 +249,7 @@ namespace StarkInfra
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
                     { "cursor", cursor },
+                    { "status", status },
                     { "limit", limit },
                     { "after", after },
                     { "before", before },
@@ -273,11 +274,11 @@ namespace StarkInfra
         /// Parameters(required):
         /// <list>
         ///     <item>id[string]: IndividualIdentity id. ex: "5656565656565656"</item>
+        ///     <item>status [string, default null]: You may send IndividualDocuments to validation by passing 'processing' in the status</item>
         /// </list>
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>status [string, default null]: You may block the IndividualIdentity by passing "blocked" or activate by passing "active" in the status</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>

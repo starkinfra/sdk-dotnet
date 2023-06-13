@@ -23,7 +23,7 @@ namespace StarkInfra
     ///     <item>Competence [string, default 'two months before current date']: competence month of the operation verification, format: "YYYY-MM". ex: "2021-04"</item>
     ///     <item>Tags [list of strings, default []]: list of strings for reference when searching for CreditHolmes. ex: new List<string>{ "travel", "food" }</item>
     ///     <item>Id [string]: unique id returned when the CreditHolmes is created. ex: "5656565656565656"</item>
-    ///     <item>Result [dictionary, default empty dictionary]: result of the investigation after the case is solved.</item>
+    ///     <item>Result [dictionary]: result of the investigation after the case is solved.</item>
     ///     <item>Status [string]: current status of the CreditHolmes. ex: "created", "failed", "success"</item>
     ///     <item>Updated [DateTime]: latest update DateTime for the CreditHolmes. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>Created [DateTime]: creation DateTime for the CreditHolmes. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
@@ -50,10 +50,6 @@ namespace StarkInfra
         /// created in the Stark Infra API. The 'create' function sends the objects
         /// to the Stark Infra API and returns the list of created objects.
         /// <br/>
-        /// When you initialize a CreditHolmes, the entity will not be automatically
-        /// created in the Stark Infra API. The 'create' function sends the objects
-        /// to the Stark Infra API and returns the created object.
-        /// <br/>
         /// Parameters (required):
         /// <list>
         ///     <item>taxID [string]: customer's tax ID (CPF or CNPJ) for whom the credit operations will be verified. ex: "20.018.183/0001-80"</item>
@@ -66,7 +62,7 @@ namespace StarkInfra
         /// Attributes (return-only):
         /// <list>
         ///     <item>id [string]: unique id returned when CreditHolmes is created. ex: "5656565656565656"</item>
-        ///     <item>result [dictionary, default empty dictionary]: result of the investigation after the case is solved.</item>
+        ///     <item>result [dictionary]: result of the investigation after the case is solved.</item>
         ///     <item>status [string]: current status of the CreditHolmes. ex: "created", "failed", "success"</item>
         ///     <item>updated [DateTime]: latest update DateTime for the CreditHolmes. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>created [DateTime]: creation DateTime for the CreditHolmes. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
@@ -190,7 +186,7 @@ namespace StarkInfra
         ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
         ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
-        ///     <item>status [list of string, default null]: filter for status of retrieved objects. ex: "active", "blocked", "expired" or "canceled"</item>
+        ///     <item>status [list of string, default null]: filter for status of retrieved objects. ex: "created", "failed", "success"</item>
         ///     <item>tags [list of strings, default null]: list of tags to filter retrieved objects. ex: new List<string>{ "tony", "stark" }</item>
         ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
@@ -233,7 +229,7 @@ namespace StarkInfra
         ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35.</item>
         ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
-        ///     <item>status [list of string, default null]: filter for status of retrieved objects. ex: "active", "blocked", "expired" or "canceled"</item>
+        ///     <item>status [list of string, default null]: filter for status of retrieved objects. ex: "created", "failed", "success"</item>
         ///     <item>tags [list of strings, default null]: list of tags to filter retrieved objects. ex: new List<string>{ "tony", "stark" }</item>
         ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
