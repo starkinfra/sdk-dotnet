@@ -14,7 +14,7 @@ namespace StarkInfraTests
         public void CreateGet()
         {
 
-            List<IndividualIdentity> identities = IndividualIdentity.Create(new List<IndividualIdentity>() { IdentityExample() });
+            List<IndividualIdentity> identities = IndividualIdentity.Create(new List<IndividualIdentity>() { IndividualIdentityTest.Example() });
             IndividualIdentity identity = identities.First();
             Assert.NotNull(identity.ID);
 
@@ -98,10 +98,5 @@ namespace StarkInfraTests
             }
             Assert.True(ids.Count == 2);
         }
-
-        internal static IndividualIdentity IdentityExample() => new IndividualIdentity(
-            name: "Jamie Lannister",
-            taxID: "012.345.678-90"
-        );
     }
 }

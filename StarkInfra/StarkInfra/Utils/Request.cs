@@ -60,7 +60,7 @@ namespace StarkInfra.Utils
             }
             if (user.Environment == "sandbox")
             {
-                url = "https://development.api.starkinfra.com/";
+                url = "https://sandbox.api.starkinfra.com/";
             }
             url += "v2/" + path;
 

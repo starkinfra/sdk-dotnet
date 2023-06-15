@@ -71,7 +71,7 @@ namespace StarkInfraTests
             Assert.True(ids.Count == 2);
         }
 
-        internal static IndividualIdentity Example() => new IndividualIdentity(
+        public static IndividualIdentity Example() => new IndividualIdentity(
             name: "Jamie Lannister",
             taxID: "012.345.678-90"
         );
