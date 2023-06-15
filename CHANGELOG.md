@@ -14,7 +14,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 ## Added 
-- IssuingPurchase metadata
+- metadata parameter to IssuingPurchase resource
 
 
 ### Added
