@@ -31,8 +31,8 @@ namespace StarkInfra
     ///     <item>City [string]: credit receiver address city. ex: "Rio de Janeiro"</item>
     ///     <item>StateCode [string]: credit receiver address state. ex: "GO"</item>
     ///     <item>ZipCode [string]: credit receiver address zip code. ex: "01311-200"</item>
-    ///     <item>Amount [integer]: amount in cents transferred to the credit receiver, before deductions. The amount parameter is required when nominal_amount is not sent. ex: 1234 (= R$ 12.34)</item>
-    ///     <item>NominalAmount [integer]: CreditNote value in cents. The nominal_amount parameter is required when amount is not sent. ex: 1234 (= R$ 12.34)</item>
+    ///     <item>Amount [integer]: amount in cents transferred to the credit receiver, before deductions. The amount parameter is required when nominalAmount is not sent. ex: 1234 (= R$ 12.34)</item>
+    ///     <item>NominalAmount [integer]: CreditNote value in cents. The nominalAmount parameter is required when amount is not sent. ex: 1234 (= R$ 12.34)</item>
     ///     <item>PaymentType [string]: payment type, inferred from the payment parameter if it is not a dictionary. ex: "transfer"</item>
     ///     <item>RebateAmount [integer, default null]: credit analysis fee deducted from lent amount. ex: 11234  R$ 112.34)</item>
     ///     <item>Tags [list of strings, default null]: list of strings for reference when searching for CreditNotes. ex: new List<string>{ "employees", "monthly" }</item>
@@ -110,8 +110,8 @@ namespace StarkInfra
         /// Parameters (conditionally required):
         /// <list>
         ///     <item>paymentType [string]: payment type, inferred from the payment parameter if it is not a dictionary. ex: "transfer"</item>
-        ///     <item>nominalAmount [integer]: CreditNote value in cents. The nominal_amount parameter is required when amount is not sent. ex: 1234 (= R$ 12.34)</item>
-        ///     <item>amount [integer]: amount in cents transferred to the credit receiver, before deductions. The amount parameter is required when nominal_amount is not sent. ex: 1234 (= R$ 12.34)</item>
+        ///     <item>nominalAmount [integer]: CreditNote value in cents. The nominalAmount parameter is required when amount is not sent. ex: 1234 (= R$ 12.34)</item>
+        ///     <item>amount [integer]: amount in cents transferred to the credit receiver, before deductions. The amount parameter is required when nominalAmount is not sent. ex: 1234 (= R$ 12.34)</item>
         /// </list>
         /// Parameters (optional):
         /// <list>
