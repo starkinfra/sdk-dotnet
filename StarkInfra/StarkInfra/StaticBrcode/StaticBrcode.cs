@@ -21,6 +21,8 @@ namespace StarkInfra
     ///     <item>KeyID [string]: receiver's PixKey id. ex: "+5541999999999"</item>
     ///     <item>City [string, default São Paulo]: receiver's city name. ex: "Rio de Janeiro"</item>
     ///     <item>Amount [integer, default 0]: positive integer that represents the amount in cents of the resulting Pix transaction. If the amount is zero, the sender can choose any amount in the moment of payment. ex: 1234 (= R$ 12.34)</item>
+    ///     <item>CashierBankCode [string, default ""]: Cashier's bank code. ex: "20018183".</item>
+    ///     <item>Description [string, default ""]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"</item>
     ///     <item>ReconciliationID [string, default ""]: id to be used for conciliation of the resulting Pix transaction. This id must have up to 25 alphanumeric digits ex: "ah27s53agj6493hjds6836v49"</item>
     ///     <item>Tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "travel", "food" }</item>
     ///     <item>ID [string]: id returned on creation, this is the BR code. ex: "00020126360014br.gov.bcb.pix0114+552840092118152040000530398654040.095802BR5915Jamie Lannister6009Sao Paulo620705038566304FC6C"</item>
@@ -35,6 +37,8 @@ namespace StarkInfra
         public string Name { get; }
         public string KeyID { get; }
         public string City { get; }
+        public string CashierBankCode { get; }
+        public string Description { get; }
         public long? Amount { get; }
         public string ReconciliationID { get; }
         public List<string> Tags { get; }
@@ -62,6 +66,8 @@ namespace StarkInfra
         /// <list>
         ///     <item>amount [integer, default 0]: positive integer that represents the amount in cents of the resulting Pix transaction. If the amount is zero, the sender can choose any amount in the moment of payment. ex: 1234 (= R$ 12.34)</item>
         ///     <item>reconciliationID [string, default ""]: id to be used for conciliation of the resulting Pix transaction. This id must have up to 25 alphanumeric digits ex: "ah27s53agj6493hjds6836v49"</item>
+        ///     <item>cashierBankCode [string, default ""]: Cashier's bank code. ex: "20018183".</item>
+        ///     <item>description [string, default ""]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"</item>
         ///     <item>tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "travel", "food" }</item>
         /// </list>
         /// Attributes (return-only):
@@ -75,7 +81,8 @@ namespace StarkInfra
         /// </summary>
         public StaticBrcode(
             string name, string keyID, string city, long? amount = null, 
-            string reconciliationID = null, List<string> tags = null, string id = null, 
+            string reconciliationID = null, string cashierBankCode = null,
+            string description = null, List<string> tags = null, string id = null, 
             string uuid = null, string url = null, DateTime? updated = null, 
             DateTime? created = null
         ) : base(id)
@@ -85,6 +92,8 @@ namespace StarkInfra
             City = city;
             Amount = amount;
             ReconciliationID = reconciliationID;
+            CashierBankCode = cashierBankCode;
+            Description = description;
             Tags = tags;
             Uuid = uuid;
             Url = url;
@@ -288,6 +297,8 @@ namespace StarkInfra
             string city = json.city;
             long? amount = json.amount;
             string reconciliationID = json.reconciliationId;
+            string cashierBankCode = json.cashierBankCode;
+            string description = json.description;
             List<string> tags = json.tags?.ToObject<List<string>>();
             string id = json.id;
             string uuid = json.uuid;
@@ -299,8 +310,9 @@ namespace StarkInfra
 
             return new StaticBrcode( 
                 name: name, keyID: keyID, city: city, amount: amount, 
-                reconciliationID: reconciliationID, tags: tags, id: id, uuid: uuid,
-                url: url, created: created, updated: updated
+                reconciliationID: reconciliationID, cashierBankCode: cashierBankCode, 
+                description: description,tags: tags, id: id, uuid: uuid, url: url, 
+                created: created, updated: updated
             );
         }
     }

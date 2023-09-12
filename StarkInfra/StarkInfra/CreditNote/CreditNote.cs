@@ -20,7 +20,6 @@ namespace StarkInfra
     ///     <item>TemplateID [string]: ID of the contract template on which the CreditNote will be based. ex: "0123456789101112"</item>
     ///     <item>Name [string]: credit receiver's full name. ex: "Edward Stark"</item>
     ///     <item>TaxID [string]: credit receiver's tax ID (CPF or CNPJ). ex: "20.018.183/0001-80"</item>
-    ///     <item>NominalAmount [integer]: amount in cents transferred to the credit receiver, before deductions. ex: 11234 (= R$ 112.34)</item>
     ///     <item>Scheduled [DateTime]: date of payment execution. ex: DateTime(2020, 3, 10)</item>
     ///     <item>Invoices [list of CreditNote.Invoice objects]: list of Invoice objects or dictionaries to be created and sent to the credit receiver. ex: new List<CreditNote.Invoice>{ new CreditNote.InvoiceInvoice() }</item>
     ///     <item>Payment [CreditNote.Transfer object]: Payment entity to be created and sent to the credit receiver. ex: Transfer()</item>
@@ -32,12 +31,13 @@ namespace StarkInfra
     ///     <item>City [string]: credit receiver address city. ex: "Rio de Janeiro"</item>
     ///     <item>StateCode [string]: credit receiver address state. ex: "GO"</item>
     ///     <item>ZipCode [string]: credit receiver address zip code. ex: "01311-200"</item>
+    ///     <item>Amount [integer]: amount in cents transferred to the credit receiver, before deductions. The amount parameter is required when nominalAmount is not sent. ex: 1234 (= R$ 12.34)</item>
+    ///     <item>NominalAmount [integer]: CreditNote value in cents. The nominalAmount parameter is required when amount is not sent. ex: 1234 (= R$ 12.34)</item>
     ///     <item>PaymentType [string]: payment type, inferred from the payment parameter if it is not a dictionary. ex: "transfer"</item>
     ///     <item>RebateAmount [integer, default null]: credit analysis fee deducted from lent amount. ex: 11234  R$ 112.34)</item>
     ///     <item>Tags [list of strings, default null]: list of strings for reference when searching for CreditNotes. ex: new List<string>{ "employees", "monthly" }</item>
     ///     <item>Expiration [integer, default 604800 (7 days)]: time interval in seconds between scheduled date and expiration. ex: 123456789</item>
     ///     <item>ID [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"</item>
-    ///     <item>Amount [integer]: CreditNote value in cents. ex: 1234 (= R$ 12.34)</item>
     ///     <item>DocumentID [string]: ID of the signed document to execute this CreditNote. ex: "4545454545454545"</item>
     ///     <item>Status [string]: current status of the CreditNote. ex: "canceled", "created", "expired", "failed", "processing", "signed", "success"</item>
     ///     <item>TransactionIds [list of strings]: ledger transaction ids linked to this CreditNote. ex: new List<string>{ "19827356981273" }</item>
@@ -54,7 +54,6 @@ namespace StarkInfra
         public string TemplateID { get; }
         public string Name { get; }
         public string TaxID { get; }
-        public long NominalAmount { get; }
         public DateTime? Scheduled { get; }
         public List<Invoice> Invoices { get; }
         public Resource Payment { get; }
@@ -67,10 +66,11 @@ namespace StarkInfra
         public string StateCode { get; }
         public string ZipCode { get; }
         public string PaymentType { get; }
+        public long? NominalAmount { get; }
         public long? RebateAmount { get; }
+        public long? Amount { get; }
         public List<string> Tags { get; }
         public string Expiration { get; }
-        public long? Amount { get; }
         public string DocumentID { get; }
         public string Status { get; }
         public List<string> TransactionIds { get; }
@@ -95,7 +95,6 @@ namespace StarkInfra
         ///     <item>templateID [string]: ID of the contract template on which the CreditNote will be based. ex: "0123456789101112"</item>
         ///     <item>name [string]: credit receiver's full name. ex: "Edward Stark"</item>
         ///     <item>taxID [string]: credit receiver's tax ID (CPF or CNPJ). ex: "20.018.183/0001-80"</item>
-        ///     <item>nominalAmount [integer]: amount in cents paid to the credit receiver, before deductions. ex: 11234 (= R$ 112.34)</item>
         ///     <item>scheduled [DateTime]: date of payment execution. ex: DateTime(2020, 3, 10)</item>
         ///     <item>invoices [list of CreditNote.Invoice objects]: list of Invoice objects to be created and sent to the credit receiver. ex: new List<Invoice>{ new Invoice(), new Invoice() }</item>
         ///     <item>payment [CreditNote.Transfer object]: Payment entity to be created and sent to the credit receiver. ex: Transfer()</item>
@@ -111,6 +110,8 @@ namespace StarkInfra
         /// Parameters (conditionally required):
         /// <list>
         ///     <item>paymentType [string]: payment type, inferred from the payment parameter if it is not a dictionary. ex: "transfer"</item>
+        ///     <item>nominalAmount [integer]: CreditNote value in cents. The nominalAmount parameter is required when amount is not sent. ex: 1234 (= R$ 12.34)</item>
+        ///     <item>amount [integer]: amount in cents transferred to the credit receiver, before deductions. The amount parameter is required when nominalAmount is not sent. ex: 1234 (= R$ 12.34)</item>
         /// </list>
         /// Parameters (optional):
         /// <list>
@@ -121,7 +122,6 @@ namespace StarkInfra
         /// Attributes (return-only):
         /// <list>
         ///     <item>id [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"</item>
-        ///     <item>amount [integer]: CreditNote value in cents. ex: 1234 (= R$ 12.34)</item>
         ///     <item>documentID [string]: ID of the signed document to execute this CreditNote. ex: "4545454545454545"</item>
         ///     <item>status [string]: current status of the CreditNote. ex: "canceled", "created", "expired", "failed", "processing", "signed", "success"</item>
         ///     <item>transactionIds [list of strings]: ledger transaction ids linked to this CreditNote. ex: new List<string>{ "19827356981273" }</item>
@@ -134,12 +134,12 @@ namespace StarkInfra
         /// </list>
         /// </summary>
         public CreditNote(
-            string templateID, string name, string taxID, long nominalAmount, DateTime? scheduled, 
+            string templateID, string name, string taxID, DateTime? scheduled, 
             List<Invoice> invoices, Resource payment, List<CreditSigner> signers, 
             string externalID, string streetLine1, string streetLine2, string district, 
-            string city, string stateCode, string zipCode, string paymentType = null, 
-            long? rebateAmount = null, List<string> tags = null, string expiration = null, 
-            string id = null, long? amount = null, string documentID = null, string status = null, 
+            string city, string stateCode, string zipCode, long? nominalAmount = null, string paymentType = null, 
+            long? amount = null, long? rebateAmount = null, List<string> tags = null, string expiration = null, 
+            string id = null, string documentID = null, string status = null, 
             List<string> transactionIds = null, string workspaceID = null, long? taxAmount = null, 
             float? nominalInterest = null, float? interest = null, DateTime? created = null, 
             DateTime? updated = null
@@ -148,7 +148,6 @@ namespace StarkInfra
             TemplateID = templateID;
             Name = name;
             TaxID = taxID;
-            NominalAmount = nominalAmount;
             Scheduled = scheduled;
             Invoices = invoices;
             Payment = payment;
@@ -160,10 +159,11 @@ namespace StarkInfra
             City = city;
             StateCode = stateCode;
             ZipCode = zipCode;
+            NominalAmount = nominalAmount;
+            Amount = amount;
             RebateAmount = rebateAmount;
             Tags = tags;
             Expiration = expiration;
-            Amount = amount;
             DocumentID = documentID;
             Status = status;
             TransactionIds = transactionIds;
@@ -419,7 +419,6 @@ namespace StarkInfra
             string templateID = json.templateId;
             string name = json.name;
             string taxID = json.taxId;
-            long nominalAmount = json.nominalAmount;
             string scheduledString = json.scheduled;
             DateTime scheduled = Checks.CheckDateTime(scheduledString);
             string externalID = json.externalId;
@@ -430,9 +429,10 @@ namespace StarkInfra
             string stateCode = json.stateCode;
             string zipCode = json.zipCode;
             string paymentType = json.paymentType;
+            long? nominalAmount = json.nominalAmount;
+            long? amount = json.amount;
             long? rebateAmount = json.rebateAmount;
             List<string> tags = json.tags?.ToObject<List<string>>();
-            long? amount = json.amount;
             string expiration = json.expiration;
             string documentID = json.documentId;
             string status = json.status;
@@ -450,11 +450,11 @@ namespace StarkInfra
             List<Invoice> invoices = ParseInvoice(json.invoices);
 
             return new CreditNote(
-                id: id, templateID: templateID, name: name, taxID: taxID, nominalAmount: nominalAmount, scheduled: scheduled, invoices: invoices,
-                payment: payment, signers: signers, externalID: externalID, streetLine1: streetLine1, streetLine2: streetLine2, district: district, 
-                city: city, stateCode: stateCode, zipCode: zipCode, paymentType: paymentType, rebateAmount: rebateAmount, tags: tags, amount: amount, 
-                expiration: expiration, documentID: documentID, status: status, transactionIds: transactionIds, workspaceID: workspaceID,
-                taxAmount: taxAmount, interest: interest, created: created, updated: updated
+                id: id, templateID: templateID, name: name, taxID: taxID, scheduled: scheduled, invoices: invoices, payment: payment, 
+                signers: signers, externalID: externalID, streetLine1: streetLine1, streetLine2: streetLine2, district: district, 
+                city: city, stateCode: stateCode, zipCode: zipCode, paymentType: paymentType, nominalAmount: nominalAmount, amount: amount,
+                rebateAmount: rebateAmount, tags: tags, expiration: expiration, documentID: documentID, status: status, transactionIds: transactionIds,
+                workspaceID: workspaceID, taxAmount: taxAmount, interest: interest, created: created, updated: updated
             );
         }
 

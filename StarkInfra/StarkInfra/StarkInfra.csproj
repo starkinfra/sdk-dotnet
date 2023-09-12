@@ -12,7 +12,7 @@
     <Version>0.2.0</Version>
     <ReleaseVersion>0.2.0</ReleaseVersion>
     <PackageVersion>0.2.0</PackageVersion>
-    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
     <PackageId>starkinfra</PackageId>
     <PackageTags>starkinfra;stark;infra;openbanking;open-banking</PackageTags>
     <PackageIconUrl>https://starkinfra.com/static/icon.png</PackageIconUrl>
