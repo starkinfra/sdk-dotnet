@@ -2382,6 +2382,7 @@ sendResponse(  // you should also implement this method to respond the read requ
         reconciliationID: invoice.reconciliationID,
         amount: invoice.amount,
         senderName: invoice.senderName,
+        senderTaxID: invoice.senderTaxID,
         receiverName: invoice.receiverName,
         receiverStreetLine: invoice.receiverStreetLine,
         receiverCity: invoice.receiverCity,

@@ -309,6 +309,7 @@ namespace StarkInfra
         ///     <item>reconciliationID [string]: id to be used for conciliation of the resulting Pix transaction. This id must have from to 26 to 35 alphanumeric characters ex: "cd65c78aeb6543eaaa0170f68bd741ee"</item>
         ///     <item>nominalAmount [integer]: positive integer that represents the amount in cents of the resulting Pix transaction. ex: 1234 (= R$ 12.34)</item>
         ///     <item>senderName [string]: sender's full name. ex: "Anthony Edward Stark"</item>
+        ///     <item>senderTaxID [string]: sender's CPF (11 digits formatted or unformatted) or CNPJ (14 digits formatted or unformatted). ex: "01.001.001/0001-01"</item>
         ///     <item>receiverName [string]: receiver's full name. ex: "Jamie Lannister"</item>
         ///     <item>receiverStreetLine [string]: receiver's main address. ex: "Av. Paulista, 200"</item>
         ///     <item>receiverCity [string]: receiver's address city name. ex: "Sao Paulo"</item>
@@ -317,7 +318,6 @@ namespace StarkInfra
         /// </list>
         /// Parameters (optional):
         /// <list>
-        ///     <item>senderTaxID [string, default null]: sender's CPF (11 digits formatted or unformatted) or CNPJ (14 digits formatted or unformatted). ex: "01.001.001/0001-01"</item>
         ///     <item>receiverTaxID [string, default null]: receiver's CPF (11 digits formatted or unformatted) or CNPJ (14 digits formatted or unformatted). ex: "012.345.678-90"</item>
         ///     <item>fine [float, default 2.0]: Percentage charged if the sender pays after the due DateTime.</item>
         ///     <item>interest [float, default 1.0]: Interest percentage charged if the sender pays after the due DateTime.</item>
@@ -332,9 +332,9 @@ namespace StarkInfra
         /// </summary>
         public static string ResponseDue(
             int version, DateTime? created, DateTime due, int expiration, string keyID, string status,
-            string reconciliationID, int nominalAmount, string senderName, string receiverName,
-            string receiverStreetLine, string receiverCity, string receiverStateCode, string receiverZipCode,
-            string senderTaxID = null, string receiverTaxID = null, float? fine = null, float? interest = null,
+            string reconciliationID, int nominalAmount, string senderName, string senderTaxID, 
+            string receiverName, string receiverStreetLine, string receiverCity, string receiverStateCode, 
+            string receiverZipCode, string receiverTaxID = null, float? fine = null, float? interest = null,
             List<Discount> discounts = null, string description = null
         )
         {
@@ -348,12 +348,12 @@ namespace StarkInfra
                 { "reconciliationID", reconciliationID },
                 { "nominalAmount", nominalAmount },
                 { "senderName", senderName },
+                { "senderTaxID", senderTaxID },
                 { "receiverName", receiverName },
                 { "receiverStreetLine", receiverStreetLine },
                 { "receiverCity", receiverCity },
                 { "receiverStateCode", receiverStateCode },
                 { "receiverZipCode", receiverZipCode },
-                { "senderTaxID", senderTaxID },
                 { "receiverTaxID", receiverTaxID },
                 { "fine", fine },
                 { "interest", interest },

@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Changed
+- senderTaxID parameter to DynamicBrcode resource
 
 ## [0.2.0] - 2022-12-12
 ### Added
