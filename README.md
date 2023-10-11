@@ -2384,6 +2384,7 @@ sendResponse(  // you should also implement this method to respond the read requ
         senderName: invoice.senderName,
         senderTaxID: invoice.senderTaxID,
         receiverName: invoice.receiverName,
+        receiverTaxID: invoice.receiverTaxid,
         receiverStreetLine: invoice.receiverStreetLine,
         receiverCity: invoice.receiverCity,
         receiverStateCode: invoice.receiverStateCode,

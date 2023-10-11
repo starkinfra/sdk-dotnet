@@ -114,11 +114,11 @@ namespace StarkInfraTests
                 senderName: "Anthony Edward Stark",
                 senderTaxID: "012.345.678-90",
                 receiverName: "Jamie Lannister",
+                receiverTaxID: "20.018.183/0001-8",
                 receiverStreetLine: "Av. Paulista, 200",
                 receiverCity: "Sao Paulo",
                 receiverStateCode: "SP",
                 receiverZipCode: "01234-567",
-                receiverTaxID: "20.018.183/0001-8",
                 fine: 200,
                 interest: 1,
                 discounts: new List<Discount> {
