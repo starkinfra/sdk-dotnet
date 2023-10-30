@@ -15,6 +15,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ## [Unreleased]
 ### Changed
 - senderTaxID and receiverTaxID parameters to DynamicBrcode resource
+### Added
+- metadata attribute to IssuingPurchase resource
 
 ## [0.2.0] - 2022-12-12
 ### Added
