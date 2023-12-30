@@ -72,7 +72,7 @@ namespace StarkInfra
         /// </summary>
         public static Webhook Create(string url, List<string> subscription, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             Webhook webhook  = new Webhook(url, subscription);
             return Rest.PostSingle(
                 resourceName: resourceName,
@@ -104,7 +104,7 @@ namespace StarkInfra
         /// </summary>
         public static Webhook Get(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -131,7 +131,7 @@ namespace StarkInfra
         /// </summary>
         public static IEnumerable<Webhook> Query(int? limit = null, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -165,8 +165,8 @@ namespace StarkInfra
         public static (List<Webhook> page, string pageCursor) Page(string cursor = null,
             int? limit = null, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -177,7 +177,7 @@ namespace StarkInfra
                 user: user
             );
             List<Webhook> Webhook = new List<Webhook>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 Webhook.Add(subResource as Webhook);
             }
@@ -206,7 +206,7 @@ namespace StarkInfra
         /// </summary>
         public static Webhook Delete(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.DeleteId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -215,7 +215,7 @@ namespace StarkInfra
             ) as Webhook;
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "Webhook", resourceMaker: ResourceMaker);
         }

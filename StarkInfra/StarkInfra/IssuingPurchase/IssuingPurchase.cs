@@ -198,7 +198,7 @@ namespace StarkInfra
         /// </summary>
         public static IssuingPurchase Get(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -234,7 +234,7 @@ namespace StarkInfra
             DateTime? before = null, List<string> endToEndIds = null, List<string> holderIds = null,List<string> cardIds = null, 
             string status = null, User user = null
         ) {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -283,8 +283,8 @@ namespace StarkInfra
             DateTime? before = null, List<string> endToEndIds = null, List<string> holderIds = null,List<string> cardIds = null, 
             string status = null, User user = null
         ) {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -301,7 +301,7 @@ namespace StarkInfra
                 user: user
             );
             List<IssuingPurchase> purchases = new List<IssuingPurchase>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 purchases.Add(subResource as IssuingPurchase);
             }
@@ -335,7 +335,7 @@ namespace StarkInfra
         /// </summary>
         public static IssuingPurchase Parse(string content, string signature, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Utils.Parse.ParseAndVerify(
                 content: content,
                 signature: signature,
@@ -380,11 +380,11 @@ namespace StarkInfra
                     }
                 }
             };
-            Dictionary<string, object> response = Api.CastJsonToApiFormat(rawResponse);
+            Dictionary<string, object> response = StarkCore.Utils.Api.CastJsonToApiFormat(rawResponse);
             return JsonConvert.SerializeObject(response);
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "IssuingPurchase", resourceMaker: ResourceMaker);
         }
@@ -420,9 +420,9 @@ namespace StarkInfra
             string status = json.status;
             Dictionary<string, object> metadata = json.metadata?.ToObject<Dictionary<string, object>>();
             string createdString = json.created;
-            DateTime? created = Checks.CheckNullableDateTime(createdString);
+            DateTime? created = StarkCore.Utils.Checks.CheckNullableDateTime(createdString);
             string updatedString = json.updated;
-            DateTime? updated = Checks.CheckNullableDateTime(updatedString);
+            DateTime? updated = StarkCore.Utils.Checks.CheckNullableDateTime(updatedString);
             bool? isPartialAllowed = json.isPartialAllowed;
             List<string> cardTags = json.cardTags?.ToObject<List<string>>();
             List<string> holderTags = json.holderTags?.ToObject<List<string>>();

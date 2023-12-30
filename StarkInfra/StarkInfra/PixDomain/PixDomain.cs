@@ -19,7 +19,7 @@ namespace StarkInfra
     ///    <item>Name [string]: current active domain (URL) of the Pix participant.</item>
     /// </list>
     /// </summary>
-    public partial class PixDomain : SubResource
+    public partial class PixDomain : StarkCore.Utils.SubResource
     {
         public List<Certificate> Certificates { get; }
         public string Name { get; }
@@ -59,7 +59,7 @@ namespace StarkInfra
         public static IEnumerable<PixDomain> Query(User user = null)
         {
 
-            (string resourceName, Api.ResourceMaker resourceMaker) = SubResource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = SubResource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -68,12 +68,12 @@ namespace StarkInfra
             ).Cast<PixDomain>();
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) SubResource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) SubResource()
         {
             return (resourceName: "PixDomain", resourceMaker: ResourceMaker);
         }
 
-        internal static SubResource ResourceMaker(dynamic json)
+        internal static StarkCore.Utils.SubResource ResourceMaker(dynamic json)
         {
             List<Certificate> certificates = ParseCertificates(json.certificates);
             string name = json.name;

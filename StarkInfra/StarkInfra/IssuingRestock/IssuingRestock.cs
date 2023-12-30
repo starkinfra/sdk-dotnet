@@ -89,7 +89,7 @@ namespace StarkInfra
         /// </summary>
         public static List<IssuingRestock> Create(List<IssuingRestock> restocks, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -120,7 +120,7 @@ namespace StarkInfra
         /// </summary>
         public static List<IssuingRestock> Create(List<Dictionary<string, object>> requests, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -155,7 +155,7 @@ namespace StarkInfra
             List<string> status = null, List<string> stockIds = null, List<string> ids = null, List<string> tags = null,
             User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -201,8 +201,8 @@ namespace StarkInfra
             DateTime? before = null, List<string> status = null, List<string> stockIds = null, List<string> ids = null, List<string> tags = null,
             User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -218,7 +218,7 @@ namespace StarkInfra
                 user: user
             );
             List<IssuingRestock> restocks = new List<IssuingRestock>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 restocks.Add(subResource as IssuingRestock);
             }
@@ -247,7 +247,7 @@ namespace StarkInfra
         /// </summary>
         public static IssuingRestock Get(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -256,7 +256,7 @@ namespace StarkInfra
             ) as IssuingRestock;
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "IssuingRestock", resourceMaker: ResourceMaker);
         }
@@ -269,9 +269,9 @@ namespace StarkInfra
             List<string> tags = json.tags.ToObject<List<string>>();
             string status = json.status;
             string createdString = json.created;
-            DateTime created = Checks.CheckDateTime(createdString);
+            DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
-            DateTime updated = Checks.CheckDateTime(updatedString);
+            DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
 
             return new IssuingRestock(
                 id: id, count: count, stockID: stockID, tags: tags, status: status,

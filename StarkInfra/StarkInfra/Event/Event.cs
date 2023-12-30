@@ -82,7 +82,7 @@ namespace StarkInfra
         /// </summary>
         public static Event Get(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -112,7 +112,7 @@ namespace StarkInfra
         public static IEnumerable<Event> Query(int? limit = null, DateTime? after = null, DateTime? before = null,
             bool? isDelivered = null, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -150,8 +150,8 @@ namespace StarkInfra
         public static (List<Event> page, string pageCursor) Page(string cursor = null, int? limit = null, DateTime? after = null,
             DateTime? before = null, bool? isDelivered = null, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -164,7 +164,7 @@ namespace StarkInfra
                 user: user
             );
             List<Event> events = new List<Event>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 events.Add(subResource as Event);
             }
@@ -192,7 +192,7 @@ namespace StarkInfra
         /// </summary>
         public static Event Delete(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.DeleteId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -224,7 +224,7 @@ namespace StarkInfra
         /// </summary>
         public static Event Update(string id, bool isDelivered, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.PatchId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -261,7 +261,7 @@ namespace StarkInfra
         /// </summary>
         public static Event Parse(string content, string signature, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Utils.Parse.ParseAndVerify(
                 content: content,
                 signature: signature,
@@ -272,7 +272,7 @@ namespace StarkInfra
             ) as Event;
         }
         
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "Event", resourceMaker: ResourceMaker);
         }
@@ -284,7 +284,7 @@ namespace StarkInfra
             string subscription = json.subscription;
             string workspaceID = json.workspaceId;
             string createdString = json.created;
-            DateTime created = Checks.CheckDateTime(createdString);
+            DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
 
             Resource log = null;
             

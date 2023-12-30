@@ -163,7 +163,7 @@ namespace StarkInfra
         /// </summary>
         public static List<IssuingCard> Create(List<IssuingCard> cards, Dictionary<string, object> parameters = null, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -199,7 +199,7 @@ namespace StarkInfra
         /// </summary>
         public static List<IssuingCard> Create(List<Dictionary<string, object>> cards, Dictionary<string, object> parameters = null, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -235,7 +235,7 @@ namespace StarkInfra
         /// </summary>
         public static IssuingCard Get(string id, Dictionary<string, object> parameters = null, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -275,7 +275,7 @@ namespace StarkInfra
             List<string> expand = null, User user = null
         )
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -327,8 +327,8 @@ namespace StarkInfra
             List<string> holderIds = null,List<string> tags = null, List<string> expand = null, 
             User user = null
         ) {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -345,7 +345,7 @@ namespace StarkInfra
                 user: user
             );
             List<IssuingCard> cards = new List<IssuingCard>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 cards.Add(subResource as IssuingCard);
             }
@@ -378,7 +378,7 @@ namespace StarkInfra
         /// </summary>
         public static IssuingCard Update(string id, Dictionary<string, object> patchData, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.PatchId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -410,7 +410,7 @@ namespace StarkInfra
         /// </summary>
         public static IssuingCard Cancel(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.DeleteId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -419,7 +419,7 @@ namespace StarkInfra
             ) as IssuingCard;
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "IssuingCard", resourceMaker: ResourceMaker);
         }
@@ -447,11 +447,11 @@ namespace StarkInfra
             string securityCode = json.securityCode;
             string expirationString = json.expiration;
             DateTime? expiration = null;
-            if (expirationString[0] != '*') expiration = Checks.CheckDateTime(expirationString);
+            if (expirationString[0] != '*') expiration = StarkCore.Utils.Checks.CheckDateTime(expirationString);
             string updatedString = json.updated;
-            DateTime updated = Checks.CheckDateTime(updatedString);
+            DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
             string createdString = json.created;
-            DateTime created = Checks.CheckDateTime(createdString);
+            DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
 
             return new IssuingCard(
                 holderName: holderName, holderTaxID: holderTaxID, holderExternalID: holderExternalID, 

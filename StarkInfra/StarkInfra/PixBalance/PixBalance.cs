@@ -68,7 +68,7 @@ namespace StarkInfra
         /// </summary>
         public static PixBalance Get(User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -77,7 +77,7 @@ namespace StarkInfra
             ).First() as PixBalance;
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "PixBalance", resourceMaker: ResourceMaker);
         }
@@ -88,7 +88,7 @@ namespace StarkInfra
             long amount = json.amount;
             string currency = json.currency;
             string updatedString = json.updated;
-            DateTime updated = Checks.CheckDateTime(updatedString);
+            DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
 
             return new PixBalance(id: id, amount: amount, currency: currency, updated: updated);
         }

@@ -132,7 +132,7 @@ namespace StarkInfra
             Updated = updated;
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "Invoice", resourceMaker: ResourceMaker);
         }
@@ -141,7 +141,7 @@ namespace StarkInfra
         {
             long amount = json.amount;
             string dueString = json.due;
-            DateTime? due = Checks.CheckDateTime(dueString);
+            DateTime? due = StarkCore.Utils.Checks.CheckDateTime(dueString);
             string expiration = json.expiration;
             List<string> tags = json.tags?.ToObject<List<string>>();
             List<Description> descriptions = ParseDescription(json.descriptions);
@@ -162,9 +162,9 @@ namespace StarkInfra
             long? fee = json.fee;
             string transactionIds = json.transactionIds;
             string createdString = json.created;
-            DateTime? created = Checks.CheckNullableDateTime(createdString);
+            DateTime? created = StarkCore.Utils.Checks.CheckNullableDateTime(createdString);
             string updatedString = json.update;
-            DateTime? updated = Checks.CheckNullableDateTime(updatedString);
+            DateTime? updated = StarkCore.Utils.Checks.CheckNullableDateTime(updatedString);
 
             return new Invoice(
                 amount: amount, due: due, expiration: expiration, tags: tags, 

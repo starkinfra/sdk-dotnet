@@ -154,7 +154,7 @@ namespace StarkInfra
         /// </summary>
         public static List<BrcodePreview> Create(List<BrcodePreview> previews, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -185,7 +185,7 @@ namespace StarkInfra
         /// </summary>
         public static List<BrcodePreview> Create(List<Dictionary<string, object>> previews, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -194,7 +194,7 @@ namespace StarkInfra
             ).ToList().ConvertAll(o => (BrcodePreview)o);
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "BrcodePreview", resourceMaker: ResourceMaker);
         }

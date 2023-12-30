@@ -25,7 +25,7 @@ namespace StarkInfra
     ///     <item>Status [string]: current PixDirector status. ex: "success"</item>
     /// </list>
     /// </summary>
-    public partial class PixDirector : SubResource
+    public partial class PixDirector : StarkCore.Utils.SubResource
     {
         public string Name { get; }
         public string TaxID { get; }
@@ -96,7 +96,7 @@ namespace StarkInfra
         /// </summary>
         public static PixDirector Create(PixDirector director, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.PostSingle(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -127,7 +127,7 @@ namespace StarkInfra
         /// </summary>
         public static PixDirector Create(Dictionary<string, object> director, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.PostSingle(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -136,12 +136,12 @@ namespace StarkInfra
             ) as PixDirector;
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "PixDirector", resourceMaker: ResourceMaker);
         }
 
-        internal static SubResource ResourceMaker(dynamic json)
+        internal static StarkCore.Utils.SubResource ResourceMaker(dynamic json)
         {
             string name = json.name;
             string taxID = json.taxId;

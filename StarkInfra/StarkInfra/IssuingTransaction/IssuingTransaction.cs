@@ -79,7 +79,7 @@ namespace StarkInfra
         /// </summary>
         public static IssuingTransaction Get(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -114,7 +114,7 @@ namespace StarkInfra
             DateTime? after = null, DateTime? before = null, string status = null, List<string> ids = null, int? limit = 1, 
             User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -160,8 +160,8 @@ namespace StarkInfra
             List<string> externalIds = null, DateTime? after = null, DateTime? before = null, string status = null,
             List<string> ids = null, string cursor = null, int? limit = 1, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -177,14 +177,14 @@ namespace StarkInfra
                 user: user
             );
             List<IssuingTransaction> transactions = new List<IssuingTransaction>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 transactions.Add(subResource as IssuingTransaction);
             }
             return (transactions, pageCursor);
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "IssuingTransaction", resourceMaker: ResourceMaker);
         }
@@ -198,7 +198,7 @@ namespace StarkInfra
             string source = json.source;
             List<string> tags = json.tags?.ToObject<List<string>>();
             string createdString = json.created;
-            DateTime created = Checks.CheckDateTime(createdString);
+            DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
 
             return new IssuingTransaction(
                 id: id, amount: amount, balance: balance, description: description, source: source, 

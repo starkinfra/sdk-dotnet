@@ -8,10 +8,10 @@
     <Summary>SDK to facilitate C# (.NET) integrations with the Stark Infra API</Summary>
     <AssemblyTitle>StarkInfra</AssemblyTitle>
     <AssemblyName>StarkInfra</AssemblyName>
-    <VersionPrefix>0.2.0</VersionPrefix>
-    <Version>0.2.0</Version>
-    <ReleaseVersion>0.2.0</ReleaseVersion>
-    <PackageVersion>0.2.0</PackageVersion>
+    <VersionPrefix>0.3.0</VersionPrefix>
+    <Version>0.3.0</Version>
+    <ReleaseVersion>0.3.0</ReleaseVersion>
+    <PackageVersion>0.3.0</PackageVersion>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <PackageId>starkinfra</PackageId>
     <PackageTags>starkinfra;stark;infra;openbanking;open-banking</PackageTags>
@@ -29,12 +29,12 @@
     <DebugType></DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="starkbank-ecdsa" Version="1.3.3" />
+    <PackageReference Include="starkcore" Version="0.0.8" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Utils\" />
     <Folder Include="User\" />
     <Folder Include="Event\" />
     <Folder Include="Webhook\" />

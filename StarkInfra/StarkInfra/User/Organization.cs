@@ -67,7 +67,7 @@ namespace StarkInfra
             WorkspaceID = workspaceID;
         }
 
-        internal override string AccessId()
+        public override string AccessId()
         {
             if (WorkspaceID == null)
             {

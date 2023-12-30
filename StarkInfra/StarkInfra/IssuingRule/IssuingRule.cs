@@ -93,7 +93,7 @@ namespace StarkInfra
             return rules;
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "IssuingRule", resourceMaker: ResourceMaker);
         }

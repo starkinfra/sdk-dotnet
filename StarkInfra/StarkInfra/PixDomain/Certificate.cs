@@ -16,7 +16,7 @@ namespace StarkInfra
     ///     <item>content [string]: certificate of a Pix participant in PEM format.</item>
     /// </list>
     /// </summary>
-    public partial class Certificate : SubResource
+    public partial class Certificate : StarkCore.Utils.SubResource
     {
         public string Content { get; }
 
@@ -35,12 +35,12 @@ namespace StarkInfra
             Content = content;
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "Certificate", resourceMaker: ResourceMaker);
         }
 
-        internal static SubResource ResourceMaker(dynamic json)
+        internal static StarkCore.Utils.SubResource ResourceMaker(dynamic json)
         {
             string content = json.content;
 

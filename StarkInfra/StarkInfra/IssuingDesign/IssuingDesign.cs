@@ -74,7 +74,7 @@ namespace StarkInfra
         /// </summary>
         public static IssuingDesign Get(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -103,7 +103,7 @@ namespace StarkInfra
         public static IEnumerable<IssuingDesign> Query(List<string> ids = null, int? limit = null,
             User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -138,8 +138,8 @@ namespace StarkInfra
         public static (List<IssuingDesign> page, string pageCursor) Page(string cursor = null, List<string> ids = null, int? limit = null, 
             User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -150,7 +150,7 @@ namespace StarkInfra
                 user: user
             );
             List<IssuingDesign> designs = new List<IssuingDesign>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 designs.Add(subResource as IssuingDesign);
             }
@@ -179,7 +179,7 @@ namespace StarkInfra
         /// </summary>
         public static byte[] Pdf(string id, User user = null)
         {
-            (string resourceName, Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Utils.Rest.GetContent(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -189,7 +189,7 @@ namespace StarkInfra
             );
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "IssuingDesign", resourceMaker: ResourceMaker);
         }
@@ -200,9 +200,9 @@ namespace StarkInfra
             string name = json.name;
             List<string> embosserIds = json.embosserIds.ToObject<List<string>>();;
             string createdString = json.created;
-            DateTime created = Checks.CheckDateTime(createdString);
+            DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
-            DateTime updated = Checks.CheckDateTime(updatedString);
+            DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
 
             return new IssuingDesign(
                 id: id, name: name, embosserIds: embosserIds, updated: updated, 

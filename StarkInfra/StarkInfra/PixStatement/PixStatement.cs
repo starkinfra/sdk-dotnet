@@ -102,7 +102,7 @@ namespace StarkInfra
         /// </summary>
         public static PixStatement Create(PixStatement statement, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.PostSingle(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -133,7 +133,7 @@ namespace StarkInfra
         /// </summary>
         public static PixStatement Create(Dictionary<string, object> statement, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.PostSingle(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -164,7 +164,7 @@ namespace StarkInfra
         /// </summary>
         public static PixStatement Get(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -192,7 +192,7 @@ namespace StarkInfra
         /// </summary>
         public static IEnumerable<PixStatement> Query(int? limit = null, List<string> ids = null, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -226,8 +226,8 @@ namespace StarkInfra
         /// </summary>
         public static (List<PixStatement> page, string pageCursor) Page(string cursor = null, int? limit = null, List<string> ids = null, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -238,7 +238,7 @@ namespace StarkInfra
                 user: user
             );
             List<PixStatement> statements = new List<PixStatement>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 statements.Add(subResource as PixStatement);
             }
@@ -267,7 +267,7 @@ namespace StarkInfra
         /// </summary>
         public static byte[] Csv(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetContent(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -277,7 +277,7 @@ namespace StarkInfra
             );
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "PixStatement", resourceMaker: ResourceMaker);
         }
@@ -286,16 +286,16 @@ namespace StarkInfra
         {
             string afterString = json.after;
             string beforeString = json.before;
-            DateTime after = Checks.CheckDateTime(afterString);
-            DateTime before = Checks.CheckDateTime(beforeString);
+            DateTime after = StarkCore.Utils.Checks.CheckDateTime(afterString);
+            DateTime before = StarkCore.Utils.Checks.CheckDateTime(beforeString);
             string type = json.type;
             string id = json.id;
             string status = json.status;
             long transactionCount = json.transactionCount;
             string createdString = json.created;
             string updatedString = json.updated;
-            DateTime created = Checks.CheckDateTime(createdString);
-            DateTime updated = Checks.CheckDateTime(updatedString);
+            DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
+            DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
 
             return new PixStatement(
                 after: after, before: before, type: type, id: id, status: status, transactionCount: transactionCount,

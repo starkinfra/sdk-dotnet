@@ -22,7 +22,7 @@ namespace StarkInfra
     ///     <item>Number [string]: category's number. ex: "742", "5814"</item>
     /// </list>
     /// </summary>
-    public partial class MerchantCategory : SubResource
+    public partial class MerchantCategory : StarkCore.Utils.SubResource
     {
         public string Code { get; }
         public string Type { get; }
@@ -74,7 +74,7 @@ namespace StarkInfra
         /// </summary>
         public static IEnumerable<MerchantCategory> Query(string search = null, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -85,7 +85,7 @@ namespace StarkInfra
             ).Cast<MerchantCategory>();
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "MerchantCategory", resourceMaker: ResourceMaker);
         }
@@ -103,7 +103,7 @@ namespace StarkInfra
             return categories;
         }
 
-        internal static SubResource ResourceMaker(dynamic json)
+        internal static StarkCore.Utils.SubResource ResourceMaker(dynamic json)
         {
             string code = json.code;
             string type = json.type;

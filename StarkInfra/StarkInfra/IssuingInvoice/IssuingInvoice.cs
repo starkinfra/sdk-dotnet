@@ -117,7 +117,7 @@ namespace StarkInfra
         /// </summary>
         public static IssuingInvoice Create(IssuingInvoice invoice, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.PostSingle(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -148,7 +148,7 @@ namespace StarkInfra
         /// </summary>
         public static IssuingInvoice Create(Dictionary<string, object> invoice, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.PostSingle(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -179,7 +179,7 @@ namespace StarkInfra
         /// </summary>
         public static IssuingInvoice Get(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -212,7 +212,7 @@ namespace StarkInfra
             DateTime? before = null, string status = null, List<string> tags = null, 
             User user = null
         ) {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -254,8 +254,8 @@ namespace StarkInfra
             DateTime? after = null, DateTime? before = null, string status = null, List<string> tags = null, 
             User user = null
         ) {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -269,14 +269,14 @@ namespace StarkInfra
                 user: user
             );
             List<IssuingInvoice> issuingInvoices = new List<IssuingInvoice>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 issuingInvoices.Add(subResource as IssuingInvoice);
             }
             return (issuingInvoices, pageCursor);
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "IssuingInvoice", resourceMaker: ResourceMaker);
         }
@@ -290,14 +290,14 @@ namespace StarkInfra
             string id = json.id;
             string brcode = json.brcode;
             string dueString = json.due;
-            DateTime? due = Checks.CheckNullableDateTime(dueString);
+            DateTime? due = StarkCore.Utils.Checks.CheckNullableDateTime(dueString);
             string link = json.link;
             string status = json.status;
             string issuingTransactionID = json.issuingTransactionId;
             string updatedString = json.updated;
-            DateTime? updated = Checks.CheckNullableDateTime(updatedString);
+            DateTime? updated = StarkCore.Utils.Checks.CheckNullableDateTime(updatedString);
             string createdString = json.created;
-            DateTime? created = Checks.CheckNullableDateTime(createdString);
+            DateTime? created = StarkCore.Utils.Checks.CheckNullableDateTime(createdString);
 
             return new IssuingInvoice(
                 amount: amount, taxID: taxID, name: name, tags: tags, id: id, brcode: brcode, 

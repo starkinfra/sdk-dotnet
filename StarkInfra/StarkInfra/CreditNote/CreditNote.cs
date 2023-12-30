@@ -211,7 +211,7 @@ namespace StarkInfra
         /// </summary>
         public static List<CreditNote> Create(List<CreditNote> notes, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -242,7 +242,7 @@ namespace StarkInfra
         /// </summary>
         public static List<CreditNote> Create(List<Dictionary<string, object>> notes, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -273,7 +273,7 @@ namespace StarkInfra
         /// </summary>
         public static CreditNote Get(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -311,7 +311,7 @@ namespace StarkInfra
             User user = null
         )
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -354,8 +354,8 @@ namespace StarkInfra
         public static (List<CreditNote> page, string pageCursor) Page(string cursor = null, int? limit = null, string status = null, List<string> tags = null,
             List<string> ids = null, DateTime? after = null, DateTime? before = null, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -370,7 +370,7 @@ namespace StarkInfra
                 user: user
             );
             List<CreditNote> notes = new List<CreditNote>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 notes.Add(subResource as CreditNote);
             }
@@ -399,7 +399,7 @@ namespace StarkInfra
         /// </summary>
         public static CreditNote Cancel(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.DeleteId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -408,7 +408,7 @@ namespace StarkInfra
             ) as CreditNote;
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "CreditNote", resourceMaker: ResourceMaker);
         }
@@ -421,7 +421,7 @@ namespace StarkInfra
             string taxID = json.taxId;
             long nominalAmount = json.nominalAmount;
             string scheduledString = json.scheduled;
-            DateTime scheduled = Checks.CheckDateTime(scheduledString);
+            DateTime scheduled = StarkCore.Utils.Checks.CheckDateTime(scheduledString);
             string externalID = json.externalId;
             string streetLine1 = json.streetLine1;
             string streetLine2 = json.streetLine2;
@@ -441,9 +441,9 @@ namespace StarkInfra
             long? taxAmount = json.taxAmount;
             float? interest = json.interest;
             string createdString = json.created;
-            DateTime created = Checks.CheckDateTime(createdString);
+            DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
-            DateTime updated = Checks.CheckDateTime(updatedString);
+            DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
 
             List<CreditSigner> signers = ParseSigners(json.signers);
             Resource payment = ParsePayment(json: json.payment, paymentType: json.paymentType.ToObject<string>());

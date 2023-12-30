@@ -129,7 +129,7 @@ namespace StarkInfra
         /// </summary>
         public static List<PixInfraction> Create(List<PixInfraction> infractions, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -160,7 +160,7 @@ namespace StarkInfra
         /// </summary>
         public static List<PixInfraction> Create(List<Dictionary<string, object>> infractions, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -191,7 +191,7 @@ namespace StarkInfra
         /// </summary>
         public static PixInfraction Get(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -229,7 +229,7 @@ namespace StarkInfra
             string flow = null, List<string> tags = null, User user = null
         )
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -280,8 +280,8 @@ namespace StarkInfra
             User user = null
         )
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -298,7 +298,7 @@ namespace StarkInfra
                 user: user
             );
             List<PixInfraction> infractions = new List<PixInfraction>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 infractions.Add(subResource as PixInfraction);
             }
@@ -337,7 +337,7 @@ namespace StarkInfra
                 patchData = new Dictionary<string, object> { };
             }
             patchData.Add("result", result);
-            (string resourceName, Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Utils.Rest.PatchId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -369,7 +369,7 @@ namespace StarkInfra
         /// </summary>
         public static PixInfraction Cancel(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.DeleteId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -378,7 +378,7 @@ namespace StarkInfra
             ) as PixInfraction;
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "PixInfraction", resourceMaker: ResourceMaker);
         }
@@ -398,9 +398,9 @@ namespace StarkInfra
             string result = json.result;
             string status = json.status;
             string createdString = json.created;
-            DateTime created = Checks.CheckDateTime(createdString);
+            DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
-            DateTime updated = Checks.CheckDateTime(updatedString);
+            DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
 
             return new PixInfraction(
                 referenceID: referenceID, type: type, description: description, 

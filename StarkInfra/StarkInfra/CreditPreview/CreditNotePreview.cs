@@ -35,7 +35,7 @@ namespace StarkInfra
         ///     <item>taxAmount [integer]: tax amount included in the CreditNote. ex: 100</item>
         /// </list>
         /// </summary>
-        public class CreditNotePreview : SubResource
+        public class CreditNotePreview : StarkCore.Utils.SubResource
         {
             public string Type { get; }
             public int NominalAmount { get; }
@@ -112,17 +112,17 @@ namespace StarkInfra
                 TaxAmount = taxAmount;
             }
 
-            internal static (string resourceName, Utils.Api.ResourceMaker resourceMaker) Resource()
+            internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
             {
                 return (resourceName: "CreditNotePreview", resourceMaker: ResourceMaker);
             }
 
-            internal static Utils.SubResource ResourceMaker(dynamic json)
+            internal static StarkCore.Utils.SubResource ResourceMaker(dynamic json)
             {
                 string type = json.type;
                 int nominalAmount = json.nominalAmount;
                 string scheduledString = json.scheduled;
-                DateTime? scheduled = Checks.CheckDateTime(scheduledString);
+                DateTime? scheduled = StarkCore.Utils.Checks.CheckDateTime(scheduledString);
                 string taxID = json.taxId;
                 List<Invoice> invoices = ParseInvoice(json.invoices);
                 float nominalInterest = json.nominalInterest;

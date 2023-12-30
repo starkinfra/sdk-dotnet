@@ -123,7 +123,7 @@ namespace StarkInfra
         /// </summary>
         public static List<DynamicBrcode> Create(List<DynamicBrcode> brcodes, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -154,7 +154,7 @@ namespace StarkInfra
         /// </summary>
         public static List<DynamicBrcode> Create(List<Dictionary<string, object>> brcodes, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -185,7 +185,7 @@ namespace StarkInfra
         /// </summary>
         public static DynamicBrcode Get(string uuid, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -220,7 +220,7 @@ namespace StarkInfra
             List<string> uuids = null, List<string> tags = null, User user = null
         )
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -266,8 +266,8 @@ namespace StarkInfra
             List<string> tags = null, User user = null
         )
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -282,7 +282,7 @@ namespace StarkInfra
                 user: user
             );
             List<DynamicBrcode> DynamicBrcode = new List<DynamicBrcode>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 DynamicBrcode.Add(subResource as DynamicBrcode);
             }
@@ -360,7 +360,7 @@ namespace StarkInfra
                 { "discounts", ParseDiscounts(discounts) },
                 { "description", description },
             };
-            Dictionary<string, object> response = Api.CastJsonToApiFormat(rawResponse);
+            Dictionary<string, object> response = StarkCore.Utils.Api.CastJsonToApiFormat(rawResponse);
             return JsonConvert.SerializeObject(response);
         }
 
@@ -432,7 +432,7 @@ namespace StarkInfra
                 { "amountType", amountType },
                 { "description", description },
             };
-            Dictionary<string, object> response = Api.CastJsonToApiFormat(rawResponse);
+            Dictionary<string, object> response = StarkCore.Utils.Api.CastJsonToApiFormat(rawResponse);
             return JsonConvert.SerializeObject(response);
         }
 
@@ -463,14 +463,14 @@ namespace StarkInfra
         /// </summary>
         public static string Verify(string uuid, string signature, User user = null)
         {
-            return Utils.Parse.Verify(
+            return Parse.Verify(
                 content: uuid,
                 signature: signature,
                 user: user
             );
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "DynamicBrcode", resourceMaker: ResourceMaker);
         }
@@ -486,9 +486,9 @@ namespace StarkInfra
             string uuid = json.uuid;
             string url = json.url;
             string updatedString = json.updated;
-            DateTime? updated = Checks.CheckDateTime(updatedString);
+            DateTime? updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
             string createdString = json.created;
-            DateTime? created = Checks.CheckDateTime(createdString);
+            DateTime? created = StarkCore.Utils.Checks.CheckDateTime(createdString);
 
             return new DynamicBrcode(
                 name: name, city: city, externalID: externalID, type: type, 

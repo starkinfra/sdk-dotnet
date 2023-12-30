@@ -56,7 +56,7 @@ namespace StarkInfra
             AllowedIps = allowedIps;
         }
 
-        internal override string AccessId()
+        public override string AccessId()
         {
             return "project/" + ID;
         }

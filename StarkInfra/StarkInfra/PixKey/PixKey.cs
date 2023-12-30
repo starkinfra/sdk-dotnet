@@ -130,7 +130,7 @@ namespace StarkInfra
         /// </summary>
         public static PixKey Create(PixKey key, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.PostSingle(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -161,7 +161,7 @@ namespace StarkInfra
         /// </summary>
         public static PixKey Create(Dictionary<string, object> key, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.PostSingle(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -198,7 +198,7 @@ namespace StarkInfra
         public static PixKey Get(string id, string payerID, Dictionary<string, object> parameters = null, User user = null)
         {
             parameters.Add("payerID", payerID);
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -233,7 +233,7 @@ namespace StarkInfra
         public static IEnumerable<PixKey> Query(int? limit = null, DateTime? after = null, DateTime? before = null, string status = null, 
             List<string> tags = null, List<string> ids = null, string type = null, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -278,8 +278,8 @@ namespace StarkInfra
         public static (List<PixKey> page, string pageCursor) Page(string cursor = null, int? limit = null, DateTime? after = null, DateTime? before = null, 
             string status = null, List<string> tags = null, List<string> ids = null, string type = null, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -295,7 +295,7 @@ namespace StarkInfra
                 user: user
             );
             List<PixKey> keys = new List<PixKey>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 keys.Add(subResource as PixKey);
             }
@@ -334,7 +334,7 @@ namespace StarkInfra
         public static PixKey Update(string id, string reason, Dictionary<string, object> patchData, User user = null)
         {
             patchData.Add("reason", reason);
-            (string resourceName, Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Utils.Rest.PatchId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -366,7 +366,7 @@ namespace StarkInfra
         /// </summary>
         public static PixKey Cancel(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.DeleteId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -375,7 +375,7 @@ namespace StarkInfra
             ) as PixKey;
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "PixKey", resourceMaker: ResourceMaker);
         }
@@ -383,7 +383,7 @@ namespace StarkInfra
         internal static Resource ResourceMaker(dynamic json)
         {
             string accountCreatedString = json.accountCreated;
-            DateTime? accountCreated = Checks.CheckNullableDateTime(accountCreatedString);
+            DateTime? accountCreated = StarkCore.Utils.Checks.CheckNullableDateTime(accountCreatedString);
             string accountNumber = json.accountNumber;
             string accountType = json.accountType;
             string branchCode = json.branchCode;
@@ -392,14 +392,14 @@ namespace StarkInfra
             string id = json.id;
             List<string> tags = json.tags?.ToObject<List<string>>();
             string ownedString = json.owned;
-            DateTime? owned = Checks.CheckNullableDateTime(ownedString);
+            DateTime? owned = StarkCore.Utils.Checks.CheckNullableDateTime(ownedString);
             string ownerType = json.ownerType;
             string status = json.status;
             string bankCode = json.bankCode;
             string bankName = json.bankName;
             string type = json.type;
             string createdString = json.created;
-            DateTime? created = Checks.CheckNullableDateTime(createdString);
+            DateTime? created = StarkCore.Utils.Checks.CheckNullableDateTime(createdString);
 
             return new PixKey(
                 accountCreated: accountCreated, accountNumber: accountNumber, accountType: accountType,

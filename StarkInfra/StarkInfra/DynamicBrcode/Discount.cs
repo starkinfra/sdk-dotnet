@@ -17,7 +17,7 @@ namespace StarkInfra
     ///     <item>Due [DateTime]: Date after when the discount will be overdue in UTC ISO format</item>
     /// </list>
     /// </summary>
-    public class Discounts : SubResource
+    public class Discounts : StarkCore.Utils.SubResource
     {
         public float Percentage { get; }
         public DateTime Due { get; }
@@ -39,12 +39,12 @@ namespace StarkInfra
             Due = due;
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "Discounts", resourceMaker: ResourceMaker);
         }
 
-        internal static SubResource ResourceMaker(dynamic json)
+        internal static StarkCore.Utils.SubResource ResourceMaker(dynamic json)
         {
             float percentage = json.percentage;
             DateTime due = json.due;
