@@ -107,7 +107,7 @@ namespace StarkInfra
             Updated = updated;
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "Transfer", resourceMaker: ResourceMaker);
         }
@@ -125,15 +125,15 @@ namespace StarkInfra
             long? amount = json.amount;
             string externalID = json.externalId;
             string scheduledString = json.scheduled;
-            DateTime? scheduled = Checks.CheckDateTime(scheduledString);
+            DateTime? scheduled = StarkCore.Utils.Checks.CheckDateTime(scheduledString);
             string description = json.description;
             int? fee = json.fee;
             string status = json.status;
             List<string> transactionIds = json.transactionIds?.ToObject<List<string>>();
             string createdString = json.created;
-            DateTime? created = Checks.CheckNullableDateTime(createdString);
+            DateTime? created = StarkCore.Utils.Checks.CheckNullableDateTime(createdString);
             string updatedString = json.updated;
-            DateTime? updated = Checks.CheckNullableDateTime(updatedString);
+            DateTime? updated = StarkCore.Utils.Checks.CheckNullableDateTime(updatedString);
 
 
             return new Transfer(

@@ -78,7 +78,7 @@ namespace StarkInfra
             /// </summary>
             public static Attempt Get(string id, User user = null)
             {
-                (string resourceName, Utils.Api.ResourceMaker resourceMaker) = Resource();
+                (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
                 return Utils.Rest.GetId(
                     resourceName: resourceName,
                     resourceMaker: resourceMaker,
@@ -110,14 +110,14 @@ namespace StarkInfra
             public static IEnumerable<Attempt> Query(int? limit = null, DateTime? after = null, DateTime? before = null,
                                                      List<string> eventIds = null, List<string> webhookIds = null, User user = null)
             {
-                (string resourceName, Utils.Api.ResourceMaker resourceMaker) = Resource();
+                (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
                 return Utils.Rest.GetList(
                     resourceName: resourceName,
                     resourceMaker: resourceMaker,
                     query: new Dictionary<string, object> {
                         { "limit", limit },
-                        { "after", new Utils.StarkDate(after) },
-                        { "before", new Utils.StarkDate(before) },
+                        { "after", new StarkDate(after) },
+                        { "before", new StarkDate(before) },
                         { "eventIds", eventIds },
                         { "webhookIds", webhookIds }
                     },
@@ -151,29 +151,29 @@ namespace StarkInfra
             public static (List<Attempt> page, string pageCursor) Page(string cursor = null, int? limit = null, DateTime? after = null,
                 DateTime? before = null, List<string> eventIds = null, List<string> webhookIds = null, User user = null)
             {
-                (string resourceName, Utils.Api.ResourceMaker resourceMaker) = Resource();
-                (List<SubResource> page, string pageCursor) = Utils.Rest.GetPage(
+                (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+                (List<StarkCore.Utils.SubResource> page, string pageCursor) = Utils.Rest.GetPage(
                     resourceName: resourceName,
                     resourceMaker: resourceMaker,
                     query: new Dictionary<string, object> {
                         { "cursor", cursor },
                         { "limit", limit },
-                        { "after", new Utils.StarkDate(after) },
-                        { "before", new Utils.StarkDate(before) },
+                        { "after", new StarkDate(after) },
+                        { "before", new StarkDate(before) },
                         { "eventIds", eventIds },
                         { "webhookIds", webhookIds }
                     },
                     user: user
                 );
                 List<Attempt> attempts = new List<Attempt>();
-                foreach (SubResource subResource in page)
+                foreach (StarkCore.Utils.SubResource subResource in page)
                 {
                     attempts.Add(subResource as Attempt);
                 }
                 return (attempts, pageCursor);
             }
 
-            internal static (string resourceName, Utils.Api.ResourceMaker resourceMaker) Resource()
+            internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
             {
                 return (resourceName: "EventAttempt", resourceMaker: ResourceMaker);
             }
@@ -186,7 +186,7 @@ namespace StarkInfra
                 string eventID = json.eventId;
                 string webhookID = json.webhookId;
                 string createdString = json.created;
-                DateTime? created = Checks.CheckNullableDateTime(createdString);
+                DateTime? created = StarkCore.Utils.Checks.CheckNullableDateTime(createdString);
 
                 return new Attempt(id, code, message, eventID, webhookID, created);
             }

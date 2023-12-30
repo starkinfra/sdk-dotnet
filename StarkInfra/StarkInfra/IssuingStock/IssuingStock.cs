@@ -82,7 +82,7 @@ namespace StarkInfra
             List<string> designIds = null, List<string> embosserIds = null, List<string> ids = null, List<string> expand = null,
             User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -128,8 +128,8 @@ namespace StarkInfra
             List<string> designIds = null, List<string> embosserIds = null, List<string> ids = null, List<string> expand = null,
             User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -145,7 +145,7 @@ namespace StarkInfra
                 user: user
             );
             List<IssuingStock> stocks = new List<IssuingStock>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 stocks.Add(subResource as IssuingStock);
             }
@@ -178,7 +178,7 @@ namespace StarkInfra
         /// </summary>
         public static IssuingStock Get(string id, Dictionary<string, object> parameters = null, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -188,7 +188,7 @@ namespace StarkInfra
             ) as IssuingStock;
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "IssuingStock", resourceMaker: ResourceMaker);
         }
@@ -200,9 +200,9 @@ namespace StarkInfra
             string designID = json.designId;
             string embosserID = json.embosserId;
             string createdString = json.created;
-            DateTime created = Checks.CheckDateTime(createdString);
+            DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
-            DateTime updated = Checks.CheckDateTime(updatedString);
+            DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
 
             return new IssuingStock(
                 id: id, balance: balance, designID: designID, embosserID: embosserID, 

@@ -1,17 +1,7 @@
-﻿using System.Linq;
-using System.Reflection;
-using System.Collections.Generic;
-
-
-namespace StarkInfra.Utils
+﻿namespace StarkInfra.Utils
 {
-    public abstract class Resource : SubResource
+    public abstract class Resource : StarkCore.Utils.Resource
     {
-        public string ID { get; }
-
-        public Resource(string id)
-        {
-            ID = id;
-        }
+        public Resource(string id) : base(id) { }
     }
 }

@@ -114,7 +114,7 @@ namespace StarkInfra
         /// </summary>
         public static List<StaticBrcode> Create(List<StaticBrcode> brcodes, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -145,7 +145,7 @@ namespace StarkInfra
         /// </summary>
         public static List<StaticBrcode> Create(List<Dictionary<string, object>> brcodes, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -176,7 +176,7 @@ namespace StarkInfra
         /// </summary>
         public static StaticBrcode Get(string uuid, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -210,7 +210,7 @@ namespace StarkInfra
             List<string> uuids = null, List<string> tags = null, User user = null
         )
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -254,8 +254,8 @@ namespace StarkInfra
             User user = null
         )
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -269,14 +269,14 @@ namespace StarkInfra
                 user: user
             );
             List<StaticBrcode> staticBrcode = new List<StaticBrcode>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 staticBrcode.Add(subResource as StaticBrcode);
             }
             return (staticBrcode, pageCursor);
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "StaticBrcode", resourceMaker: ResourceMaker);
         }
@@ -293,9 +293,9 @@ namespace StarkInfra
             string uuid = json.uuid;
             string url = json.url;
             string createdString = json.created;
-            DateTime? created = Checks.CheckDateTime(createdString);
+            DateTime? created = StarkCore.Utils.Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
-            DateTime? updated = Checks.CheckDateTime(updatedString);
+            DateTime? updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
 
             return new StaticBrcode( 
                 name: name, keyID: keyID, city: city, amount: amount, 

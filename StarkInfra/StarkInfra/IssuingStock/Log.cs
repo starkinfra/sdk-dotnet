@@ -79,7 +79,7 @@ namespace StarkInfra
             /// </summary>
             public static Log Get(string id, User user = null)
             {
-                (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+                (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
                 return Rest.GetId(
                     resourceName: resourceName,
                     resourceMaker: resourceMaker,
@@ -112,7 +112,7 @@ namespace StarkInfra
             public static IEnumerable<Log> Query(int? limit = null, List<string> ids = null, DateTime? after = null, DateTime? before = null,
                 List<string> types = null, List<string> stockIds = null, User user = null)
             {
-                (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+                (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
                 return Rest.GetList(
                     resourceName: resourceName,
                     resourceMaker: resourceMaker,
@@ -155,8 +155,8 @@ namespace StarkInfra
             public static (List<Log> page, string pageCursor) Page(string cursor = null, List<string> ids = null, int? limit = null, DateTime? after = null,
                 DateTime? before = null, List<string> types = null, List<string> stockIds = null, User user = null)
             {
-                (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-                (List<SubResource> page, string pageCursor) = Rest.GetPage(
+                (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+                (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                     resourceName: resourceName,
                     resourceMaker: resourceMaker,
                     query: new Dictionary<string, object> {
@@ -171,14 +171,14 @@ namespace StarkInfra
                     user: user
                 );
                 List<Log> logs = new List<Log>();
-                foreach (SubResource subResource in page)
+                foreach (StarkCore.Utils.SubResource subResource in page)
                 {
                     logs.Add(subResource as Log);
                 }
                 return (logs, pageCursor);
             }
 
-            internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+            internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
             {
                 return (resourceName: "IssuingStockLog", resourceMaker: ResourceMaker);
             }
@@ -187,7 +187,7 @@ namespace StarkInfra
             {
                 string id = json.id;
                 string createdString = json.created;
-                DateTime created = Checks.CheckDateTime(createdString);
+                DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
                 string type = json.type;
                 int count = json.count;
                 IssuingStock stock = IssuingStock.ResourceMaker(json.stock);

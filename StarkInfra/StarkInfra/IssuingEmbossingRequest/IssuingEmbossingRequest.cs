@@ -157,7 +157,7 @@ namespace StarkInfra
         /// </summary>
         public static List<IssuingEmbossingRequest> Create(List<IssuingEmbossingRequest> requests, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -188,7 +188,7 @@ namespace StarkInfra
         /// </summary>
         public static List<IssuingEmbossingRequest> Create(List<Dictionary<string, object>> requests, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -223,7 +223,7 @@ namespace StarkInfra
             List<string> status = null, List<string> cardIds = null, List<string> ids = null, List<string> tags = null,
             User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -270,8 +270,8 @@ namespace StarkInfra
             List<string> ids = null, List<string> tags = null,
             User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -287,7 +287,7 @@ namespace StarkInfra
                 user: user
             );
             List<IssuingEmbossingRequest> requests = new List<IssuingEmbossingRequest>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 requests.Add(subResource as IssuingEmbossingRequest);
             }
@@ -316,7 +316,7 @@ namespace StarkInfra
         /// </summary>
         public static IssuingEmbossingRequest Get(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -325,7 +325,7 @@ namespace StarkInfra
             ) as IssuingEmbossingRequest;
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "IssuingEmbossingRequest", resourceMaker: ResourceMaker);
         }
@@ -354,9 +354,9 @@ namespace StarkInfra
             int? fee = json.fee;
             string status = json.status;
             string createdString = json.created;
-            DateTime created = Checks.CheckDateTime(createdString);
+            DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
-            DateTime updated = Checks.CheckDateTime(updatedString);
+            DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
 
             return new IssuingEmbossingRequest(
                 id: id, cardID: cardID, cardDesignID: cardDesignID, envelopeDesignID: envelopeDesignID, displayName1: displayName1,

@@ -17,7 +17,7 @@ namespace StarkInfra
     ///     <item>Value [string, default ""]: amount related to the described key. ex: "R$100,00"</item>
     /// </list>
     /// </summary>
-    public partial class Description : SubResource
+    public partial class Description : StarkCore.Utils.SubResource
     {
         public string Key { get; }
         public string Value { get; }
@@ -43,12 +43,12 @@ namespace StarkInfra
             Value = value;
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "Description", resourceMaker: ResourceMaker);
         }
 
-        internal static SubResource ResourceMaker(dynamic json)
+        internal static StarkCore.Utils.SubResource ResourceMaker(dynamic json)
         {
             string key = json.key;
             string value = json.value;

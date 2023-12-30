@@ -23,10 +23,10 @@ namespace StarkInfra
     ///     <item>Type [string]: Credit type, inferred from the payment parameter if it is not a dictionary. ex: "credit-note"</item>
     /// </list>
     /// </summary>
-    public partial class CreditPreview : SubResource
+    public partial class CreditPreview : StarkCore.Utils.SubResource
     {
         public string Type { get; }
-        public SubResource Credit { get; }
+        public StarkCore.Utils.SubResource Credit { get; }
 
         /// <summary>
         /// CreditPreview object
@@ -44,7 +44,7 @@ namespace StarkInfra
         ///     <item>type [string]: Credit type, inferred from the payment parameter if it is not a dictionary. ex: "credit-note"</item>
         /// </list>
         /// </summary>
-        public CreditPreview(SubResource credit, string type)
+        public CreditPreview(StarkCore.Utils.SubResource credit, string type)
         {
             Credit = credit;
             Type = type;
@@ -72,7 +72,7 @@ namespace StarkInfra
         /// </summary>
         public static List<CreditPreview> Create(List<CreditPreview> previews, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -103,7 +103,7 @@ namespace StarkInfra
         /// </summary>
         public static List<CreditPreview> Create(List<Dictionary<string, object>> previews, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -112,22 +112,22 @@ namespace StarkInfra
             ).ToList().ConvertAll(o => (CreditPreview)o);
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "CreditPreview", resourceMaker: ResourceMaker);
         }
 
-        internal static SubResource ResourceMaker(dynamic json)
+        internal static StarkCore.Utils.SubResource ResourceMaker(dynamic json)
         {
             string type = json.type;
-            SubResource payment = ParseCredit(json: json.credit, type: json.type.ToObject<string>());
+            StarkCore.Utils.SubResource payment = ParseCredit(json: json.credit, type: json.type.ToObject<string>());
 
             return new CreditPreview(
                 credit: payment, type: type
             );
         }
 
-        private static SubResource ParseCredit(dynamic json, string type)
+        private static StarkCore.Utils.SubResource ParseCredit(dynamic json, string type)
         {
             if (type == "credit-note") return CreditNotePreview.ResourceMaker(json);
             return null;

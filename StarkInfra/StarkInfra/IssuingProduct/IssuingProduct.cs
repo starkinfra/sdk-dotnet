@@ -75,7 +75,7 @@ namespace StarkInfra
         /// </summary>
         public static IEnumerable<IssuingProduct> Query(int? limit = null, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -107,8 +107,8 @@ namespace StarkInfra
         /// </summary>
         public static (List<IssuingProduct> page, string pageCursor) Page(string cursor = null, int? limit = null, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -118,14 +118,14 @@ namespace StarkInfra
                 user: user
             );
             List<IssuingProduct> products = new List<IssuingProduct>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 products.Add(subResource as IssuingProduct);
             }
             return (products, pageCursor);
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "IssuingProduct", resourceMaker: ResourceMaker);
         }
@@ -138,7 +138,7 @@ namespace StarkInfra
             string holderType = json.holderType;
             string code = json.code;
             string createdString = json.created;
-            DateTime? created = Checks.CheckDateTime(createdString);
+            DateTime? created = StarkCore.Utils.Checks.CheckDateTime(createdString);
 
             return new IssuingProduct(
                 id: id, network: network, settlement: fundingType, category: holderType, 

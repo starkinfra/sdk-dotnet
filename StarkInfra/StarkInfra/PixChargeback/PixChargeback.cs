@@ -140,7 +140,7 @@ namespace StarkInfra
         /// </summary>
         public static List<PixChargeback> Create(List<PixChargeback> chargebacks, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -171,7 +171,7 @@ namespace StarkInfra
         /// </summary>
         public static List<PixChargeback> Create(List<Dictionary<string, object>> chargebacks, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -202,7 +202,7 @@ namespace StarkInfra
         /// </summary>
         public static PixChargeback Get(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -239,7 +239,7 @@ namespace StarkInfra
             List<string> tags = null, User user = null
         )
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -287,8 +287,8 @@ namespace StarkInfra
             string flow = null, List<string> tags = null, User user = null
         )
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -304,7 +304,7 @@ namespace StarkInfra
                 user: user
             );
             List<PixChargeback> chargebacks = new List<PixChargeback>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 chargebacks.Add(subResource as PixChargeback);
             }
@@ -344,7 +344,7 @@ namespace StarkInfra
         public static PixChargeback Update(string id, string result, Dictionary<string, object> patchData, User user = null)
         {
             patchData.Add("result", result);
-            (string resourceName, Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Utils.Rest.PatchId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -376,7 +376,7 @@ namespace StarkInfra
         /// </summary>
         public static PixChargeback Cancel(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.DeleteId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -385,7 +385,7 @@ namespace StarkInfra
             ) as PixChargeback;
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "PixChargeback", resourceMaker: ResourceMaker);
         }
@@ -407,9 +407,9 @@ namespace StarkInfra
             string flow = json.flow;
             string status = json.status;
             string createdString = json.created;
-            DateTime created = Checks.CheckDateTime(createdString);
+            DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
-            DateTime updated = Checks.CheckDateTime(updatedString);
+            DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
 
             return new PixChargeback(
                 id: id, amount: amount, referenceID: referenceID, reason: reason, description: description,

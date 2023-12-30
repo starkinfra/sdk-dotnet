@@ -95,7 +95,7 @@ namespace StarkInfra
         /// </summary>
         public static IssuingWithdrawal Create(IssuingWithdrawal withdrawal, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.PostSingle(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -126,7 +126,7 @@ namespace StarkInfra
         /// </summary>
         public static IssuingWithdrawal Create(Dictionary<string, object> withdrawal, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.PostSingle(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -157,7 +157,7 @@ namespace StarkInfra
         /// </summary>
         public static IssuingWithdrawal Get(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -189,7 +189,7 @@ namespace StarkInfra
         public static IEnumerable<IssuingWithdrawal> Query(int? limit = null, string externalID = null, DateTime? after = null, DateTime? before = null,
             List<string> tags = null, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -230,8 +230,8 @@ namespace StarkInfra
         public static (List<IssuingWithdrawal> page, string pageCursor) Page(string cursor = null, int? limit = null, string externalID = null,
             DateTime? after = null, DateTime? before = null, List<string> tags = null, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -245,14 +245,14 @@ namespace StarkInfra
                 user: user
             );
             List<IssuingWithdrawal> withdrawals = new List<IssuingWithdrawal>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 withdrawals.Add(subResource as IssuingWithdrawal);
             }
             return (withdrawals, pageCursor);
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "IssuingWithdrawal", resourceMaker: ResourceMaker);
         }
@@ -267,9 +267,9 @@ namespace StarkInfra
             string externalID = json.externalId;
             List<string> tags = json.tags?.ToObject<List<string>>();
             string createdString = json.created;
-            DateTime created = Checks.CheckDateTime(createdString);
+            DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
-            DateTime updated = Checks.CheckDateTime(updatedString);
+            DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
 
             return new IssuingWithdrawal(
                 id: id, amount: amount, description: description, transactionID: transactionID, tags: tags, externalID: externalID,

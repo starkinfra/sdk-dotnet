@@ -144,7 +144,7 @@ namespace StarkInfra
         /// </summary>
         public static PixClaim Create(PixClaim pixClaim, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.PostSingle(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -176,7 +176,7 @@ namespace StarkInfra
         /// </summary>
         public static PixClaim Create(Dictionary<string, object> claim, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.PostSingle(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -207,7 +207,7 @@ namespace StarkInfra
         /// </summary>
         public static PixClaim Get(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -248,7 +248,7 @@ namespace StarkInfra
             List<string> tags = null, User user = null
         )
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -303,8 +303,8 @@ namespace StarkInfra
             string flow = null, List<string> tags = null, User user = null
         )
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -323,7 +323,7 @@ namespace StarkInfra
                 user: user
             );
             List<PixClaim> claims = new List<PixClaim>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 claims.Add(subResource as PixClaim);
             }
@@ -361,7 +361,7 @@ namespace StarkInfra
                 patchData = new Dictionary<string, object> { };
             }
             patchData.Add("status", status);
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Utils.Rest.PatchId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -371,7 +371,7 @@ namespace StarkInfra
             ) as PixClaim;
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "PixClaim", resourceMaker: ResourceMaker);
         }
@@ -394,9 +394,9 @@ namespace StarkInfra
             string claimerBankCode = json.claimerBankCode;
             string claimedBankCode = json.claimedBankCode;
             string createdString = json.created;
-            DateTime? created = Checks.CheckDateTime(createdString);
+            DateTime? created = StarkCore.Utils.Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
-            DateTime? updated = Checks.CheckDateTime(updatedString);
+            DateTime? updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
 
             return new PixClaim(
                 accountCreated: accountCreated, accountNumber: accountNumber, 

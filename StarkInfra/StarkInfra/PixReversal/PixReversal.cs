@@ -116,7 +116,7 @@ namespace StarkInfra
         /// </summary>
         public static List<PixReversal> Create(List<PixReversal> reversals, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -147,7 +147,7 @@ namespace StarkInfra
         /// </summary>
         public static List<PixReversal> Create(List<Dictionary<string, object>> reversals, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -178,7 +178,7 @@ namespace StarkInfra
         /// </summary>
         public static PixReversal Get(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -215,7 +215,7 @@ namespace StarkInfra
             List<string> status = null, List<string> ids = null, List<string> returnIds = null, 
             List<string> externalIds = null, List<string> tags = null,  User user = null
         ) {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -264,8 +264,8 @@ namespace StarkInfra
             List<string> status = null, List<string> tags = null, List<string> ids = null, 
             List<string> returnIds = null, List<string> externalIds = null, User user = null
         ) {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -282,7 +282,7 @@ namespace StarkInfra
                 user: user
             );
             List<PixReversal> reversals = new List<PixReversal>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 reversals.Add(subResource as PixReversal);
             }
@@ -314,7 +314,7 @@ namespace StarkInfra
         /// </summary>
         public static PixReversal Parse(string content, string signature, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Utils.Parse.ParseAndVerify(
                 content: content,
                 signature: signature,
@@ -352,11 +352,11 @@ namespace StarkInfra
                     }
                 }
             };
-            Dictionary<string, object> response = Api.CastJsonToApiFormat(rawResponse);
+            Dictionary<string, object> response = StarkCore.Utils.Api.CastJsonToApiFormat(rawResponse);
             return JsonConvert.SerializeObject(response);
         }
         
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "PixReversal", resourceMaker: ResourceMaker);
         }
@@ -374,9 +374,9 @@ namespace StarkInfra
             string status = json.status;
             string flow = json.flow;
             string createdString = json.created;
-            DateTime created = Checks.CheckDateTime(createdString);
+            DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
-            DateTime updated = Checks.CheckDateTime(updatedString);
+            DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
 
             return new PixReversal(
                 amount: amount, externalID: externalID, endToEndID: endToEndID, 

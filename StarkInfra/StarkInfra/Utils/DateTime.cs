@@ -7,14 +7,16 @@ namespace StarkInfra.Utils
     {
         public DateTime? Value;
 
-        public StarkDate(DateTime? value) {
+        public StarkDate(DateTime? value)
+        {
             Value = value;
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             if (Value == null)
                 return null;
-            DateTime value = (DateTime) Value;
+            DateTime value = (DateTime)Value;
             return value.ToString("yyyy-MM-dd");
         }
     }

@@ -32,7 +32,7 @@ namespace StarkInfra
     ///     <item>AcquirerID [string]: acquirer ID. ex: "5656565656565656"</item>
     ///     <item>MerchantID [string]: merchant ID. ex: "5656565656565656"</item>
     ///     <item>MerchantName [string]: merchant name. ex: "Google Cloud Platform"</item>
-    ///     <item>merchantFee [integer]: fee charged by the merchant to cover specific costs, such as ATM withdrawal logistics, etc. ex: 200 (= R$ 2.00)</item>
+    ///     <item>MerchantFee [integer]: fee charged by the merchant to cover specific costs, such as ATM withdrawal logistics, etc. ex: 200 (= R$ 2.00)</item>
     ///     <item>WalletID [string]: virtual wallet ID. ex: "5656565656565656"</item>
     ///     <item>MethodCode [string]: method code. Options: "chip", "token", "server", "manual", "magstripe" or "contactless"</item>
     ///     <item>Score [float]: internal score calculated for the authenticity of the purchase. null in case of insufficient data. ex: 7.6</item>
@@ -41,6 +41,7 @@ namespace StarkInfra
     ///     <item>ZipCode [string]: zip code of the merchant location. ex: "02101234"</item>
     ///     <item>IssuingTransactionIds [string]: ledger transaction ids linked to this Purchase</item>
     ///     <item>Status [string]: current IssuingCard status. Options: "approved", "canceled", "denied", "confirmed" or "voided"</item>
+    ///     <item>Metadata [Dictionary object]: object used to store additional information about the IssuingPurchase object. ex: new Dictionary<string, object>(){{"authorizationId", "OjZAqj"}}</item>
     ///     <item>Updated [DateTime]: latest update DateTime for the IssuingPurchase. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>Created [DateTime]: creation DateTime for the IssuingPurchase. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>IsPartialAllowed [bool]: true if the merchant allows partial purchases. ex: False</item>
@@ -76,6 +77,7 @@ namespace StarkInfra
         public string ZipCode { get; }
         public List<string> IssuingTransactionIds { get; }
         public string Status { get; }
+        public Dictionary<string, object> Metadata { get; }
         public DateTime? Updated { get; }
         public DateTime? Created { get; }
         public bool? IsPartialAllowed { get; }
@@ -119,6 +121,7 @@ namespace StarkInfra
         /// <list>
         ///     <item>issuingTransactionIds [string]: ledger transaction ids linked to this Purchase</item>
         ///     <item>status [string]: current IssuingCard status. Options: "approved", "canceled", "denied", "confirmed" or "voided"</item>
+        ///     <item>metadata [Dictionary object]: object used to store additional information about the IssuingPurchase object. ex: new Dictionary<string, object>(){{"authorizationId", "OjZAqj"}}</item>
         ///     <item>updated [DateTime]: latest update DateTime for the IssuingPurchase. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>created [DateTime]: creation DateTime for the IssuingPurchase. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
@@ -135,8 +138,8 @@ namespace StarkInfra
             string merchantCurrencySymbol = null,  string merchantCategoryCode = null,  string merchantCountryCode = null,  
             string acquirerID = null,  string merchantID = null,  string merchantName = null,  int? merchantFee = null,  
             string walletID = null,  string methodCode = null,  float? score = null,  string endToEndID = null,  List<string> tags = null,  
-            string zipCode = null,  List<string> issuingTransactionIds = null, string status = null, DateTime? updated = null, 
-            DateTime? created = null, bool? isPartialAllowed = null, List<string> cardTags = null, List<string> holderTags = null           
+            string zipCode = null,  List<string> issuingTransactionIds = null, string status = null, Dictionary<string, object> metadata = null,
+            DateTime? updated = null, DateTime? created = null, bool? isPartialAllowed = null, List<string> cardTags = null, List<string> holderTags = null           
         ) : base(id)
         {
             HolderName = holderName;
@@ -165,6 +168,7 @@ namespace StarkInfra
             ZipCode = zipCode;
             IssuingTransactionIds = issuingTransactionIds;
             Status = status;
+            Metadata = metadata;
             Updated = updated;
             Created = created;
             IsPartialAllowed = isPartialAllowed;
@@ -194,7 +198,7 @@ namespace StarkInfra
         /// </summary>
         public static IssuingPurchase Get(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -230,7 +234,7 @@ namespace StarkInfra
             DateTime? before = null, List<string> endToEndIds = null, List<string> holderIds = null,List<string> cardIds = null, 
             string status = null, User user = null
         ) {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -279,8 +283,8 @@ namespace StarkInfra
             DateTime? before = null, List<string> endToEndIds = null, List<string> holderIds = null,List<string> cardIds = null, 
             string status = null, User user = null
         ) {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -297,7 +301,7 @@ namespace StarkInfra
                 user: user
             );
             List<IssuingPurchase> purchases = new List<IssuingPurchase>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 purchases.Add(subResource as IssuingPurchase);
             }
@@ -331,7 +335,7 @@ namespace StarkInfra
         /// </summary>
         public static IssuingPurchase Parse(string content, string signature, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Utils.Parse.ParseAndVerify(
                 content: content,
                 signature: signature,
@@ -376,11 +380,11 @@ namespace StarkInfra
                     }
                 }
             };
-            Dictionary<string, object> response = Api.CastJsonToApiFormat(rawResponse);
+            Dictionary<string, object> response = StarkCore.Utils.Api.CastJsonToApiFormat(rawResponse);
             return JsonConvert.SerializeObject(response);
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "IssuingPurchase", resourceMaker: ResourceMaker);
         }
@@ -414,10 +418,11 @@ namespace StarkInfra
             string zipCode = json.zipCode;
             List<string> issuingTransactionIds = json.issuingTransactionIds?.ToObject<List<string>>();
             string status = json.status;
+            Dictionary<string, object> metadata = json.metadata?.ToObject<Dictionary<string, object>>();
             string createdString = json.created;
-            DateTime? created = Checks.CheckNullableDateTime(createdString);
+            DateTime? created = StarkCore.Utils.Checks.CheckNullableDateTime(createdString);
             string updatedString = json.updated;
-            DateTime? updated = Checks.CheckNullableDateTime(updatedString);
+            DateTime? updated = StarkCore.Utils.Checks.CheckNullableDateTime(updatedString);
             bool? isPartialAllowed = json.isPartialAllowed;
             List<string> cardTags = json.cardTags?.ToObject<List<string>>();
             List<string> holderTags = json.holderTags?.ToObject<List<string>>();
@@ -432,8 +437,8 @@ namespace StarkInfra
                 merchantID: merchantID, merchantName: merchantName, merchantFee: merchantFee, 
                 walletID: walletID, methodCode: methodCode, score: score, endToEndID: endToEndID, 
                 tags: tags, zipCode: zipCode, issuingTransactionIds: issuingTransactionIds, 
-                status: status, created: created, updated: updated, isPartialAllowed: isPartialAllowed, 
-                cardTags: cardTags, holderTags: holderTags
+                status: status, metadata: metadata, created: created, updated: updated,
+                isPartialAllowed: isPartialAllowed, cardTags: cardTags, holderTags: holderTags
             );
         }
     }

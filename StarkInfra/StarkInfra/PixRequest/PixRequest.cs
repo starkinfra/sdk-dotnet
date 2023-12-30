@@ -200,7 +200,7 @@ namespace StarkInfra
         /// </summary>
         public static List<PixRequest> Create(List<PixRequest> requests, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -231,7 +231,7 @@ namespace StarkInfra
         /// </summary>
         public static List<PixRequest> Create(List<Dictionary<string, object>> requests, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -262,7 +262,7 @@ namespace StarkInfra
         /// </summary>
         public static PixRequest Get(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -298,7 +298,7 @@ namespace StarkInfra
             List<string> status = null, List<string> ids = null, List<string> tags = null, List<string> endToEndIds = null, 
             List<string> externalIds = null, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -347,8 +347,8 @@ namespace StarkInfra
             List<string> ids = null, List<string> tags = null, List<string> endToEndIds = null, 
             List<string> externalIds = null, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -365,7 +365,7 @@ namespace StarkInfra
                 user: user
             );
             List<PixRequest> requests = new List<PixRequest>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 requests.Add(subResource as PixRequest);
             }
@@ -397,7 +397,7 @@ namespace StarkInfra
         /// </summary>
         public static PixRequest Parse(string content, string signature, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Utils.Parse.ParseAndVerify(
                 content: content,
                 signature: signature,
@@ -435,11 +435,11 @@ namespace StarkInfra
                     }
                 }
             };
-            Dictionary<string, object> response = Api.CastJsonToApiFormat(rawResponse);
+            Dictionary<string, object> response = StarkCore.Utils.Api.CastJsonToApiFormat(rawResponse);
             return JsonConvert.SerializeObject(response);
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "PixRequest", resourceMaker: ResourceMaker);
         }
@@ -475,9 +475,9 @@ namespace StarkInfra
             string flow = json.flow ;
             string senderBankCode = json.senderBankCode;
             string createdString = json.created;
-            DateTime created = Checks.CheckDateTime(createdString);
+            DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
-            DateTime updated = Checks.CheckDateTime(updatedString);
+            DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
 
             return new PixRequest(
                 amount: amount, externalID: externalID, senderName: senderName, 
