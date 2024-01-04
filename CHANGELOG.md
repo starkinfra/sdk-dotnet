@@ -17,6 +17,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - senderTaxID and receiverTaxID parameters to DynamicBrcode resource
 - internal structure to use starkcore as a dependency
 - starkcore version
+- sdk version
 ### Added
 - metadata attribute to IssuingPurchase resource
 
