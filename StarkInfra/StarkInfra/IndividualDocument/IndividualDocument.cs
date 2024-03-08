@@ -143,7 +143,7 @@ namespace StarkInfra
         /// </summary>
         public static List<IndividualDocument> Create(List<IndividualDocument> documents, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -174,7 +174,7 @@ namespace StarkInfra
         /// </summary>
         public static List<IndividualDocument> Create(List<Dictionary<string, object>> documents, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -205,7 +205,7 @@ namespace StarkInfra
         /// </summary>
         public static IndividualDocument Get(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -239,7 +239,7 @@ namespace StarkInfra
             List<string> status = null, List<string> tags = null, List<string> ids = null, User user = null
         )
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -283,8 +283,8 @@ namespace StarkInfra
             DateTime? after = null, DateTime? before = null, List<string> status = null, List<string> tags = null,
             List<string> ids = null, User user = null
         ) {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -299,14 +299,14 @@ namespace StarkInfra
                 user: user
             );
             List<IndividualDocument> documents = new List<IndividualDocument>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 documents.Add(subResource as IndividualDocument);
             }
             return (documents, pageCursor);
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "IndividualDocument", resourceMaker: ResourceMaker);
         }
@@ -320,7 +320,7 @@ namespace StarkInfra
             string id = json.id;
             string status = json.status;
             string createdString = json.created;
-            DateTime created = Checks.CheckDateTime(createdString);
+            DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
 
             return new IndividualDocument(
                 type: type, content: content, identityID: identityID, 

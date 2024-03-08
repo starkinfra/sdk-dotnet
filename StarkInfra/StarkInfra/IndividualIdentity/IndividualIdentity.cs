@@ -102,7 +102,7 @@ namespace StarkInfra
         /// </summary>
         public static List<IndividualIdentity> Create(List<IndividualIdentity> identities, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -133,7 +133,7 @@ namespace StarkInfra
         /// </summary>
         public static List<IndividualIdentity> Create(List<Dictionary<string, object>> identities, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -164,7 +164,7 @@ namespace StarkInfra
         /// </summary>
         public static IndividualIdentity Get(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -199,7 +199,7 @@ namespace StarkInfra
             List<string> tags = null,List<string> ids = null, User user = null
         )
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -243,8 +243,8 @@ namespace StarkInfra
             string cursor = null, int? limit = null, DateTime? after = null, DateTime? before = null, 
             List<string> status = null, List<string> tags = null,List<string> ids = null, User user = null
         ) {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -258,7 +258,7 @@ namespace StarkInfra
                 user: user
             );
             List<IndividualIdentity> identities = new List<IndividualIdentity>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 identities.Add(subResource as IndividualIdentity);
             }
@@ -291,7 +291,7 @@ namespace StarkInfra
             Dictionary<string, object> patchData = new Dictionary<string, object>();
             if (status != null) patchData.Add("status", status);
             
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.PatchId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -323,7 +323,7 @@ namespace StarkInfra
         /// </summary>
         public static IndividualIdentity Cancel(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.DeleteId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -332,7 +332,7 @@ namespace StarkInfra
             ) as IndividualIdentity;
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "IndividualIdentity", resourceMaker: ResourceMaker);
         }
@@ -345,7 +345,7 @@ namespace StarkInfra
             string id = json.id;
             string status = json.status;
             string createdString = json.created;
-            DateTime created = Checks.CheckDateTime(createdString);
+            DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
 
             return new IndividualIdentity(
                 name: name, taxID: taxID, tags: tags, id: id, status: status, 

@@ -109,7 +109,7 @@ namespace StarkInfra
         /// </summary>
         public static List<CreditHolmes> Create(List<CreditHolmes> holmes, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -140,7 +140,7 @@ namespace StarkInfra
         /// </summary>
         public static List<CreditHolmes> Create(List<Dictionary<string, object>> holmes, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.Post(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -171,7 +171,7 @@ namespace StarkInfra
         /// </summary>
         public static CreditHolmes Get(string id, User user = null)
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -205,7 +205,7 @@ namespace StarkInfra
             List<string> status = null, List<string> tags = null, List<string> ids = null, User user = null
         )
         {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetList(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
@@ -249,8 +249,8 @@ namespace StarkInfra
             DateTime? after = null, DateTime? before = null, List<string> status = null, List<string> tags = null,
             List<string> ids = null, User user = null
         ) {
-            (string resourceName, Api.ResourceMaker resourceMaker) = Resource();
-            (List<SubResource> page, string pageCursor) = Rest.GetPage(
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
@@ -265,14 +265,14 @@ namespace StarkInfra
                 user: user
             );
             List<CreditHolmes> holmes = new List<CreditHolmes>();
-            foreach (SubResource subResource in page)
+            foreach (StarkCore.Utils.SubResource subResource in page)
             {
                 holmes.Add(subResource as CreditHolmes);
             }
             return (holmes, pageCursor);
         }
 
-        internal static (string resourceName, Api.ResourceMaker resourceMaker) Resource()
+        internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "CreditHolmes", resourceMaker: ResourceMaker);
         }
@@ -286,9 +286,9 @@ namespace StarkInfra
             Dictionary<string, object> result = json.result?.ToObject<Dictionary<string, object>>();
             string status = json.status;
             string updatedString = json.updated;
-            DateTime updated = Checks.CheckDateTime(updatedString);
+            DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
             string createdString = json.created;
-            DateTime created = Checks.CheckDateTime(createdString);
+            DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
 
             return new CreditHolmes(
                 taxID: taxID, competence: competence, tags: tags, id: id, result: result, 
