@@ -14,10 +14,7 @@ namespace StarkInfra
     /// Properties:
     /// <list>
     ///     <item>CardID [string]: id of the IssuingCard to be embossed. ex "5656565656565656"</item>
-<<<<<<< HEAD
-=======
     ///     <item>KitID [string]: card embossing kit id. ex "5656565656565656"</item>
->>>>>>> 96b06e1 (Add CreditHolmes, IndividualIdentity, IndividualDocument and IssuingEmbossingKit)
     ///     <item>DisplayName1 [string]: card displayed name. ex: "ANTHONY STARK"</item>
     ///     <item>ShippingCity [string]: shipping city. ex: "NEW YORK"</item>
     ///     <item>ShippingCountryCode [string]: shipping country code. ex: "US"</item>
@@ -43,10 +40,7 @@ namespace StarkInfra
     public partial class IssuingEmbossingRequest : Resource
     {
         public string CardID { get; }
-<<<<<<< HEAD
-=======
         public string KitID { get; }
->>>>>>> 96b06e1 (Add CreditHolmes, IndividualIdentity, IndividualDocument and IssuingEmbossingKit)
         public string DisplayName1 { get; }
         public string ShippingCity { get; }
         public string ShippingCountryCode { get; }
@@ -75,11 +69,7 @@ namespace StarkInfra
         /// Parameters (required):
         /// <list>
         ///     <item>cardID [string]: id of the IssuingCard to be embossed. ex "5656565656565656"</item>
-<<<<<<< HEAD
-=======
         ///     <item>kitID [string]: card embossing kit id. ex "5656565656565656"</item>
-        ///     <item>envelopeDesignID [string]: envelope IssuingDesign id. ex "5656565656565656"</item>
->>>>>>> 96b06e1 (Add CreditHolmes, IndividualIdentity, IndividualDocument and IssuingEmbossingKit)
         ///     <item>displayName1 [string]: card displayed name. ex: "ANTHONY STARK"</item>
         ///     <item>shippingCity [string]: shipping city. ex: "NEW YORK"</item>
         ///     <item>shippingCountryCode [string]: shipping country code. ex: "US"</item>
@@ -109,11 +99,7 @@ namespace StarkInfra
         /// </list>
         /// </summary>
         public IssuingEmbossingRequest(
-<<<<<<< HEAD
-            string cardID = null, string displayName1 = null, string shippingCity = null, string shippingCountryCode = null, 
-=======
-            string cardID = null, string kitID = null, string displayName1 = null, string shippingCity = null, string shippingCountryCode = null, 
->>>>>>> 96b06e1 (Add CreditHolmes, IndividualIdentity, IndividualDocument and IssuingEmbossingKit)
+            string cardID = null, string kitID = null, string displayName1 = null, string shippingCity = null, string shippingCountryCode = null,
             string shippingDistrict = null, string shippingStateCode = null, string shippingStreetLine1 = null,
             string shippingStreetLine2 = null, string shippingService = null, string shippingTrackingNumber = null, 
             string shippingZipCode = null, string embosserID = null, string displayName2 = null, string displayName3 = null, 
@@ -122,10 +108,7 @@ namespace StarkInfra
         ) : base(id)
         {
             CardID = cardID;
-<<<<<<< HEAD
-=======
             KitID = kitID;
->>>>>>> 96b06e1 (Add CreditHolmes, IndividualIdentity, IndividualDocument and IssuingEmbossingKit)
             DisplayName1 = displayName1;
             ShippingCity = shippingCity;
             ShippingCountryCode = shippingCountryCode;
@@ -346,10 +329,7 @@ namespace StarkInfra
         {
             string id = json.id;
             string cardID = json.cardId;
-<<<<<<< HEAD
-=======
             string kitID = json.kitId;
->>>>>>> 96b06e1 (Add CreditHolmes, IndividualIdentity, IndividualDocument and IssuingEmbossingKit)
             string displayName1 = json.displayName1;
             string shippingCity = json.shippingCity;
             string shippingCountryCode = json.shippingCountryCode;
@@ -373,17 +353,10 @@ namespace StarkInfra
             DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
 
             return new IssuingEmbossingRequest(
-<<<<<<< HEAD
-                id: id, cardID: cardID, displayName1: displayName1, shippingCity: shippingCity, shippingCountryCode: shippingCountryCode,
-                shippingDistrict: shippingDistrict, shippingStateCode: shippingStateCode, shippingStreetLine1: shippingStreetLine1,
-                shippingStreetLine2: shippingStreetLine2, shippingService: shippingService, shippingTrackingNumber: shippingTrackingNumber,
-                shippingZipCode: shippingZipCode, embosserID: embosserID, displayName2: displayName2, displayName3: displayName3,
-=======
                 id: id, cardID: cardID, kitID: kitID, displayName1: displayName1, shippingCity: shippingCity, shippingCountryCode: shippingCountryCode, 
                 shippingDistrict: shippingDistrict, shippingStateCode: shippingStateCode, shippingStreetLine1: shippingStreetLine1, 
                 shippingStreetLine2: shippingStreetLine2, shippingService: shippingService, shippingTrackingNumber: shippingTrackingNumber, 
-                shippingZipCode: shippingZipCode, embosserID: embosserID, displayName2: displayName2, displayName3: displayName3, 
->>>>>>> 96b06e1 (Add CreditHolmes, IndividualIdentity, IndividualDocument and IssuingEmbossingKit)
+                shippingZipCode: shippingZipCode, embosserID: embosserID, displayName2: displayName2, displayName3: displayName3,
                 shippingPhone: shippingPhone, tags: tags, fee: fee, status: status, updated: updated, created: created
             );
         }
