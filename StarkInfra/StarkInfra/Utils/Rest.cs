@@ -16,7 +16,7 @@ namespace StarkInfra.Utils
 
         static string host = StarkHost.infra;
         static string apiVersion = "v2";
-        static string sdkVersion = "2.14.0";
+        static string sdkVersion = "0.3.0";
 
         public static IEnumerable<SubResource> GetList(User user = null, string resourceName = null, Api.ResourceMaker resourceMaker = null, Dictionary<string, object> query = null)
         {

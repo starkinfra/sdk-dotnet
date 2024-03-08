@@ -8,8 +8,8 @@
     <Summary>SDK to facilitate C# (.NET) integrations with the Stark Infra API</Summary>
     <AssemblyTitle>StarkInfra</AssemblyTitle>
     <AssemblyName>StarkInfra</AssemblyName>
-    <VersionPrefix>0.3.1</VersionPrefix>
-    <Version>0.3.1</Version>
+    <VersionPrefix>0.3.0</VersionPrefix>
+    <Version>0.3.0</Version>
     <ReleaseVersion>0.3.0</ReleaseVersion>
     <PackageVersion>0.3.0</PackageVersion>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>

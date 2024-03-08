@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.3.0] - 2024-01-03
 ### Changed
 - senderTaxID and receiverTaxID parameters to DynamicBrcode resource
 - internal structure to use starkcore as a dependency
