@@ -13,6 +13,13 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- IndividualIdentity resource
+- IndividualDocument resource
+- IssuingEmbossingKit resource
+- CreditHolmes resource
+### Changed
+- cardDesingID and envelopID to kitID attribute
 
 ## [0.3.0] - 2024-01-03
 ### Changed

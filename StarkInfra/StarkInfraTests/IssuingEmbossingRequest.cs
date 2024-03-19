@@ -106,12 +106,13 @@ namespace StarkInfraTests
             List<IssuingCard> cards = IssuingCard.Create(new List<IssuingCard>() { issuingcard });
             IssuingCard card = cards.First();
             string cardID = card.ID;
+
+            IssuingEmbossingKit kit = IssuingEmbossingKit.Query(limit: 1).ToList().First();
             
             return new IssuingEmbossingRequest(
                 cardID: cardID, 
-                cardDesignID: "5648359658356736", 
                 displayName1: "teste", 
-                envelopeDesignID: "5747368922185728", 
+                kitID: kit.ID, 
                 shippingCity: "Sao Paulo", 
                 shippingCountryCode: "BRA", 
                 shippingDistrict: "Bela Vista", 
