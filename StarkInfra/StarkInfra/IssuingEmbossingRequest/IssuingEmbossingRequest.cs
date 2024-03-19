@@ -14,8 +14,7 @@ namespace StarkInfra
     /// Properties:
     /// <list>
     ///     <item>CardID [string]: id of the IssuingCard to be embossed. ex "5656565656565656"</item>
-    ///     <item>CardDesignID [string]: card IssuingDesign id. ex "5656565656565656"</item>
-    ///     <item>EnvelopeDesignID [string]: envelope IssuingDesign id. ex "5656565656565656"</item>
+    ///     <item>KitID [string]: card embossing kit id. ex "5656565656565656"</item>
     ///     <item>DisplayName1 [string]: card displayed name. ex: "ANTHONY STARK"</item>
     ///     <item>ShippingCity [string]: shipping city. ex: "NEW YORK"</item>
     ///     <item>ShippingCountryCode [string]: shipping country code. ex: "US"</item>
@@ -41,8 +40,7 @@ namespace StarkInfra
     public partial class IssuingEmbossingRequest : Resource
     {
         public string CardID { get; }
-        public string CardDesignID { get; }
-        public string EnvelopeDesignID { get; }
+        public string KitID { get; }
         public string DisplayName1 { get; }
         public string ShippingCity { get; }
         public string ShippingCountryCode { get; }
@@ -71,8 +69,7 @@ namespace StarkInfra
         /// Parameters (required):
         /// <list>
         ///     <item>cardID [string]: id of the IssuingCard to be embossed. ex "5656565656565656"</item>
-        ///     <item>cardDesignID [string]: card IssuingDesign id. ex "5656565656565656"</item>
-        ///     <item>envelopeDesignID [string]: envelope IssuingDesign id. ex "5656565656565656"</item>
+        ///     <item>kitID [string]: card embossing kit id. ex "5656565656565656"</item>
         ///     <item>displayName1 [string]: card displayed name. ex: "ANTHONY STARK"</item>
         ///     <item>shippingCity [string]: shipping city. ex: "NEW YORK"</item>
         ///     <item>shippingCountryCode [string]: shipping country code. ex: "US"</item>
@@ -102,8 +99,7 @@ namespace StarkInfra
         /// </list>
         /// </summary>
         public IssuingEmbossingRequest(
-            string cardID = null, string cardDesignID = null, string envelopeDesignID = null,
-            string displayName1 = null, string shippingCity = null, string shippingCountryCode = null, 
+            string cardID = null, string kitID = null, string displayName1 = null, string shippingCity = null, string shippingCountryCode = null,
             string shippingDistrict = null, string shippingStateCode = null, string shippingStreetLine1 = null,
             string shippingStreetLine2 = null, string shippingService = null, string shippingTrackingNumber = null, 
             string shippingZipCode = null, string embosserID = null, string displayName2 = null, string displayName3 = null, 
@@ -112,8 +108,7 @@ namespace StarkInfra
         ) : base(id)
         {
             CardID = cardID;
-            CardDesignID = cardDesignID;
-            EnvelopeDesignID = envelopeDesignID;
+            KitID = kitID;
             DisplayName1 = displayName1;
             ShippingCity = shippingCity;
             ShippingCountryCode = shippingCountryCode;
@@ -334,8 +329,7 @@ namespace StarkInfra
         {
             string id = json.id;
             string cardID = json.cardId;
-            string cardDesignID = json.cardDesignId;
-            string envelopeDesignID = json.envelopeDesignId;
+            string kitID = json.kitId;
             string displayName1 = json.displayName1;
             string shippingCity = json.shippingCity;
             string shippingCountryCode = json.shippingCountryCode;
@@ -359,12 +353,11 @@ namespace StarkInfra
             DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
 
             return new IssuingEmbossingRequest(
-                id: id, cardID: cardID, cardDesignID: cardDesignID, envelopeDesignID: envelopeDesignID, displayName1: displayName1,
-                shippingCity: shippingCity, shippingCountryCode: shippingCountryCode, shippingDistrict: shippingDistrict,
-                shippingStateCode: shippingStateCode, shippingStreetLine1: shippingStreetLine1, shippingStreetLine2: shippingStreetLine2,
-                shippingService: shippingService, shippingTrackingNumber: shippingTrackingNumber, shippingZipCode: shippingZipCode,
-                embosserID: embosserID, displayName2: displayName2, displayName3: displayName3, shippingPhone: shippingPhone,
-                tags: tags, fee: fee, status: status, updated: updated, created: created
+                id: id, cardID: cardID, kitID: kitID, displayName1: displayName1, shippingCity: shippingCity, shippingCountryCode: shippingCountryCode, 
+                shippingDistrict: shippingDistrict, shippingStateCode: shippingStateCode, shippingStreetLine1: shippingStreetLine1, 
+                shippingStreetLine2: shippingStreetLine2, shippingService: shippingService, shippingTrackingNumber: shippingTrackingNumber, 
+                shippingZipCode: shippingZipCode, embosserID: embosserID, displayName2: displayName2, displayName3: displayName3,
+                shippingPhone: shippingPhone, tags: tags, fee: fee, status: status, updated: updated, created: created
             );
         }
     }
