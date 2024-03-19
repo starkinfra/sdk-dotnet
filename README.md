@@ -88,30 +88,30 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## 1. Install our SDK
 
-StarkInfra`s .NET SDK is available on NuGet as starkinfra 0.2.0
+StarkInfra`s .NET SDK is available on NuGet as starkinfra 0.4.0
 
 1.1 To install the Package Manager:
 
 ```sh
-Install-Package starkinfra -Version 0.3.0
+Install-Package starkinfra -Version 0.4.0
 ```
 
 1.2 To install the .NET CLI:
 
 ```sh
-dotnet add package starkinfra --version 0.3.0
+dotnet add package starkinfra --version 0.4.0
 ```
 
 1.3 To install by PackageReference:
 
 ```sh
-<PackageReference Include="starkinfra" Version="0.3.0" />
+<PackageReference Include="starkinfra" Version="0.4.0" />
 ```
 
 1.4 To install with Packet CLI:
 
 ```sh
-packet add starkinfra --version 0.3.0
+packet add starkinfra --version 0.4.0
 ```
 
 ## 2. Create your Private and Public Keys
