@@ -16,7 +16,7 @@ namespace StarkInfra.Utils
             string endToEndID = "E";
 
             endToEndID += bankCode;
-            endToEndID += DateTime.Now.ToString(@"yyyyMMddhhmm");
+            endToEndID += DateTime.Now.ToString(@"yyyyMMddHHmm");
 
             foreach (int i in range)
             {

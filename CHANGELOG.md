@@ -13,6 +13,9 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Fixed
+- EndToEndId date format
+
 ## [0.4.0] - 2024-03-19
 ### Added
 - IndividualIdentity resource
