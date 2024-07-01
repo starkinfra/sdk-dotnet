@@ -68,8 +68,12 @@
     <Folder Include="IssuingRule\" />
     <Folder Include="CreditNote\" />
     <Folder Include="CreditNote\Invoice\" />
+    <Folder Include="Request\" />
   </ItemGroup>
   <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Request\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\LICENSE" Pack="true" PackagePath="" />

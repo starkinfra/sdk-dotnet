@@ -3354,6 +3354,161 @@ StarkInfra.Event.Attempt attempt = StarkInfra.Event.Attempt.Get("161616161616161
 Console.WriteLine(attempt);
 ```
 
+# Request
+
+This resource allows you to send HTTP requests to StarkInfra routes.
+
+## GET
+
+You can perform a GET request to any StarkInfra route.
+
+It's possible to get a single resource using its id in the path.
+
+```c#
+using StarkInfra;
+
+string exampleId = "5155165527080960"
+JObejct request = Request.Get(
+    path="/pix-request/" + exampleId
+).Json();
+
+Console.WriteLine(request.ToString());
+```
+
+You can also get the specific resource log,
+
+```c#
+using StarkInfra;
+
+string exampleId = "5155165527080960";
+JObejct request = Request.Get(
+    path="/pix-request/log/" + exampleId
+).Json();
+
+Console.WriteLine(request.ToString());
+```
+
+This same method will be used to list all created items for the requested resource.
+
+```c#
+using StarkInfra;
+
+string after = "2024-01-01";
+string before = "2024-02-01";
+string cursor = "";
+
+JObject request = Request.Get(
+        path="/pix-request/",
+        query={
+            "after": after,
+            "before": before,
+            "cursor": cursor
+        }
+    ).Json();
+
+Console.WriteLine(request.ToString());
+```
+
+To list logs, you will use the same logic as for getting a single log.
+
+```c#
+using StarkInfra;
+
+string after = "2024-01-01";
+string before = "2024-02-01";
+string cursor = "";
+
+JObject request = Request.Get(
+        path="/pix-request/log",
+        query={
+            "after": after,
+            "before": before,
+            "cursor": cursor
+        }
+    ).Json();
+
+Console.WriteLine(request.ToString());
+```
+
+
+You can get a resource file using this method.
+
+```c#
+using StarkInfra;
+
+string exampleId = "5155165527080960";
+[]byte pdf = Request.Get(
+    path="/pix-request/" + exampleId + "/pdf",
+).ByteContent;
+
+System.IO.File.WriteAllBytes("request.pdf", pdf);
+```
+
+## POST
+
+You can perform a POST request to any StarkInfra route.
+
+This will create an object for each item sent in your request
+
+**Note**: It's not possible to create multiple resources simultaneously. You need to send separate requests if you want to create multiple resources, such as requests and boletos.
+
+```c#
+using StarkInfra;
+
+Dictionary<string, object> data = new Dictionary<string, object>() {
+        {
+            "holders", new List<Dictionary<string, object>>() { new Dictionary<string, object>()
+                {
+                    { "name", "Jaime Lannister " + Guid.NewGuid().ToString() },
+                    { "externalId", Guid.NewGuid().ToString() },
+                    { "taxId", "20.018.183/0001-80" }
+                },
+
+            }
+        }
+    };
+
+JObject request = Request.Post(
+    path="/issuing-holder",
+    body=data,
+).Json();
+Console.WriteLine(request.ToString())
+```
+
+## PATCH
+
+You can perform a PATCH request to any StarkInfra route.
+
+It's possible to update a single item of a StarkInfra resource.
+```c#
+using StarkInfra;
+
+string exampleId = "5155165527080960"
+
+Dictionary<string, object> data = new Dictionary<string, object>() { { "tags", new List<string> { Guid.NewGuid().ToString() } } };
+
+JObject request = Request.Patch(
+    path="/issuing-holder/" + exampleId,
+    body=data,
+).Json();
+Console.WriteLine(request.ToString());
+```
+
+## DELETE
+
+You can perform a DELETE request to any StarkInfra route.
+
+It's possible to delete a single item of a StarkInfra resource.
+```c#
+using StarkInfra;
+
+string exampleId = "5155165527080960"
+JObject request = Request.Delete(
+    path="/issuing-holder/" + exampleId,
+).Json();
+Console.WriteLine(request.ToString());        
+```
+
 # Handling errors
 
 The SDK may raise one of four types of errors: __InputErrors__, __InternalServerError__, __UnknownError__, __InvalidSignatureError__
