@@ -69,11 +69,13 @@
     <Folder Include="CreditNote\" />
     <Folder Include="CreditNote\Invoice\" />
     <Folder Include="Request\" />
+    <Folder Include="PixUser\" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
     <None Remove="Request\" />
+    <None Remove="PixUser\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
