@@ -447,7 +447,7 @@ namespace StarkInfra
             string securityCode = json.securityCode;
             string expirationString = json.expiration;
             DateTime? expiration = null;
-            if (expirationString[0] != '*') expiration = StarkCore.Utils.Checks.CheckDateTime(expirationString);
+            if (!string.IsNullOrEmpty(expirationString) && expirationString[0] != '*') expiration = StarkCore.Utils.Checks.CheckDateTime(expirationString);
             string updatedString = json.updated;
             DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
             string createdString = json.created;
