@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.5.2] - 2024-10-18
 ### Fixed
 - IssuingCard expand expiration
 
