@@ -76,7 +76,7 @@ namespace StarkInfraTests
         [Fact]
         public void CreateGet()
         {
-            PixInfraction infraction = PixInfraction.Create(Example()).First();
+            PixInfraction infraction = PixInfraction.Create(Example(), user).First();
 
             PixInfraction getPixInfraction = PixInfraction.Get(id: infraction.ID);
             Assert.Equal(getPixInfraction.ID, infraction.ID);
@@ -111,7 +111,10 @@ namespace StarkInfraTests
                 new PixInfraction(
                     referenceID: request.EndToEndID,
                     type: "fraud",
-                    tags: new List<string> { "teste sdk" }
+                    method: "scam"
+                    tags: new List<string> { "teste sdk" },
+                    operatorEmail: "ned.stark@company.com",
+                    operatorPhone: "+5511999999999"
                 )
             };
         }
