@@ -19,22 +19,22 @@ namespace StarkInfra
     /// <br/>
     /// Properties:
     /// <list>
-    ///     <item>Amount [long]: amount in cents to be reversed. ex: 11234 (= R$ 112.34)</item>
-    ///     <item>ReferenceID [string]: endToEndID or returnID of the transaction to be reversed. ex: "E20018183202201201450u34sDGd19lz"</item>
-    ///     <item>Reason [string]: reason why the reversal was requested. Options: "fraud", "flaw", "reversalChargeback"</item>
+    ///     <item>Amount [long]: amount in cents to be reversed. ex: 11234 (= R$ 112.34).</item>
+    ///     <item>ReferenceID [string]: endToEndID or returnID of the transaction to be reversed. ex: "E20018183202201201450u34sDGd19lz".</item>
+    ///     <item>Reason [string]: reason why the reversal was requested. Options: "fraud", "flaw", "reversalChargeback".</item>
     ///     <item>Description [string, default null]: description for the PixChargeback.</item>
-    ///     <item>Tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "travel", "food" }</item>
-    ///     <item>ID [string]: unique id returned when the PixChargeback is created. ex: "5656565656565656"</item>
+    ///     <item>Tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "travel", "food" }.</item>
+    ///     <item>ID [string]: unique id returned when the PixChargeback is created. ex: "5656565656565656".</item>
     ///     <item>Analysis [string]: analysis that led to the result.</item>
     ///     <item>SenderBankCode [string]: bankCode of the Pix participant that created the PixChargeback. ex: "20018183"</item>
     ///     <item>ReceiverBankCode [string]: bankCode of the Pix participant that received the PixChargeback. ex: "20018183"</item>
-    ///     <item>RejectionReason [string]: reason for the rejection of the PixChargeback. Options: "noBalance", "accountClosed", "unableToReverse"</item>
+    ///     <item>RejectionReason [string]: reason for the rejection of the PixChargeback. Options: "noBalance", "accountClosed", "invalidRequest", "unableToReverse".</item>
     ///     <item>ReversalReferenceID [string]: returnID or endToEndID of the reversal transaction. ex: "D20018183202202030109X3OoBHG74wo".</item>
-    ///     <item>Result [string]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted"</item>
-    ///     <item>Flow [string]: direction of the Pix Chargeback. Options: "in" for received chargebacks, "out" for chargebacks you requested</item>
+    ///     <item>Result [string]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted".</item>
+    ///     <item>Flow [string]: direction of the Pix Chargeback. Options: "in" for received chargebacks, "out" for chargebacks you requested.</item>
     ///     <item>Status [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".</item>
-    ///     <item>Created [DateTime]: creation DateTime for the PixChargeback. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
-    ///     <item>Updated [DateTime]: latest update DateTime for the PixChargeback. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>Created [DateTime]: creation DateTime for the PixChargeback. ex: DateTime(2020, 3, 10, 10, 30, 0, 0).</item>
+    ///     <item>Updated [DateTime]: latest update DateTime for the PixChargeback. ex: DateTime(2020, 3, 10, 10, 30, 0, 0).</item>
     /// </list>
     /// </summary>
     public partial class PixChargeback : Resource
@@ -72,9 +72,12 @@ namespace StarkInfra
         ///     <item>referenceID [string]: endToEndID or returnID of the transaction to be reversed. ex: "E20018183202201201450u34sDGd19lz"</item>
         ///     <item>reason [string]: reason why the reversal was requested. Options: "fraud", "flaw", "reversalChargeback"</item>
         ///</list>
+        /// Parameters (conditionally required)
+        /// <list>
+        ///     <item>description [string, default null]: description for the PixChargeback. Required if reason is "flaw".</item>
+        /// </list>
         /// Parameters (optional):
         /// <list>
-        ///     <item>description [string, default null]: description for the PixChargeback.</item>
         ///     <item>tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "travel", "food" }</item>
         /// </list>
         /// Attributes (return-only):
@@ -318,21 +321,18 @@ namespace StarkInfra
         /// <br/>
         /// Parameters(required):
         /// <list>
-        ///     <item>id[string]: object unique id. ex: "5656565656565656"</item>
+        ///     <item>id[string]: object unique id. ex: "5656565656565656".</item>
         ///     <item>result [string]: result after the analysis of the PixChargeback. Options: "rejected", "accepted", "partiallyAccepted".</item>
-        ///     <item>patchData [dictionary]: Dictionary of optional and conditionally required parameters</item>
+        ///     <item>patchData [dictionary]: Dictionary of optional and conditionally required parameter.</item>
         ///     <list>
-        ///         <item>rejectionReason[string, default null]: if the PixChargeback is rejected a rejectionReason is required. Options: "noBalance", "accountClosed", "unableToReverse"</item>
-        ///         <item>reversalReferenceID[string, default null]: if the PixChargeback is accepted a reversalReferenceID is required. ex: "D20018183202201201450u34sDGd19lz"</item>
+        ///         <item>rejectionReason[string, default null]: if the PixChargeback is rejected a rejectionReason is required. Options: "noBalance", "accountClosed", "invalidRequest", "unableToReverse".</item>
+        ///         <item>reversalReferenceID[string, default null]: if the PixChargeback is accepted a reversalReferenceID is required. ex: "D20018183202201201450u34sDGd19lz."</item>
+        ///         <item>analysis[string, default null]: description of the analysis that led to the result. Required if rejection_reason is "invalidRequest".</item>
         ///     </list>
         /// </list>
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>patchData [dictionary]: Dictionary of optional and conditionally required parameters</item>
-        ///     <list>
-        ///         <item>analysis[string, default null]: description of the analysis that led to the result.</item>
-        ///     </list>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings. User was set before function call</item>
         /// </list>
         /// <br/>

@@ -309,7 +309,7 @@ namespace StarkInfra
         /// <br/>
         /// Parameters(required):
         /// <list>
-        ///     <item>id[string]: object unique id. ex: "5656565656565656"</item>
+        ///     <item>id[string]: object unique id.  Allowed types are: CPF, CNPJ, phone number or email. ex: "5656565656565656".</item>
         ///     <item>reason [string]: reason why the PixKey is being patched. Options: "branchTransfer", "reconciliation" or "userRequested".</item>
         ///     <item>patchData [dictionary]: Dictionary of optional parameters</item>
         ///     <list>
