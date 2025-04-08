@@ -25,9 +25,13 @@
     <Configurations>Release;Debug</Configurations>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType></DebugType>
-  </PropertyGroup>
+  <PropertyGroup>   
+    <PackageReadmeFile>NuGetREADME.md</PackageReadmeFile>   
+  </PropertyGroup>   
+  <ItemGroup>   
+    <None Include="../../NuGetREADME.md" Pack="true" PackagePath="\"/>   
+  </ItemGroup> 
+  
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
