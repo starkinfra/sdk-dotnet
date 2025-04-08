@@ -13,7 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
-
+### Fix
+- .csproj file
 ### Added
 - method, operatorPhone and operatorEmail parameters to PixInfraction resource
 
