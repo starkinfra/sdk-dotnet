@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.6.0] - 2025-04-15
 ### Fix
 - .csproj file
 ### Added
