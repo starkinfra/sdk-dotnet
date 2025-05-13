@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.7.0] - 2025-05-13
 ### Added
 - payerId parameter to BrcodePreview resource
 
