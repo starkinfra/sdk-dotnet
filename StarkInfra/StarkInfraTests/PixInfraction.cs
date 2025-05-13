@@ -111,7 +111,7 @@ namespace StarkInfraTests
                 new PixInfraction(
                     referenceID: request.EndToEndID,
                     type: "fraud",
-                    method: "scam"
+                    method: "scam",
                     tags: new List<string> { "teste sdk" },
                     operatorEmail: "ned.stark@company.com",
                     operatorPhone: "+5511999999999"
