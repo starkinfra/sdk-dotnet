@@ -14,6 +14,9 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 
+### Added
+- fraudType parameter to PixInfraction resource
+
 ## [0.7.0] - 2025-05-13
 ### Added
 - payerId parameter to BrcodePreview resource
