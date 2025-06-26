@@ -19,10 +19,60 @@ namespace StarkInfraTests
             Assert.NotNull(brcodes[0].Uuid);
             DynamicBrcode getDynamicBrcode = DynamicBrcode.Get(uuid: brcodes[0].Uuid);
             Assert.Equal(getDynamicBrcode.Uuid, brcodes[0].Uuid);
-            foreach(DynamicBrcode brcode in brcodes)
+            foreach (DynamicBrcode brcode in brcodes)
             {
                 TestUtils.Log(brcode);
             }
+        }
+
+        [Fact]
+        public void CreateInstantBrcode()
+        {
+            string type = "instant";
+            DynamicBrcode createdBrcode = CreateDynamicBrcodeByType(type);
+
+            Assert.Equal(type, createdBrcode.Type);
+            Assert.False(string.IsNullOrEmpty(createdBrcode.Uuid));
+        }
+
+        [Fact]
+        public void CreateDueBrcode()
+        {
+            string type = "due";
+            DynamicBrcode createdBrcode = CreateDynamicBrcodeByType(type);
+
+            Assert.Equal(type, createdBrcode.Type);
+            Assert.False(string.IsNullOrEmpty(createdBrcode.Uuid));
+        }
+
+        [Fact]
+        public void CreateSubscriptionBrcode()
+        {
+            string type = "subscription";
+            DynamicBrcode createdBrcode = CreateDynamicBrcodeByType(type);
+
+            Assert.Equal(type, createdBrcode.Type);
+            Assert.False(string.IsNullOrEmpty(createdBrcode.Uuid));
+        }
+
+        [Fact]
+        public void CreateSubscriptionAndInstantBrcode()
+        {
+            string type = "subscriptionAndInstant";
+            DynamicBrcode createdBrcode = CreateDynamicBrcodeByType(type);
+
+            Assert.Equal(type, createdBrcode.Type);
+            Assert.False(string.IsNullOrEmpty(createdBrcode.Uuid));
+        }
+
+        [Fact]
+        public void CreateDueAndOrSubscriptionBrcode()
+        {
+            string type = "dueAndOrSubscription";
+            DynamicBrcode createdBrcode = CreateDynamicBrcodeByType(type);
+
+            Assert.Equal(type, createdBrcode.Type);
+            Assert.False(string.IsNullOrEmpty(createdBrcode.Uuid));
         }
 
         [Fact]
@@ -60,7 +110,7 @@ namespace StarkInfraTests
             }
             Assert.True(ids.Count == 10);
         }
-        
+
         public readonly string Content = "21f174ab942843eb90837a5c3135dfd6";
         public readonly string GoodSignature = "MEYCIQC+Ks0M54DPLEbHIi0JrMiWbBFMRETe/U2vy3gTiid3rAIhANMmOaxT03nx2bsdo+vg6EMhWGzdphh90uBH9PY2gJdd";
         public readonly string BadSignature = "MEUCIQDOpo1j+V40DNZK2URL2786UQK/8mDXon9ayEd8U0/l7AIgYXtIZJBTs8zCRR3vmted6Ehz/qfw1GRut/eYyvf1yOk=";
@@ -75,9 +125,12 @@ namespace StarkInfraTests
         [Fact]
         public void VerifyWithWrongSignature()
         {
-            try {
+            try
+            {
                 string parsedDynamicBrcode = DynamicBrcode.Verify(Content, BadSignature);
-            } catch (StarkInfra.Error.InvalidSignatureError e) {
+            }
+            catch (StarkCore.Error.InvalidSignatureError e)
+            {
                 TestUtils.Log(e);
                 return;
             }
@@ -91,7 +144,7 @@ namespace StarkInfraTests
             {
                 string parsedDynamicBrcode = DynamicBrcode.Verify(Content, BadSignature);
             }
-            catch (StarkInfra.Error.InvalidSignatureError e)
+            catch (StarkCore.Error.InvalidSignatureError e)
             {
                 TestUtils.Log(e);
                 return;
@@ -150,18 +203,23 @@ namespace StarkInfraTests
             TestUtils.Log(response);
         }
 
-        internal static DynamicBrcode Example()
+        internal static DynamicBrcode Example(string type = null)
         {
             return new DynamicBrcode(
                 name: "Jamie Lannister",
                 city: "Rio de Janeiro",
                 externalID: Convert.ToString(new Random().Next(1, 999999999)),
-                type: "instant",
+                type: type == null ? "instant" : type,
                 tags: new List<string>
                 {
                     "tags teste"
                 }
             );
+        }
+
+        internal static DynamicBrcode CreateDynamicBrcodeByType(string type)
+        {
+            return DynamicBrcode.Create(new List<DynamicBrcode> { Example(type) })[0];
         }
     }
 }

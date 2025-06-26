@@ -28,7 +28,7 @@ namespace StarkInfra
     ///     <item>Name [string]: receiver's name. ex: "Tony Stark"</item>
     ///     <item>City [string]: receiver's city name. ex: "Rio de Janeiro"</item>
     ///     <item>ExternalID [string]: string that must be unique among all your DynamicBrcodes. Duplicated external ids will cause failures. ex: "my-internal-id-123456"</item>
-    ///     <item>Type [string, default "instant"]: type of the DynamicBrcode. Options: "instant", "due"</item>
+    ///     <item>Type [string, default "instant"]: type of the DynamicBrcode. Options: "instant", "due", "subscription", "subscriptionAndInstant" or "dueAndOrSubscription"</item>
     ///     <item>Tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "travel", "food" }</item>
     ///     <item>ID [string]: id returned on creation, this is the BR Code. ex: "00020126360014br.gov.bcb.pix0114+552840092118152040000530398654040.095802BR5915Jamie Lannister6009Sao Paulo620705038566304FC6C"</item>
     ///     <item>Uuid [string]: unique uuid returned when the DynamicBrcode is created. ex: "4e2eab725ddd495f9c98ffd97440702d"</item>
@@ -72,7 +72,7 @@ namespace StarkInfra
         /// </list>
         /// Parameters (optional):
         /// <list>
-        ///     <item>type [string, default "instant"]: type of the DynamicBrcode. Options: "instant", "due"</item>
+        ///     <item>type [string, default "instant"]: type of the DynamicBrcode. Options: "instant", "due", "subscription", "subscriptionAndInstant" or "dueAndOrSubscription"</item>
         ///     <item>tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "travel", "food" }</item>
         /// </list>
         /// Attributes (return-only):
@@ -80,8 +80,8 @@ namespace StarkInfra
         ///     <item>id [string]: id returned on creation, this is the BR Code. ex: "00020126360014br.gov.bcb.pix0114+552840092118152040000530398654040.095802BR5915Jamie Lannister6009Sao Paulo620705038566304FC6C"</item>
         ///     <item>uuid [string]: unique uuid returned when the DynamicBrcode is created. ex: "4e2eab725ddd495f9c98ffd97440702d"</item>
         ///     <item>url [string]: url link to the BR Code image. ex: "https://brcode-h.development.starkinfra.com/dynamic-qrcode/901e71f2447c43c886f58366a5432c4b.png"</item>
-        ///     <item>updated [DateTime]: latest update DateTime for the DynamicBrcode. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
-        ///     <item>created [DateTime]: creation DateTime for the DynamicBrcode. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>updated [DateTime]: latest update DateTime for the DynamicBrcode. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>created [DateTime]: creation DateTime for the DynamicBrcode. ex: DateTime(2020, 3, 10)</item>
         /// </list>
         /// </summary>
         public DynamicBrcode( 

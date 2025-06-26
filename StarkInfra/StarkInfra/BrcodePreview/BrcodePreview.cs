@@ -30,6 +30,7 @@ namespace StarkInfra
     ///     <item>CashierBankCode [string]: Cashier's bank code. ex: "20018183"</item>
     ///     <item>CashierType [string]: Cashier's type. Options: "merchant", "participant" and "other"</item>
     ///     <item>DiscountAmount [integer]: Discount value calculated over nominalAmount. ex: 3000</item>
+    ///     <item>Due [DateTime]: BR Code due date. ex: DateTime(2020, 3, 10)</item>
     ///     <item>FineAmount [integer]: Fine value calculated over nominalAmount. ex: 20000</item>
     ///     <item>InterestAmount [integer]: Interest value calculated over nominalAmount. ex: 10000</item>
     ///     <item>KeyID [string]: Receiver's PixKey id. ex: "+5511989898989"</item>
@@ -39,6 +40,7 @@ namespace StarkInfra
     ///     <item>ReductionAmount [integer]: Reduction value to discount from nominalAmount. ex: 1000</item>
     ///     <item>Scheduled [DateTime]: date of payment execution. ex: DateTime(2020, 3, 10)</item>
     ///     <item>Status [string]: Payment status. Options: "active", "paid", "canceled" or "unknown"</item>
+    ///     <item>Subscription [Subscription]: BR code subscription information</item>
     ///     <item>TaxID [string]: Payment receiver tax ID. ex: "012.345.678-90"</item>
     /// </list>
     /// </summary>
@@ -55,6 +57,7 @@ namespace StarkInfra
         public string CashierBankCode { get; }
         public string CashierType { get; }
         public int? DiscountAmount { get; }
+        public DateTime? Due { get; }
         public int? FineAmount { get; }
         public int? InterestAmount { get; }
         public string KeyID { get; }
@@ -64,6 +67,7 @@ namespace StarkInfra
         public int? ReductionAmount { get; }
         public DateTime? Scheduled { get; }
         public string Status { get; }
+        public Subscription Subscription { get; }
         public string TaxID { get; }
 
         /// <summary>
@@ -91,6 +95,7 @@ namespace StarkInfra
         ///     <item>cashierBankCode [string]: Cashier's bank code. ex: "20018183"</item>
         ///     <item>cashierType [string]: Cashier's type. Options: "merchant", "participant" and "other"</item>
         ///     <item>discountAmount [integer]: Discount value calculated over nominalAmount. ex: 3000</item>
+        ///     <item>due [DateTime]: BR Code due date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>fineAmount [integer]: Fine value calculated over nominalAmount. ex: 20000</item>
         ///     <item>interestAmount [integer]: Interest value calculated over nominalAmount. ex: 10000</item>
         ///     <item>keyID [string]: Receiver's PixKey id. ex: "+5511989898989"</item>
@@ -100,6 +105,7 @@ namespace StarkInfra
         ///     <item>reductionAmount [integer]: Reduction value to discount from nominalAmount. ex: 1000</item>
         ///     <item>scheduled [DateTime]: date of payment execution. ex: DateTime(2020, 3, 10)</item>
         ///     <item>status [string]: Payment status. Options: "active", "paid", "canceled" or "unknown"</item>
+        ///     <item>subscription [Subscription]: BR code subscription information</item>
         ///     <item>taxID [string]: Payment receiver tax ID. ex: "012.345.678-90"</item>
         /// </list>
         /// </summary>
@@ -107,10 +113,10 @@ namespace StarkInfra
             string id, string payerId, string accountNumber = null, string accountType = null, 
             int? amount = null, string amountType = null, string bankCode = null, 
             string branchCode = null, int? cashAmount = null, string cashierBankCode = null, 
-            string cashierType = null, int? discountAmount = null, int? fineAmount = null, 
+            string cashierType = null, int? discountAmount = null, DateTime? due = null, int? fineAmount = null, 
             int? interestAmount = null, string keyID = null, string name = null, 
             int? nominalAmount = null, string reconciliationID = null, int? reductionAmount = null, 
-            DateTime? scheduled = null, string status = null, string taxID = null
+            DateTime? scheduled = null, string status = null, Subscription subscription = null, string taxID = null
         ) : base(id)
         {
             PayerId = payerId;
@@ -124,6 +130,7 @@ namespace StarkInfra
             CashierBankCode = cashierBankCode;
             CashierType = cashierType;
             DiscountAmount = discountAmount;
+            Due = due;
             FineAmount = fineAmount;
             InterestAmount = interestAmount;
             KeyID = keyID;
@@ -133,9 +140,10 @@ namespace StarkInfra
             ReductionAmount = reductionAmount;
             Scheduled = scheduled;
             Status = status;
+            Subscription = subscription;
             TaxID = taxID;
         }
-        
+
         /// <summary>
         /// Create BrcodePreview objects
         /// <br/>
@@ -216,6 +224,8 @@ namespace StarkInfra
             string cashierBankCode = json.cashierBankCode;
             string cashierType = json.cashierType;
             int? discountAmount = json.discountAmount;
+            string dueString = json.due;
+            DateTime? due = dueString == "" ? null : StarkCore.Utils.Checks.CheckNullableDateTime(dueString);
             int? fineAmount = json.fineAmount;
             int? interestAmount = json.interestAmount;
             string keyID = json.keyId;
@@ -225,17 +235,26 @@ namespace StarkInfra
             int? reductionAmount = json.reductionAmount;
             DateTime? scheduled = json.scheduled;
             string status = json.status;
+            Subscription subscription = ParseSubscription(json.subscription);
             string taxID = json.taxId;
 
             return new BrcodePreview(
                 id: id, payerId: payerId, accountNumber: accountNumber, accountType: accountType, 
                 amount: amount, amountType: amountType, bankCode: bankCode, 
                 branchCode: branchCode, cashAmount: cashAmount, cashierBankCode: cashierBankCode, 
-                cashierType: cashierType, discountAmount: discountAmount, fineAmount: fineAmount, 
+                cashierType: cashierType, discountAmount: discountAmount, due: due, fineAmount: fineAmount, 
                 interestAmount: interestAmount, keyID: keyID, name: name, 
                 nominalAmount: nominalAmount, reconciliationID: reconciliationID, reductionAmount: reductionAmount, 
-                scheduled: scheduled, status: status, taxID: taxID
+                scheduled: scheduled, status: status, subscription: subscription, taxID: taxID
             );
+        }
+        
+        private static Subscription ParseSubscription(dynamic json)
+        {
+            if (json is Newtonsoft.Json.Linq.JObject jObj && !jObj.Properties().Any())
+                return null;        
+
+            return Subscription.ResourceMaker(json);
         }
     }
 }
