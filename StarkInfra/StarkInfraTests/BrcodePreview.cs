@@ -15,31 +15,17 @@ namespace StarkInfraTests
         public void Create()
         {
             string payerId = "20018183000180";
-            List<StaticBrcode> staticBrcodes = StaticBrcode.Query(limit: 3).ToList();
-            List<DynamicBrcode> dynamicBrcodes = DynamicBrcode.Query(limit: 3).ToList();
+            List<StaticBrcode> staticBrcodes = StaticBrcode.Query(limit: 2).ToList();
+            List<DynamicBrcode> dynamicBrcodes = DynamicBrcode.Query(limit: 2).ToList();
 
-            List<BrcodePreview> brcodes = new List<BrcodePreview>
-            {
-                new BrcodePreview(
-                        id: staticBrcodes[0].ID,
-                        payerId: payerId
-                    ),
-                new BrcodePreview(
-                        id: staticBrcodes[1].ID,
-                        payerId: payerId
-                    ),
-                new BrcodePreview(
-                        id: dynamicBrcodes[0].ID,
-                        payerId: payerId
-                    ),
-                new BrcodePreview(
-                        id: dynamicBrcodes[1].ID,
-                        payerId: payerId
-                    )
-            };
+            List<string> allIds = staticBrcodes.Select(b => b.ID).Concat(dynamicBrcodes.Select(b => b.ID)).ToList();
+
+            List<BrcodePreview> brcodes = allIds
+                .Select(id => new BrcodePreview(id: id, payerId: payerId))
+                .ToList();
 
             List<BrcodePreview> previews = BrcodePreview.Create(brcodes);
-            Assert.True(previews.Count <= 4);
+            Assert.True(previews.Count == 4);
 
             int index = 0;
             foreach (BrcodePreview preview in previews)
@@ -47,9 +33,78 @@ namespace StarkInfraTests
                 TestUtils.Log(preview);
                 Assert.NotNull(preview.ID);
                 Assert.Equal(preview.ID, brcodes[index].ID);
-                Assert.Equal(preview.PayerId, payerId);
                 index++;
             }
+        }
+
+        [Fact]
+        public void CreatePreviewFromInstantBrcode()
+        {
+            string type = "instant";
+            DynamicBrcode createdDynamicBrcode = DynamicBrcodeTest.CreateDynamicBrcodeByType(type);
+            BrcodePreview preview = CreateBrcodePreviewById(createdDynamicBrcode.ID);
+
+            Assert.Equal(createdDynamicBrcode.ID, preview.ID);
+            Assert.Null(preview.Due);
+            Assert.Null(preview.Subscription);
+        }
+
+        [Fact]
+        public void CreatePreviewFromDueBrcode()
+        {
+            string type = "due";
+            DynamicBrcode createdDynamicBrcode = DynamicBrcodeTest.CreateDynamicBrcodeByType(type);
+            BrcodePreview preview = CreateBrcodePreviewById(createdDynamicBrcode.ID);
+
+            Assert.Equal(createdDynamicBrcode.ID, preview.ID);
+            Assert.NotNull(preview.Due);
+            Assert.Null(preview.Subscription);
+        }
+
+        [Fact]
+        public void CreatePreviewFromSubscriptionBrcode()
+        {
+            string type = "subscription";
+            DynamicBrcode createdDynamicBrcode = DynamicBrcodeTest.CreateDynamicBrcodeByType(type);
+            BrcodePreview preview = CreateBrcodePreviewById(createdDynamicBrcode.ID);
+
+            Assert.Equal(createdDynamicBrcode.ID, preview.ID);
+            Assert.Equal("", preview.PayerId);
+            Assert.Equal("qrcode", preview.Subscription.Type);
+        }
+
+        [Fact]
+        public void CreatePreviewFromSubscriptionAndInstantBrcode()
+        {
+            string type = "subscriptionAndInstant";
+            DynamicBrcode createdDynamicBrcode = DynamicBrcodeTest.CreateDynamicBrcodeByType(type);
+            BrcodePreview preview = CreateBrcodePreviewById(createdDynamicBrcode.ID);
+
+            Assert.Equal(createdDynamicBrcode.ID, preview.ID);
+            Assert.NotEqual("", preview.PayerId);
+            Assert.Equal("qrcodeAndPayment", preview.Subscription.Type);
+        }
+
+        [Fact]
+        public void CreatePreviewFromDueAndOrSubscriptionBrcode()
+        {
+            string type = "dueAndOrSubscription";
+            DynamicBrcode createdDynamicBrcode = DynamicBrcodeTest.CreateDynamicBrcodeByType(type);
+            BrcodePreview preview = CreateBrcodePreviewById(createdDynamicBrcode.ID);
+
+            Assert.Equal(createdDynamicBrcode.ID, preview.ID);
+            Assert.NotEqual("", preview.PayerId);
+            Assert.Equal("paymentAndOrQrcode", preview.Subscription.Type);
+        }
+
+        internal static BrcodePreview CreateBrcodePreviewById(string id)
+        {
+            List<BrcodePreview> previews = BrcodePreview.Create(new List<BrcodePreview>
+            {
+                new BrcodePreview(id: id, payerId: "20018183000180")
+            });
+
+            return previews[0];
         }
     }
 }
