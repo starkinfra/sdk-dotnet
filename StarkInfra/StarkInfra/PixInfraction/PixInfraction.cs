@@ -342,13 +342,14 @@ namespace StarkInfra
         ///     <item>PixInfraction with updated attributes</item>
         /// </list>
         /// </summary>
-        public static PixInfraction Update(string id, string result, Dictionary<string, object> patchData = null, User user = null)
+        public static PixInfraction Update(string id, string result, string fraudType = null, Dictionary<string, object> patchData = null, User user = null)
         {
             if (patchData == null)
             {
                 patchData = new Dictionary<string, object> { };
             }
             patchData.Add("result", result);
+            patchData.Add("fraudType", fraudType);
             (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Utils.Rest.PatchId(
                 resourceName: resourceName,

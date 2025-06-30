@@ -62,12 +62,13 @@ namespace StarkInfraTests
                     idsToPatch.Add(infraction.ID);
                 }
             }
-            string result = "disagreed";
+            string result = "agreed";
+            string fraudType = "scam";
             foreach (PixInfraction infraction in infractions)
             {
                 TestUtils.Log(infraction);
                 Assert.NotNull(infraction.ID);
-                PixInfraction updatedPixInfraction = PixInfraction.Update(id: infraction.ID, result: result, patchData: patchData);
+                PixInfraction updatedPixInfraction = PixInfraction.Update(id: infraction.ID, result: result, fraudType: fraudType, patchData: patchData);
                 TestUtils.Log(updatedPixInfraction);
                 Assert.Equal(result, updatedPixInfraction.Result);
             }
