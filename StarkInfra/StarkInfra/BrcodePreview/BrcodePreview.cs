@@ -58,6 +58,7 @@ namespace StarkInfra
         public string CashierType { get; }
         public int? DiscountAmount { get; }
         public DateTime? Due { get; }
+        public string EndToEndID { get; }
         public int? FineAmount { get; }
         public int? InterestAmount { get; }
         public string KeyID { get; }
@@ -96,6 +97,7 @@ namespace StarkInfra
         ///     <item>cashierType [string]: Cashier's type. Options: "merchant", "participant" and "other"</item>
         ///     <item>discountAmount [integer]: Discount value calculated over nominalAmount. ex: 3000</item>
         ///     <item>due [DateTime]: BR Code due date. ex: DateTime(2020, 3, 10)</item>
+        ///     <item>endToEndID [string]: Central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"</item>
         ///     <item>fineAmount [integer]: Fine value calculated over nominalAmount. ex: 20000</item>
         ///     <item>interestAmount [integer]: Interest value calculated over nominalAmount. ex: 10000</item>
         ///     <item>keyID [string]: Receiver's PixKey id. ex: "+5511989898989"</item>
@@ -113,8 +115,8 @@ namespace StarkInfra
             string id, string payerId, string accountNumber = null, string accountType = null, 
             int? amount = null, string amountType = null, string bankCode = null, 
             string branchCode = null, int? cashAmount = null, string cashierBankCode = null, 
-            string cashierType = null, int? discountAmount = null, DateTime? due = null, int? fineAmount = null, 
-            int? interestAmount = null, string keyID = null, string name = null, 
+            string cashierType = null, int? discountAmount = null, DateTime? due = null, string endToEndID = null,
+            int? fineAmount = null, int? interestAmount = null, string keyID = null, string name = null, 
             int? nominalAmount = null, string reconciliationID = null, int? reductionAmount = null, 
             DateTime? scheduled = null, string status = null, Subscription subscription = null, string taxID = null
         ) : base(id)
@@ -131,6 +133,7 @@ namespace StarkInfra
             CashierType = cashierType;
             DiscountAmount = discountAmount;
             Due = due;
+            EndToEndID = endToEndID;
             FineAmount = fineAmount;
             InterestAmount = interestAmount;
             KeyID = keyID;
@@ -226,6 +229,7 @@ namespace StarkInfra
             int? discountAmount = json.discountAmount;
             string dueString = json.due;
             DateTime? due = dueString == "" ? null : StarkCore.Utils.Checks.CheckNullableDateTime(dueString);
+            string endToEndID = json.endToEndId;
             int? fineAmount = json.fineAmount;
             int? interestAmount = json.interestAmount;
             string keyID = json.keyId;
@@ -242,8 +246,8 @@ namespace StarkInfra
                 id: id, payerId: payerId, accountNumber: accountNumber, accountType: accountType, 
                 amount: amount, amountType: amountType, bankCode: bankCode, 
                 branchCode: branchCode, cashAmount: cashAmount, cashierBankCode: cashierBankCode, 
-                cashierType: cashierType, discountAmount: discountAmount, due: due, fineAmount: fineAmount, 
-                interestAmount: interestAmount, keyID: keyID, name: name, 
+                cashierType: cashierType, discountAmount: discountAmount, due: due, endToEndID: endToEndID,
+                fineAmount: fineAmount, interestAmount: interestAmount, keyID: keyID, name: name, 
                 nominalAmount: nominalAmount, reconciliationID: reconciliationID, reductionAmount: reductionAmount, 
                 scheduled: scheduled, status: status, subscription: subscription, taxID: taxID
             );

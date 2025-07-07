@@ -30,8 +30,8 @@ namespace StarkInfraTests
             int index = 0;
             foreach (BrcodePreview preview in previews)
             {
-                TestUtils.Log(preview);
                 Assert.NotNull(preview.ID);
+                Assert.NotNull(preview.EndToEndID);
                 Assert.Equal(preview.ID, brcodes[index].ID);
                 index++;
             }
