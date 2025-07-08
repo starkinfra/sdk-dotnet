@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.9.0] - 2025-07-08
 ### Added
 - endToEndId attribute to BrcodePreview resource
 
