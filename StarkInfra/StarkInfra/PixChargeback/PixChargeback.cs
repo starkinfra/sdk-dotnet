@@ -33,6 +33,7 @@ namespace StarkInfra
     ///     <item>Result [string]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted".</item>
     ///     <item>Flow [string]: direction of the Pix Chargeback. Options: "in" for received chargebacks, "out" for chargebacks you requested.</item>
     ///     <item>Status [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".</item>
+    ///     <item>BacenID [string]: BACEN (Brazilian Central Bank) identifier.</item>
     ///     <item>Created [DateTime]: creation DateTime for the PixChargeback. ex: DateTime(2020, 3, 10, 10, 30, 0, 0).</item>
     ///     <item>Updated [DateTime]: latest update DateTime for the PixChargeback. ex: DateTime(2020, 3, 10, 10, 30, 0, 0).</item>
     /// </list>
@@ -52,6 +53,7 @@ namespace StarkInfra
         public string Result { get; }
         public string Flow { get; }
         public string Status { get; }
+        public string BacenID { get; }
         public DateTime? Created { get; }
         public DateTime? Updated { get; }
 
@@ -91,6 +93,7 @@ namespace StarkInfra
         ///     <item>result [string]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted"</item>
         ///     <item>flow [string]: direction of the Pix Chargeback. Options: "in" for received chargebacks, "out" for chargebacks you requested</item>
         ///     <item>status [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".</item>
+        ///     <item>bacenID [string]: BACEN (Brazilian Central Bank) identifier.</item>
         ///     <item>created [DateTime]: creation DateTime for the PixChargeback. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>updated [DateTime]: latest update DateTime for the PixChargeback. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
@@ -100,7 +103,7 @@ namespace StarkInfra
             List<string> tags = null, string id = null, string analysis = null, 
             string senderBankCode = null, string receiverBankCode = null, 
             string rejectionReason = null, string reversalReferenceID = null, 
-            string result = null, string flow = null, string status = null, 
+            string result = null, string flow = null, string status = null, string bacenID = null,
             DateTime? updated = null, DateTime? created = null
         ) : base(id)
         {
@@ -117,6 +120,7 @@ namespace StarkInfra
             Result = result;
             Flow = flow;
             Status = status;
+            BacenID = bacenID;
             Updated = updated;
             Created = created;
         }
@@ -406,6 +410,7 @@ namespace StarkInfra
             string result = json.result;
             string flow = json.flow;
             string status = json.status;
+            string bacenID = json.bacenId;
             string createdString = json.created;
             DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
@@ -414,8 +419,8 @@ namespace StarkInfra
             return new PixChargeback(
                 id: id, amount: amount, referenceID: referenceID, reason: reason, description: description,
                 tags: tags, analysis: analysis, senderBankCode: senderBankCode, receiverBankCode: receiverBankCode,
-                rejectionReason: rejectionReason, reversalReferenceID: reversalReferenceID, result: result, 
-                status: status, flow: flow, updated: updated, created: created
+                rejectionReason: rejectionReason, reversalReferenceID: reversalReferenceID, result: result,
+                status: status, flow: flow, bacenID: bacenID, updated: updated, created: created
             );
         }
     }
