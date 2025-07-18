@@ -15,13 +15,12 @@ namespace StarkInfraTests
         [Fact]
         public void Query()
         {
-            List<PixInfraction> infractions = PixInfraction.Query(limit: 101, status: "created").ToList();
+            List<PixInfraction> infractions = PixInfraction.Query(limit: 10).ToList();
             foreach (PixInfraction infraction in infractions)
             {
-                TestUtils.Log(infraction);
                 Assert.NotNull(infraction.ID);
-                Assert.Equal("created", infraction.Status);
             }
+            Assert.Equal(10, infractions.Count);
         }
 
         [Fact]
@@ -35,7 +34,6 @@ namespace StarkInfraTests
                 (page, cursor) = PixInfraction.Page(limit: 5, cursor: cursor);
                 foreach (PixInfraction entity in page)
                 {
-                    TestUtils.Log(entity);
                     Assert.DoesNotContain(entity.ID, ids);
                     ids.Add(entity.ID);
                 }
@@ -44,7 +42,7 @@ namespace StarkInfraTests
                     break;
                 }
             }
-            Assert.True(ids.Count == 10);
+            Assert.Equal(10, ids.Count);
         }
 
         [Fact]
@@ -66,10 +64,8 @@ namespace StarkInfraTests
             string fraudType = "scam";
             foreach (PixInfraction infraction in infractions)
             {
-                TestUtils.Log(infraction);
                 Assert.NotNull(infraction.ID);
                 PixInfraction updatedPixInfraction = PixInfraction.Update(id: infraction.ID, result: result, fraudType: fraudType, patchData: patchData);
-                TestUtils.Log(updatedPixInfraction);
                 Assert.Equal(result, updatedPixInfraction.Result);
             }
         }
@@ -82,7 +78,6 @@ namespace StarkInfraTests
             PixInfraction getPixInfraction = PixInfraction.Get(id: infraction.ID);
             Assert.Equal(getPixInfraction.ID, infraction.ID);
 
-            TestUtils.Log(getPixInfraction);
         }
 
         [Fact]
@@ -90,14 +85,12 @@ namespace StarkInfraTests
         {
             List<PixInfraction> infractions = PixInfraction.Query(status: "delivered").ToList();
             Assert.NotEmpty(infractions);
-            TestUtils.Log(infractions.First());
             foreach (PixInfraction infraction in infractions)
             {
                 if(infraction.Flow == "reporter")
                 {
                     PixInfraction infractioner = PixInfraction.Get(infraction.ID);
                     PixInfraction cancelInfraction = PixInfraction.Cancel(id: infractioner.ID);
-                    TestUtils.Log(cancelInfraction);
                     break;
                 }
             }

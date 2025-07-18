@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 
-
 namespace StarkInfraTests
 {
     public class PixChargebackTest
@@ -53,7 +52,7 @@ namespace StarkInfraTests
         public void Update()
         {
             List<PixChargeback> chargebacks = PixChargeback.Query(limit: 2, status: "delivered").ToList();
-            Assert.Equal(2, chargebacks.Count); 
+            Assert.Equal(2, chargebacks.Count);
             Assert.True(chargebacks.First().ID != chargebacks.Last().ID);
             string expected = "delivered";
             string expectedResult = "canceled";
@@ -87,9 +86,9 @@ namespace StarkInfraTests
         {
             List<PixRequest> request = PixRequest.Query(limit: 1, status: new List<string> { "success" }).ToList();
             return new PixChargeback(
-                amount : 100,
-                referenceID : request[0].EndToEndID,
-                reason : "fraud",
+                amount: 100,
+                referenceID: request[0].EndToEndID,
+                reason: "fraud",
                 tags: new List<string> { "teste sdk" }
             );
         }
