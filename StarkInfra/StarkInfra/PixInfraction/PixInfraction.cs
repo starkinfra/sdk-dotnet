@@ -27,6 +27,9 @@ namespace StarkInfra
     ///     <item>CreditedBankCode [string]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"</item>
     ///     <item>DebitedBankCode [string]: bankCode of the debited Pix participant in the reported transaction. ex: "20018183"</item>
     ///     <item>Flow [string]: direction of the PixInfraction flow. Options: "out" if you created the PixInfraction, "in" if you received the PixInfraction.</item>
+    ///     <item>FraudID [string]: id of the Pix Fraud. ex: "5741774970552320"</item>
+    ///     <item>FraudType [string]: the type of fraud that led to the creation of the Infraction. Required if the result field value is "agreed". Options: "identity", "mule", "scam" or "other"</item>
+    ///     <item>BacenID [string]: unique transaction id returned from Central Bank. ex: "ccf9bd9c-e99d-999e-bab9-b999ca999f99"</item>
     ///     <item>Analysis [string]: analysis that led to the result.</item>
     ///     <item>ReportedBy [string]: agent that reported the PixInfraction. Options: "debited", "credited".</item>
     ///     <item>Result [string]: result after the analysis of the PixInfraction by the receiving party. Options: "agreed", "disagreed"</item>
@@ -47,6 +50,9 @@ namespace StarkInfra
         public string CreditedBankCode { get; }
         public string DebitedBankCode { get; }
         public string Flow { get; }
+        public string FraudID { get; }
+        public string FraudType { get; }
+        public string BacenID { get; }
         public string Analysis { get; }
         public string ReportedBy { get; }
         public string Result { get; }
@@ -78,10 +84,13 @@ namespace StarkInfra
         ///     <item>tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "travel", "food" }</item>
         ///     <item>operatorEmail [string]: contact email of the operator responsible for the PixInfraction.</item>
         ///     <item>operatorPhone [string]: contact phone number of the operator responsible for the PixInfraction.</item>
+        ///     <item>fraudType [string]: The type of fraud that led to the creation of the Infraction. Required if the result field value is "agreed". Options: "identity", "mule", "scam" or "other"</item>
         /// </list>
         /// Attributes (return-only):
         /// <list>
         ///     <item>id [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"</item>
+        ///     <item>fraudId [string]: id of the Pix Fraud. ex: "5741774970552320"</item>
+        ///     <item>bacenId [string]: unique transaction id returned from Central Bank. ex: "ccf9bd9c-e99d-999e-bab9-b999ca999f99"</item>
         ///     <item>creditedBankCode [string]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"</item>
         ///     <item>debitedBankCode [string]: bankCode of the debited Pix participant in the reported transaction. ex: "20018183"</item>
         ///     <item>flow [string]: direction of the PixInfraction flow. Options: "out" if you created the PixInfraction, "in" if you received the PixInfraction.</item>
@@ -96,6 +105,7 @@ namespace StarkInfra
         public PixInfraction(
             string referenceID, string type, string method, string description = null, List<string> tags = null,
             string creditedBankCode = null, string debitedBankCode = null, string flow = null, 
+            string fraudID = null, string fraudType = null, string bacenID = null,
             string analysis = null, string reportedBy = null, string result = null, 
             string status = null,  DateTime? updated = null,  DateTime? created = null, 
             string id = null, string operatorEmail = null, string operatorPhone = null
@@ -109,6 +119,9 @@ namespace StarkInfra
             CreditedBankCode = creditedBankCode;
             DebitedBankCode = debitedBankCode;
             Flow = flow;
+            FraudID = fraudID;
+            FraudType = fraudType;
+            BacenID = bacenID;
             Analysis = analysis;
             ReportedBy = reportedBy;
             Result = result;
@@ -342,13 +355,14 @@ namespace StarkInfra
         ///     <item>PixInfraction with updated attributes</item>
         /// </list>
         /// </summary>
-        public static PixInfraction Update(string id, string result, Dictionary<string, object> patchData = null, User user = null)
+        public static PixInfraction Update(string id, string result, string fraudType = null, Dictionary<string, object> patchData = null, User user = null)
         {
             if (patchData == null)
             {
                 patchData = new Dictionary<string, object> { };
             }
             patchData.Add("result", result);
+            patchData.Add("fraudType", fraudType);
             (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Utils.Rest.PatchId(
                 resourceName: resourceName,
@@ -406,6 +420,9 @@ namespace StarkInfra
             string creditedBankCode = json.creditedBankCode;
             string debitedBankCode = json.debitedBankCode;
             string flow = json.flow;
+            string fraudID = json.fraudId;
+            string fraudType = json.fraudType;
+            string bacenID = json.bacenId;
             string analysis = json.analysis;
             string reportedBy = json.reportedBy;
             string result = json.result;
@@ -420,7 +437,7 @@ namespace StarkInfra
             return new PixInfraction(
                 referenceID: referenceID, type: type, method: method, description: description,
                 tags: tags, id: id, creditedBankCode: creditedBankCode, 
-                debitedBankCode: debitedBankCode, flow: flow, analysis: analysis, 
+                debitedBankCode: debitedBankCode, flow: flow, fraudID: fraudID, fraudType: fraudType, bacenID: bacenID, analysis: analysis, 
                 reportedBy: reportedBy, result: result, status: status, updated: updated, 
                 created: created, operatorEmail: operatorEmail, operatorPhone: operatorPhone
             );
