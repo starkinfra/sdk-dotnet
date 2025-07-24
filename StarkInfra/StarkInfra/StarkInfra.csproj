@@ -9,9 +9,9 @@
     <AssemblyTitle>StarkInfra</AssemblyTitle>
     <AssemblyName>StarkInfra</AssemblyName>
     <VersionPrefix>0.4.1</VersionPrefix>
-    <Version>0.9.0</Version>
-    <ReleaseVersion>0.9.0</ReleaseVersion>
-    <PackageVersion>0.9.0</PackageVersion>
+    <Version>0.10.0</Version>
+    <ReleaseVersion>0.10.0</ReleaseVersion>
+    <PackageVersion>0.10.0</PackageVersion>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <PackageId>starkinfra</PackageId>
     <PackageTags>starkinfra;stark;infra;openbanking;open-banking</PackageTags>
