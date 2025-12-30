@@ -21,6 +21,8 @@ namespace StarkInfra
     ///     <item>ReferenceID [string]: endToEndID or returnID of the transaction being reported. ex: "E20018183202201201450u34sDGd19lz"</item>
     ///     <item>Type [string]: type of infraction report. Options: "fraud", "reversal", "reversalChargeback"</item>
     ///     <item>Method [string]: Method of Pix Infraction. Options: "scam", "unauthorized", "coercion", "invasion", "other", "unknown"</item>
+    ///     <item>OperatorEmail [string]: contact email of the operator responsible for the PixInfraction.</item>
+    ///     <item>OperatorPhone [string]: contact phone number of the operator responsible for the PixInfraction.</item>
     ///     <item>Description [string, default null]: description for any details that can help with the infraction investigation.</item>
     ///     <item>Tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "travel", "food" }</item>
     ///     <item>ID [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"</item>
@@ -34,10 +36,10 @@ namespace StarkInfra
     ///     <item>ReportedBy [string]: agent that reported the PixInfraction. Options: "debited", "credited".</item>
     ///     <item>Result [string]: result after the analysis of the PixInfraction by the receiving party. Options: "agreed", "disagreed"</item>
     ///     <item>Status [string]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".</item>
+    ///     <item>Amount [long]: amount in cents of the reported transaction.</item>
+    ///     <item>DisputeID [string]: id of the PixDispute associated with the PixInfraction.</item>
     ///     <item>Created [DateTime]: creation DateTime for the PixInfraction. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>Updated [DateTime]: latest update DateTime for the PixInfraction. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
-    ///     <item>OperatorEmail [string]: contact email of the operator responsible for the PixInfraction.</item>
-    ///     <item>OperatorPhone [string]: contact phone number of the operator responsible for the PixInfraction.</item>
     /// </list>
     /// </summary>
     public partial class PixInfraction : Resource
@@ -45,6 +47,8 @@ namespace StarkInfra
         public string ReferenceID { get; }
         public string Type { get; }
         public string Method { get; }
+        public string OperatorEmail { get; }
+        public string OperatorPhone { get; }
         public string Description { get; }
         public List<string> Tags { get; }
         public string CreditedBankCode { get; }
@@ -57,10 +61,10 @@ namespace StarkInfra
         public string ReportedBy { get; }
         public string Result { get; }
         public string Status { get; }
+        public long? Amount { get; }
+        public string DisputeID { get; }
         public DateTime? Created { get; }
         public DateTime? Updated { get; }
-        public string OperatorEmail { get; }
-        public string OperatorPhone { get; }
 
         /// <summary>
         /// PixInfraction object
@@ -77,13 +81,13 @@ namespace StarkInfra
         ///     <item>referenceID [string]: endToEndID or returnID of the transaction being reported. ex: "E20018183202201201450u34sDGd19lz"</item>
         ///     <item>type [string]: type of infraction report. Options: "fraud", "reversal", "reversalChargeback"</item>
         ///     <item>method [string]: Method of Pix Infraction. Options: "scam", "unauthorized", "coercion", "invasion", "other", "unknown"</item>
+        ///     <item>operatorEmail [string]: contact email of the operator responsible for the PixInfraction.</item>
+        ///     <item>operatorPhone [string]: contact phone number of the operator responsible for the PixInfraction.</item>
         ///</list>
         /// Parameters (optional):
         /// <list>
         ///     <item>description [string, default null]: description for any details that can help with the infraction investigation.</item>
         ///     <item>tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "travel", "food" }</item>
-        ///     <item>operatorEmail [string]: contact email of the operator responsible for the PixInfraction.</item>
-        ///     <item>operatorPhone [string]: contact phone number of the operator responsible for the PixInfraction.</item>
         ///     <item>fraudType [string]: The type of fraud that led to the creation of the Infraction. Required if the result field value is "agreed". Options: "identity", "mule", "scam" or "other"</item>
         /// </list>
         /// Attributes (return-only):
@@ -98,22 +102,26 @@ namespace StarkInfra
         ///     <item>reportedBy [string]: agent that reported the PixInfraction. Options: "debited", "credited".</item>
         ///     <item>result [string]: result after the analysis of the PixInfraction by the receiving party. Options: "agreed", "disagreed"</item>
         ///     <item>status [string]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".</item>
+        ///     <item>amount [long]: amount in cents of the reported transaction.</item>
+        ///     <item>disputeID [string]: id of the PixDispute associated with the PixInfraction.</item>
         ///     <item>created [DateTime]: creation DateTime for the PixInfraction. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>updated [DateTime]: latest update DateTime for the PixInfraction. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
         public PixInfraction(
-            string referenceID, string type, string method, string description = null, List<string> tags = null,
-            string creditedBankCode = null, string debitedBankCode = null, string flow = null, 
-            string fraudID = null, string fraudType = null, string bacenID = null,
-            string analysis = null, string reportedBy = null, string result = null, 
-            string status = null,  DateTime? updated = null,  DateTime? created = null, 
-            string id = null, string operatorEmail = null, string operatorPhone = null
+            string referenceID, string type, string method, string operatorEmail, string operatorPhone,
+            string description = null, List<string> tags = null, string creditedBankCode = null,
+            string debitedBankCode = null, string flow = null, string fraudID = null, string fraudType = null,
+            string bacenID = null, string analysis = null, string reportedBy = null, string result = null, string status = null, 
+            long? amount = null, string disputeID = null, DateTime? updated = null,  DateTime? created = null, 
+            string id = null
         ) : base(id)
         {
             ReferenceID = referenceID;
             Type = type;
             Method = method;
+            OperatorEmail = operatorEmail;
+            OperatorPhone = operatorPhone;
             Description = description;
             Tags = tags;
             CreditedBankCode = creditedBankCode;
@@ -126,10 +134,10 @@ namespace StarkInfra
             ReportedBy = reportedBy;
             Result = result;
             Status = status;
+            Amount = amount;
+            DisputeID = disputeID;
             Updated = updated;
             Created = created;
-            OperatorEmail = operatorEmail;
-            OperatorPhone = operatorPhone;
         }
 
         /// <summary>
@@ -427,19 +435,21 @@ namespace StarkInfra
             string reportedBy = json.reportedBy;
             string result = json.result;
             string status = json.status;
+            string operatorEmail = json.operatorEmail;
+            string operatorPhone = json.operatorPhone;
+            long? amount = json.amount;
+            string disputeID = json.disputeId;
             string createdString = json.created;
             DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
             DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
-            string operatorEmail = json.operatorEmail;
-            string operatorPhone = json.operatorPhone;
 
             return new PixInfraction(
                 referenceID: referenceID, type: type, method: method, description: description,
                 tags: tags, id: id, creditedBankCode: creditedBankCode, 
                 debitedBankCode: debitedBankCode, flow: flow, fraudID: fraudID, fraudType: fraudType, bacenID: bacenID, analysis: analysis, 
-                reportedBy: reportedBy, result: result, status: status, updated: updated, 
-                created: created, operatorEmail: operatorEmail, operatorPhone: operatorPhone
+                reportedBy: reportedBy, result: result, status: status, operatorEmail: operatorEmail, operatorPhone: operatorPhone, 
+                amount: amount, disputeID: disputeID, updated: updated, created: created
             );
         }
     }

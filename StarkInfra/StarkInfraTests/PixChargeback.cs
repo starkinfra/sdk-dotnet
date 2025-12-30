@@ -20,7 +20,6 @@ namespace StarkInfraTests
             Assert.True(chargebacks.First().ID != chargebacks.Last().ID);
             foreach (PixChargeback chargeback in chargebacks)
             {
-                TestUtils.Log(chargeback);
                 Assert.NotNull(chargeback.ID);
                 Assert.Equal("canceled", chargeback.Status);
             }
@@ -37,7 +36,6 @@ namespace StarkInfraTests
                 (page, cursor) = PixChargeback.Page(limit: 5, cursor: cursor);
                 foreach (PixChargeback entity in page)
                 {
-                    TestUtils.Log(entity);
                     Assert.DoesNotContain(entity.ID, ids);
                     ids.Add(entity.ID);
                 }
@@ -61,11 +59,9 @@ namespace StarkInfraTests
             };
             foreach (PixChargeback chargeback in chargebacks)
             {
-                TestUtils.Log(chargeback);
                 Assert.NotNull(chargeback.ID);
                 Assert.Equal(expected, chargeback.Status);
                 PixChargeback updatedPixChargeback = PixChargeback.Update(id: chargeback.ID, result: "rejected", patchData);
-                TestUtils.Log(updatedPixChargeback);
                 Assert.Equal(expectedResult, updatedPixChargeback.Status);
             }
         }
@@ -74,12 +70,10 @@ namespace StarkInfraTests
         public void CreateGetAndCancel()
         {
             List<PixChargeback> chargeback = PixChargeback.Create(new List<PixChargeback> {Example()});
-            TestUtils.Log(chargeback);
             PixChargeback getPixChargeback = PixChargeback.Get(id: chargeback.First().ID);
             Assert.Equal(getPixChargeback.ID, chargeback.First().ID);
             PixChargeback cancelPixChargeback = PixChargeback.Cancel(id: getPixChargeback.ID);
             Assert.Equal(cancelPixChargeback.ID, getPixChargeback.ID);
-            TestUtils.Log(chargeback);
         }
 
         internal static PixChargeback Example()
