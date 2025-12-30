@@ -50,6 +50,8 @@ This SDK version is compatible with the Stark Infra API v2.
         - [StaticBrcode](#create-staticbrcodes): Create static Pix BR codes
         - [DynamicBrcode](#create-dynamicbrcodes): Create dynamic Pix BR codes
         - [BrcodePreview](#create-brcodepreviews): Read data from BR Codes before paying them
+        - [BrcodePreview](#create-brcodepreviews): Read data from BR Codes before paying them
+        - [PixDispute](#create-pixdisputes): Create PixDisputes
     - [Lending](#lending)
         - [CreditNote](#create-creditnotes): Create credit notes
         - [CreditPreview](#create-creditpreviews): Create credit previews
@@ -2472,7 +2474,7 @@ sendResponse(  // you should also implement this method to respond the read requ
 );
 ```
 
-## Create BrcodePreviews
+### Create BrcodePreviews
 You can create BrcodePreviews to preview BR Codes before paying them.
 
 ```c#
@@ -2497,6 +2499,114 @@ foreach (StarkInfra.BrcodePreview preview in previews)
 {
     Console.Write(preview);
 }
+```
+
+### Create PixDisputes
+
+Pix disputes can be created when a fraud is detected creating a chain of transactions in order to reverse the funds to the origin.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+List<StarkInfra.PixDispute> disputes = StarkInfra.PixDispute.Create(
+    new List<StarkInfra.PixDispute> {
+        new StarkInfra.PixDispute(
+            referenceID: "E39908427202512222248Lo3j8SXPF6z",
+            method: "scam",
+            operatorEmail: "test@test.com",
+            operatorPhone: "+5511999999999"
+        )
+    }
+);
+
+foreach(StarkInfra.PixDispute dispute in disputes) {
+    Console.WriteLine(dispute);
+}
+```
+
+**Note**: Instead of using PixDispute objects, you can also pass each element in dictionary format
+
+### Query PixDisputes
+
+You can query multiple PixDisputes according to filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.PixDispute> disputes = StarkInfra.PixDispute.Query(
+    after: DateTime.Today.Date.AddDays(-10),
+    before: DateTime.Today.Date.AddDays(-1)
+);
+
+foreach(StarkInfra.PixDispute dispute in disputes) {
+    Console.WriteLine(dispute);
+}
+```
+
+### Get a PixDispute
+
+After its creation, information on a dispute may be retrieved by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.PixDispute dispute = StarkInfra.PixDispute.Get("5155165527080960");
+
+Console.WriteLine(dispute);
+```
+
+### Cancel a PixDispute
+
+Cancel a specific PixDispute using its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.PixDispute dispute = StarkInfra.PixDispute.Cancel("+5511912345678");
+
+Console.Write(dispute);
+```
+
+### Query PixDispute logs
+
+You can query PixDispute logs to better understand PixDispute life cycles.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.PixDispute.Log> logs = StarkInfra.PixDispute.Log.Query(
+    after: new DateTime(2019, 4, 1),
+    before: new DateTime(2021, 4, 30)
+);
+
+foreach(StarkInfra.PixDispute.Log log in logs) {
+    Console.WriteLine(log);
+}
+```
+
+### Get a PixDispute log
+
+You can also get a specific log by its id.
+
+```c#
+using System;
+
+StarkInfra.PixDispute.Log log = StarkInfra.PixDispute.Log.Get("4701727546671104");
+
+Console.WriteLine(log);
 ```
 
 ## Lending
