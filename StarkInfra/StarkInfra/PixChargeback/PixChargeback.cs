@@ -33,7 +33,14 @@ namespace StarkInfra
     ///     <item>Result [string]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted".</item>
     ///     <item>Flow [string]: direction of the Pix Chargeback. Options: "in" for received chargebacks, "out" for chargebacks you requested.</item>
     ///     <item>Status [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".</item>
-    ///     <item>BacenID [string]: BACEN (Brazilian Central Bank) identifier.</item>
+    ///     <item>BacenID [string]: unique id returned by the Central Bank for the PixChargeback. ex: "817fc523-9e9d-40ab-9e53-dacb71454a05"</item>
+    ///     <item>DisputeID [string]: id of the dispute associated with the PixChargeback.</item>
+    ///     <item>IsMonitoringRequired [bool]: indicates if monitoring is required for this chargeback.</item>
+    ///     <item>ReversalAccountNumber [string]: account number for the reversal transaction.</item>
+    ///     <item>ReversalAccountType [string]: account type for the reversal transaction.</item>
+    ///     <item>ReversalBankCode [string]: bank code for the reversal transaction.</item>
+    ///     <item>ReversalBranchCode [string]: branch code for the reversal transaction.</item>
+    ///     <item>ReversalTaxID [string]: tax ID for the reversal transaction.</item>
     ///     <item>Created [DateTime]: creation DateTime for the PixChargeback. ex: DateTime(2020, 3, 10, 10, 30, 0, 0).</item>
     ///     <item>Updated [DateTime]: latest update DateTime for the PixChargeback. ex: DateTime(2020, 3, 10, 10, 30, 0, 0).</item>
     /// </list>
@@ -54,9 +61,15 @@ namespace StarkInfra
         public string Flow { get; }
         public string Status { get; }
         public string BacenID { get; }
+        public string DisputeID { get; }
+        public bool? IsMonitoringRequired { get; }
+        public string ReversalAccountNumber { get; }
+        public string ReversalAccountType { get; }
+        public string ReversalBankCode { get; }
+        public string ReversalBranchCode { get; }
+        public string ReversalTaxID { get; }
         public DateTime? Created { get; }
         public DateTime? Updated { get; }
-
         /// <summary>
         /// PixChargeback object
         /// <br/>
@@ -93,7 +106,14 @@ namespace StarkInfra
         ///     <item>result [string]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted"</item>
         ///     <item>flow [string]: direction of the Pix Chargeback. Options: "in" for received chargebacks, "out" for chargebacks you requested</item>
         ///     <item>status [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".</item>
-        ///     <item>bacenID [string]: BACEN (Brazilian Central Bank) identifier.</item>
+        ///     <item>bacenID [string]: unique id returned by the Central Bank for the PixChargeback. ex: "817fc523-9e9d-40ab-9e53-dacb71454a05"</item>
+        ///     <item>disputeID [string]: id of the dispute associated with the PixChargeback.</item>
+        ///     <item>isMonitoringRequired [bool]: indicates if monitoring is required for this chargeback.</item>
+        ///     <item>reversalAccountNumber [string]: account number for the reversal transaction.</item>
+        ///     <item>reversalAccountType [string]: account type for the reversal transaction.</item>
+        ///     <item>reversalBankCode [string]: bank code for the reversal transaction.</item>
+        ///     <item>reversalBranchCode [string]: branch code for the reversal transaction.</item>
+        ///     <item>reversalTaxID [string]: tax ID for the reversal transaction.</item>
         ///     <item>created [DateTime]: creation DateTime for the PixChargeback. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>updated [DateTime]: latest update DateTime for the PixChargeback. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
@@ -103,8 +123,11 @@ namespace StarkInfra
             List<string> tags = null, string id = null, string analysis = null, 
             string senderBankCode = null, string receiverBankCode = null, 
             string rejectionReason = null, string reversalReferenceID = null, 
-            string result = null, string flow = null, string status = null, string bacenID = null,
-            DateTime? updated = null, DateTime? created = null
+            string result = null, string flow = null, string status = null,
+            string bacenID = null, string disputeID = null, bool? isMonitoringRequired = null,
+            string reversalAccountNumber = null, string reversalAccountType = null,
+            string reversalBankCode = null, string reversalBranchCode = null,
+            string reversalTaxID = null, DateTime? updated = null, DateTime? created = null
         ) : base(id)
         {
             Amount = amount;
@@ -121,6 +144,13 @@ namespace StarkInfra
             Flow = flow;
             Status = status;
             BacenID = bacenID;
+            DisputeID = disputeID;
+            IsMonitoringRequired = isMonitoringRequired;
+            ReversalAccountNumber = reversalAccountNumber;
+            ReversalAccountType = reversalAccountType;
+            ReversalBankCode = reversalBankCode;
+            ReversalBranchCode = reversalBranchCode;
+            ReversalTaxID = reversalTaxID;
             Updated = updated;
             Created = created;
         }
@@ -411,6 +441,13 @@ namespace StarkInfra
             string flow = json.flow;
             string status = json.status;
             string bacenID = json.bacenId;
+            string disputeID = json.disputeId;
+            bool? isMonitoringRequired = json.isMonitoringRequired;
+            string reversalAccountNumber = json.reversalAccountNumber;
+            string reversalAccountType = json.reversalAccountType;
+            string reversalBankCode = json.reversalBankCode;
+            string reversalBranchCode = json.reversalBranchCode;
+            string reversalTaxID = json.reversalTaxId;
             string createdString = json.created;
             DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
@@ -419,8 +456,11 @@ namespace StarkInfra
             return new PixChargeback(
                 id: id, amount: amount, referenceID: referenceID, reason: reason, description: description,
                 tags: tags, analysis: analysis, senderBankCode: senderBankCode, receiverBankCode: receiverBankCode,
-                rejectionReason: rejectionReason, reversalReferenceID: reversalReferenceID, result: result,
-                status: status, flow: flow, bacenID: bacenID, updated: updated, created: created
+                rejectionReason: rejectionReason, reversalReferenceID: reversalReferenceID, result: result, 
+                status: status, flow: flow, bacenID: bacenID, disputeID: disputeID, isMonitoringRequired: isMonitoringRequired,
+                reversalAccountNumber: reversalAccountNumber, reversalAccountType: reversalAccountType,
+                reversalBankCode: reversalBankCode, reversalBranchCode: reversalBranchCode,
+                reversalTaxID: reversalTaxID, updated: updated, created: created
             );
         }
     }
