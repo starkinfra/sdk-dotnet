@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -364,8 +364,11 @@ namespace StarkInfra
             return JsonConvert.SerializeObject(response);
         }
 
-        internal static List<Dictionary<string, object>> ParseDiscounts(List<Discount> discounts)
+        internal static List<Dictionary<string, object>> ParseDiscounts(List<Discount> discounts = null)
         {
+            if (discounts == null)
+                return null;
+
             List<Dictionary<string, object>> discountsDictionary = new List<Dictionary<string, object>> { };
             foreach (Discount discount in discounts)
             {

@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Fixed
+- DynamicBrcode discount parameter
 
 ## [0.11.0] - 2026-01-12
 ### Added
@@ -37,7 +39,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - payerId parameter to BrcodePreview resource
 
 ## [0.6.0] - 2025-04-15
-### Fix
+### Fixed
 - .csproj file
 ### Added
 - method, operatorPhone and operatorEmail parameters to PixInfraction resource
