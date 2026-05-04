@@ -71,13 +71,11 @@ namespace StarkInfraTests
         }
 
         [Fact]
-        public void CreateGet()
+        public void CreateThrowsDeprecation()
         {
-            PixInfraction infraction = PixInfraction.Create(Example(), user).First();
-
-            PixInfraction getPixInfraction = PixInfraction.Get(id: infraction.ID);
-            Assert.Equal(getPixInfraction.ID, infraction.ID);
-
+            List<PixInfraction> infractions = new List<PixInfraction>();
+            Exception ex = Assert.Throws<Exception>(() => PixInfraction.Create(infractions, user));
+            Assert.Equal("Function deprecated since v0.13.0", ex.Message);
         }
 
         [Fact]
