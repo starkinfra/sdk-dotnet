@@ -75,6 +75,8 @@
     <Folder Include="CreditNote\Invoice\" />
     <Folder Include="Request\" />
     <Folder Include="PixUser\" />
+    <Folder Include="IndividualAccountRequest\" />
+    <Folder Include="IndividualAccountAttachment\" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
