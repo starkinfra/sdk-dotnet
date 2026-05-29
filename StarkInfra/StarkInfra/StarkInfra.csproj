@@ -91,6 +91,8 @@
     <Folder Include="Ledger\" />
     <Folder Include="LedgerTransaction\" />
     <Folder Include="BusinessAccountRequest\" />
+    <Folder Include="IndividualAccountRequest\" />
+    <Folder Include="IndividualAccountAttachment\" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
