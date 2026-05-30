@@ -59,6 +59,9 @@ This SDK version is compatible with the Stark Infra API v2.
     - [Identity](#identity)
         - [IndividualIdentity](#create-individualidentities): Create individual identities
         - [IndividualDocument](#create-individualdocuments): Create individual documents
+    - [Account Approval](#account-approval)
+        - [IndividualAccountRequest](#create-individualaccountrequests): Request individual account opening
+        - [IndividualAccountAttachment](#create-individualaccountattachments): Attach supporting documents to an account request
     - [Webhook](#webhook):
         - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
         - [WebhookEvents](#process-webhook-events): Manage webhook events
@@ -3234,6 +3237,270 @@ using StarkInfra;
 
 
 StarkInfra.IndividualDocument.Log log = StarkInfra.IndividualDocument.Log.Get("5155165527080960");
+
+Console.Write(log);
+```
+
+## Account Approval
+
+### Create IndividualAccountRequests
+
+You can request the opening of an individual account by submitting the individual's
+identifying data, a structured residential address and the monthly income in cents.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+List<StarkInfra.IndividualAccountRequest> requests = StarkInfra.IndividualAccountRequest.Create(
+    new List<StarkInfra.IndividualAccountRequest>() {
+        new StarkInfra.IndividualAccountRequest(
+            name: "Tony Stark",
+            taxID: "012.345.678-90",
+            address: new StarkInfra.Address(
+                street: "Rua do Estilo Barroco",
+                number: "648",
+                neighborhood: "Santo Amaro",
+                city: "SP",
+                state: "SP",
+                zipCode: "05724005"
+            ),
+            income: 1000000,
+            tags: new List<string>{ "employees", "monthly" }
+        )
+    }
+);
+
+foreach(StarkInfra.IndividualAccountRequest request in requests)
+{
+    Console.Write(request);
+}
+```
+
+**Note**: Instead of using IndividualAccountRequest objects, you can also pass each element in dictionary format
+
+### Query IndividualAccountRequests
+
+You can query multiple individual account requests according to filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.IndividualAccountRequest> requests = StarkInfra.IndividualAccountRequest.Query(
+    limit: 10,
+    after: new DateTime(2022, 01, 01),
+    before: new DateTime(2022, 12, 01),
+    status: new List<string>{ "created" },
+    tags: new List<string>{ "employees", "monthly" }
+);
+
+foreach(StarkInfra.IndividualAccountRequest request in requests)
+{
+    Console.Write(request);
+}
+```
+
+### Get an IndividualAccountRequest
+
+After its creation, information on an individual account request may be retrieved by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IndividualAccountRequest request = StarkInfra.IndividualAccountRequest.Get("5189530608992256");
+
+Console.Write(request);
+```
+
+### Update an IndividualAccountRequest
+
+You can update an individual account request by its id, passing the fields to be replaced.
+The address is replaced as a whole object.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IndividualAccountRequest request = StarkInfra.IndividualAccountRequest.Update(
+    id: "5189530608992256",
+    name: "Tony Stark Updated",
+    address: new StarkInfra.Address(
+        street: "Av. Paulista",
+        number: "1000",
+        neighborhood: "Bela Vista",
+        city: "SP",
+        state: "SP",
+        zipCode: "01310-100"
+    )
+);
+
+Console.Write(request);
+```
+
+### Query IndividualAccountRequest logs
+
+You can query individual account request logs to better understand their life cycles.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.IndividualAccountRequest.Log> logs = StarkInfra.IndividualAccountRequest.Log.Query(
+    limit: 50,
+    after: new DateTime(2022, 01, 01),
+    before: new DateTime(2022, 12, 01),
+    types: new List<string>{ "created" }
+);
+
+foreach (StarkInfra.IndividualAccountRequest.Log log in logs)
+{
+    Console.Write(log);
+}
+```
+
+### Get an IndividualAccountRequest log
+
+You can also get a specific log by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IndividualAccountRequest.Log log = StarkInfra.IndividualAccountRequest.Log.Get("5656565656565656");
+
+Console.Write(log);
+```
+
+### Create IndividualAccountAttachments
+
+You can attach supporting documents to an individual account request by uploading the raw image
+bytes plus a MIME content type. The SDK encodes them into a data: URL client-side. Reference the
+desired account request by its id.
+
+```c#
+using System;
+using System.IO;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+List<StarkInfra.IndividualAccountAttachment> attachments = StarkInfra.IndividualAccountAttachment.Create(
+    new List<StarkInfra.IndividualAccountAttachment>() {
+        new StarkInfra.IndividualAccountAttachment(
+            type: "identity-front",
+            content: File.ReadAllBytes("identity-front.png"),
+            contentType: "image/png",
+            accountRequestID: "5189530608992256",
+            tags: new List<string>{ "employees" }
+        )
+    }
+);
+
+foreach(StarkInfra.IndividualAccountAttachment attachment in attachments)
+{
+    Console.Write(attachment);
+}
+```
+
+**Note**: Instead of using IndividualAccountAttachment objects, you can also pass each element in dictionary format
+
+### Query IndividualAccountAttachments
+
+You can query multiple individual account attachments according to filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.IndividualAccountAttachment> attachments = StarkInfra.IndividualAccountAttachment.Query(
+    limit: 10,
+    after: new DateTime(2022, 01, 01),
+    before: new DateTime(2022, 12, 01),
+    status: new List<string>{ "created" },
+    tags: new List<string>{ "employees" }
+);
+
+foreach(StarkInfra.IndividualAccountAttachment attachment in attachments)
+{
+    Console.Write(attachment);
+}
+```
+
+### Get an IndividualAccountAttachment
+
+After its creation, information on an individual account attachment may be retrieved by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IndividualAccountAttachment attachment = StarkInfra.IndividualAccountAttachment.Get("5656565656565656");
+
+Console.Write(attachment);
+```
+
+### Cancel an IndividualAccountAttachment
+
+You can cancel an individual account attachment by its id. The returned object has status "deleted".
+Canceling is idempotent — a second cancel on an already-deleted attachment succeeds without error.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IndividualAccountAttachment attachment = StarkInfra.IndividualAccountAttachment.Cancel("5656565656565656");
+
+Console.Write(attachment);
+```
+
+### Query IndividualAccountAttachment logs
+
+You can query individual account attachment logs to better understand their life cycles.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.IndividualAccountAttachment.Log> logs = StarkInfra.IndividualAccountAttachment.Log.Query(
+    limit: 50,
+    after: new DateTime(2022, 01, 01),
+    before: new DateTime(2022, 12, 01),
+    types: new List<string>{ "created" }
+);
+
+foreach (StarkInfra.IndividualAccountAttachment.Log log in logs)
+{
+    Console.Write(log);
+}
+```
+
+### Get an IndividualAccountAttachment log
+
+You can also get a specific log by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IndividualAccountAttachment.Log log = StarkInfra.IndividualAccountAttachment.Log.Get("5656565656565656");
 
 Console.Write(log);
 ```
