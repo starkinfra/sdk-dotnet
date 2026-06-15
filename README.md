@@ -46,6 +46,7 @@ This SDK version is compatible with the Stark Infra API v2.
         - [PixClaim](#create-a-pixclaim): Claim a PixKey
         - [PixDirector](#create-a-pixdirector): Create a Pix Director
         - [PixInfraction](#create-pixinfractions): Create Pix Infraction reports
+        - [PixFraud](#create-pixfrauds): Create Pix Fraud reports
         - [PixChargeback](#create-pixchargebacks): Create Pix Chargeback requests
         - [PixDomain](#query-pixdomains): View registered SPI participants certificates
         - [StaticBrcode](#create-staticbrcodes): Create static Pix BR codes
@@ -2149,6 +2150,125 @@ using StarkInfra;
 
 
 StarkInfra.PixInfraction.Log log = StarkInfra.PixInfraction.Log.Get("6307030096674816");
+
+Console.Write(log);
+```
+
+### Create PixFrauds
+
+Pix Fraud reports are used to report a PixKey or taxId when a fraud has been confirmed.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+List<StarkInfra.PixFraud> frauds = StarkInfra.PixFraud.Create(
+    new List<StarkInfra.PixFraud>{
+        new StarkInfra.PixFraud(
+            externalID: "my_external_id",
+            type: "scam",
+            taxID: "01234567890",
+            tags: new List<string> { "fraudulent" }
+        )
+    }
+);
+
+foreach(StarkInfra.PixFraud fraud in frauds)
+{
+    Console.Write(fraud);
+}
+```
+
+### Query PixFrauds
+
+You can query multiple Pix Fraud reports according to filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.PixFraud> frauds = StarkInfra.PixFraud.Query(
+    limit: 10,
+    after: new DateTime(2022, 01, 01),
+    before: new DateTime(2022, 12, 01),
+    status: new List<string> { "registered" },
+    ids: new List<string> { "5724541800153088" },
+    flow: "out"
+);
+
+foreach(StarkInfra.PixFraud fraud in frauds)
+{
+    Console.Write(fraud);
+}
+```
+
+### Get a PixFraud
+
+After its creation, information on a Pix Fraud report may be retrieved by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.PixFraud fraud = StarkInfra.PixFraud.Get("5724541800153088");
+
+Console.Write(fraud);
+```
+
+### Delete a PixFraud
+
+Delete a specific Pix Fraud report using its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.PixFraud fraud = StarkInfra.PixFraud.Delete("5586201146818560");
+
+Console.Write(fraud);
+```
+
+### Query PixFraud logs
+
+You can query Pix Fraud logs to better understand their life cycles.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.PixFraud.Log> logs = StarkInfra.PixFraud.Log.Query(
+    limit: 50,
+    after: new DateTime(2022, 01, 01),
+    before: new DateTime(2022, 12, 01),
+    types: new List<string> { "registered" },
+    fraudIds: new List<string> { "5586201146818560" },
+    ids: new List<string> { "6307030096674816" }
+);
+
+foreach(StarkInfra.PixFraud.Log log in logs)
+{
+    Console.Write(log);
+}
+```
+
+### Get a PixFraud log
+
+You can also get a specific log by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.PixFraud.Log log = StarkInfra.PixFraud.Log.Get("6307030096674816");
 
 Console.Write(log);
 ```

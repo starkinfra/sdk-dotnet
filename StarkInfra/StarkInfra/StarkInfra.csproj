@@ -56,6 +56,7 @@
     <Folder Include="PixReversal\" />
     <Folder Include="PixStatement\" />
     <Folder Include="PixInfraction\" />
+    <Folder Include="PixFraud\" />
     <Folder Include="PixChargeback\" />
     <Folder Include="PixDirector\" />
     <Folder Include="PixDispute\" />
