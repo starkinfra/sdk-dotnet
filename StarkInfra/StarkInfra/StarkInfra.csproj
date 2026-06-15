@@ -75,6 +75,7 @@
     <Folder Include="CreditNote\Invoice\" />
     <Folder Include="Request\" />
     <Folder Include="PixUser\" />
+    <Folder Include="IssuingStockRule\" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

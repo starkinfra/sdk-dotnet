@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- IssuingStockRule resource
 
 ## [0.12.0] - 2026-02-10
 ### Fixed
