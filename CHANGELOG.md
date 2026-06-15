@@ -15,6 +15,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ## [Unreleased]
 ### Added
 - IssuingStockRule resource
+- Rules and DebtorWorkspaceID attributes to CreditNote resource
 
 ## [0.12.0] - 2026-02-10
 ### Fixed
