@@ -194,6 +194,8 @@ namespace StarkInfra
         ///     <item>before [DateTime, default null]: date filter for objects created before a specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "registered", "canceled".</item>
         ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
+        ///     <item>bacenID [string, default null]: unique transaction id returned from Central Bank. ex: "ccf9bd9c-e99d-999e-bab9-b999ca999f99"</item>
+        ///     <item>type [list of strings, default null]: filter for the type of retrieved PixFrauds. Options: "reversal", "reversalChargeback"</item>
         ///     <item>tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "fraudulent" }</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
@@ -205,8 +207,8 @@ namespace StarkInfra
         /// </summary>
         public static IEnumerable<PixFraud> Query(
             int? limit = null, DateTime? after = null, DateTime? before = null,
-            List<string> status = null, List<string> ids = null, List<string> tags = null,
-            User user = null
+            List<string> status = null, List<string> ids = null, string bacenID = null,
+            List<string> type = null, List<string> tags = null, User user = null
         )
         {
             (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
@@ -219,6 +221,8 @@ namespace StarkInfra
                     { "before", before },
                     { "status", status },
                     { "ids", ids },
+                    { "bacenId", bacenID },
+                    { "type", type },
                     { "tags", tags }
                 },
                 user: user
@@ -239,6 +243,8 @@ namespace StarkInfra
         ///     <item>before [DateTime, default null]: date filter for objects created before a specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "registered", "canceled".</item>
         ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
+        ///     <item>bacenID [string, default null]: unique transaction id returned from Central Bank. ex: "ccf9bd9c-e99d-999e-bab9-b999ca999f99"</item>
+        ///     <item>type [list of strings, default null]: filter for the type of retrieved PixFrauds. Options: "reversal", "reversalChargeback"</item>
         ///     <item>tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "fraudulent" }</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
@@ -252,7 +258,7 @@ namespace StarkInfra
         public static (List<PixFraud> page, string pageCursor) Page(
             string cursor = null, int? limit = null, DateTime? after = null,
             DateTime? before = null, List<string> status = null, List<string> ids = null,
-            List<string> tags = null, User user = null
+            string bacenID = null, List<string> type = null, List<string> tags = null, User user = null
         )
         {
             (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
@@ -266,6 +272,8 @@ namespace StarkInfra
                     { "before", before },
                     { "status", status },
                     { "ids", ids },
+                    { "bacenId", bacenID },
+                    { "type", type },
                     { "tags", tags }
                 },
                 user: user

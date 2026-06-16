@@ -18,6 +18,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - Rules and DebtorWorkspaceID attributes to CreditNote resource
 - PixFraud resource
 - PixKeyHolmes resource
+- PixInternalTransactionReport resource
 
 ## [0.12.0] - 2026-02-10
 ### Fixed

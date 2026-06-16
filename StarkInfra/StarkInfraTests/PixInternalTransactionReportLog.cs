@@ -7,47 +7,47 @@ using System.Collections.Generic;
 
 namespace StarkInfraTests
 {
-    public class PixFraudLogTest
+    public class PixInternalTransactionReportLogTest
     {
         public readonly User user = TestUser.SetDefaultProject();
 
         [Fact]
         public void QueryAndGet()
         {
-            List<PixFraud.Log> logs = PixFraud.Log.Query(limit: 10).ToList();
+            List<PixInternalTransactionReport.Log> logs = PixInternalTransactionReport.Log.Query(limit: 10).ToList();
             Assert.True(logs.Count <= 10);
-            foreach (PixFraud.Log log in logs)
+            foreach (PixInternalTransactionReport.Log log in logs)
             {
                 Assert.NotNull(log.ID);
                 Assert.False(string.IsNullOrEmpty(log.Type));
                 Assert.NotNull(log.Created);
                 Assert.IsType<DateTime>(log.Created.Value);
             }
-            PixFraud.Log getLog = PixFraud.Log.Get(id: logs.First().ID);
+            PixInternalTransactionReport.Log getLog = PixInternalTransactionReport.Log.Get(id: logs.First().ID);
             Assert.Equal(getLog.ID, logs.First().ID);
         }
 
         [Fact]
-        public void FraudDeserializesToPixFraud()
+        public void ReportDeserializesToPixInternalTransactionReport()
         {
-            List<PixFraud.Log> logs = PixFraud.Log.Query(limit: 1).ToList();
+            List<PixInternalTransactionReport.Log> logs = PixInternalTransactionReport.Log.Query(limit: 1).ToList();
             Assert.NotEmpty(logs);
-            PixFraud.Log log = logs.First();
-            Assert.NotNull(log.Fraud);
-            Assert.IsType<PixFraud>(log.Fraud);
-            Assert.NotNull(log.Fraud.ID);
+            PixInternalTransactionReport.Log log = logs.First();
+            Assert.NotNull(log.Report);
+            Assert.IsType<PixInternalTransactionReport>(log.Report);
+            Assert.NotNull(log.Report.ID);
         }
 
         [Fact]
         public void Page()
         {
             List<string> ids = new List<string>();
-            List<PixFraud.Log> page;
+            List<PixInternalTransactionReport.Log> page;
             string cursor = null;
             for (int i = 0; i < 2; i++)
             {
-                (page, cursor) = PixFraud.Log.Page(limit: 5, cursor: cursor);
-                foreach (PixFraud.Log entity in page)
+                (page, cursor) = PixInternalTransactionReport.Log.Page(limit: 5, cursor: cursor);
+                foreach (PixInternalTransactionReport.Log entity in page)
                 {
                     Assert.DoesNotContain(entity.ID, ids);
                     ids.Add(entity.ID);
@@ -63,13 +63,12 @@ namespace StarkInfraTests
         [Fact]
         public void QueryParams()
         {
-            List<PixFraud.Log> logs = PixFraud.Log.Query(
+            List<PixInternalTransactionReport.Log> logs = PixInternalTransactionReport.Log.Query(
                 limit: 10,
                 after: new DateTime(2022, 01, 01),
                 before: new DateTime(2022, 01, 02),
-                types: new List<string> { "registered" },
-                fraudIds: new List<string> { "1", "2" },
-                ids: new List<string> { "1", "2" }
+                types: new List<string> { "success" },
+                reportIds: new List<string> { "1", "2" }
             ).ToList();
             Assert.True(logs.Count == 0);
         }
@@ -77,16 +76,15 @@ namespace StarkInfraTests
         [Fact]
         public void PageParams()
         {
-            List<PixFraud.Log> page;
+            List<PixInternalTransactionReport.Log> page;
             string cursor = null;
-            (page, cursor) = PixFraud.Log.Page(
+            (page, cursor) = PixInternalTransactionReport.Log.Page(
                 cursor: null,
                 limit: 10,
                 after: new DateTime(2022, 01, 01),
                 before: new DateTime(2022, 01, 02),
-                types: new List<string> { "registered" },
-                fraudIds: new List<string> { "1", "2" },
-                ids: new List<string> { "1", "2" }
+                types: new List<string> { "success" },
+                reportIds: new List<string> { "1", "2" }
             );
             Assert.True(page.Count == 0);
         }

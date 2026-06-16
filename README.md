@@ -48,6 +48,7 @@ This SDK version is compatible with the Stark Infra API v2.
         - [PixInfraction](#create-pixinfractions): Create Pix Infraction reports
         - [PixFraud](#create-pixfrauds): Create Pix Fraud reports
         - [PixKeyHolmes](#create-pixkeyholmes): Investigate Pix Key registration status
+        - [PixInternalTransactionReport](#create-pixinternaltransactionreports): Report transactions that happen outside the SPI
         - [PixChargeback](#create-pixchargebacks): Create Pix Chargeback requests
         - [PixDomain](#query-pixdomains): View registered SPI participants certificates
         - [StaticBrcode](#create-staticbrcodes): Create static Pix BR codes
@@ -2198,7 +2199,8 @@ IEnumerable<StarkInfra.PixFraud> frauds = StarkInfra.PixFraud.Query(
     before: new DateTime(2022, 12, 01),
     status: new List<string> { "registered" },
     ids: new List<string> { "5724541800153088" },
-    flow: "out"
+    bacenID: "ccf9bd9c-e99d-999e-bab9-b999ca999f99",
+    type: new List<string> { "reversal" }
 );
 
 foreach(StarkInfra.PixFraud fraud in frauds)
@@ -2322,6 +2324,115 @@ foreach(StarkInfra.PixKeyHolmes sherlock in holmes)
 {
     Console.Write(sherlock);
 }
+```
+
+### Create PixInternalTransactionReports
+
+Transactions that happen internally — outside of the SPI — must be reported to the
+Central Bank so they are reflected in the participant's statements. You can create a
+PixInternalTransactionReport for each such transaction:
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+List<StarkInfra.PixInternalTransactionReport> reports = StarkInfra.PixInternalTransactionReport.Create(
+    new List<StarkInfra.PixInternalTransactionReport> {
+        new StarkInfra.PixInternalTransactionReport(
+            amount: 1234,  // (R$ 12.34)
+            created: DateTime.Now,
+            endToEndID: EndToEndID.Create(bankCode: Environment.GetEnvironmentVariable("SANDBOX_BANKCODE")),
+            method: "manual",
+            referenceType: "request",
+            senderAccountNumber: "00000-0",
+            senderBranchCode: "0000",
+            senderAccountType: "checking",
+            senderBankCode: Environment.GetEnvironmentVariable("SANDBOX_BANKCODE"),
+            senderTaxID: "012.345.678-90",
+            receiverAccountNumber: "00000-1",
+            receiverBranchCode: "0001",
+            receiverAccountType: "checking",
+            receiverBankCode: "20018183",
+            receiverTaxID: "45.987.245/0001-92"
+        )
+    }
+);
+
+foreach(StarkInfra.PixInternalTransactionReport report in reports) {
+    Console.WriteLine(report);
+}
+```
+
+**Note**: Instead of using PixInternalTransactionReport objects, you can also pass each element in dictionary format
+
+### Query PixInternalTransactionReports
+
+You can query multiple PixInternalTransactionReports according to filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.PixInternalTransactionReport> reports = StarkInfra.PixInternalTransactionReport.Query(
+    after: DateTime.Today.Date.AddDays(-10),
+    before: DateTime.Today.Date.AddDays(-1)
+);
+
+foreach(StarkInfra.PixInternalTransactionReport report in reports) {
+    Console.WriteLine(report);
+}
+```
+
+### Get a PixInternalTransactionReport
+
+After its creation, information on a report may be retrieved by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.PixInternalTransactionReport report = StarkInfra.PixInternalTransactionReport.Get("5155165527080960");
+
+Console.WriteLine(report);
+```
+
+### Query PixInternalTransactionReport logs
+
+You can query PixInternalTransactionReport logs to better understand PixInternalTransactionReport life cycles.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.PixInternalTransactionReport.Log> logs = StarkInfra.PixInternalTransactionReport.Log.Query(
+    after: new DateTime(2019, 4, 1),
+    before: new DateTime(2021, 4, 30)
+);
+
+foreach(StarkInfra.PixInternalTransactionReport.Log log in logs) {
+    Console.WriteLine(log);
+}
+```
+
+### Get a PixInternalTransactionReport log
+
+You can also get a specific log by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.PixInternalTransactionReport.Log log = StarkInfra.PixInternalTransactionReport.Log.Get("4701727546671104");
+
+Console.WriteLine(log);
 ```
 
 ### Create PixChargebacks

@@ -117,7 +117,7 @@ namespace StarkInfra
         ///     <item>limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35</item>
         ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
-        ///     <item>status [list of string, default null]: filter for status of retrieved objects. ex: new List<string>{ "created", "solving", "solved", "failed" }</item>
+        ///     <item>status [list of string, default null]: filter for status of retrieved objects. The live API accepts only "solved" or "solving". ex: new List<string>{ "solved", "solving" }</item>
         ///     <item>tags [list of strings, default null]: list of tags to filter retrieved objects. ex: new List<string>{ "tony", "stark" }</item>
         ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
@@ -160,7 +160,7 @@ namespace StarkInfra
         ///     <item>limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35.</item>
         ///     <item>after [DateTime, default null] date filter for objects created only after specified date. ex: DateTime(2020, 3, 10)</item>
         ///     <item>before [DateTime, default null] date filter for objects created only before specified date. ex: DateTime(2020, 3, 10)</item>
-        ///     <item>status [list of string, default null]: filter for status of retrieved objects. ex: new List<string>{ "created", "solving", "solved", "failed" }</item>
+        ///     <item>status [list of string, default null]: filter for status of retrieved objects. The live API accepts only "solved" or "solving". ex: new List<string>{ "solved", "solving" }</item>
         ///     <item>tags [list of strings, default null]: list of tags to filter retrieved objects. ex: new List<string>{ "tony", "stark" }</item>
         ///     <item>ids [list of strings, default null]: list of ids to filter retrieved objects. ex: new List<string>{ "5656565656565656", "4545454545454545" }</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>

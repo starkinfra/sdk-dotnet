@@ -11,8 +11,6 @@ namespace StarkInfraTests
     {
         public readonly User user = TestUser.SetDefaultProject();
 
-        // [M1] create accepts a list of PixFraud (externalID, type, taxID required; keyID, tags optional)
-        // and returns the list with server-assigned id; [M2] get retrieves a single PixFraud by id.
         [Fact]
         public void CreateGet()
         {
@@ -21,16 +19,8 @@ namespace StarkInfraTests
             Assert.NotNull(frauds.First().ID);
             PixFraud getPixFraud = PixFraud.Get(id: fraud.ID);
             Assert.Equal(getPixFraud.ID, fraud.ID);
-            TestUtils.Log(fraud);
         }
 
-        // [M1][M6] create returns the output-only fields populated and parsed.
-        // [M7] status is parsed and non-empty — per contract v4 (c) NO closed-enum assertion
-        //      (the live API may emit transitional/extra values).
-        // [M8] created/updated parse to the native DateTime type. This SDK parses datetimes via
-        //      StarkCore.Utils.Checks.CheckDateTime, which returns a native DateTime
-        //      (see sdk-infra/dotnet/StarkInfra/StarkInfra/PixRequest/PixRequest.cs:82-83,478-480),
-        //      so IsType<DateTime> is the canonical convention here — NOT a normalized string.
         [Fact]
         public void CreateOutputFields()
         {
@@ -43,23 +33,19 @@ namespace StarkInfraTests
             Assert.NotNull(fraud.Updated);
             Assert.IsType<DateTime>(fraud.Created.Value);
             Assert.IsType<DateTime>(fraud.Updated.Value);
-            TestUtils.Log(fraud);
         }
 
-        // [M3] query iterates entities created in the API.
         [Fact]
         public void Query()
         {
             List<PixFraud> frauds = PixFraud.Query(limit: 10).ToList();
             foreach (PixFraud fraud in frauds)
             {
-                TestUtils.Log(fraud);
                 Assert.NotNull(fraud.ID);
             }
             Assert.True(frauds.Count <= 10);
         }
 
-        // [M3] query respects the ids filter as a round-trip.
         [Fact]
         public void QueryIds()
         {
@@ -84,9 +70,6 @@ namespace StarkInfraTests
             Assert.Equal(fraudIdsExpected, fraudIdsResult);
         }
 
-        // [M3] query exercises every documented filter param at once (limit, after, before, status, ids, tags).
-        // flow is NOT a valid PixFraud query parameter — the live API rejects it with
-        // invalidQueryString (contract v4 M3), so it is intentionally omitted here.
         [Fact]
         public void QueryParams()
         {
@@ -101,7 +84,6 @@ namespace StarkInfraTests
             Assert.True(frauds.Count == 0);
         }
 
-        // [M3][M5] page uses an opaque cursor and accumulates distinct entities across pages.
         [Fact]
         public void Page()
         {
@@ -124,9 +106,6 @@ namespace StarkInfraTests
             Assert.True(ids.Count <= 10);
         }
 
-        // [M3] page exercises every documented filter param at once (cursor, limit, after, before, status, ids, tags).
-        // flow is NOT a valid PixFraud query parameter — the live API rejects it with
-        // invalidQueryString (contract v4 M3), so it is intentionally omitted here.
         [Fact]
         public void PageParams()
         {
@@ -144,16 +123,7 @@ namespace StarkInfraTests
             Assert.True(page.Count == 0);
         }
 
-        // [M4] cancel is a DELETE on /pix-fraud/{id}. The API only cancels frauds already in
-        // `registered` status — a freshly-created fraud returns `invalidCancellationStatus`
-        // (contract v4 M4). The sandbox cannot produce a cancelable fraud on demand and the
-        // reference SDKs ship no cancel test, so M4 requires the Cancel IMPL only (verified by
-        // Phase 5 against the resource surface) — NO happy-path cancel test is asserted here.
 
-        // [M7] type carries one of identity | mule | scam | other; the Example() factory uses a
-        // documented value. Per contract v4 (c), this does NOT assert a closed enum on `type`
-        // (the live API may emit values beyond the documented set) — it only verifies the factory
-        // produces a non-empty type, matching the canonical parsed/non-empty convention.
         [Fact]
         public void TypeIsPopulated()
         {
@@ -161,9 +131,6 @@ namespace StarkInfraTests
             Assert.False(string.IsNullOrEmpty(fraud.Type));
         }
 
-        // Per-resource factory used by Create tests and by the Log test file.
-        // [M1] required fields externalID, type, taxID; keyID and tags are optional.
-        // external_id is a generated id, mirroring the sibling resources (PixRequest.Example).
         internal static PixFraud Example()
         {
             return new PixFraud(
