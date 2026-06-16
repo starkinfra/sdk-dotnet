@@ -47,6 +47,7 @@ This SDK version is compatible with the Stark Infra API v2.
         - [PixDirector](#create-a-pixdirector): Create a Pix Director
         - [PixInfraction](#create-pixinfractions): Create Pix Infraction reports
         - [PixFraud](#create-pixfrauds): Create Pix Fraud reports
+        - [PixKeyHolmes](#create-pixkeyholmes): Investigate Pix Key registration status
         - [PixChargeback](#create-pixchargebacks): Create Pix Chargeback requests
         - [PixDomain](#query-pixdomains): View registered SPI participants certificates
         - [StaticBrcode](#create-staticbrcodes): Create static Pix BR codes
@@ -2271,6 +2272,56 @@ using StarkInfra;
 StarkInfra.PixFraud.Log log = StarkInfra.PixFraud.Log.Get("6307030096674816");
 
 Console.Write(log);
+```
+
+### Create PixKeyHolmes
+
+A PixKeyHolmes investigates the registration status of a Pix Key in the Central
+Bank's DICT. Open one per key you want to check; the API resolves it asynchronously
+and reports back whether the key is registered.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+List<StarkInfra.PixKeyHolmes> holmes = StarkInfra.PixKeyHolmes.Create(
+    new List<StarkInfra.PixKeyHolmes>() {
+        new StarkInfra.PixKeyHolmes(
+            keyID: "valid@sandbox.com",
+            tags: new List<string>{ "travel", "food" }
+        )
+    }
+);
+
+foreach (StarkInfra.PixKeyHolmes sherlock in holmes)
+{
+    Console.Write(sherlock);
+}
+```
+
+### Query PixKeyHolmes
+
+You can query multiple PixKeyHolmes according to filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.PixKeyHolmes> holmes = StarkInfra.PixKeyHolmes.Query(
+    limit: 10,
+    after: new DateTime(2022, 01, 01),
+    before: new DateTime(2022, 12, 01),
+    status: new List<string>{ "solved" }
+);
+
+foreach(StarkInfra.PixKeyHolmes sherlock in holmes)
+{
+    Console.Write(sherlock);
+}
 ```
 
 ### Create PixChargebacks
