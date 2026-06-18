@@ -71,6 +71,7 @@
     <Folder Include="IssuingBillingTransaction\" />
     <Folder Include="IssuingToken\" />
     <Folder Include="IssuingTokenRequest\" />
+    <Folder Include="IssuingTokenDesign\" />
     <Folder Include="MerchantCategory\" />
     <Folder Include="MerchantCountry\" />
     <Folder Include="StaticBrcode\" />

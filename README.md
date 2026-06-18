@@ -33,6 +33,7 @@ This SDK version is compatible with the Stark Infra API v2.
         - [Purchases](#process-purchase-authorizations): Authorize and view your past purchases
         - [Tokens](#query-issuingtokens): Manage the digital wallet tokens bound to your cards
         - [TokenRequests](#create-an-issuingtokenrequest): Generate the payload to proceed with card tokenization
+        - [TokenDesigns](#query-issuingtokendesigns): View the token designs available for card tokenization
         - [Invoices](#create-issuinginvoices): Add money to your issuing balance
         - [Withdrawals](#create-issuingwithdrawals): Send money back to your Workspace from your issuing balance
         - [Balance](#get-your-issuingbalance): View your issuing balance
@@ -1149,6 +1150,61 @@ StarkInfra.IssuingTokenRequest request = StarkInfra.IssuingTokenRequest.Create(
 );
 
 Console.Write(request);
+```
+
+
+### Query IssuingTokenDesigns
+
+You can get a list of available token designs given some filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.IssuingTokenDesign> designs = StarkInfra.IssuingTokenDesign.Query(limit: 10);
+
+foreach (StarkInfra.IssuingTokenDesign design in designs) {
+    Console.Write(design);
+}
+```
+
+### Page IssuingTokenDesigns
+
+You can manually page token designs by passing the cursor returned on the previous call.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+(List<StarkInfra.IssuingTokenDesign> page, string cursor) = StarkInfra.IssuingTokenDesign.Page(limit: 5);
+
+foreach (StarkInfra.IssuingTokenDesign design in page) {
+    Console.Write(design);
+}
+```
+
+### Get an IssuingTokenDesign
+
+Information on a token design may be retrieved by its id.
+
+```c#
+using System;
+
+StarkInfra.IssuingTokenDesign design = StarkInfra.IssuingTokenDesign.Get("5353197895942144");
+
+Console.Write(design);
+```
+
+### Get an IssuingTokenDesign pdf
+
+You can also retrieve the pdf file of a specific token design by its id.
+
+```c#
+using System;
+
+byte[] pdf = StarkInfra.IssuingTokenDesign.Pdf("5353197895942144");
+
+System.IO.File.WriteAllBytes("issuingtokendesign.pdf", pdf);
 ```
 
 
