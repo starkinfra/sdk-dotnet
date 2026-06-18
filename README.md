@@ -36,6 +36,7 @@ This SDK version is compatible with the Stark Infra API v2.
         - [Balance](#get-your-issuingbalance): View your issuing balance
         - [Transactions](#query-issuingtransactions): View the transactions that have affected your issuing balance
         - [BillingInvoices](#query-issuingbillinginvoices): View the invoices generated to collect your issuing usage
+        - [BillingTransactions](#query-issuingbillingtransactions): View the transactions that compose your issuing billing invoices
         - [Enums](#issuing-enums): Query enums related to the issuing purchases, such as merchant categories, countries and card purchase methods
     - [Pix](#pix)
         - [PixRequests](#create-pixrequests): Create Pix transactions
@@ -1275,6 +1276,68 @@ string cursor = null;
 foreach (StarkInfra.IssuingBillingInvoice invoice in page)
 {
     Console.Write(invoice);
+}
+```
+
+### Query IssuingBillingTransactions
+
+You can get a list of issuing billing transactions given some filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.IssuingBillingTransaction> transactions = StarkInfra.IssuingBillingTransaction.Query(
+    after: new DateTime(2022, 1, 1),
+    before: new DateTime(2022, 3, 1)
+);
+
+foreach (StarkInfra.IssuingBillingTransaction transaction in transactions)
+{
+    Console.Write(transaction);
+}
+```
+
+### Query IssuingBillingTransactions by invoice
+
+You can filter the transactions that compose a specific issuing billing invoice.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.IssuingBillingTransaction> transactions = StarkInfra.IssuingBillingTransaction.Query(
+    invoiceID: "5656565656565656"
+);
+
+foreach (StarkInfra.IssuingBillingTransaction transaction in transactions)
+{
+    Console.Write(transaction);
+}
+```
+
+### Page IssuingBillingTransactions
+
+You can manually page issuing billing transactions to control your own page cursor.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+List<StarkInfra.IssuingBillingTransaction> page;
+string cursor = null;
+
+(page, cursor) = StarkInfra.IssuingBillingTransaction.Page(limit: 5, cursor: cursor);
+
+foreach (StarkInfra.IssuingBillingTransaction transaction in page)
+{
+    Console.Write(transaction);
 }
 ```
 
