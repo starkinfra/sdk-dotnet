@@ -35,6 +35,7 @@ This SDK version is compatible with the Stark Infra API v2.
         - [Withdrawals](#create-issuingwithdrawals): Send money back to your Workspace from your issuing balance
         - [Balance](#get-your-issuingbalance): View your issuing balance
         - [Transactions](#query-issuingtransactions): View the transactions that have affected your issuing balance
+        - [BillingInvoices](#query-issuingbillinginvoices): View the invoices generated to collect your issuing usage
         - [Enums](#issuing-enums): Query enums related to the issuing purchases, such as merchant categories, countries and card purchase methods
     - [Pix](#pix)
         - [PixRequests](#create-pixrequests): Create Pix transactions
@@ -491,6 +492,7 @@ List<StarkInfra.IssuingCard> cards = StarkInfra.IssuingCard.Create(
             holderName : "Developers",
             holderTaxID : "012.345.678-90",
             holderExternalID : "672",
+            productID : "52233227",
             rules: new List<StarkInfra.IssuingRule> {
                 new StarkInfra.IssuingRule(
                     name: "general",
@@ -973,6 +975,24 @@ StarkInfra.IssuingPurchase purchase = StarkInfra.IssuingPurchase.Get("5642359077
 Console.Write(purchase);
 ```
 
+### Read IssuingPurchase fields
+
+A retrieved IssuingPurchase exposes the card product, installment, merchant category type, description and holder fields.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IssuingPurchase purchase = StarkInfra.IssuingPurchase.Get("5642359077339136");
+
+Console.Write(purchase.ProductID);
+Console.Write(purchase.InstallmentCount);
+Console.Write(purchase.MerchantCategoryType);
+Console.Write(purchase.Description);
+Console.Write(purchase.HolderID);
+```
+
 ### Query IssuingPurchase logs
 
 You can query purchase logs to better understand purchase life cycles.
@@ -1200,6 +1220,62 @@ using StarkInfra;
 StarkInfra.IssuingTransaction transaction = StarkInfra.IssuingTransaction.Get("6539944898068480");
 
 Console.Write(transaction);
+```
+
+### Query IssuingBillingInvoices
+
+You can get a list of issuing billing invoices given some filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.IssuingBillingInvoice> invoices = StarkInfra.IssuingBillingInvoice.Query(
+    after: new DateTime(2022, 1, 1),
+    before: new DateTime(2022, 3, 1)
+);
+
+foreach (StarkInfra.IssuingBillingInvoice invoice in invoices)
+{
+    Console.Write(invoice);
+}
+```
+
+### Get an IssuingBillingInvoice
+
+After its creation, information on an issuing billing invoice may be retrieved by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IssuingBillingInvoice invoice = StarkInfra.IssuingBillingInvoice.Get("5656565656565656");
+
+Console.Write(invoice);
+```
+
+### Page IssuingBillingInvoices
+
+You can manually page issuing billing invoices to control your own page cursor.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+List<StarkInfra.IssuingBillingInvoice> page;
+string cursor = null;
+
+(page, cursor) = StarkInfra.IssuingBillingInvoice.Page(limit: 5, cursor: cursor);
+
+foreach (StarkInfra.IssuingBillingInvoice invoice in page)
+{
+    Console.Write(invoice);
+}
 ```
 
 ### Issuing Enums

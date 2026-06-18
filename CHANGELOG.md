@@ -13,6 +13,11 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- productId attribute to IssuingCard resource
+- type attribute to IssuingDesign resource
+- productId, merchantCategoryType, installmentCount, description and holderId attributes to IssuingPurchase resource
+- IssuingBillingInvoice resource
 
 ## [0.12.0] - 2026-02-10
 ### Fixed
