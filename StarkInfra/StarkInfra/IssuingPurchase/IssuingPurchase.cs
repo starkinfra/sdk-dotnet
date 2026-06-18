@@ -16,9 +16,11 @@ namespace StarkInfra
     /// <list>
     ///     <item>ID [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"</item>
     ///     <item>HolderName [string]: card holder name. ex: "Tony Stark"</item>
+    ///     <item>ProductID [string]: unique card product number (BIN) registered within the card network. ex: "53810200"</item>
     ///     <item>CardID [string]: unique id returned when IssuingCard is created. ex: "5656565656565656"</item>
     ///     <item>CardEnding [string]: last 4 digits of the card number. ex: "1234"</item>
     ///     <item>Purpose [string]: purchase purpose. ex: "purchase"</item>
+    ///     <item>InstallmentCount [integer]: quantity of installments. Minimum = 1. ex: 12</item>
     ///     <item>Amount [long]: IssuingPurchase value in cents. Minimum = 0. ex: 1234 (= R$ 12.34)</item>
     ///     <item>Tax [integer]: IOF amount taxed for international purchases. ex: 1234 (= R$ 12.34)</item>
     ///     <item>IssuerAmount [long]: issuer amount. ex: 1234 (= R$ 12.34)</item>
@@ -28,6 +30,7 @@ namespace StarkInfra
     ///     <item>MerchantCurrencyCode [string]: merchant currency code. ex: "USD"</item>
     ///     <item>MerchantCurrencySymbol [string]: merchant currency symbol. ex: "$"</item>
     ///     <item>MerchantCategoryCode [string]: merchant category code. ex: "fastFoodRestaurants"</item>
+    ///     <item>MerchantCategoryType [string]: merchant category type. ex: "food"</item>
     ///     <item>MerchantCountryCode [string]: merchant country code. ex: "USA"</item>
     ///     <item>AcquirerID [string]: acquirer ID. ex: "5656565656565656"</item>
     ///     <item>MerchantID [string]: merchant ID. ex: "5656565656565656"</item>
@@ -41,20 +44,24 @@ namespace StarkInfra
     ///     <item>ZipCode [string]: zip code of the merchant location. ex: "02101234"</item>
     ///     <item>IssuingTransactionIds [string]: ledger transaction ids linked to this Purchase</item>
     ///     <item>Status [string]: current IssuingCard status. Options: "approved", "canceled", "denied", "confirmed" or "voided"</item>
+    ///     <item>Description [string]: IssuingPurchase description. ex: "Office Supplies"</item>
     ///     <item>Metadata [Dictionary object]: object used to store additional information about the IssuingPurchase object. ex: new Dictionary<string, object>(){{"authorizationId", "OjZAqj"}}</item>
     ///     <item>Updated [DateTime]: latest update DateTime for the IssuingPurchase. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>Created [DateTime]: creation DateTime for the IssuingPurchase. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>IsPartialAllowed [bool]: true if the merchant allows partial purchases. ex: False</item>
     ///     <item>CardTags [list of strings]: tags of the IssuingCard responsible for this purchase. ex: new List<string>{ "travel", "food" }</item>
+    ///     <item>HolderID [string]: card holder ID. ex: "5656565656565656"</item>
     ///     <item>HolderTags [list of strings]: tags of the IssuingHolder responsible for this purchase. new List<string>{ "technology", "john snow" }</item>
     /// </list>
     /// </summary>
     public partial class IssuingPurchase : Resource
     {
         public string HolderName { get; }
+        public string ProductID { get; }
         public string CardID { get; }
         public string CardEnding { get; }
         public string Purpose { get; }
+        public int? InstallmentCount { get; }
         public long? Amount { get; }
         public int? Tax { get; }
         public long? IssuerAmount { get; }
@@ -64,6 +71,7 @@ namespace StarkInfra
         public string MerchantCurrencyCode { get; }
         public string MerchantCurrencySymbol { get; }
         public string MerchantCategoryCode { get; }
+        public string MerchantCategoryType { get; }
         public string MerchantCountryCode { get; }
         public string AcquirerID { get; }
         public string MerchantID { get; }
@@ -77,11 +85,13 @@ namespace StarkInfra
         public string ZipCode { get; }
         public List<string> IssuingTransactionIds { get; }
         public string Status { get; }
+        public string Description { get; }
         public Dictionary<string, object> Metadata { get; }
         public DateTime? Updated { get; }
         public DateTime? Created { get; }
         public bool? IsPartialAllowed { get; }
         public List<string> CardTags { get; }
+        public string HolderID { get; }
         public List<string> HolderTags { get; }
 
         /// <summary>
@@ -93,9 +103,11 @@ namespace StarkInfra
         /// <list>
         ///     <item>id [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"</item>
         ///     <item>holderName [string]: card holder name. ex: "Tony Stark"</item>
+        ///     <item>productID [string]: unique card product number (BIN) registered within the card network. ex: "53810200"</item>
         ///     <item>cardID [string]: unique id returned when IssuingCard is created. ex: "5656565656565656"</item>
         ///     <item>cardEnding [string]: last 4 digits of the card number. ex: "1234"</item>
         ///     <item>purpose [string]: purchase purpose. ex: "purchase"</item>
+        ///     <item>installmentCount [integer]: quantity of installments. Minimum = 1. ex: 12</item>
         ///     <item>amount [long]: IssuingPurchase value in cents. Minimum = 0. ex: 1234 (= R$ 12.34)</item>
         ///     <item>tax [integer]: IOF amount taxed for international purchases. ex: 1234 (= R$ 12.34)</item>
         ///     <item>issuerAmount [long]: issuer amount. ex: 1234 (= R$ 12.34)</item>
@@ -105,6 +117,7 @@ namespace StarkInfra
         ///     <item>merchantCurrencyCode [string]: merchant currency code. ex: "USD"</item>
         ///     <item>merchantCurrencySymbol [string]: merchant currency symbol. ex: "$"</item>
         ///     <item>merchantCategoryCode [string]: merchant category code. ex: "fastFoodRestaurants"</item>
+        ///     <item>merchantCategoryType [string]: merchant category type. ex: "food"</item>
         ///     <item>merchantCountryCode [string]: merchant country code. ex: "USA"</item>
         ///     <item>acquirerID [string]: acquirer ID. ex: "5656565656565656"</item>
         ///     <item>merchantID [string]: merchant ID. ex: "5656565656565656"</item>
@@ -121,6 +134,7 @@ namespace StarkInfra
         /// <list>
         ///     <item>issuingTransactionIds [string]: ledger transaction ids linked to this Purchase</item>
         ///     <item>status [string]: current IssuingCard status. Options: "approved", "canceled", "denied", "confirmed" or "voided"</item>
+        ///     <item>description [string]: IssuingPurchase description. ex: "Office Supplies"</item>
         ///     <item>metadata [Dictionary object]: object used to store additional information about the IssuingPurchase object. ex: new Dictionary<string, object>(){{"authorizationId", "OjZAqj"}}</item>
         ///     <item>updated [DateTime]: latest update DateTime for the IssuingPurchase. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>created [DateTime]: creation DateTime for the IssuingPurchase. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
@@ -129,23 +143,26 @@ namespace StarkInfra
         /// <list>
         ///     <item>isPartialAllowed [bool]: true if the merchant allows partial purchases. ex: False</item>
         ///     <item>cardTags [list of strings]: tags of the IssuingCard responsible for this purchase. ex: new List<string>{ "travel", "food" }</item>
+        ///     <item>holderID [string]: card holder ID. ex: "5656565656565656"</item>
         ///     <item>holderTags [list of strings]: tags of the IssuingHolder responsible for this purchase. ex: new List<string>{ "technology", "john snow" }</item>
         /// </list>
         /// </summary>
-        public IssuingPurchase(string id = null, string holderName = null,  string cardID = null,  string cardEnding = null,  
-            string purpose = null, long? amount = null, int? tax = null, long? issuerAmount = null, string issuerCurrencyCode = null,  
-            string issuerCurrencySymbol = null, long? merchantAmount = null,  string merchantCurrencyCode = null,  
-            string merchantCurrencySymbol = null,  string merchantCategoryCode = null,  string merchantCountryCode = null,  
-            string acquirerID = null,  string merchantID = null,  string merchantName = null,  int? merchantFee = null,  
-            string walletID = null,  string methodCode = null,  float? score = null,  string endToEndID = null,  List<string> tags = null,  
-            string zipCode = null,  List<string> issuingTransactionIds = null, string status = null, Dictionary<string, object> metadata = null,
-            DateTime? updated = null, DateTime? created = null, bool? isPartialAllowed = null, List<string> cardTags = null, List<string> holderTags = null           
+        public IssuingPurchase(string id = null, string holderName = null,  string productID = null,  string cardID = null,  string cardEnding = null,
+            string purpose = null, int? installmentCount = null, long? amount = null, int? tax = null, long? issuerAmount = null, string issuerCurrencyCode = null,
+            string issuerCurrencySymbol = null, long? merchantAmount = null,  string merchantCurrencyCode = null,
+            string merchantCurrencySymbol = null,  string merchantCategoryCode = null,  string merchantCategoryType = null,  string merchantCountryCode = null,
+            string acquirerID = null,  string merchantID = null,  string merchantName = null,  int? merchantFee = null,
+            string walletID = null,  string methodCode = null,  float? score = null,  string endToEndID = null,  List<string> tags = null,
+            string zipCode = null,  List<string> issuingTransactionIds = null, string status = null, string description = null, Dictionary<string, object> metadata = null,
+            DateTime? updated = null, DateTime? created = null, bool? isPartialAllowed = null, List<string> cardTags = null, string holderID = null, List<string> holderTags = null
         ) : base(id)
         {
             HolderName = holderName;
+            ProductID = productID;
             CardID = cardID;
             CardEnding = cardEnding;
             Purpose = purpose;
+            InstallmentCount = installmentCount;
             Amount = amount;
             Tax = tax;
             IssuerAmount = issuerAmount;
@@ -155,6 +172,7 @@ namespace StarkInfra
             MerchantCurrencyCode = merchantCurrencyCode;
             MerchantCurrencySymbol = merchantCurrencySymbol;
             MerchantCategoryCode = merchantCategoryCode;
+            MerchantCategoryType = merchantCategoryType;
             MerchantCountryCode = merchantCountryCode;
             AcquirerID = acquirerID;
             MerchantID = merchantID;
@@ -168,11 +186,13 @@ namespace StarkInfra
             ZipCode = zipCode;
             IssuingTransactionIds = issuingTransactionIds;
             Status = status;
+            Description = description;
             Metadata = metadata;
             Updated = updated;
             Created = created;
             IsPartialAllowed = isPartialAllowed;
             CardTags = cardTags;
+            HolderID = holderID;
             HolderTags = holderTags;
         }
 
@@ -393,9 +413,11 @@ namespace StarkInfra
         {
             string id = json.id;
             string holderName = json.holderName;
+            string productID = json.productId;
             string cardID = json.cardId;
             string cardEnding = json.cardEnding;
             string purpose = json.purpose;
+            int? installmentCount = json.installmentCount;
             long amount = json.amount;
             int? tax = json.tax;
             long issuerAmount = json.issuerAmount;
@@ -405,6 +427,7 @@ namespace StarkInfra
             string merchantCurrencyCode = json.merchantCurrencyCode;
             string merchantCurrencySymbol = json.merchantCurrencySymbol;
             string merchantCategoryCode = json.merchantCategoryCode;
+            string merchantCategoryType = json.merchantCategoryType;
             string merchantCountryCode = json.merchantCountryCode;
             string acquirerID = json.acquirerId;
             string merchantID = json.merchantId;
@@ -418,6 +441,7 @@ namespace StarkInfra
             string zipCode = json.zipCode;
             List<string> issuingTransactionIds = json.issuingTransactionIds?.ToObject<List<string>>();
             string status = json.status;
+            string description = json.description;
             Dictionary<string, object> metadata = json.metadata?.ToObject<Dictionary<string, object>>();
             string createdString = json.created;
             DateTime? created = StarkCore.Utils.Checks.CheckNullableDateTime(createdString);
@@ -425,20 +449,21 @@ namespace StarkInfra
             DateTime? updated = StarkCore.Utils.Checks.CheckNullableDateTime(updatedString);
             bool? isPartialAllowed = json.isPartialAllowed;
             List<string> cardTags = json.cardTags?.ToObject<List<string>>();
+            string holderID = json.holderId;
             List<string> holderTags = json.holderTags?.ToObject<List<string>>();
 
             return new IssuingPurchase(
-                id: id, holderName: holderName, cardID: cardID, cardEnding: cardEnding,
-                purpose: purpose, amount: amount, tax: tax, issuerAmount: issuerAmount, 
-                issuerCurrencyCode: issuerCurrencyCode, issuerCurrencySymbol: issuerCurrencySymbol, 
-                merchantAmount: merchantAmount, merchantCurrencyCode: merchantCurrencyCode, 
-                merchantCurrencySymbol: merchantCurrencySymbol, merchantCategoryCode: merchantCategoryCode, 
-                merchantCountryCode: merchantCountryCode, acquirerID: acquirerID, 
-                merchantID: merchantID, merchantName: merchantName, merchantFee: merchantFee, 
-                walletID: walletID, methodCode: methodCode, score: score, endToEndID: endToEndID, 
-                tags: tags, zipCode: zipCode, issuingTransactionIds: issuingTransactionIds, 
-                status: status, metadata: metadata, created: created, updated: updated,
-                isPartialAllowed: isPartialAllowed, cardTags: cardTags, holderTags: holderTags
+                id: id, holderName: holderName, productID: productID, cardID: cardID, cardEnding: cardEnding,
+                purpose: purpose, installmentCount: installmentCount, amount: amount, tax: tax, issuerAmount: issuerAmount,
+                issuerCurrencyCode: issuerCurrencyCode, issuerCurrencySymbol: issuerCurrencySymbol,
+                merchantAmount: merchantAmount, merchantCurrencyCode: merchantCurrencyCode,
+                merchantCurrencySymbol: merchantCurrencySymbol, merchantCategoryCode: merchantCategoryCode,
+                merchantCategoryType: merchantCategoryType, merchantCountryCode: merchantCountryCode, acquirerID: acquirerID,
+                merchantID: merchantID, merchantName: merchantName, merchantFee: merchantFee,
+                walletID: walletID, methodCode: methodCode, score: score, endToEndID: endToEndID,
+                tags: tags, zipCode: zipCode, issuingTransactionIds: issuingTransactionIds,
+                status: status, description: description, metadata: metadata, created: created, updated: updated,
+                isPartialAllowed: isPartialAllowed, cardTags: cardTags, holderID: holderID, holderTags: holderTags
             );
         }
     }

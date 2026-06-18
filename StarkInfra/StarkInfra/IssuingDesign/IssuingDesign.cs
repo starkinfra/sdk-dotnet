@@ -16,6 +16,7 @@ namespace StarkInfra
     ///     <item>ID [string]: unique id returned when IssuingDesign is created. ex: "5656565656565656"</item>
     ///     <item>Name [string]: card or package design name. ex: "stark-plastic-dark-001"</item>
     ///     <item>EmbosserIds [list of strings] list of embosser unique ids. ex: new List<string> { "5136459887542272", "5136459887542273" }</item>
+    ///     <item>Type [string]: card or package design type. Options: "card", "envelope"</item>
     ///     <item>Updated [DateTime]: latest update datetime for the IssuingDesign. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>Created [DateTime]: creation datetime for the IssuingDesign. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
@@ -24,6 +25,7 @@ namespace StarkInfra
     {
         public string Name { get; }
         public List<string> EmbosserIds { get; }
+        public string Type { get; }
         public DateTime? Updated { get;  }
         public DateTime? Created { get; }
 
@@ -37,17 +39,19 @@ namespace StarkInfra
         ///     <item>id [string]: unique id returned when IssuingDesign is created. ex: "5656565656565656"</item>
         ///     <item>name [string]: card or package design name. ex: "stark-plastic-dark-001" </item>
         ///     <item>embosserIds [list of strings]: list of embosser unique ids. ex: new List<string> { "5136459887542272", "5136459887542273" }</item>
+        ///     <item>type [string]: card or package design type. Options: "card", "envelope"</item>
         ///     <item>updated [DateTime]: latest update datetime for the IssuingDesign. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>created [DateTime]: creation datetime for the IssuingDesign. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
         public IssuingDesign(
-            string id = null, string name = null, List<string> embosserIds = null, 
-            DateTime? updated = null, DateTime? created = null
+            string id = null, string name = null, List<string> embosserIds = null,
+            string type = null, DateTime? updated = null, DateTime? created = null
         ) : base(id)
         {
             Name = name;
             EmbosserIds = embosserIds;
+            Type = type;
             Updated = updated;
             Created = created;
         }
@@ -199,13 +203,14 @@ namespace StarkInfra
             string id = json.id;
             string name = json.name;
             List<string> embosserIds = json.embosserIds.ToObject<List<string>>();
+            string type = json.type;
             string createdString = json.created;
             DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
             DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
 
             return new IssuingDesign(
-                id: id, name: name, embosserIds: embosserIds, updated: updated, 
+                id: id, name: name, embosserIds: embosserIds, type: type, updated: updated,
                 created: created
             );
         }

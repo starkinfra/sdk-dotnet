@@ -49,7 +49,7 @@ namespace StarkInfra
         public string HolderExternalID { get; }
         public string DisplayName { get; }
         public List<IssuingRule> Rules { get; }
-        public string BinID { get; }
+        public string ProductID { get; }
         public List<string> Tags { get; }
         public string StreetLine1 { get; }
         public string StreetLine2 { get; }
@@ -122,7 +122,7 @@ namespace StarkInfra
             DisplayName = displayName;
             Status = status;
             Rules = rules;
-            BinID = productID;
+            ProductID = productID;
             StreetLine1 = streetLine1;
             StreetLine2 = streetLine2;
             District = district;
@@ -337,6 +337,7 @@ namespace StarkInfra
                     { "ids", ids },
                     { "after", after },
                     { "before", before },
+                    { "status", status },
                     { "types", types },
                     { "holderIds", holderIds },
                     { "tags", tags },
@@ -431,7 +432,7 @@ namespace StarkInfra
             string holderExternalID = json.holderExternalId;
             string displayName = json.displayName;
             List<IssuingRule> rules = IssuingRule.ParseRules(json.rules);
-            string productID = json.binId;
+            string productID = json.productId;
             List<string> tags = json.tags?.ToObject<List<string>>();
             string streetLine1 = json.streetLine1;
             string streetLine2 = json.streetLine2;
