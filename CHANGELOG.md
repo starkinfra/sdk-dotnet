@@ -19,6 +19,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - PixFraud resource
 - PixKeyHolmes resource
 - PixInternalTransactionReport resource
+- priority and reason attributes to PixRequest resource
 
 ## [0.12.0] - 2026-02-10
 ### Fixed

@@ -41,6 +41,8 @@ namespace StarkInfra
     ///    <item>InitiatorTaxID [string, default null]: Payment initiator's tax id (CPF/CNPJ). ex: "01234567890" or "20.018.183/0001-80"</item>
     ///    <item>Tags [list of strings, default null]: list of strings for reference when searching for PixRequests. ex: new List<string>{ "employees", "monthly" }</item>
     ///    <item>Method [string, default null]: execution method of creation of the Pix. ex: 'manual', 'payerQrcode', 'dynamicQrcode’.</item>
+    ///    <item>Priority [string, default "high"]: Specifies the message channel used to send the Pix Request. If set to "high", the request is sent through the primary channel; if set to "low", it uses the secondary channel. Options: "high" or "low"
+    ///    <item>Reason [string, default "customerRequest"]: underlying reason for the payment transaction. ex: "customerRequest", "fraud", "subscriptionFlaw"
     ///    <item>ID [string]: unique id returned when the PixRequest is created. ex: "5656565656565656"</item>
     ///    <item>Fee [integer]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)</item>
     ///    <item>Status [string]: current PixRequest status. ex: "created", "processing", "success", "failed"</item>
@@ -75,6 +77,8 @@ namespace StarkInfra
         public string InitiatorTaxID { get; }
         public List<string> Tags { get; }
         public string Method { get; }
+        public string Priority { get; }
+        public string Reason { get; }
         public long? Fee { get; }
         public string Status { get; }
         public string Flow { get; }
@@ -123,6 +127,8 @@ namespace StarkInfra
         ///    <item>initiatorTaxID [string, default null]: Payment initiator's tax id (CPF/CNPJ). ex: "01234567890" or "20.018.183/0001-80"</item>
         ///    <item>tags [list of strings, default null]: list of strings for reference when searching for PixRequests. ex: new List<string>{ "employees", "monthly" }</item>
         ///    <item>method [string, default null]: execution method of creation of the Pix. ex: 'manual', 'payerQrcode', 'dynamicQrcode’.</item>
+        ///    <item>priority [string, default "high"]: Specifies the message channel used to send the Pix Request. If set to "high", the request is sent through the primary channel; if set to "low", it uses the secondary channel. Options: "high" or "low"
+        ///    <item>reason [string, default "customerRequest"]: underlying reason for the payment transaction. ex: "customerRequest", "fraud", "subscriptionFlaw"
         /// </list>
         /// Attributes (return-only):
         /// <list>
@@ -142,8 +148,8 @@ namespace StarkInfra
             string endToEndID, string cashierType = null, string cashierBankCode = null, 
             long? cashAmount = null, string receiverKeyID = null, string description = null, 
             string reconciliationID = null, string initiatorTaxID = null,  
-            List<string> tags = null, string method = null, string id = null, 
-            long? fee = null, string status = null, string flow = null, 
+            List<string> tags = null, string method = null, string priority = null, string reason = null,
+            string id = null, long? fee = null, string status = null, string flow = null, 
             string senderBankCode = null, DateTime? created = null, DateTime? updated = null 
         ) : base(id)
         {
@@ -170,6 +176,8 @@ namespace StarkInfra
             CashierType = cashierType;
             Tags = tags;
             Method = method;
+            Priority = priority;
+            Reason = reason;
             Fee = fee;
             Status = status;
             Flow = flow;
@@ -469,6 +477,8 @@ namespace StarkInfra
             string initiatorTaxID = json.initiatorTaxId;
             List<string> tags = json.tags is null ? new List<string> { } : json.tags.ToObject<List<string>>();
             string method = json.method;
+            string priority = json.priority;
+            string reason = json.reason;
             string id = json.id;
             long fee = json.fee is null ? 0 : json.fee;
             string status = json.status;
@@ -489,8 +499,8 @@ namespace StarkInfra
                 endToEndID: endToEndID, cashierType: cashierType, cashierBankCode: cashierBankCode, 
                 cashAmount: cashAmount, receiverKeyID: receiverKeyID, description: description, 
                 reconciliationID: reconciliationID, initiatorTaxID: initiatorTaxID, tags: tags, 
-                method: method, id: id, fee: fee, status: status, flow: flow, senderBankCode: senderBankCode, 
-                created: created, updated: updated
+                method: method, priority: priority, reason: reason, id: id, fee: fee, status: status,
+                flow: flow, senderBankCode: senderBankCode, created: created, updated: updated
             );
         }
     }
