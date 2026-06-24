@@ -17,6 +17,7 @@ namespace StarkInfra
     ///     <item>Balance [integer]: [EXPANDABLE] current stock balance. ex: 1000</item>
     ///     <item>DesignID [string]: IssuingDesign unique id ex: "5136459887542272"</item>
     ///     <item>EmbosserID [string] list of embosser unique ids. ex: "5656565656565656" </item>
+    ///     <item>EmbosserName [string]: embosser name. ex: "Stark Embosser"</item>
     ///     <item>Updated [DateTime]: latest update datetime for the IssuingStock. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>Created [DateTime]: creation datetime for the IssuingStock. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
@@ -26,6 +27,7 @@ namespace StarkInfra
         public int? Balance { get; }
         public string DesignID { get; }
         public string EmbosserID { get; }
+        public string EmbosserName { get; }
         public DateTime? Updated { get;  }
         public DateTime? Created { get; }
 
@@ -41,17 +43,19 @@ namespace StarkInfra
         ///     <item>balance [integer]: [EXPANDABLE] current stock balance. ex: 1000</item>
         ///     <item>designID [string]: IssuingDesign unique id ex: "5136459887542272"</item>
         ///     <item>embosserID [string] list of embosser unique ids. ex: "5656565656565656" </item>
+        ///     <item>embosserName [string]: embosser name. ex: "Stark Embosser"</item>
         ///     <item>updated [DateTime]: latest update datetime for the IssuingStock. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>created [DateTime]: creation datetime for the IssuingStock. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
-        public IssuingStock(string id = null, int? balance = null, string designID = null, string embosserID = null, 
-            DateTime? updated = null, DateTime? created = null
+        public IssuingStock(string id = null, int? balance = null, string designID = null, string embosserID = null,
+            string embosserName = null, DateTime? updated = null, DateTime? created = null
         ) : base(id)
         {
             Balance = balance;
             DesignID = designID;
             EmbosserID = embosserID;
+            EmbosserName = embosserName;
             Updated = updated;
             Created = created;
         }
@@ -199,14 +203,15 @@ namespace StarkInfra
             int? balance = json.balance;
             string designID = json.designId;
             string embosserID = json.embosserId;
+            string embosserName = json.embosserName;
             string createdString = json.created;
             DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
             DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
 
             return new IssuingStock(
-                id: id, balance: balance, designID: designID, embosserID: embosserID, 
-                updated: updated, created: created
+                id: id, balance: balance, designID: designID, embosserID: embosserID,
+                embosserName: embosserName, updated: updated, created: created
             );
         }
     }

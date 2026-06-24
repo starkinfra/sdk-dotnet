@@ -24,6 +24,9 @@ namespace StarkInfra
     ///     <item>CounterAmount [integer]: current rule spent amount. ex: 1000</item>
     ///     <item>CurrencySymbol [string]: currency symbol. ex: "R$""</item>
     ///     <item>CurrencyName [string]: currency name. ex: "Brazilian Real"</item>
+    ///     <item>Schedule [string]: schedule time for user to spend. ex: "every monday, wednesday from 00:00 to 23:59 in America/Sao_Paulo"</item>
+    ///     <item>Purposes [list of strings]: list of strings representing the categories of merchants the rule applies to. ex: new List<string>{ "purchase", "withdrawal" }</item>
+    ///     <item>Merchants [list of strings]: list of merchant ids the rule applies to. ex: new List<string>{ "5656565656565656" }</item>
     /// </list>
     /// </summary>
     ///
@@ -39,6 +42,9 @@ namespace StarkInfra
         public string CounterAmount { get; }
         public string CurrencySymbol { get; }
         public string CurrencyName { get; }
+        public string Schedule { get; }
+        public List<string> Purposes { get; }
+        public List<string> Merchants { get; }
 
         /// <summary>
         /// IssuingRule object
@@ -64,12 +70,16 @@ namespace StarkInfra
         ///     <item>counterAmount [integer]: current rule spent amount. ex: 1000</item>
         ///     <item>currencySymbol [string]: currency symbol. ex: "R$""</item>
         ///     <item>currencyName [string]: currency name. ex: "Brazilian Real"</item>
+        ///     <item>schedule [string]: schedule time for user to spend. ex: "every monday, wednesday from 00:00 to 23:59 in America/Sao_Paulo"</item>
+        ///     <item>purposes [list of strings]: list of strings representing the categories of merchants the rule applies to. ex: new List<string>{ "purchase", "withdrawal" }</item>
+        ///     <item>merchants [list of strings]: list of merchant ids the rule applies to. ex: new List<string>{ "5656565656565656" }</item>
         /// </list>
         /// </summary>
         public IssuingRule(string name, long amount, string interval, string currencyCode = "BRL", List<MerchantCategory> categories = null, List<MerchantCountry> countries = null,
-            string id = null, List<CardMethod> methods = null, string counterAmount = null, string currencySymbol = null, string currencyName = null
+            string id = null, List<CardMethod> methods = null, string counterAmount = null, string currencySymbol = null, string currencyName = null,
+            string schedule = null, List<string> purposes = null, List<string> merchants = null
         ) : base(id)
-        { 
+        {
             Name = name;
             Amount = amount;
             Interval = interval;
@@ -80,6 +90,9 @@ namespace StarkInfra
             CounterAmount = counterAmount;
             CurrencySymbol = currencySymbol;
             CurrencyName = currencyName;
+            Schedule = schedule;
+            Purposes = purposes;
+            Merchants = merchants;
         }
         
         public static List<IssuingRule> ParseRules(dynamic json)
@@ -111,10 +124,14 @@ namespace StarkInfra
             string counterAmount = json.counterAmount;
             string currencySymbol = json.currencySymbol;
             string currencyName = json.currencyName;
+            string schedule = json.schedule;
+            List<string> purposes = json.purposes?.ToObject<List<string>>();
+            List<string> merchants = json.merchants?.ToObject<List<string>>();
 
             return new IssuingRule(
                 id: id, name: name, amount: amount, interval: interval, currencyCode: currencyCode, categories: categories, countries: countries,
-                methods: methods, counterAmount: counterAmount, currencySymbol: currencySymbol, currencyName: currencyName
+                methods: methods, counterAmount: counterAmount, currencySymbol: currencySymbol, currencyName: currencyName,
+                schedule: schedule, purposes: purposes, merchants: merchants
             );
         }
     }

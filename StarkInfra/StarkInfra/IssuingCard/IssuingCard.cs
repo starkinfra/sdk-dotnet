@@ -35,6 +35,7 @@ namespace StarkInfra
     ///     <item>HolderID [string]: card holder unique id. ex: "5656565656565656"</item>
     ///     <item>Type [string]: card type. ex: "virtual"</item>
     ///     <item>Status [string]: current IssuingCard status. ex: "active", "blocked", "canceled" or "expired"</item>
+    ///     <item>IsPinDefined [bool]: true if the card PIN has been defined. ex: True</item>
     ///     <item>Number [string]: [EXPANDABLE] masked card number. Expand to unmask the value. ex: "123".</item>
     ///     <item>SecurityCode [string]: [EXPANDABLE] masked card verification value (cvv). Expand to unmask the value. ex: "123".</item>
     ///     <item>Expiration [DateTime]: [EXPANDABLE] masked card expiration DateTime. Expand to unmask the value. ex: DateTime(2020, 3, 10, 10, 30, 0, 0).</item>
@@ -60,6 +61,7 @@ namespace StarkInfra
         public string HolderID {  get; }
         public string Type { get; }
         public string Status { get; }
+        public bool? IsPinDefined { get; }
         public string Number { get; }
         public string SecurityCode { get; }
         public DateTime? Expiration { get; }
@@ -101,6 +103,7 @@ namespace StarkInfra
         ///     <item>holderID [string]: card holder unique id. ex: "5656565656565656"</item>
         ///     <item>type [string]: card type. ex: "virtual"</item>
         ///     <item>status [string]: current IssuingCard status. ex: “active”, “blocked”, “canceled” or “expired"</item>
+        ///     <item>isPinDefined [bool]: true if the card PIN has been defined. ex: True</item>
         ///     <item>number [string]: [EXPANDABLE] masked card number. Expand to unmask the value. ex: "123".</item>
         ///     <item>securityCode [string]: [EXPANDABLE] masked card verification value (cvv). Expand to unmask the value. ex: "123".</item>
         ///     <item>expiration [DateTime]: [EXPANDABLE] masked card expiration DateTime. Expand to unmask the value. ex: DateTime(2020, 3, 10, 10, 30, 0, 0).</item>
@@ -110,8 +113,8 @@ namespace StarkInfra
         /// </summary>
         public IssuingCard(string holderName, string holderTaxID, string holderExternalID, string displayName = null, List<IssuingRule> rules = null, 
             string productID = null, List<string> tags = null, string streetLine1 = null, string streetLine2 = null, string district = null, string city = null, 
-            string stateCode = null, string zipCode = null, string id = null, string holderID = null, string type = null, string status = null, 
-            string number = null, string securityCode = null, DateTime? expiration = null, DateTime? updated = null, DateTime? created = null
+            string stateCode = null, string zipCode = null, string id = null, string holderID = null, string type = null, string status = null,
+            bool? isPinDefined = null, string number = null, string securityCode = null, DateTime? expiration = null, DateTime? updated = null, DateTime? created = null
         ) : base(id)
         {
             HolderID = holderID;
@@ -121,6 +124,7 @@ namespace StarkInfra
             Type = type;
             DisplayName = displayName;
             Status = status;
+            IsPinDefined = isPinDefined;
             Rules = rules;
             ProductID = productID;
             StreetLine1 = streetLine1;
@@ -444,6 +448,7 @@ namespace StarkInfra
             string holderID = json.holderId;
             string type = json.type;
             string status = json.status;
+            bool? isPinDefined = json.isPinDefined;
             string number = json.number;
             string securityCode = json.securityCode;
             string expirationString = json.expiration;
@@ -458,8 +463,8 @@ namespace StarkInfra
                 holderName: holderName, holderTaxID: holderTaxID, holderExternalID: holderExternalID, 
                 displayName: displayName, rules: rules, productID: productID, tags: tags, 
                 streetLine1: streetLine1, streetLine2: streetLine2, district: district, 
-                city: city, stateCode: stateCode, zipCode: zipCode, id: id, holderID: holderID, 
-                type: type, status: status, number: number, securityCode: securityCode, 
+                city: city, stateCode: stateCode, zipCode: zipCode, id: id, holderID: holderID,
+                type: type, status: status, isPinDefined: isPinDefined, number: number, securityCode: securityCode,
                 expiration: expiration, updated: updated, created: created
             );
         }

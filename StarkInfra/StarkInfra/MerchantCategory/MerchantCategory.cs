@@ -20,6 +20,7 @@ namespace StarkInfra
     ///     <item>Type [string, default null]: category's type. ex: "pets", "food"</item>
     ///     <item>Name [string]: category's name. ex: "Veterinary services", "Fast food restaurants"</item>
     ///     <item>Number [string]: category's number. ex: "742", "5814"</item>
+    ///     <item>Group [string]: category's group. ex: "pets", "food"</item>
     /// </list>
     /// </summary>
     public partial class MerchantCategory : StarkCore.Utils.SubResource
@@ -28,6 +29,7 @@ namespace StarkInfra
         public string Type { get; }
         public string Name { get; }
         public string Number { get; }
+        public string Group { get; }
 
         /// <summary>
         /// MerchantCategory object
@@ -46,14 +48,16 @@ namespace StarkInfra
         /// <list>
         ///     <item>name [string]: category's name. ex: "Veterinary services", "Fast food restaurants"</item>
         ///     <item>number [string]: category's number. ex: "742", "5814"</item>
+        ///     <item>group [string]: category's group. ex: "pets", "food"</item>
         /// </list>
         /// </summary>
-        public MerchantCategory(string code = null, string type = null, string name = null, string number = null)
+        public MerchantCategory(string code = null, string type = null, string name = null, string number = null, string group = null)
         {
             Code = code;
             Type = type;
             Name = name;
             Number = number;
+            Group = group;
         }
         
         /// <summary>
@@ -109,8 +113,9 @@ namespace StarkInfra
             string type = json.type;
             string name = json.name;
             string number = json.number;
+            string group = json.group;
 
-            return new MerchantCategory(code: code, type: type, name: name, number: number);
+            return new MerchantCategory(code: code, type: type, name: name, number: number, group: group);
         }
     }
 }

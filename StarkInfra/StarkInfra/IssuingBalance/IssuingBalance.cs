@@ -19,6 +19,8 @@ namespace StarkInfra
     ///     <item>ID [string]: unique id returned when IssuingBalance is created. ex: "5656565656565656"</item>
     ///     <item>Amount [long]: current issuing balance amount of the Workspace in cents. ex: 200 (= R$ 2.00)</item>
     ///     <item>Currency [string]: currency of the current Workspace. Expect others to be added eventually. ex: "BRL"</item>
+    ///     <item>Limit [long]: current issuing balance limit of the Workspace in cents. ex: 200 (= R$ 2.00)</item>
+    ///     <item>MaxLimit [long]: maximum issuing balance limit of the Workspace in cents. ex: 200 (= R$ 2.00)</item>
     ///     <item>Updated [DateTime]: latest update DateTime for the IssuingBalance. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
     /// </summary>
@@ -26,6 +28,8 @@ namespace StarkInfra
     {
         public long Amount { get; }
         public string Currency { get; }
+        public long? Limit { get; }
+        public long? MaxLimit { get; }
         public DateTime? Updated { get; }
 
         /// <summary>
@@ -41,13 +45,17 @@ namespace StarkInfra
         ///     <item>id [string]: unique id returned when IssuingBalance is created. ex: "5656565656565656"</item>
         ///     <item>amount [long]: current issuing balance amount of the Workspace in cents. ex: 200 (= R$ 2.00)</item>
         ///     <item>currency [string]: currency of the current Workspace. Expect others to be added eventually. ex: "BRL"</item>
+        ///     <item>limit [long]: current issuing balance limit of the Workspace in cents. ex: 200 (= R$ 2.00)</item>
+        ///     <item>maxLimit [long]: maximum issuing balance limit of the Workspace in cents. ex: 200 (= R$ 2.00)</item>
         ///     <item>updated [DateTime]: latest update DateTime for the IssuingBalance. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
-        public IssuingBalance(string id, long amount, string currency, DateTime? updated) : base(id)
+        public IssuingBalance(string id, long amount, string currency, long? limit, long? maxLimit, DateTime? updated) : base(id)
         {
             Amount = amount;
             Currency = currency;
+            Limit = limit;
+            MaxLimit = maxLimit;
             Updated = updated;
         }
 
@@ -87,10 +95,12 @@ namespace StarkInfra
             string id = json.id;
             long amount = json.amount;
             string currency = json.currency;
+            long? limit = json.limit;
+            long? maxLimit = json.maxLimit;
             string updatedString = json.updated;
             DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
 
-            return new IssuingBalance(id: id, amount: amount, currency: currency, updated: updated);
+            return new IssuingBalance(id: id, amount: amount, currency: currency, limit: limit, maxLimit: maxLimit, updated: updated);
         }
     }
 }
