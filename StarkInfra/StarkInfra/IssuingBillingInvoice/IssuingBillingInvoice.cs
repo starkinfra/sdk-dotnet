@@ -22,7 +22,7 @@ namespace StarkInfra
     ///     <item>NominalAmount [long]: nominal amount of the invoice, in cents. ex: 1200 (= R$ 12.00)</item>
     ///     <item>Status [string]: current invoice status. ex: "created", "paid", "overdue"</item>
     ///     <item>Brcode [string]: BR Code for the invoice payment. ex: "00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A"</item>
-    ///     <item>Link [string]: public invoice webpage URL. ex: "https://starkinfra.com/invoice/5656565656565656"</item>
+    ///     <item>Link [string]: public invoice webpage URL. ex: "https://starkbank-card-issuer.sandbox.starkbank.com/billinginvoicelink/97de4d51e8984c459639a645ce920abb"</item>
     ///     <item>Due [DateTime]: invoice due datetime. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>Start [DateTime]: billing cycle start datetime. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>End [DateTime]: billing cycle end datetime. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
@@ -63,7 +63,7 @@ namespace StarkInfra
         ///     <item>nominalAmount [long]: nominal amount of the invoice, in cents. ex: 1200 (= R$ 12.00)</item>
         ///     <item>status [string]: current invoice status. ex: "created", "paid", "overdue"</item>
         ///     <item>brcode [string]: BR Code for the invoice payment. ex: "00020126580014br.gov.bcb.pix..."</item>
-        ///     <item>link [string]: public invoice webpage URL. ex: "https://starkinfra.com/invoice/5656565656565656"</item>
+        ///     <item>link [string]: public invoice webpage URL. ex: "https://starkbank-card-issuer.sandbox.starkbank.com/billinginvoicelink/97de4d51e8984c459639a645ce920abb"</item>
         ///     <item>due [DateTime]: invoice due datetime. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>start [DateTime]: billing cycle start datetime. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>end [DateTime]: billing cycle end datetime. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
