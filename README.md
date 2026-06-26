@@ -56,6 +56,8 @@ This SDK version is compatible with the Stark Infra API v2.
         - [BrcodePreview](#create-brcodepreviews): Read data from BR Codes before paying them
         - [BrcodePreview](#create-brcodepreviews): Read data from BR Codes before paying them
         - [PixDispute](#create-pixdisputes): Create PixDisputes
+        - [PixPullSubscription](#create-pixpullsubscriptions): Set up recurring Pix debit authorizations
+        - [PixPullRequest](#create-pixpullrequests): Trigger automatic Pix debits against a subscription
     - [Lending](#lending)
         - [CreditNote](#create-creditnotes): Create credit notes
         - [CreditPreview](#create-creditpreviews): Create credit previews
@@ -2970,6 +2972,221 @@ using System;
 
 StarkInfra.PixDispute.Log log = StarkInfra.PixDispute.Log.Get("4701727546671104");
 
+Console.WriteLine(log);
+```
+
+### Create PixPullSubscriptions
+
+```c#
+using System;
+using System.Collections.Generic;
+
+List<StarkInfra.PixPullSubscription> subscriptions = StarkInfra.PixPullSubscription.Create(
+    new List<StarkInfra.PixPullSubscription> {
+        new StarkInfra.PixPullSubscription(
+            bacenID: "RR2017032900000000000000003",
+            externalID: "my-subscription-001",
+            installmentStart: DateTime.UtcNow.AddDays(1),
+            interval: "month",
+            receiverName: "Edward Stark",
+            receiverTaxID: "20.018.183/0001-80",
+            senderAccountNumber: "876543-2",
+            senderBankCode: "20018183",
+            senderBranchCode: "1357-9",
+            senderTaxID: "01234567890",
+            type: "push",
+            amount: 11234,
+            description: "Monthly subscription",
+            tags: new List<string> { "employees", "monthly" }
+        )
+    }
+);
+
+foreach (StarkInfra.PixPullSubscription subscription in subscriptions) {
+    Console.WriteLine(subscription);
+}
+```
+
+### Query PixPullSubscriptions
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.PixPullSubscription> subscriptions = StarkInfra.PixPullSubscription.Query(
+    limit: 10,
+    after: new DateTime(2026, 1, 1),
+    before: new DateTime(2026, 4, 30),
+    status: new List<string> { "active" },
+    tags: new List<string> { "monthly" }
+);
+
+foreach (StarkInfra.PixPullSubscription subscription in subscriptions) {
+    Console.WriteLine(subscription);
+}
+```
+
+### Get a PixPullSubscription
+
+```c#
+StarkInfra.PixPullSubscription subscription = StarkInfra.PixPullSubscription.Get("5656565656565656");
+Console.WriteLine(subscription);
+```
+
+### Update a PixPullSubscription
+
+When patching `status` to `"confirmed"`, `senderCityCode` MUST be present in patchData.
+
+```c#
+using System.Collections.Generic;
+
+StarkInfra.PixPullSubscription subscription = StarkInfra.PixPullSubscription.Update(
+    id: "5656565656565656",
+    patchData: new Dictionary<string, object> {
+        { "status", "confirmed" },
+        { "senderCityCode", "3550308" }
+    }
+);
+Console.WriteLine(subscription);
+```
+
+### Cancel a PixPullSubscription
+
+The `reason` is sent as a query parameter on the DELETE request.
+
+```c#
+StarkInfra.PixPullSubscription subscription = StarkInfra.PixPullSubscription.Cancel(
+    id: "5656565656565656",
+    reason: "accountClosed"
+);
+Console.WriteLine(subscription);
+```
+
+### Query PixPullSubscription logs
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.PixPullSubscription.Log> logs = StarkInfra.PixPullSubscription.Log.Query(
+    limit: 50,
+    after: new DateTime(2026, 1, 1),
+    before: new DateTime(2026, 4, 30),
+    subscriptionIds: new List<string> { "5656565656565656" }
+);
+
+foreach (StarkInfra.PixPullSubscription.Log log in logs) {
+    Console.WriteLine(log);
+}
+```
+
+### Get a PixPullSubscription log
+
+```c#
+StarkInfra.PixPullSubscription.Log log = StarkInfra.PixPullSubscription.Log.Get("4701727546671104");
+Console.WriteLine(log);
+```
+
+### Process inbound PixPullSubscription events
+
+```c#
+StarkInfra.PixPullSubscription subscription = StarkInfra.PixPullSubscription.Parse(
+    content: "{\"bacenId\": \"RR2017032900000000000000003\", ...}",
+    signature: "MEUCIQC7FVhXdripx/aXg5yNLxmNoZlehpyvX3QYDXJ8o3PAZQIgVe1omKFh7Vd54ML4U1z7L+kpx+GHl+G2XLeFTLZeBJk="
+);
+Console.WriteLine(subscription);
+```
+
+### Create PixPullRequests
+
+```c#
+using System;
+using System.Collections.Generic;
+
+List<StarkInfra.PixPullRequest> requests = StarkInfra.PixPullRequest.Create(
+    new List<StarkInfra.PixPullRequest> {
+        new StarkInfra.PixPullRequest(
+            amount: 11234,
+            due: DateTime.UtcNow.AddDays(2),
+            endToEndID: "E00002649202201172211u34srod19le",
+            receiverAccountNumber: "876543-2",
+            receiverAccountType: "checking",
+            receiverBankCode: "20018183",
+            reconciliationID: "cycle-202604",
+            subscriptionID: "5656565656565656",
+            tags: new List<string> { "monthly" }
+        )
+    }
+);
+
+foreach (StarkInfra.PixPullRequest request in requests) {
+    Console.WriteLine(request);
+}
+```
+
+### Query PixPullRequests
+
+```c#
+IEnumerable<StarkInfra.PixPullRequest> requests = StarkInfra.PixPullRequest.Query(
+    limit: 10,
+    status: new List<string> { "created", "active" },
+    subscriptionIds: new List<string> { "5656565656565656" }
+);
+
+foreach (StarkInfra.PixPullRequest request in requests) {
+    Console.WriteLine(request);
+}
+```
+
+### Get a PixPullRequest
+
+```c#
+StarkInfra.PixPullRequest request = StarkInfra.PixPullRequest.Get("5656565656565656");
+Console.WriteLine(request);
+```
+
+### Update a PixPullRequest
+
+When denying, `reason` is required.
+
+```c#
+StarkInfra.PixPullRequest request = StarkInfra.PixPullRequest.Update(
+    id: "5656565656565656",
+    patchData: new Dictionary<string, object> {
+        { "status", "denied" },
+        { "reason", "senderAccountClosed" }
+    }
+);
+Console.WriteLine(request);
+```
+
+### Cancel a PixPullRequest
+
+```c#
+StarkInfra.PixPullRequest request = StarkInfra.PixPullRequest.Cancel(
+    id: "5656565656565656",
+    reason: "senderUserRequested"
+);
+Console.WriteLine(request);
+```
+
+### Query PixPullRequest logs
+
+```c#
+IEnumerable<StarkInfra.PixPullRequest.Log> logs = StarkInfra.PixPullRequest.Log.Query(
+    limit: 50,
+    requestIds: new List<string> { "5656565656565656" }
+);
+
+foreach (StarkInfra.PixPullRequest.Log log in logs) {
+    Console.WriteLine(log);
+}
+```
+
+### Get a PixPullRequest log
+
+```c#
+StarkInfra.PixPullRequest.Log log = StarkInfra.PixPullRequest.Log.Get("4701727546671104");
 Console.WriteLine(log);
 ```
 

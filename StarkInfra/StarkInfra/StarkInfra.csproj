@@ -79,6 +79,8 @@
     <Folder Include="Request\" />
     <Folder Include="PixUser\" />
     <Folder Include="IssuingStockRule\" />
+    <Folder Include="PixPullSubscription\" />
+    <Folder Include="PixPullRequest\" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
