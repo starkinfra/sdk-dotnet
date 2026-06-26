@@ -23,6 +23,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - deprecated create pix infraction
 - PixPullSubscription resource
 - PixPullRequest resource
+- BusinessIdentity and BusinessAttachment resources
 
 ## [0.12.0] - 2026-02-10
 ### Fixed
