@@ -65,6 +65,8 @@ This SDK version is compatible with the Stark Infra API v2.
     - [Identity](#identity)
         - [IndividualIdentity](#create-individualidentities): Create individual identities
         - [IndividualDocument](#create-individualdocuments): Create individual documents
+        - [BusinessIdentity](#create-businessidentities): Create business identities
+        - [BusinessAttachment](#create-businessattachments): Create business attachments
     - [Webhook](#webhook):
         - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
         - [WebhookEvents](#process-webhook-events): Manage webhook events
@@ -3825,6 +3827,254 @@ StarkInfra.IndividualDocument.Log log = StarkInfra.IndividualDocument.Log.Get("5
 Console.Write(log);
 ```
 
+### Create BusinessIdentities
+
+You can create a BusinessIdentity to validate a document of a legal person
+
+```c#
+using System;
+using StarkInfra;
+
+
+List<StarkInfra.BusinessIdentity> identities = StarkInfra.BusinessIdentity.Create(
+    new List<StarkInfra.BusinessIdentity>() { 
+        new StarkInfra.BusinessIdentity(
+            taxID: "20.018.183/0001-80",
+            tags: new List<string>{ "breaking", "bad" }
+        );
+    }
+);
+
+foreach(StarkInfra.BusinessIdentity identity in identities)
+{
+    Console.Write(identity);
+}
+```
+
+**Note**: Instead of using BusinessIdentity objects, you can also pass each element in dictionary format
+
+### Query BusinessIdentity
+
+You can query multiple business identities according to filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.BusinessIdentity> identities = StarkInfra.BusinessIdentity.Query(
+    limit: 10,
+    after: new DateTime(2022, 01, 01),
+    before: new DateTime(2022, 12, 01),
+    status: new List<string>{ "success" },
+    tags: new List<string>{ "breaking", "bad" }
+);
+
+foreach(StarkInfra.BusinessIdentity identity in identities)
+{
+    Console.Write(identity);
+}
+```
+
+### Get a BusinessIdentity
+
+After its creation, information on a business identity may be retrieved by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.BusinessIdentity identity = StarkInfra.BusinessIdentity.Get("5155165527080960");
+
+Console.Write(identity);
+```
+
+### Update a BusinessIdentity
+
+You can update a specific identity status to "processing" for send it to validation.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.BusinessIdentity identity = StarkInfra.BusinessIdentity.Update("5155165527080960", status: "processing");
+
+Console.Write(identity);
+```
+
+**Note**: Before sending your business identity to validation by patching its status, you must send all the required attachments using the create method of the BusinessAttachment resource. Note that you must reference the business identity in the create method of the BusinessAttachment resource by its id.
+
+### Cancel a BusinessIdentity
+
+You can cancel a business identity before updating its status to processing.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.BusinessIdentity identity = StarkInfra.BusinessIdentity.Cancel("5155165527080960");
+
+Console.Write(identity);
+```
+
+### Query BusinessIdentity logs
+
+You can query business identity logs to better understand business identity life cycles. 
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.BusinessIdentity.Log> logs = StarkInfra.BusinessIdentity.Log.Query(
+    limit: 50, 
+    after: new DateTime(2022, 01, 01),
+    before: new DateTime(2022, 12, 01)
+);
+
+foreach (StarkInfra.BusinessIdentity.Log log in logs)
+{
+    Console.Write(log);
+}
+```
+
+### Get a BusinessIdentity log
+
+You can also get a specific log by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.BusinessIdentity.Log log = StarkInfra.BusinessIdentity.Log.Get("5155165527080960");
+
+Console.Write(log);
+```
+
+### Create BusinessAttachments
+
+You can create a business attachment to attach documents to a specific business Identity.
+You must reference the desired business identity by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+List<StarkInfra.BusinessAttachment> attachments = StarkInfra.BusinessAttachment.Create(
+    new List<StarkInfra.BusinessAttachment>() { 
+        new StarkInfra.BusinessAttachment(
+            name: "articles-of-incorporation.png",
+            content: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==",
+            contentType: "image/png",
+            businessIdentityID: "5155165527080960",
+            tags: new List<string>{ "breaking", "bad" }
+        )
+    }
+);
+
+foreach(StarkInfra.BusinessAttachment attachment in attachments)
+{
+    Console.Write(attachment);
+}
+```
+
+**Note**: Instead of using BusinessAttachment objects, you can also pass each element in dictionary format
+
+### Query BusinessAttachments
+
+You can query multiple business attachments according to filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.BusinessAttachment> attachments = StarkInfra.BusinessAttachment.Query(
+    limit: 10,
+    after: new DateTime(2022, 01, 01),
+    before: new DateTime(2022, 12, 01),
+    status: new List<string>{ "approved" },
+    tags: new List<string>{ "breaking", "bad" }
+);
+
+foreach(StarkInfra.BusinessAttachment attachment in attachments)
+{
+    Console.Write(attachment);
+}
+```
+
+### Get a BusinessAttachment
+
+After its creation, information on a business attachment may be retrieved by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.BusinessAttachment attachment = StarkInfra.BusinessAttachment.Get("5155165527080960");
+
+Console.Write(attachment);
+```
+
+### Cancel a BusinessAttachment
+
+You can cancel a business attachment by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.BusinessAttachment attachment = StarkInfra.BusinessAttachment.Cancel("5155165527080960");
+
+Console.Write(attachment);
+```
+
+### Query BusinessAttachment logs
+
+You can query business attachment logs to better understand business attachment life cycles. 
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.BusinessAttachment.Log> logs = StarkInfra.BusinessAttachment.Log.Query(
+    limit: 50, 
+    after: new DateTime(2022, 01, 01),
+    before: new DateTime(2022, 12, 01)
+);
+
+foreach (StarkInfra.BusinessAttachment.Log log in logs)
+{
+    Console.Write(log);
+}
+```
+
+### Get a BusinessAttachment log
+
+You can also get a specific log by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.BusinessAttachment.Log log = StarkInfra.BusinessAttachment.Log.Get("5155165527080960");
+
+Console.Write(log);
+```
+
 ## Webhook
 
 ### Create a Webhook subscription
@@ -3850,7 +4100,8 @@ StarkInfra.Webhook webhook = StarkInfra.Webhook.Create(
         "pix-claim",
         "pix-key",
         "pix-chargeback",
-        "pix-infraction"            
+        "pix-infraction",
+        "business-identity"
     }
 );
 
@@ -3959,6 +4210,10 @@ if (parsedEvent.Subscription.Contains("issuing-invoice") {
 if (parsedEvent.Subscription.Contains("issuing-purchase") {
     StarkInfra.IssuingPurchase.Log log = parsedEvent.Log as StarkInfra.IssuingPurchase.Log;
     Console.WriteLine(log.IssuingPurchase);
+}
+if (parsedEvent.Subscription.Contains("business-identity") {
+    StarkInfra.BusinessIdentity.Log log = parsedEvent.Log as StarkInfra.BusinessIdentity.Log;
+    Console.WriteLine(log.Identity);
 }
 ```
 

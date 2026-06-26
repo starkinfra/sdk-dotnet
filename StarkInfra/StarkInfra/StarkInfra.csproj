@@ -81,6 +81,8 @@
     <Folder Include="IssuingStockRule\" />
     <Folder Include="PixPullSubscription\" />
     <Folder Include="PixPullRequest\" />
+    <Folder Include="BusinessIdentity\" />
+    <Folder Include="BusinessAttachment\" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
