@@ -36,12 +36,14 @@ namespace StarkInfra
     ///     <item>RebateAmount [integer, default null]: credit analysis fee deducted from lent amount. ex: 11234  R$ 112.34)</item>
     ///     <item>Tags [list of strings, default null]: list of strings for reference when searching for CreditNotes. ex: new List<string>{ "employees", "monthly" }</item>
     ///     <item>Expiration [integer, default 604800 (7 days)]: time interval in seconds between scheduled date and expiration. ex: 123456789</item>
+    ///     <item>Rules [list of CreditNote.Rule objects, default null]: list of Rule objects or dictionaries for modifying the CreditNote behavior. ex: new List<CreditNote.Rule>{ new CreditNote.Rule(key: "invoiceCreationMode", value: "scheduled") }</item>
     ///     <item>ID [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"</item>
     ///     <item>Amount [integer]: CreditNote value in cents. ex: 1234 (= R$ 12.34)</item>
     ///     <item>DocumentID [string]: ID of the signed document to execute this CreditNote. ex: "4545454545454545"</item>
     ///     <item>Status [string]: current status of the CreditNote. ex: "canceled", "created", "expired", "failed", "processing", "signed", "success"</item>
     ///     <item>TransactionIds [list of strings]: ledger transaction ids linked to this CreditNote. ex: new List<string>{ "19827356981273" }</item>
     ///     <item>WorkspaceID [string]: ID of the Workspace that generated this CreditNote. ex: "4545454545454545"</item>
+    ///     <item>DebtorWorkspaceID [string]: ID of the debtor's Workspace, when it differs from the Workspace that generated this CreditNote. ex: "4545454545454545"</item>
     ///     <item>TaxAmount [integer]: tax amount included in the CreditNote. ex: 100</item>
     ///     <item>NominalInterest [float]: yearly nominal interest rate of the CreditNote, in percentage. ex: 11.5</item>
     ///     <item>Interest [float]: yearly effective interest rate of the CreditNote, in percentage. ex: 12.5</item>
@@ -70,11 +72,13 @@ namespace StarkInfra
         public long? RebateAmount { get; }
         public List<string> Tags { get; }
         public string Expiration { get; }
+        public List<Rule> Rules { get; }
         public long? Amount { get; }
         public string DocumentID { get; }
         public string Status { get; }
         public List<string> TransactionIds { get; }
         public string WorkspaceID { get; }
+        public string DebtorWorkspaceID { get; }
         public long? TaxAmount { get; }
         public float? Interest { get; }
         public float? NominalInterest { get; }
@@ -117,6 +121,7 @@ namespace StarkInfra
         ///     <item>rebateAmount [integer, default null]: credit analysis fee deducted from lent amount. ex: 11234 (= R$ 112.34)</item>
         ///     <item>tags [list of strings, default null]: list of strings for reference when searching for CreditNotes. ex: new List<string>{ "employees", "monthly" }</item>
         ///     <item>expiration [integer, default 604800 (7 days)]: time interval in seconds between scheduled date and expiration. ex: 123456789</item>
+        ///     <item>rules [list of CreditNote.Rule objects, default null]: list of Rule objects or dictionaries for modifying the CreditNote behavior. ex: new List<CreditNote.Rule>{ new CreditNote.Rule(key: "invoiceCreationMode", value: "scheduled") }</item>
         /// </list>
         /// Attributes (return-only):
         /// <list>
@@ -126,6 +131,7 @@ namespace StarkInfra
         ///     <item>status [string]: current status of the CreditNote. ex: "canceled", "created", "expired", "failed", "processing", "signed", "success"</item>
         ///     <item>transactionIds [list of strings]: ledger transaction ids linked to this CreditNote. ex: new List<string>{ "19827356981273" }</item>
         ///     <item>workspaceID [string]: ID of the Workspace that generated this CreditNote. ex: "4545454545454545"</item>
+        ///     <item>debtorWorkspaceID [string]: ID of the debtor's Workspace, when it differs from the Workspace that generated this CreditNote. ex: "4545454545454545"</item>
         ///     <item>taxAmount [integer]: tax amount included in the CreditNote. ex: 100</item>
         ///     <item>nominalInterest [float]: yearly nominal interest rate of the CreditNote, in percentage. ex: 11.5</item>
         ///     <item>interest [float]: yearly effective interest rate of the CreditNote, in percentage. ex: 12.5</item>
@@ -137,11 +143,12 @@ namespace StarkInfra
             string templateID, string name, string taxID, long nominalAmount, DateTime? scheduled, 
             List<Invoice> invoices, Resource payment, List<CreditSigner> signers, 
             string externalID, string streetLine1, string streetLine2, string district, 
-            string city, string stateCode, string zipCode, string paymentType = null, 
-            long? rebateAmount = null, List<string> tags = null, string expiration = null, 
-            string id = null, long? amount = null, string documentID = null, string status = null, 
-            List<string> transactionIds = null, string workspaceID = null, long? taxAmount = null, 
-            float? nominalInterest = null, float? interest = null, DateTime? created = null, 
+            string city, string stateCode, string zipCode, string paymentType = null,
+            long? rebateAmount = null, List<string> tags = null, string expiration = null,
+            List<Rule> rules = null, string id = null, long? amount = null, string documentID = null,
+            string status = null, List<string> transactionIds = null, string workspaceID = null,
+            string debtorWorkspaceID = null, long? taxAmount = null,
+            float? nominalInterest = null, float? interest = null, DateTime? created = null,
             DateTime? updated = null
         )  : base(id)
         {
@@ -163,11 +170,13 @@ namespace StarkInfra
             RebateAmount = rebateAmount;
             Tags = tags;
             Expiration = expiration;
+            Rules = rules;
             Amount = amount;
             DocumentID = documentID;
             Status = status;
             TransactionIds = transactionIds;
             WorkspaceID = workspaceID;
+            DebtorWorkspaceID = debtorWorkspaceID;
             TaxAmount = taxAmount;
             NominalInterest = nominalInterest;
             Interest = interest;
@@ -438,6 +447,7 @@ namespace StarkInfra
             string status = json.status;
             List<string> transactionIds = json.transactionIds.ToObject<List<string>>();
             string workspaceID = json.workspaceId;
+            string debtorWorkspaceID = json.debtorWorkspaceId;
             long? taxAmount = json.taxAmount;
             float? interest = json.interest;
             string createdString = json.created;
@@ -448,13 +458,14 @@ namespace StarkInfra
             List<CreditSigner> signers = ParseSigners(json.signers);
             Resource payment = ParsePayment(json: json.payment, paymentType: json.paymentType.ToObject<string>());
             List<Invoice> invoices = ParseInvoice(json.invoices);
+            List<Rule> rules = ParseRules(json.rules);
 
             return new CreditNote(
                 id: id, templateID: templateID, name: name, taxID: taxID, nominalAmount: nominalAmount, scheduled: scheduled, invoices: invoices,
-                payment: payment, signers: signers, externalID: externalID, streetLine1: streetLine1, streetLine2: streetLine2, district: district, 
-                city: city, stateCode: stateCode, zipCode: zipCode, paymentType: paymentType, rebateAmount: rebateAmount, tags: tags, amount: amount, 
+                payment: payment, signers: signers, externalID: externalID, streetLine1: streetLine1, streetLine2: streetLine2, district: district,
+                city: city, stateCode: stateCode, zipCode: zipCode, paymentType: paymentType, rebateAmount: rebateAmount, tags: tags, rules: rules, amount: amount,
                 expiration: expiration, documentID: documentID, status: status, transactionIds: transactionIds, workspaceID: workspaceID,
-                taxAmount: taxAmount, interest: interest, created: created, updated: updated
+                debtorWorkspaceID: debtorWorkspaceID, taxAmount: taxAmount, interest: interest, created: created, updated: updated
             );
         }
 
@@ -487,6 +498,17 @@ namespace StarkInfra
                 signers.Add(CreditSigner.ResourceMaker(signer));
             }
             return signers;
+        }
+
+        private static List<Rule> ParseRules(dynamic json)
+        {
+            List<Rule> rules = new List<Rule>();
+
+            foreach (dynamic rule in json)
+            {
+                rules.Add(Rule.ResourceMaker(rule));
+            }
+            return rules;
         }
     }
 }

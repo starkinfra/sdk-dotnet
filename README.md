@@ -2740,6 +2740,12 @@ List<StarkInfra.CreditNote> notes = StarkInfra.CreditNote.Create(
                     method: "link"
                 )
             },
+            rules: new List<StarkInfra.CreditNote.Rule>{
+                new StarkInfra.CreditNote.Rule(
+                    key: "invoiceCreationMode",
+                    value: "scheduled"
+                )
+            },
             externalID: "my_external_id_10",
             streetLine1: "Av. Paulista, 200",
             streetLine2: "10 andar",
