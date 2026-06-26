@@ -29,6 +29,7 @@ This SDK version is compatible with the Stark Infra API v2.
         - [EmbossingKit](#query-issuingembossingkits): View your current embossing kits
         - [Stock](#query-issuingstocks): View your current stock of a certain IssuingDesign linked to an Embosser on the workspace
         - [Restock](#create-issuingrestocks): Create restock orders of a specific IssuingStock object
+        - [StockRule](#create-issuingstockrules): Create notification rules for a specific IssuingStock object
         - [EmbossingRequest](#create-issuingembossingrequests): Create embossing requests
         - [Purchases](#process-purchase-authorizations): Authorize and view your past purchases
         - [Invoices](#create-issuinginvoices): Add money to your issuing balance
@@ -806,6 +807,83 @@ using System;
 StarkInfra.IssuingRestock.Log log = StarkInfra.IssuingRestock.Log.Get("5353197895942144");
 
 Console.Write(log);
+```
+
+### Create IssuingStockRules
+
+You can create notification rules for a specific IssuingStock. When the linked stock balance reaches the minimum balance, the listed emails and phones are notified.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+List<StarkInfra.IssuingStockRule> rules = StarkInfra.IssuingStockRule.Create(
+    new List<IssuingStockRule>{
+        new IssuingStockRule(
+            minimumBalance: 10000,
+            stockID: "5136459887542272",
+            emails: new List<string>{ "john.doe@enterprise.com" }
+        )
+    }
+);
+
+foreach (StarkInfra.IssuingStockRule rule in rules){
+    Console.Write(rule);
+}
+```
+
+### Query IssuingStockRules
+
+You can get a list of created stock rules given some filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.IssuingStockRule> rules = StarkInfra.IssuingStockRule.Query(
+    after: new DateTime(2020, 1, 1),
+    before: new DateTime(2022, 3, 1)
+);
+
+foreach (StarkInfra.IssuingStockRule rule in rules){
+    Console.Write(rule);
+}
+```
+
+### Get an IssuingStockRule
+
+After its creation, information on a stock rule may be retrieved by its id.
+
+```c#
+using System;
+
+StarkInfra.IssuingStockRule rule = StarkInfra.IssuingStockRule.Get("5664445921492992");
+
+Console.Write(rule);
+```
+
+### Update an IssuingStockRule
+
+You can update a stock rule's minimumBalance, tags, emails and phones by its id.
+
+```c#
+using System;
+
+StarkInfra.IssuingStockRule rule = StarkInfra.IssuingStockRule.Update("5664445921492992", minimumBalance: 20000);
+
+Console.Write(rule);
+```
+
+### Cancel an IssuingStockRule
+
+To cancel a single stock rule by its id, run:
+
+```c#
+using System;
+
+StarkInfra.IssuingStockRule rule = StarkInfra.IssuingStockRule.Cancel("5664445921492992");
+
+Console.Write(rule);
 ```
 
 ### Create IssuingEmbossingRequests
