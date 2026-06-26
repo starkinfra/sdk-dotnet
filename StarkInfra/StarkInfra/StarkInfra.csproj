@@ -56,6 +56,9 @@
     <Folder Include="PixReversal\" />
     <Folder Include="PixStatement\" />
     <Folder Include="PixInfraction\" />
+    <Folder Include="PixFraud\" />
+    <Folder Include="PixKeyHolmes\" />
+    <Folder Include="PixInternalTransactionReport\" />
     <Folder Include="PixChargeback\" />
     <Folder Include="PixDirector\" />
     <Folder Include="PixDispute\" />
