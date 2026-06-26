@@ -160,15 +160,10 @@ namespace StarkInfra
         ///     <item>List of PixInfraction object with updated attributes.</item>
         /// </list>
         /// </summary>
+        [Obsolete("Function deprecated since v0.13.0")]
         public static List<PixInfraction> Create(List<PixInfraction> infractions, User user = null)
         {
-            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
-            return Rest.Post(
-                resourceName: resourceName,
-                resourceMaker: resourceMaker,
-                entities: infractions,
-                user: user
-            ).ToList().ConvertAll(o => (PixInfraction)o);
+            throw new Exception("Function deprecated since v0.13.0");
         }
         
         /// <summary>
