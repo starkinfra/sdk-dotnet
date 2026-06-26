@@ -21,6 +21,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - PixInternalTransactionReport resource
 - priority and reason attributes to PixRequest resource
 - deprecated create pix infraction
+- PixPullSubscription resource
+- PixPullRequest resource
 
 ## [0.12.0] - 2026-02-10
 ### Fixed

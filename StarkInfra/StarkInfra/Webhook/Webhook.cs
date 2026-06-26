@@ -10,12 +10,12 @@ namespace StarkInfra
     /// Webhook object
     /// <br/>
     /// A Webhook is used to subscribe to notification events on a user-selected endpoint.
-    /// Currently, available services for subscription are contract, credit-note, signer, issuing-card, issuing-invoice, issuing-purchase, pix-request.in, pix-request.out, pix-reversal.in, pix-reversal.out, pix-claim, pix-key, pix-chargeback, pix-infraction
+    /// Currently, available services for subscription are contract, credit-note, signer, issuing-card, issuing-invoice, issuing-purchase, pix-request.in, pix-request.out, pix-reversal.in, pix-reversal.out, pix-claim, pix-key, pix-chargeback, pix-infraction, pix-dispute, pix-pull-subscription, pix-pull-request
     /// <br/>
     /// Parameters (required):
     /// <list>
     ///     <item>Url [string]: URL that will be notified when an event occurs.</item>
-    ///     <item>Subscriptions [list of strings]: list of any non-empty combination of the available services. ex: new List<string>{ "contract", "credit-note", "signer", "issuing-card", "issuing-invoice", "issuing-purchase", "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-claim", "pix-key", "pix-chargeback", "pix-infraction" }</item>
+    ///     <item>Subscriptions [list of strings]: list of any non-empty combination of the available services. ex: new List<string>{ "contract", "credit-note", "signer", "issuing-card", "issuing-invoice", "issuing-purchase", "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-claim", "pix-key", "pix-chargeback", "pix-infraction", "pix-dispute", "pix-pull-subscription", "pix-pull-request" }</item>
     /// </list>
     /// Attributes (return-only):
     /// <list>
@@ -31,12 +31,12 @@ namespace StarkInfra
         /// Webhook object
         /// <br/>
         /// A Webhook is used to subscribe to notification events on a user-selected endpoint.
-        /// Currently, available services for subscription are contract, credit-note, signer, issuing-card, issuing-invoice, issuing-purchase, pix-request.in, pix-request.out, pix-reversal.in, pix-reversal.out, pix-claim, pix-key, pix-chargeback, pix-infraction
+        /// Currently, available services for subscription are contract, credit-note, signer, issuing-card, issuing-invoice, issuing-purchase, pix-request.in, pix-request.out, pix-reversal.in, pix-reversal.out, pix-claim, pix-key, pix-chargeback, pix-infraction, pix-dispute, pix-pull-subscription, pix-pull-request
         /// <br/>
         /// Parameters (required):
         /// <list>
         ///     <item>url [string]: Url that will be notified when an event occurs.</item>
-        ///     <item>subscriptions [list of strings]: list of any non-empty combination of the available services. ex: new List<string>{ "contract", "credit-note", "signer", "issuing-card", "issuing-invoice", "issuing-purchase", "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-claim", "pix-key", "pix-chargeback", "pix-infraction" }</item>
+        ///     <item>subscriptions [list of strings]: list of any non-empty combination of the available services. ex: new List<string>{ "contract", "credit-note", "signer", "issuing-card", "issuing-invoice", "issuing-purchase", "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-claim", "pix-key", "pix-chargeback", "pix-infraction", "pix-dispute", "pix-pull-subscription", "pix-pull-request" }</item>
         ///</list>
         /// Attributes (return-only):
         /// <list>

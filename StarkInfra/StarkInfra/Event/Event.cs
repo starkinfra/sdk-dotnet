@@ -21,7 +21,7 @@ namespace StarkInfra
     ///     <item>Log [Log]: a Log object from one the subscription services ex: PixRequest.Log, PixReversal.Log</item>
     ///     <item>Created [DateTime]: creation DateTime for the notification event. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>IsDelivered [bool]: true if the Event has been successfully delivered to the user url. ex: False</item>
-    ///     <item>Subscription [string]: service that triggered this Event. Options: "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-key", "pix-claim", "pix-infraction", "pix-chargeback", "pix-dispute", "issuing-card", "issuing-invoice", "issuing-purchase", "credit-note"</item>
+    ///     <item>Subscription [string]: service that triggered this Event. Options: "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-key", "pix-claim", "pix-infraction", "pix-chargeback", "pix-dispute", "pix-pull-subscription", "pix-pull-request", "issuing-card", "issuing-invoice", "issuing-purchase", "credit-note"</item>
     ///     <item>WorkspaceID [string]: ID of the Workspace that generated this Event. Mostly used when multiple Workspaces have Webhooks registered to the same endpoint. ex: "4545454545454545"</item>
     /// </list>
     /// </summary>
@@ -46,7 +46,7 @@ namespace StarkInfra
         ///     <item>log [Log]: a Log object from one the subscription services ex: PixRequest.Log, PixRversal.Log</item>
         ///     <item>created [DateTime]: creation DateTime for the notification event. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>isDelivered [bool]: true if the Event has been successfully delivered to the user url. ex: False</item>
-        ///     <item>subscription [string]: service that triggered this Event. Options: "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-key", "pix-claim", "pix-infraction", "pix-chargeback", "pix-dispute", "issuing-card", "issuing-invoice", "issuing-purchase", "credit-note"</item>
+        ///     <item>subscription [string]: service that triggered this Event. Options: "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-key", "pix-claim", "pix-infraction", "pix-chargeback", "pix-dispute", "pix-pull-subscription", "pix-pull-request", "issuing-card", "issuing-invoice", "issuing-purchase", "credit-note"</item>
         ///     <item>workspaceID [string]: ID of the Workspace that generated this event. Mostly used when multiple Workspaces have Webhooks registered to the same endpoint. ex: "4545454545454545"</item>
         /// </list>
         /// </summary>
@@ -315,6 +315,14 @@ namespace StarkInfra
             if (subscription.Contains("pix-dispute"))
             {
                 log = PixDispute.Log.ResourceMaker(json.log);
+            }
+            if (subscription.Contains("pix-pull-subscription"))
+            {
+                log = PixPullSubscription.Log.ResourceMaker(json.log);
+            }
+            if (subscription.Contains("pix-pull-request"))
+            {
+                log = PixPullRequest.Log.ResourceMaker(json.log);
             }
             if (subscription.Contains("credit-note"))
             {
