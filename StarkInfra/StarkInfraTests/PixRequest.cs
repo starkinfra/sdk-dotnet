@@ -20,7 +20,6 @@ namespace StarkInfraTests
             Assert.NotNull(requests.First().ID);
             PixRequest getPixRequest = PixRequest.Get(id: request.ID);
             Assert.Equal(getPixRequest.ID, request.ID);
-            TestUtils.Log(request);
         }
 
         [Fact]
@@ -31,7 +30,6 @@ namespace StarkInfraTests
             Assert.True(requests.First().ID != requests.Last().ID);
             foreach (PixRequest request in requests)
             {
-                TestUtils.Log(request);
                 Assert.NotNull(request.ID);
                 Assert.Equal("success", request.Status);
             }
@@ -131,7 +129,6 @@ namespace StarkInfraTests
         {
             PixRequest parsedPixRequest = PixRequest.Parse(Content, GoodSignature);
             Assert.NotNull(parsedPixRequest.ID);
-            TestUtils.Log(parsedPixRequest);
         }
 
         [Fact]
@@ -140,7 +137,6 @@ namespace StarkInfraTests
             try {
                 PixRequest parsedPixRequest = PixRequest.Parse(Content, BadSignature);
             } catch (StarkInfra.Error.InvalidSignatureError e) {
-                TestUtils.Log(e);
                 return;
             }
             throw new Exception("failed to raise InvalidSignatureError");
@@ -155,7 +151,6 @@ namespace StarkInfraTests
             }
             catch (StarkInfra.Error.InvalidSignatureError e)
             {
-                TestUtils.Log(e);
                 return;
             }
             throw new Exception("failed to raise InvalidSignatureError");
@@ -165,7 +160,6 @@ namespace StarkInfraTests
         public void SendResponse()
         {
             string response = PixRequest.Response(status: "accepted");
-            TestUtils.Log(response);
         }
 
         internal static PixRequest Example()
@@ -176,15 +170,17 @@ namespace StarkInfraTests
                 senderName: "Arya",
                 senderTaxID: "01234567890",
                 senderBranchCode: "0000",
-                senderAccountNumber: "00000-0",
+                senderAccountNumber: "00000",
                 senderAccountType: "checking",
                 receiverName: "maria",
                 receiverTaxID: "01234567890",
                 receiverBankCode: "20018183",
                 receiverBranchCode: "0001",
-                receiverAccountNumber: "00000-1",
+                receiverAccountNumber: "00000",
                 receiverAccountType: "checking",
-                endToEndID: "E35547753205" + Convert.ToString(new Random().Next(111111111, 999999999)) + "u34sDGd19l2"
+                endToEndID: EndToEndID.Create(Environment.GetEnvironmentVariable("SANDBOX_BANK_CODE")),
+                priority: "low",
+                reason: "subscriptionFlaw"
             );
         }
     }

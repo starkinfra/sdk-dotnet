@@ -1378,7 +1378,9 @@ List<StarkInfra.PixRequest> requests = StarkInfra.PixRequest.Create(
             receiverName: "Jamie Lannister",
             receiverTaxID: "45.987.245/0001-92",
             endToEndID: EndToEndID.Create(bankCode: Environment.GetEnvironmentVariable("BANK_CODE")),
-            description: "For saving my life"
+            description: "For saving my life",
+            reason: "subscriptionFlaw",
+            priority: "low"
         ),
         new StarkInfra.PixRequest(
             amount: 200,  // (R$ 2.00)
@@ -1395,7 +1397,9 @@ List<StarkInfra.PixRequest> requests = StarkInfra.PixRequest.Create(
             receiverName: "John Snow",
             receiverTaxID: "012.345.678-90",
             endToEndID: EndToEndID.Create(bankCode: Environment.GetEnvironmentVariable("BANK_CODE")),
-            tags: new List<string> { "Needle", "sword" }
+            tags: new List<string> { "Needle", "sword" },
+            reason: "subscriptionFlaw",
+            priority: "low"
         )
     }
 );
