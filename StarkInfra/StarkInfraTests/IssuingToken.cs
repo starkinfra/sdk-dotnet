@@ -138,17 +138,5 @@ namespace StarkInfraTests
             Assert.Equal(canceledToken.ID, token.ID);
             TestUtils.Log(canceledToken);
         }
-
-        [Fact]
-        public void QueryExposesUrl()
-        {
-            List<IssuingToken> tokens = IssuingToken.Query(limit: 1).ToList();
-            foreach (IssuingToken token in tokens)
-            {
-                Assert.NotNull(token.ID);
-                string url = token.Url;
-                TestUtils.Log(url);
-            }
-        }
     }
 }

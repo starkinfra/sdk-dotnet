@@ -24,8 +24,8 @@ namespace StarkInfra
     ///     <item>ExternalID [string]: external transaction id. ex: "my-external-id-123456"</item>
     ///     <item>Description [string]: transaction description. ex: "Issuing purchase at Iron Bank"</item>
     ///     <item>CardEnding [string]: last 4 digits of the card number. ex: "1234"</item>
-    ///     <item>Tax [double]: tax amount, in cents. ex: 100</item>
-    ///     <item>Rate [double]: tax rate, as a percentage. ex: 1.5</item>
+    ///     <item>Tax [double]: IOF amount in cents applied to the transaction</item>
+    ///     <item>Rate [double]: Conversion rate applied to international transactions</item>
     ///     <item>MerchantAmount [long]: merchant amount, in cents. ex: 1234 (= R$ 12.34)</item>
     ///     <item>MerchantCurrencyCode [string]: merchant currency code (ISO 4217). ex: "USD"</item>
     ///     <item>Created [DateTime]: creation datetime for the IssuingBillingTransaction. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
@@ -67,8 +67,8 @@ namespace StarkInfra
         ///     <item>externalId [string]: external transaction id. ex: "my-external-id-123456"</item>
         ///     <item>description [string]: transaction description. ex: "Issuing purchase at Iron Bank"</item>
         ///     <item>cardEnding [string]: last 4 digits of the card number. ex: "1234"</item>
-        ///     <item>tax [double]: tax amount, in cents. ex: 100</item>
-        ///     <item>rate [double]: tax rate, as a percentage. ex: 1.5</item>
+        ///     <item>tax [double]: IOF amount in cents applied to the transaction</item>
+        ///     <item>rate [double]: Conversion rate applied to international transactions</item>
         ///     <item>merchantAmount [long]: merchant amount, in cents. ex: 1234 (= R$ 12.34)</item>
         ///     <item>merchantCurrencyCode [string]: merchant currency code (ISO 4217). ex: "USD"</item>
         ///     <item>created [DateTime]: creation datetime for the IssuingBillingTransaction. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>

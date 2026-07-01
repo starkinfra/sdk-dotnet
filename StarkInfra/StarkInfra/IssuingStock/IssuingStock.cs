@@ -17,7 +17,7 @@ namespace StarkInfra
     ///     <item>Balance [integer]: [EXPANDABLE] current stock balance. ex: 1000</item>
     ///     <item>DesignID [string]: IssuingDesign unique id ex: "5136459887542272"</item>
     ///     <item>EmbosserID [string] list of embosser unique ids. ex: "5656565656565656" </item>
-    ///     <item>EmbosserName [string]: embosser name. ex: "Stark Embosser"</item>
+    ///     <item>EmbosserName [string]: Name of the embosser that holds this stock</item>
     ///     <item>Updated [DateTime]: latest update datetime for the IssuingStock. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>Created [DateTime]: creation datetime for the IssuingStock. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
@@ -43,7 +43,7 @@ namespace StarkInfra
         ///     <item>balance [integer]: [EXPANDABLE] current stock balance. ex: 1000</item>
         ///     <item>designID [string]: IssuingDesign unique id ex: "5136459887542272"</item>
         ///     <item>embosserID [string] list of embosser unique ids. ex: "5656565656565656" </item>
-        ///     <item>embosserName [string]: embosser name. ex: "Stark Embosser"</item>
+        ///     <item>embosserName [string]: Name of the embosser that holds this stock</item>
         ///     <item>updated [DateTime]: latest update datetime for the IssuingStock. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>created [DateTime]: creation datetime for the IssuingStock. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>

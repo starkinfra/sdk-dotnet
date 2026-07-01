@@ -19,8 +19,8 @@ namespace StarkInfra
     ///     <item>ID [string]: unique id returned when IssuingBalance is created. ex: "5656565656565656"</item>
     ///     <item>Amount [long]: current issuing balance amount of the Workspace in cents. ex: 200 (= R$ 2.00)</item>
     ///     <item>Currency [string]: currency of the current Workspace. Expect others to be added eventually. ex: "BRL"</item>
-    ///     <item>Limit [long]: current issuing balance limit of the Workspace in cents. ex: 200 (= R$ 2.00)</item>
-    ///     <item>MaxLimit [long]: maximum issuing balance limit of the Workspace in cents. ex: 200 (= R$ 2.00)</item>
+    ///     <item>Limit [long]: Spending limit of the balance</item>
+    ///     <item>MaxLimit [long]: Maximum spending limit. This field is currently always equal to limit</item>
     ///     <item>Updated [DateTime]: latest update DateTime for the IssuingBalance. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
     /// </summary>
@@ -45,8 +45,8 @@ namespace StarkInfra
         ///     <item>id [string]: unique id returned when IssuingBalance is created. ex: "5656565656565656"</item>
         ///     <item>amount [long]: current issuing balance amount of the Workspace in cents. ex: 200 (= R$ 2.00)</item>
         ///     <item>currency [string]: currency of the current Workspace. Expect others to be added eventually. ex: "BRL"</item>
-        ///     <item>limit [long]: current issuing balance limit of the Workspace in cents. ex: 200 (= R$ 2.00)</item>
-        ///     <item>maxLimit [long]: maximum issuing balance limit of the Workspace in cents. ex: 200 (= R$ 2.00)</item>
+        ///     <item>limit [long]: Spending limit of the balance</item>
+        ///     <item>maxLimit [long]: Maximum spending limit. This field is currently always equal to limit</item>
         ///     <item>updated [DateTime]: latest update DateTime for the IssuingBalance. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>

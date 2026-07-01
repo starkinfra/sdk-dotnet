@@ -31,7 +31,7 @@ namespace StarkInfra
     ///     <item>MerchantCurrencySymbol [string]: merchant currency symbol. ex: "$"</item>
     ///     <item>MerchantCategoryCode [string]: merchant category code. ex: "fastFoodRestaurants"</item>
     ///     <item>MerchantCategoryType [string]: merchant category type. ex: "food"</item>
-    ///     <item>MerchantCategoryNumber [integer]: merchant category number. ex: 5814</item>
+    ///     <item>MerchantCategoryNumber [integer]: MCC number of the merchant category. ex: 5814</item>
     ///     <item>MerchantCountryCode [string]: merchant country code. ex: "USA"</item>
     ///     <item>AcquirerID [string]: acquirer ID. ex: "5656565656565656"</item>
     ///     <item>MerchantID [string]: merchant ID. ex: "5656565656565656"</item>
@@ -45,7 +45,7 @@ namespace StarkInfra
     ///     <item>ZipCode [string]: zip code of the merchant location. ex: "02101234"</item>
     ///     <item>IssuingTransactionIds [string]: ledger transaction ids linked to this Purchase</item>
     ///     <item>Status [string]: current IssuingCard status. Options: "approved", "canceled", "denied", "confirmed" or "voided"</item>
-    ///     <item>Confirmed [bool]: true if the purchase has been confirmed. ex: True</item>
+    ///     <item>Confirmed [DateTime]: Confirmation datetime. Null until the purchase is confirmed.</item>
     ///     <item>Description [string]: IssuingPurchase description. ex: "Office Supplies"</item>
     ///     <item>Metadata [Dictionary object]: object used to store additional information about the IssuingPurchase object. ex: new Dictionary<string, object>(){{"authorizationId", "OjZAqj"}}</item>
     ///     <item>Updated [DateTime]: latest update DateTime for the IssuingPurchase. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
@@ -88,7 +88,7 @@ namespace StarkInfra
         public string ZipCode { get; }
         public List<string> IssuingTransactionIds { get; }
         public string Status { get; }
-        public bool? Confirmed { get; }
+        public DateTime? Confirmed { get; }
         public string Description { get; }
         public Dictionary<string, object> Metadata { get; }
         public DateTime? Updated { get; }
@@ -122,7 +122,7 @@ namespace StarkInfra
         ///     <item>merchantCurrencySymbol [string]: merchant currency symbol. ex: "$"</item>
         ///     <item>merchantCategoryCode [string]: merchant category code. ex: "fastFoodRestaurants"</item>
         ///     <item>merchantCategoryType [string]: merchant category type. ex: "food"</item>
-        ///     <item>merchantCategoryNumber [integer]: merchant category number. ex: 5814</item>
+        ///     <item>merchantCategoryNumber [integer]: MCC number of the merchant category. ex: 5814</item>
         ///     <item>merchantCountryCode [string]: merchant country code. ex: "USA"</item>
         ///     <item>acquirerID [string]: acquirer ID. ex: "5656565656565656"</item>
         ///     <item>merchantID [string]: merchant ID. ex: "5656565656565656"</item>
@@ -139,7 +139,7 @@ namespace StarkInfra
         /// <list>
         ///     <item>issuingTransactionIds [string]: ledger transaction ids linked to this Purchase</item>
         ///     <item>status [string]: current IssuingCard status. Options: "approved", "canceled", "denied", "confirmed" or "voided"</item>
-        ///     <item>confirmed [bool]: true if the purchase has been confirmed. ex: True</item>
+        ///     <item>confirmed [DateTime]: Confirmation datetime. Null until the purchase is confirmed.</item>
         ///     <item>description [string]: IssuingPurchase description. ex: "Office Supplies"</item>
         ///     <item>metadata [Dictionary object]: object used to store additional information about the IssuingPurchase object. ex: new Dictionary<string, object>(){{"authorizationId", "OjZAqj"}}</item>
         ///     <item>updated [DateTime]: latest update DateTime for the IssuingPurchase. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
@@ -159,7 +159,7 @@ namespace StarkInfra
             string merchantCurrencySymbol = null,  string merchantCategoryCode = null,  string merchantCategoryType = null,  int? merchantCategoryNumber = null,  string merchantCountryCode = null,
             string acquirerID = null,  string merchantID = null,  string merchantName = null,  int? merchantFee = null,
             string walletID = null,  string methodCode = null,  float? score = null,  string endToEndID = null,  List<string> tags = null,
-            string zipCode = null,  List<string> issuingTransactionIds = null, string status = null, bool? confirmed = null, string description = null, Dictionary<string, object> metadata = null,
+            string zipCode = null,  List<string> issuingTransactionIds = null, string status = null, DateTime? confirmed = null, string description = null, Dictionary<string, object> metadata = null,
             DateTime? updated = null, DateTime? created = null, bool? isPartialAllowed = null, List<string> cardTags = null, string holderID = null, List<string> holderTags = null
         ) : base(id)
         {
@@ -450,7 +450,8 @@ namespace StarkInfra
             string zipCode = json.zipCode;
             List<string> issuingTransactionIds = json.issuingTransactionIds?.ToObject<List<string>>();
             string status = json.status;
-            bool? confirmed = json.confirmed;
+            string confirmedString = json.confirmed;
+            DateTime? confirmed = StarkCore.Utils.Checks.CheckNullableDateTime(confirmedString);
             string description = json.description;
             Dictionary<string, object> metadata = json.metadata?.ToObject<Dictionary<string, object>>();
             string createdString = json.created;

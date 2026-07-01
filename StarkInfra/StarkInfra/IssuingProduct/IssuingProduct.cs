@@ -16,7 +16,7 @@ namespace StarkInfra
     /// <list>
     ///     <item>ID[string]: unique card product number (BIN) registered within the card network. ex: "53810200"</item>
     ///     <item>Network [string]: card network flag. ex: "mastercard"</item>
-    ///     <item>CustomerType [string]: customer type. ex: "business", "individual"</item>
+    ///     <item>CustomerType [string]: Same as holderType. Kept for backward compatibility</item>
     ///     <item>FundingType [string]: type of funding used for payment. ex: "credit", "debit"</item>
     ///     <item>HolderType [string]: holder type. ex: "business", "individual"</item>
     ///     <item>Code [string]: internal code from card flag informing the product. ex: "MRW", "MCO", "MWB", "MCS"</item>
@@ -42,7 +42,7 @@ namespace StarkInfra
         /// <list>
         ///     <item>id[string]: unique card product number (BIN) registered within the card network. ex: "53810200"</item>
         ///     <item>network [string]: card network flag. ex: "mastercard"</item>
-        ///     <item>customerType [string]: customer type. ex: "business", "individual"</item>
+        ///     <item>customerType [string]: Same as holderType. Kept for backward compatibility</item>
         ///     <item>fundingType [string]: type of funding used for payment. ex: "credit", "debit"</item>
         ///     <item>holderType [string]: holder type. ex: "business", "individual"</item>
         ///     <item>code [string]: internal code from card flag informing the product. ex: "MRW", "MCO", "MWB", "MCS"</item>

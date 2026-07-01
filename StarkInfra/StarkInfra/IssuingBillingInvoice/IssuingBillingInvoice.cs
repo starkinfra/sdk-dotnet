@@ -16,8 +16,8 @@ namespace StarkInfra
     ///     <item>ID [string]: unique id returned when IssuingBillingInvoice is created. ex: "5656565656565656"</item>
     ///     <item>TaxID [string]: payer tax id. ex: "012.345.678-90"</item>
     ///     <item>Name [string]: payer name. ex: "Iron Bank S.A."</item>
-    ///     <item>Fine [double]: fine amount charged on the invoice, in cents. ex: 200</item>
-    ///     <item>Interest [double]: interest amount charged on the invoice, in cents. ex: 100</item>
+    ///     <item>Fine [double]: Fine percentage applied when paid after the due date. ex: 2.0</item>
+    ///     <item>Interest [double]: Monthly interest percentage applied when paid after the due date. ex: 1.0</item>
     ///     <item>Amount [long]: invoice amount, in cents. ex: 1234 (= R$ 12.34)</item>
     ///     <item>NominalAmount [long]: nominal amount of the invoice, in cents. ex: 1200 (= R$ 12.00)</item>
     ///     <item>Status [string]: current invoice status. ex: "created", "paid", "overdue"</item>
@@ -57,8 +57,8 @@ namespace StarkInfra
         ///     <item>id [string]: unique id returned when IssuingBillingInvoice is created. ex: "5656565656565656"</item>
         ///     <item>taxId [string]: payer tax id. ex: "012.345.678-90"</item>
         ///     <item>name [string]: payer name. ex: "Iron Bank S.A."</item>
-        ///     <item>fine [double]: fine amount charged on the invoice, in cents. ex: 200</item>
-        ///     <item>interest [double]: interest amount charged on the invoice, in cents. ex: 100</item>
+        ///     <item>fine [double]: Fine percentage applied when paid after the due date. ex: 2.0</item>
+        ///     <item>interest [double]: Monthly interest percentage applied when paid after the due date. ex: 1.0</item>
         ///     <item>amount [long]: invoice amount, in cents. ex: 1234 (= R$ 12.34)</item>
         ///     <item>nominalAmount [long]: nominal amount of the invoice, in cents. ex: 1200 (= R$ 12.00)</item>
         ///     <item>status [string]: current invoice status. ex: "created", "paid", "overdue"</item>

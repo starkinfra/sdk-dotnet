@@ -35,7 +35,7 @@ namespace StarkInfra
     ///     <item>HolderID [string]: card holder unique id. ex: "5656565656565656"</item>
     ///     <item>Type [string]: card type. ex: "virtual"</item>
     ///     <item>Status [string]: current IssuingCard status. ex: "active", "blocked", "canceled" or "expired"</item>
-    ///     <item>IsPinDefined [bool]: true if the card PIN has been defined. ex: True</item>
+    ///     <item>IsPinDefined [bool]: Whether the card has a PIN defined. Returned only when "expand=isPinDefined" is informed in the request</item>
     ///     <item>Number [string]: [EXPANDABLE] masked card number. Expand to unmask the value. ex: "123".</item>
     ///     <item>SecurityCode [string]: [EXPANDABLE] masked card verification value (cvv). Expand to unmask the value. ex: "123".</item>
     ///     <item>Expiration [DateTime]: [EXPANDABLE] masked card expiration DateTime. Expand to unmask the value. ex: DateTime(2020, 3, 10, 10, 30, 0, 0).</item>
@@ -103,7 +103,7 @@ namespace StarkInfra
         ///     <item>holderID [string]: card holder unique id. ex: "5656565656565656"</item>
         ///     <item>type [string]: card type. ex: "virtual"</item>
         ///     <item>status [string]: current IssuingCard status. ex: “active”, “blocked”, “canceled” or “expired"</item>
-        ///     <item>isPinDefined [bool]: true if the card PIN has been defined. ex: True</item>
+        ///     <item>isPinDefined [bool]: Whether the card has a PIN defined. Returned only when "expand=isPinDefined" is informed in the request</item>
         ///     <item>number [string]: [EXPANDABLE] masked card number. Expand to unmask the value. ex: "123".</item>
         ///     <item>securityCode [string]: [EXPANDABLE] masked card verification value (cvv). Expand to unmask the value. ex: "123".</item>
         ///     <item>expiration [DateTime]: [EXPANDABLE] masked card expiration DateTime. Expand to unmask the value. ex: DateTime(2020, 3, 10, 10, 30, 0, 0).</item>

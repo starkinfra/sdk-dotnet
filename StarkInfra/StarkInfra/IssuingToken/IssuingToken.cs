@@ -31,9 +31,8 @@ namespace StarkInfra
     ///     <item>DeviceOsVersion [string]: device operational system version used for tokenization. ex: "4.4.4"</item>
     ///     <item>DeviceImei [string]: device imei used for tokenization. ex: "352099001761481"</item>
     ///     <item>WalletInstanceID [string]: unique id refered to the wallet app in the current device. ex: "71583be4777eb89aaf0345eebeb82594f096615ed17862d0"</item>
-    ///     <item>Url [string]: token URL. ex: "https://token.starkinfra.com/5656565656565656"</item>
-    ///     <item>WalletDeviceScore [float]: wallet device score. ex: 7.6</item>
-    ///     <item>WalletAccountScore [float]: wallet account score. ex: 7.6</item>
+    ///     <item>WalletDeviceScore [float]: Device score informed by the digital wallet.</item>
+    ///     <item>WalletAccountScore [float]: Account score informed by the digital wallet</item>
     ///     <item>Updated [DateTime]: latest update datetime for the IssuingToken. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>Created [DateTime]: creation datetime for the IssuingToken. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
@@ -56,7 +55,6 @@ namespace StarkInfra
         public string DeviceOsVersion { get; }
         public string DeviceImei { get; }
         public string WalletInstanceID { get; }
-        public string Url { get; }
         public double? WalletDeviceScore { get; }
         public double? WalletAccountScore { get; }
         public DateTime? Updated { get; }
@@ -76,9 +74,8 @@ namespace StarkInfra
         ///     <item>merchantID [string]: merchant unique id. ex: "5656565656565656"</item>
         ///     <item>updated [DateTime]: latest update datetime for the IssuingToken. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>created [DateTime]: creation datetime for the IssuingToken. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
-        ///     <item>url [string]: token URL. ex: "https://token.starkinfra.com/5656565656565656"</item>
-        ///     <item>walletDeviceScore [float]: wallet device score. ex: 7.6</item>
-        ///     <item>walletAccountScore [float]: wallet account score. ex: 7.6</item>
+        ///     <item>walletDeviceScore [float]: Device score informed by the digital wallet.</item>
+        ///     <item>walletAccountScore [float]: Account score informed by the digital wallet</item>
         /// </list>
         /// Attributes (authorization request only):
         /// <list>
@@ -100,7 +97,7 @@ namespace StarkInfra
             string merchantID = null, string externalID = null, List<string> tags = null, string status = null,
             string activationCode = null, string methodCode = null, string deviceType = null, string deviceName = null,
             string deviceSerialNumber = null, string deviceOsName = null, string deviceOsVersion = null, string deviceImei = null,
-            string walletInstanceID = null, string url = null, double? walletDeviceScore = null, double? walletAccountScore = null,
+            string walletInstanceID = null, double? walletDeviceScore = null, double? walletAccountScore = null,
             DateTime? updated = null, DateTime? created = null
         ) : base(id)
         {
@@ -120,7 +117,6 @@ namespace StarkInfra
             DeviceOsVersion = deviceOsVersion;
             DeviceImei = deviceImei;
             WalletInstanceID = walletInstanceID;
-            Url = url;
             WalletDeviceScore = walletDeviceScore;
             WalletAccountScore = walletAccountScore;
             Updated = updated;
@@ -468,7 +464,6 @@ namespace StarkInfra
             string deviceOsVersion = json.deviceOsVersion;
             string deviceImei = json.deviceImei;
             string walletInstanceID = json.walletInstanceId;
-            string url = json.url;
             double? walletDeviceScore = json.walletDeviceScore;
             double? walletAccountScore = json.walletAccountScore;
             string updatedString = json.updated;
@@ -481,7 +476,7 @@ namespace StarkInfra
                 externalID: externalID, tags: tags, status: status, activationCode: activationCode, methodCode: methodCode,
                 deviceType: deviceType, deviceName: deviceName, deviceSerialNumber: deviceSerialNumber,
                 deviceOsName: deviceOsName, deviceOsVersion: deviceOsVersion, deviceImei: deviceImei,
-                walletInstanceID: walletInstanceID, url: url, walletDeviceScore: walletDeviceScore,
+                walletInstanceID: walletInstanceID, walletDeviceScore: walletDeviceScore,
                 walletAccountScore: walletAccountScore, updated: updated, created: created
             );
         }
