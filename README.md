@@ -32,10 +32,15 @@ This SDK version is compatible with the Stark Infra API v2.
         - [StockRule](#create-issuingstockrules): Create notification rules for a specific IssuingStock object
         - [EmbossingRequest](#create-issuingembossingrequests): Create embossing requests
         - [Purchases](#process-purchase-authorizations): Authorize and view your past purchases
+        - [Tokens](#query-issuingtokens): Manage the digital wallet tokens bound to your cards
+        - [TokenRequests](#create-an-issuingtokenrequest): Generate the payload to proceed with card tokenization
+        - [TokenDesigns](#query-issuingtokendesigns): View the token designs available for card tokenization
         - [Invoices](#create-issuinginvoices): Add money to your issuing balance
         - [Withdrawals](#create-issuingwithdrawals): Send money back to your Workspace from your issuing balance
         - [Balance](#get-your-issuingbalance): View your issuing balance
         - [Transactions](#query-issuingtransactions): View the transactions that have affected your issuing balance
+        - [BillingInvoices](#query-issuingbillinginvoices): View the invoices generated to collect your issuing usage
+        - [BillingTransactions](#query-issuingbillingtransactions): View the transactions that compose your issuing billing invoices
         - [Enums](#issuing-enums): Query enums related to the issuing purchases, such as merchant categories, countries and card purchase methods
     - [Pix](#pix)
         - [PixRequests](#create-pixrequests): Create Pix transactions
@@ -499,6 +504,7 @@ List<StarkInfra.IssuingCard> cards = StarkInfra.IssuingCard.Create(
             holderName : "Developers",
             holderTaxID : "012.345.678-90",
             holderExternalID : "672",
+            productID : "52233227",
             rules: new List<StarkInfra.IssuingRule> {
                 new StarkInfra.IssuingRule(
                     name: "general",
@@ -1058,6 +1064,24 @@ StarkInfra.IssuingPurchase purchase = StarkInfra.IssuingPurchase.Get("5642359077
 Console.Write(purchase);
 ```
 
+### Read IssuingPurchase fields
+
+A retrieved IssuingPurchase exposes the card product, installment, merchant category type, description and holder fields.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IssuingPurchase purchase = StarkInfra.IssuingPurchase.Get("5642359077339136");
+
+Console.Write(purchase.ProductID);
+Console.Write(purchase.InstallmentCount);
+Console.Write(purchase.MerchantCategoryType);
+Console.Write(purchase.Description);
+Console.Write(purchase.HolderID);
+```
+
 ### Query IssuingPurchase logs
 
 You can query purchase logs to better understand purchase life cycles.
@@ -1088,6 +1112,184 @@ using StarkInfra;
 StarkInfra.IssuingPurchase.Log log = StarkInfra.IssuingPurchase.Log.Get("6428086769811456");
 
 Console.Write(log);
+```
+
+
+### Query IssuingTokens
+
+You can get a list of created IssuingTokens given some filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.IssuingToken> tokens = StarkInfra.IssuingToken.Query(
+    limit: 10,
+    status: new List<string> { "active" }
+);
+
+foreach (StarkInfra.IssuingToken token in tokens)
+{
+    Console.Write(token);
+}
+```
+
+### Page IssuingTokens
+
+You can manually page IssuingTokens given some filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+(List<StarkInfra.IssuingToken> page, string cursor) = StarkInfra.IssuingToken.Page(limit: 5);
+
+foreach (StarkInfra.IssuingToken token in page)
+{
+    Console.Write(token);
+}
+```
+
+### Get an IssuingToken
+
+After its creation, information on an IssuingToken may be retrieved by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IssuingToken token = StarkInfra.IssuingToken.Get("5353197895942144");
+
+Console.Write(token);
+```
+
+### Update an IssuingToken
+
+You can update a specific IssuingToken by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IssuingToken token = StarkInfra.IssuingToken.Update("5353197895942144", status: "blocked");
+
+Console.Write(token);
+```
+
+### Cancel an IssuingToken
+
+You can also cancel an IssuingToken by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IssuingToken token = StarkInfra.IssuingToken.Cancel("5353197895942144");
+
+Console.Write(token);
+```
+
+### Process Token authorizations
+
+It's possible to process tokenization and activation requests that arrived at your endpoint.
+Parse and verify the event, then build the response with the helpers.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IssuingToken token = StarkInfra.IssuingToken.Parse(
+    content: content,
+    signature: signature
+);
+
+string authorizationResponse = StarkInfra.IssuingToken.ResponseAuthorization(status: "approved");
+
+string activationResponse = StarkInfra.IssuingToken.ResponseActivation(status: "approved");
+```
+
+
+### Create an IssuingTokenRequest
+
+You can create an IssuingTokenRequest to generate the payload needed to proceed with the card tokenization.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IssuingTokenRequest request = StarkInfra.IssuingTokenRequest.Create(
+    new StarkInfra.IssuingTokenRequest(
+        cardId: "5734340247945216",
+        walletId: "google",
+        methodCode: "app"
+    )
+);
+
+Console.Write(request);
+```
+
+
+### Query IssuingTokenDesigns
+
+You can get a list of available token designs given some filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+IEnumerable<StarkInfra.IssuingTokenDesign> designs = StarkInfra.IssuingTokenDesign.Query(limit: 10);
+
+foreach (StarkInfra.IssuingTokenDesign design in designs) {
+    Console.Write(design);
+}
+```
+
+### Page IssuingTokenDesigns
+
+You can manually page token designs by passing the cursor returned on the previous call.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+(List<StarkInfra.IssuingTokenDesign> page, string cursor) = StarkInfra.IssuingTokenDesign.Page(limit: 5);
+
+foreach (StarkInfra.IssuingTokenDesign design in page) {
+    Console.Write(design);
+}
+```
+
+### Get an IssuingTokenDesign
+
+Information on a token design may be retrieved by its id.
+
+```c#
+using System;
+
+StarkInfra.IssuingTokenDesign design = StarkInfra.IssuingTokenDesign.Get("5353197895942144");
+
+Console.Write(design);
+```
+
+### Get an IssuingTokenDesign pdf
+
+You can also retrieve the pdf file of a specific token design by its id.
+
+```c#
+using System;
+
+byte[] pdf = StarkInfra.IssuingTokenDesign.Pdf("5353197895942144");
+
+System.IO.File.WriteAllBytes("issuingtokendesign.pdf", pdf);
 ```
 
 
@@ -1285,6 +1487,124 @@ using StarkInfra;
 StarkInfra.IssuingTransaction transaction = StarkInfra.IssuingTransaction.Get("6539944898068480");
 
 Console.Write(transaction);
+```
+
+### Query IssuingBillingInvoices
+
+You can get a list of issuing billing invoices given some filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.IssuingBillingInvoice> invoices = StarkInfra.IssuingBillingInvoice.Query(
+    after: new DateTime(2022, 1, 1),
+    before: new DateTime(2022, 3, 1)
+);
+
+foreach (StarkInfra.IssuingBillingInvoice invoice in invoices)
+{
+    Console.Write(invoice);
+}
+```
+
+### Get an IssuingBillingInvoice
+
+After its creation, information on an issuing billing invoice may be retrieved by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IssuingBillingInvoice invoice = StarkInfra.IssuingBillingInvoice.Get("5656565656565656");
+
+Console.Write(invoice);
+```
+
+### Page IssuingBillingInvoices
+
+You can manually page issuing billing invoices to control your own page cursor.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+List<StarkInfra.IssuingBillingInvoice> page;
+string cursor = null;
+
+(page, cursor) = StarkInfra.IssuingBillingInvoice.Page(limit: 5, cursor: cursor);
+
+foreach (StarkInfra.IssuingBillingInvoice invoice in page)
+{
+    Console.Write(invoice);
+}
+```
+
+### Query IssuingBillingTransactions
+
+You can get a list of issuing billing transactions given some filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.IssuingBillingTransaction> transactions = StarkInfra.IssuingBillingTransaction.Query(
+    after: new DateTime(2022, 1, 1),
+    before: new DateTime(2022, 3, 1)
+);
+
+foreach (StarkInfra.IssuingBillingTransaction transaction in transactions)
+{
+    Console.Write(transaction);
+}
+```
+
+### Query IssuingBillingTransactions by invoice
+
+You can filter the transactions that compose a specific issuing billing invoice.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.IssuingBillingTransaction> transactions = StarkInfra.IssuingBillingTransaction.Query(
+    invoiceID: "5656565656565656"
+);
+
+foreach (StarkInfra.IssuingBillingTransaction transaction in transactions)
+{
+    Console.Write(transaction);
+}
+```
+
+### Page IssuingBillingTransactions
+
+You can manually page issuing billing transactions to control your own page cursor.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+List<StarkInfra.IssuingBillingTransaction> page;
+string cursor = null;
+
+(page, cursor) = StarkInfra.IssuingBillingTransaction.Page(limit: 5, cursor: cursor);
+
+foreach (StarkInfra.IssuingBillingTransaction transaction in page)
+{
+    Console.Write(transaction);
+}
 ```
 
 ### Issuing Enums

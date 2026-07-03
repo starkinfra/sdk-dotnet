@@ -70,6 +70,11 @@
     <Folder Include="IssuingTransaction\" />
     <Folder Include="IssuingInvoice\" />
     <Folder Include="IssuingWithdrawal\" />
+    <Folder Include="IssuingBillingInvoice\" />
+    <Folder Include="IssuingBillingTransaction\" />
+    <Folder Include="IssuingToken\" />
+    <Folder Include="IssuingTokenRequest\" />
+    <Folder Include="IssuingTokenDesign\" />
     <Folder Include="MerchantCategory\" />
     <Folder Include="MerchantCountry\" />
     <Folder Include="StaticBrcode\" />
