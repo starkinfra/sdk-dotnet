@@ -28,6 +28,7 @@ namespace StarkInfra
         public string City { get; }
         public string State { get; }
         public string ZipCode { get; }
+        public string Complement { get; }
 
         /// <summary>
         /// Address object
@@ -42,7 +43,7 @@ namespace StarkInfra
         ///     <item>zipCode [string]: ZIP code (BR CEP). ex: "05724005"</item>
         /// </list>
         /// </summary>
-        public Address(string street, string number, string neighborhood, string city, string state, string zipCode)
+        public Address(string street, string number, string neighborhood, string city, string state, string zipCode, string complement = null)
         {
             Street = street;
             Number = number;
@@ -50,6 +51,7 @@ namespace StarkInfra
             City = city;
             State = state;
             ZipCode = zipCode;
+            Complement = complement;
         }
 
         internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
@@ -71,11 +73,11 @@ namespace StarkInfra
             string city = json.city;
             string state = json.state;
             string zipCode = json.zipCode;
+            string complement = json.complement;
 
             return new Address(
                 street: street, number: number, neighborhood: neighborhood,
-                city: city, state: state, zipCode: zipCode
-            );
+                city: city, state: state, zipCode: zipCode, complement: complement);
         }
     }
 }

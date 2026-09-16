@@ -22,11 +22,13 @@ namespace StarkInfra
     ///     <item>TaxID [string]: Brazilian CPF. ex: "012.345.678-90" or "01234567890"</item>
     ///     <item>Address [Address]: structured residential address.</item>
     ///     <item>Income [integer]: monthly income in cents. ex: 1000000 (= R$ 10,000.00)</item>
+    ///     <item>BirthDate [DateTime, default null]: individual's birth date. ex: DateTime(2012, 3, 6)</item>
     ///     <item>Tags [list of strings, default null]: list of strings for reference when searching for IndividualAccountRequests. ex: new List<string>{ "employees", "monthly" }</item>
     ///     <item>ID [string]: unique id returned when the IndividualAccountRequest is created. ex: "5189530608992256"</item>
-    ///     <item>Status [string]: current IndividualAccountRequest status. Options: "approved", "created", "denied", "processing", "updated"</item>
+    ///     <item>Status [string]: current IndividualAccountRequest status. Options: "created", "processing", "approved", "denied", "failed"</item>
     ///     <item>AccountType [string]: account-request kind. Always "individual" for this resource.</item>
-    ///     <item>Flags [list of strings]: server-side review flags.</item>
+    ///     <item>Flags [list of dictionaries]: flags raised by the KYC pipeline, populated when the request is denied. Each flag has a code and a message.</item>
+    ///     <item>ValidatorLink [string]: webview link to be delivered to the taker to complete biometrics and document capture.</item>
     ///     <item>Created [DateTime]: creation DateTime for the IndividualAccountRequest. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>Updated [DateTime]: latest update DateTime for the IndividualAccountRequest. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
@@ -37,10 +39,12 @@ namespace StarkInfra
         public string TaxID { get; }
         public Address Address { get; }
         public long Income { get; }
+        public DateTime? BirthDate { get; }
         public List<string> Tags { get; }
         public string Status { get; }
         public string AccountType { get; }
-        public List<string> Flags { get; }
+        public List<Dictionary<string, object>> Flags { get; }
+        public string ValidatorLink { get; }
         public DateTime? Created { get; }
         public DateTime? Updated { get; }
 
@@ -63,7 +67,7 @@ namespace StarkInfra
         /// Attributes (return-only):
         /// <list>
         ///     <item>id [string]: unique id returned when the IndividualAccountRequest is created. ex: "5189530608992256"</item>
-        ///     <item>status [string]: current IndividualAccountRequest status. Options: "approved", "created", "denied", "processing", "updated"</item>
+        ///     <item>status [string]: current IndividualAccountRequest status. Options: "created", "processing", "approved", "denied", "failed"</item>
         ///     <item>accountType [string]: account-request kind. Always "individual" for this resource.</item>
         ///     <item>flags [list of strings]: server-side review flags.</item>
         ///     <item>created [DateTime]: creation DateTime for the IndividualAccountRequest. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
@@ -71,19 +75,21 @@ namespace StarkInfra
         /// </list>
         /// </summary>
         public IndividualAccountRequest(
-            string name, string taxID, Address address, long income, List<string> tags = null,
-            string id = null, string status = null, string accountType = null, List<string> flags = null,
-            DateTime? created = null, DateTime? updated = null
+            string name, string taxID, Address address, long income, DateTime? birthDate = null, List<string> tags = null,
+            string id = null, string status = null, string accountType = null, List<Dictionary<string, object>> flags = null,
+            string validatorLink = null, DateTime? created = null, DateTime? updated = null
         ) : base(id)
         {
             Name = name;
             TaxID = taxID;
             Address = address;
             Income = income;
+            BirthDate = birthDate;
             Tags = tags;
             Status = status;
             AccountType = accountType;
             Flags = flags;
+            ValidatorLink = validatorLink;
             Created = created;
             Updated = updated;
         }
@@ -299,7 +305,7 @@ namespace StarkInfra
         /// </list>
         /// </summary>
         public static IndividualAccountRequest Update(string id, string name = null, string taxID = null, Address address = null,
-            long? income = null, string status = null, List<string> tags = null, User user = null)
+            long? income = null, DateTime? birthDate = null, string status = null, List<string> tags = null, User user = null)
         {
             (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.PatchId(
@@ -311,6 +317,7 @@ namespace StarkInfra
                     { "taxId", taxID },
                     { "address", address },
                     { "income", income },
+                    { "birthDate", birthDate },
                     { "status", status },
                     { "tags", tags }
                 },
@@ -329,19 +336,22 @@ namespace StarkInfra
             string taxID = json.taxId;
             Address address = Address.Parse(json.address);
             long income = json.income;
+            string birthDateString = json.birthDate;
+            DateTime? birthDate = string.IsNullOrEmpty(birthDateString) ? (DateTime?)null : StarkCore.Utils.Checks.CheckDateTime(birthDateString);
             List<string> tags = json.tags is null ? new List<string> { } : json.tags.ToObject<List<string>>();
             string id = json.id;
             string status = json.status;
             string accountType = json.accountType;
-            List<string> flags = json.flags is null ? new List<string> { } : json.flags.ToObject<List<string>>();
+            List<Dictionary<string, object>> flags = json.flags is null ? new List<Dictionary<string, object>> { } : json.flags.ToObject<List<Dictionary<string, object>>>();
+            string validatorLink = json.validatorLink;
             string createdString = json.created;
             DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
             DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
 
             return new IndividualAccountRequest(
-                name: name, taxID: taxID, address: address, income: income, tags: tags,
-                id: id, status: status, accountType: accountType, flags: flags,
+                name: name, taxID: taxID, address: address, income: income, birthDate: birthDate, tags: tags,
+                id: id, status: status, accountType: accountType, flags: flags, validatorLink: validatorLink,
                 created: created, updated: updated
             );
         }
