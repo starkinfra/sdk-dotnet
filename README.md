@@ -33,6 +33,7 @@ This SDK version is compatible with the Stark Infra API v2.
         - [EmbossingRequest](#create-issuingembossingrequests): Create embossing requests
         - [Purchases](#process-purchase-authorizations): Authorize and view your past purchases
         - [Tokens](#query-issuingtokens): Manage the digital wallet tokens bound to your cards
+        - [TokenActivation](#process-token-activations): Get notified on how to inform the activation code to the holder
         - [TokenRequests](#create-an-issuingtokenrequest): Generate the payload to proceed with card tokenization
         - [TokenDesigns](#query-issuingtokendesigns): View the token designs available for card tokenization
         - [Invoices](#create-issuinginvoices): Add money to your issuing balance
@@ -1239,6 +1240,25 @@ StarkInfra.IssuingToken token = StarkInfra.IssuingToken.Parse(
 string authorizationResponse = StarkInfra.IssuingToken.ResponseAuthorization(status: "approved");
 
 string activationResponse = StarkInfra.IssuingToken.ResponseActivation(status: "approved");
+```
+
+
+### Process Token activations
+
+It's easy to process token activation notifications delivered to your endpoint.
+Remember to pass the signature header so the SDK can make sure it's Stark Infra that sent you the event.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IssuingTokenActivation activation = StarkInfra.IssuingTokenActivation.Parse(
+    content: content,
+    signature: signature
+);
+
+Console.Write(activation);
 ```
 
 
