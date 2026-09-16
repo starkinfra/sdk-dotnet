@@ -76,7 +76,7 @@ namespace StarkInfra
         ///     <item>branchCode [string]: branch code of the account claiming the PixKey. ex: 1234".</item>
         ///     <item>name [string]: holder's name of the account claiming the PixKey. ex: "Jamie Lannister".</item>
         ///     <item>taxID [string]: holder's taxID of the account claiming the PixKey (CPF/CNPJ). ex: "012.345.678-90".</item>
-        ///     <item>keyID [string]: id of the registered PixKey to be claimed. Allowed keyTypes are CPF, CNPJ, phone number or email. ex: "+5511989898989".</item>
+        ///     <item>keyID [string]: id of the registered PixKey to be claimed. Allowed keyTypes are CPF, CNPJ, phone number, email or evp. ex: "+5511989898989".</item>
         /// </list>
         /// Parameters (optional):
         /// <list>
@@ -126,6 +126,7 @@ namespace StarkInfra
         /// <br/>
         /// Create a Pix Claim to request the transfer of a Pix Key from an account 
         /// hosted at another Pix participant to an account under your bank code.
+        /// An ownership claim changes the holder of a Pix Key and is only allowed for the phone keyType. A portability claim changes the linked account without changing the holder, and is allowed for phone, email or taxId (CPF/CNPJ) keyTypes.
         /// <br/>
         /// Parameters (required):
         /// <list>
@@ -333,7 +334,7 @@ namespace StarkInfra
         /// <summary>
         /// Update PixClaim entity
         /// <br/>
-        /// Update a PixClaim by passing id.
+        /// Confirm or cancel an incoming PixClaim by passing id. You must answer an inbound PixClaim within 7 days of its status changing to "delivered"; if unanswered, a portability claim is rejected by default and an ownership claim is accepted by default (both with reason "defaultBehavior"). You can only confirm claims with "delivered" status, and confirming deletes the referenced PixKey from Stark Infra and the Central Bank. You can only cancel claims with "delivered" or "confirmed" status.
         /// <br/>
         /// Parameters (required):
         /// <list>

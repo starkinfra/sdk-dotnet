@@ -389,7 +389,7 @@ namespace StarkInfra
         /// <summary>
         /// Cancel a CreditNote entity
         /// <br/>
-        /// Cancel a CreditNote entity previously created in the Stark Infra API
+        /// Cancel a CreditNote entity that has not reached a final status yet. Notes with status "created", "signed" or "processing" can be canceled, which also cancels the signing document. Notes with status "success", "failed", "expired" or already "canceled" are returned unchanged.
         /// <br/>
         /// Parameters(required):
         /// <list>

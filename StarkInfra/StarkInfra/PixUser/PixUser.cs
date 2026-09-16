@@ -19,6 +19,25 @@ namespace StarkInfra
 
         }
 
+        /// <summary>
+        /// Retrieve a PixUser object
+        /// <br/>
+        /// Retrieve a user's aggregated Pix statistics (Pix keys, Pix requests, frauds and infractions) by their tax id.
+        /// <br/>
+        /// Parameters (required):
+        /// <list>
+        ///     <item>id [string]: user's tax ID (CPF/CNPJ). ex: "012.345.678-90"</item>
+        /// </list>
+        /// Parameters (optional):
+        /// <list>
+        ///     <item>keyId [string, default null]: PixKey id to scope the statistics to a specific key.</item>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        /// </list>
+        /// Return:
+        /// <list>
+        ///     <item>PixUser object with a list of Statistic objects. Each Statistic has a `source` ("pix-key", "pix-fraud", "pix-request", "pix-infraction") and a `type` whose valid values depend on the source: "registered"/"unique" (pix-key); "settled" (pix-request); "identity"/"mule"/"scam"/"other"/"unknown"/"amount"/"unique" (pix-fraud); "open"/"denied"/"unique" (pix-infraction).</item>
+        /// </list>
+        /// </summary>
         public static PixUser Get(string id, string keyId = null, User user = null)
         {
             (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();

@@ -25,7 +25,7 @@ namespace StarkInfra
     ///     <item>TaxID [string]: individual's tax ID (CPF). ex: "594.739.480-42"</item>
     ///     <item>Tags [list of strings, default []]: list of strings for reference when searching for IndividualIdentities. ex: List<string>{ "employees", "monthly" }</item>
     ///     <item>Id [string]: unique id returned when the IndividualIdentity is created. ex: "5656565656565656"</item>
-    ///     <item>Status [string]: current status of the IndividualIdentity. ex: "created", "canceled", "processing", "failed", "success"</item>
+    ///     <item>Status [string]: current status of the IndividualIdentity. ex: "created", "processing", "pending", "success", "failed" — "canceled" is not a valid value.</item>
     ///     <item>Created [DateTime]: creation DateTime for the IndividualIdentity. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
     /// </summary>
@@ -63,7 +63,7 @@ namespace StarkInfra
         /// Attributes (return-only):
         /// <list>
         ///     <item>id [string]: unique id returned when IndividualIdentity is created. ex: "5656565656565656"</item>
-        ///     <item>status [string]: current status of the IndividualIdentity. ex: "created", "canceled", "processing", "failed", "success"</item>
+        ///     <item>status [string]: current status of the IndividualIdentity. ex: "created", "processing", "pending", "success", "failed" — "canceled" is not a valid value.</item>
         ///     <item>created [DateTime]: creation DateTime for the IndividualIdentity. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
@@ -304,7 +304,7 @@ namespace StarkInfra
         /// <summary>
         /// Cancel an IndividualIdentity entity
         /// <br/>
-        /// Cancel an IndividualIdentity entity previously created in the Stark Infra API
+        /// Cancel an IndividualIdentity entity previously created in the Stark Infra API (soft delete). Only identities in "created" or "pending" status can be canceled; the identity transitions to "failed", every pending proof is canceled, and a "canceled" log is delivered through the webhook.
         /// <br/>
         /// Parameters(required):
         /// <list>

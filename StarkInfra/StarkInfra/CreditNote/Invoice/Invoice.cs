@@ -23,8 +23,8 @@ namespace StarkInfra
     ///     <item>TaxID [string]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"</item>
     ///     <item>Pdf [string]: public Invoice PDF URL. ex: "https://invoice.starkbank.com/pdf/d454fa4e524441c1b0c1a729457ed9d8"</item>
     ///     <item>Link [string]: public Invoice webpage URL. ex: "https://my-workspace.sandbox.starkbank.com/invoicelink/d454fa4e524441c1b0c1a729457ed9d8"</item>
-    ///     <item>Fine [float]: Invoice fine for overdue payment in %. ex: 2.5</item>
-    ///     <item>Interest [float]: Invoice monthly interest for overdue payment in %. ex: 5.2</item>
+    ///     <item>Fine [float, default 2.0]: Invoice fine for overdue payment, in %, applied equally to every invoice of the CreditNote. ex: 2.5</item>
+    ///     <item>Interest [float, default 1.0]: Invoice monthly interest for overdue payment, in %, applied equally to every invoice of the CreditNote. ex: 1.5</item>
     ///     <item>NominalAmount [integer]: Invoice emission value in cents (will change if invoice is updated, but not if it's paid). ex: 400000</item>
     ///     <item>FineAmount [integer]: Invoice fine value calculated over nominalAmount. ex: 20000</item>
     ///     <item>InterestAmount [integer]: Invoice interest value calculated over nominalAmount. ex: 10000</item>
@@ -78,6 +78,8 @@ namespace StarkInfra
         ///     <item>expiration [integer, default 5097600 (59 days)]: time interval in seconds between due date and expiration date. ex: 123456789</item>
         ///     <item>tags [list of strings, default null]: list of strings for tagging</item>
         ///     <item>descriptions [list of CreditNote.Invoice.Description objects, default null]: list of Description objects or dictionaries with "key":string and (optional) "value":string pairs</item>
+        ///     <item>fine [float, default 2.0]: Invoice fine for overdue payment, in %, applied equally to every invoice of the CreditNote. ex: 2.5</item>
+        ///     <item>interest [float, default 1.0]: Invoice monthly interest for overdue payment, in %, applied equally to every invoice of the CreditNote. ex: 1.5</item>
         /// </list>
         /// Attributes (return-only):
         /// <list>
@@ -86,8 +88,6 @@ namespace StarkInfra
         ///     <item>taxID [string]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"</item>
         ///     <item>pdf [string]: public Invoice PDF URL. ex: "https://invoice.starkbank.com/pdf/d454fa4e524441c1b0c1a729457ed9d8"</item>
         ///     <item>link [string]: public Invoice webpage URL. ex: "https://my-workspace.sandbox.starkbank.com/invoicelink/d454fa4e524441c1b0c1a729457ed9d8"</item>
-        ///     <item>fine [float]: Invoice fine for overdue payment in %. ex: 2.5</item>
-        ///     <item>interest [float]: Invoice monthly interest for overdue payment in %. ex: 5.2</item>
         ///     <item>nominalAmount [integer]: Invoice emission value in cents (will change if invoice is updated, but not if it's paid). ex: 400000</item>
         ///     <item>fineAmount [integer]: Invoice fine value calculated over nominalAmount. ex: 20000</item>
         ///     <item>interestAmount [integer]: Invoice interest value calculated over nominalAmount. ex: 10000</item>

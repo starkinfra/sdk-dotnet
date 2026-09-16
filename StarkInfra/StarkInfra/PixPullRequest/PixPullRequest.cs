@@ -67,7 +67,7 @@ namespace StarkInfra
         /// <summary>
         /// PixPullRequest object
         /// <br/>
-        /// A PixPullRequest is a command sent to the payer's bank to trigger the automatic debit linked to an active PixPullSubscription.
+        /// A PixPullRequest is a command sent to the payer's bank to trigger the automatic debit linked to an active PixPullSubscription. Stark Infra verifies that the subscription is approved, the amount is within its authorized limit, the settlement date (due) matches the subscription's charge cycle, payer/receiver details match the contract, the request is made between 10 and 2 days before settlement, and there is no other scheduled request for the same cycle.
         /// <br/>
         /// Parameters (required):
         /// <list>
@@ -83,7 +83,7 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>attemptType [string, default null]: pull attempt type. ex: "default", "retry"</item>
+        ///     <item>attemptType [string, default null]: pull attempt type. ex: "default", "scheduledRetry", "instantRetry"</item>
         ///     <item>description [string, default null]: free text description of the payment. ex: "Payment for service rendered"</item>
         ///     <item>receiverBranchCode [string, default null]: receiver bank account branch code. ex: "1357-9"</item>
         ///     <item>tags [list of strings, default null]: list of strings for reference when searching for PixPullRequests. ex: new List<string>{ "employees", "monthly" }</item>
@@ -303,7 +303,7 @@ namespace StarkInfra
         /// <summary>
         /// Update a PixPullRequest
         /// <br/>
-        /// Update a PixPullRequest by passing its id.
+        /// Schedule or deny a PixPullRequest by passing its id. Only the payer may update a pull request.
         /// <br/>
         /// Parameters (required):
         /// <list>
@@ -311,7 +311,7 @@ namespace StarkInfra
         ///     <item>patchData [Dictionary<string, object>]: dictionary containing the attributes to be updated. ex: new Dictionary<string, object>{ { "status", "approved" }, { "senderCityCode", "3550308" } }
         ///         <list>
         ///             <item>Parameters (required):</item>
-        ///             <item>status [string]: New status of the Pix Pull Request.</item>
+        ///             <item>status [string]: New status of the PixPullRequest. Options: "scheduled", "denied"</item>
         ///             <item>Parameters (conditionally required):</item>
         ///             <item>reason [string]: Reason why the Pix Pull Request is being denied. Options: "senderAccountClosed", "senderAccountBlocked", "amountNotAllowed"</item>
         ///         </list>
@@ -348,7 +348,7 @@ namespace StarkInfra
         /// Parameters (required):
         /// <list>
         ///     <item>id [string]: PixPullRequest unique id. ex: "5656565656565656"</item>
-        ///     <item>reason [string]: reason why the PixPullRequest is being canceled. Options for the receiver: "accountClosed", "receiverOrganizationClosed", "receiverInternalError", "fraud", "receiverUserRequested". Options for the sender: "accountClosed", "senderDeceased", "fraud", "senderUserRequested"</item>
+        ///     <item>reason [string]: cancellation reason. As sender: "accountClosed", "accountBlocked", "pixRequestFailed", "other", "senderUserRequested". As receiver: "accountClosed", "accountBlocked", "other", "receiverUserRequested"</item>
         /// </list>
         /// <br/>
         /// Parameters (optional):

@@ -9,7 +9,7 @@ namespace StarkInfra
     /// <summary>
     /// Webhook object
     /// <br/>
-    /// A Webhook is used to subscribe to notification events on a user-selected endpoint.
+    /// A Webhook is used to subscribe to notification events on a user-selected endpoint. If your endpoint does not return HTTP 200, Stark Infra retries at most 3 times, at 5, 30 and 120 minute intervals. We strongly recommend running a daily task that fetches undelivered Events (isDelivered=false) and marks them delivered, for redundancy.
     /// Currently, available services for subscription are contract, credit-note, signer, issuing-card, issuing-invoice, issuing-purchase, pix-request.in, pix-request.out, pix-reversal.in, pix-reversal.out, pix-claim, pix-key, pix-chargeback, pix-infraction, pix-dispute, pix-pull-subscription, pix-pull-request
     /// <br/>
     /// Parameters (required):
@@ -187,7 +187,7 @@ namespace StarkInfra
         /// <summary>
         /// Delete a Webhook entity
         /// <br/>
-        /// Delete a Webhook entity previously created in the Stark Infra API
+        /// Delete a Webhook entity previously created in the Stark Infra API. This action cannot be undone.
         /// <br/>
         /// Parameters(required):
         /// <list>

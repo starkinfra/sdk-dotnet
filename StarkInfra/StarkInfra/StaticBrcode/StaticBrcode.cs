@@ -19,7 +19,7 @@ namespace StarkInfra
     /// <list>
     ///     <item>Name [string]: receiver's name. ex: "Tony Stark"</item>
     ///     <item>KeyID [string]: receiver's PixKey id. ex: "+5541999999999"</item>
-    ///     <item>City [string, default São Paulo]: receiver's city name. ex: "Rio de Janeiro"</item>
+    ///     <item>City [string]: receiver's city name. ex: "Rio de Janeiro"</item>
     ///     <item>Amount [integer, default 0]: positive integer that represents the amount in cents of the resulting Pix transaction. If the amount is zero, the sender can choose any amount in the moment of payment. ex: 1234 (= R$ 12.34)</item>
     ///     <item>ReconciliationID [string, default ""]: id to be used for conciliation of the resulting Pix transaction. This id must have up to 25 alphanumeric digits ex: "ah27s53agj6493hjds6836v49"</item>
     ///     <item>Tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "travel", "food" }</item>

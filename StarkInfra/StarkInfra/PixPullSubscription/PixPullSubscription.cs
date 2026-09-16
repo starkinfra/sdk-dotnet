@@ -94,6 +94,7 @@ namespace StarkInfra
         ///     <item>senderBranchCode [string]: sender bank account branch code. ex: "1357-9"</item>
         ///     <item>senderTaxID [string]: sender tax id (CPF/CNPJ). ex: "01234567890"</item>
         ///     <item>type [string]: subscription type. Options: "push", "qrcode", "qrcodeAndPayment", "paymentAndOrQrcode"</item>
+        ///     <item>referenceCode [string]: reference code of the subscription. Required — commercial-relation identifier. ex: "ref-1234"</item>
         /// </list>
         /// <br/>
         /// Parameters (conditionally required):
@@ -108,7 +109,6 @@ namespace StarkInfra
         ///     <item>due [DateTime, default null]: subscription due datetime. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>installmentEnd [DateTime, default null]: datetime when the recurring debits end. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>receiverBankCode [string, default null]: receiver bank code. ex: "20018183"</item>
-        ///     <item>referenceCode [string, default null]: reference code of the subscription. ex: "ref-1234"</item>
         ///     <item>pullRetryLimit [long, default null]: maximum number of retries allowed per cycle. ex: 3</item>
         ///     <item>senderCityCode [string, default null]: sender city code (IBGE). ex: "1100015"</item>
         ///     <item>senderFinalName [string, default null]: sender final beneficiary full name. ex: "Anthony Edward Stark"</item>
@@ -321,7 +321,7 @@ namespace StarkInfra
         /// <summary>
         /// Update a PixPullSubscription
         /// <br/>
-        /// Update a PixPullSubscription by passing its id.
+        /// Approve, deny or activate a PixPullSubscription by passing its id. The allowed status transitions depend on whether you are the payer or the receiver. When confirming a received subscription, include the senderCityCode field.
         /// <br/>
         /// Parameters (required):
         /// <list>
@@ -332,7 +332,7 @@ namespace StarkInfra
         ///             <item>status [string]: New status of the Pix Subscription.</item>
         ///             <item>Parameters (conditionally required):</item>
         ///             <item>senderCityCode [string]: IBGE Code of the payer's city. Required if you are confirming the subscription.</item>
-        ///             <item>reason [string]: Reason why the Pix Subscription is being patched. Options: "accountClosed", "accountBlocked", "invalidBranchCode", "notRecognizedBySender", "userRejected", "notOffered"</item>
+        ///             <item>reason [string]: Reason why the Pix Subscription is being patched. Options: "invalidSenderAccountNumber", "accountClosed", "accountBlocked", "invalidBranchCode", "notRecognizedBySender", "userRejected", "notOffered"</item>
         ///         </list>
         ///     </item>
         /// </list>
@@ -367,7 +367,7 @@ namespace StarkInfra
         /// Parameters (required):
         /// <list>
         ///     <item>id [string]: PixPullSubscription unique id. ex: "5656565656565656"</item>
-        ///     <item>reason [string]: reason why the PixPullSubscription is being canceled. Options for the receiver: "accountClosed", "receiverOrganizationClosed", "receiverInternalError", "fraud", "receiverUserRequested". Options for the sender: "accountClosed", "senderDeceased", "fraud", "senderUserRequested"</item>
+        ///     <item>reason [string]: reason why the PixPullSubscription is being canceled. Options for the receiver: "accountClosed", "receiverOrganizationClosed", "receiverInternalError", "fraud", "receiverUserRequested", "paymentNotFound". Options for the sender: "accountClosed", "senderDeceased", "fraud", "senderUserRequested"</item>
         /// </list>
         /// <br/>
         /// Parameters (optional):

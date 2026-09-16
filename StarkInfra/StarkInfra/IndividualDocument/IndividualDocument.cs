@@ -9,9 +9,7 @@ namespace StarkInfra
     /// <summary>
     /// IndividualDocument object
     /// <br/>
-    /// Individual documents are images containing either side of a document or a selfie
-    /// to be used in a matching validation. When created, they must be attached to an individual
-    /// identity to be used for its validation.
+    /// IndividualDocument is deprecated: the current API has no create (or any) endpoint for it. Use IndividualIdentity's validatorLink flow instead — IndividualIdentityProof entries are generated automatically as the holder submits proofs there and can only be listed and retrieved, never created directly.
     /// <br/>
     /// When you initialize a IndividualDocument, the entity will not be automatically
     /// created in the Stark Infra API. The 'create' function sends the objects
@@ -41,9 +39,7 @@ namespace StarkInfra
         /// <summary>
         /// IndividualDocument object
         /// <br/>
-        /// Individual documents are images containing either side of a document or a selfie
-        /// to be used in a matching validation. When created, they must be attached to an individual
-        /// identity to be used for its validation.
+        /// IndividualDocument is deprecated: the current API has no create (or any) endpoint for it. Use IndividualIdentity's validatorLink flow instead — IndividualIdentityProof entries are generated automatically as the holder submits proofs there and can only be listed and retrieved, never created directly.
         /// <br/>
         /// When you initialize a IndividualDocument, the entity will not be automatically
         /// created in the Stark Infra API. The 'create' function sends the objects
@@ -82,9 +78,7 @@ namespace StarkInfra
         /// <summary>
         /// IndividualDocument object
         /// <br/>
-        /// Individual documents are images containing either side of a document or a selfie
-        /// to be used in a matching validation. When created, they must be attached to an individual
-        /// identity to be used for its validation.
+        /// IndividualDocument is deprecated: the current API has no create (or any) endpoint for it. Use IndividualIdentity's validatorLink flow instead — IndividualIdentityProof entries are generated automatically as the holder submits proofs there and can only be listed and retrieved, never created directly.
         /// <br/>
         /// When you initialize a IndividualDocument, the entity will not be automatically
         /// created in the Stark Infra API. The 'create' function sends the objects

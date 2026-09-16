@@ -186,6 +186,7 @@ namespace StarkInfra
         ///     <item>parameters [dictionary]: Dictionary of parameters</item>
         ///     <list>
         ///         <item>endToEndID [string, default null]: central bank's unique transaction id. If the request results in the creation of a PixRequest, the same endToEndID should be used. If this parameter is not passed, one endToEndID will be automatically created. ex: "E00002649202201172211u34srod19le"</item>
+        ///         <item>expand [list of strings, default null]: entity fields to expand in the response. Options: "statistics", "ownerStatistics"</item>
         ///     </list>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>

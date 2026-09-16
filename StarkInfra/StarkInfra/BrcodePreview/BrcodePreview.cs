@@ -184,7 +184,11 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (required):
         /// <list>
-        ///     <item>previews [list of Dictionaries]: list of Dictionaries representing the BrcodePreview objects to be created in the API</item>
+        ///     <item>previews [list of Dictionaries]: list of Dictionaries representing the BrcodePreview objects to be created in the API
+        ///         <list>
+        ///             <item>cityCode [string, default null]: IBGE city code of the payer, with 7 digits. ex: "5300108"</item>
+        ///         </list>
+        ///     </item>
         /// </list>
         /// <br/>
         /// Parameters (optional):
