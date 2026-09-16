@@ -47,6 +47,7 @@ This SDK version is compatible with the Stark Infra API v2.
         - [PixDirector](#create-a-pixdirector): Create a Pix Director
         - [PixInfraction](#create-pixinfractions): Create Pix Infraction reports
         - [PixFraud](#create-pixfrauds): Create Pix Fraud reports
+        - [PixUser](#get-a-pixuser): Get fraud statistics of a user
         - [PixKeyHolmes](#create-pixkeyholmes): Investigate Pix Key registration status
         - [PixInternalTransactionReport](#create-pixinternaltransactionreports): Report transactions that happen outside the SPI
         - [PixChargeback](#create-pixchargebacks): Create Pix Chargeback requests
@@ -2303,6 +2304,20 @@ using StarkInfra;
 StarkInfra.PixFraud.Log log = StarkInfra.PixFraud.Log.Get("6307030096674816");
 
 Console.Write(log);
+```
+
+### Get a PixUser
+
+You can get the fraud statistics of a user by their tax ID.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.PixUser user = StarkInfra.PixUser.Get("01234567890");
+
+Console.Write(user);
 ```
 
 ### Create PixKeyHolmes
