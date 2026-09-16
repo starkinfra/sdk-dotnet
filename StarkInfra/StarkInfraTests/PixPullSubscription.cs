@@ -145,6 +145,42 @@ namespace StarkInfraTests
             }
         }
 
+        // NOTE: no ParseWithRightSignature test here. Unlike Event.Parse above (which has a captured
+        // real webhook payload/signature pair), PixPullSubscription.Parse is invoked directly from the
+        // subscription's own subscriptionUrl handler, and no genuine content/signature pair for that
+        // route is available in this environment. Add ParseWithRightSignature once a real sandbox
+        // fixture (content + matching Digital-Signature header) is captured, mirroring
+        // PixRequestTest.ParseWithRightSignature / PixReversalTest.ParseWithRightSignature.
+        public readonly string ParseContent = "{\"amount\": 52064, \"amountMinLimit\": 0, \"bacenId\": \"RR321606372026170317231564231\", \"created\": \"2026-03-17T20:23:57.255567+00:00\", \"description\": \"A Lannister always pays his debts\", \"due\": \"2026-04-17T02:59:59.999000+00:00\", \"externalId\": \"606512134\", \"flow\": \"out\", \"id\": \"5656970050666496\", \"installmentEnd\": \"\", \"installmentStart\": \"2026-03-18T02:59:59.999999+00:00\", \"interval\": \"month\", \"pullRetryLimit\": 3, \"receiverBankCode\": \"32160637\", \"receiverName\": \"Stark Bank\", \"receiverTaxId\": \"39.908.427/0001-28\", \"referenceCode\": \"36135971\", \"senderAccountNumber\": \"55213\", \"senderBankCode\": null, \"senderBranchCode\": \"356\", \"senderCityCode\": \"\", \"senderFinalName\": \"STARK SCD S.A.\", \"senderFinalTaxId\": \"39.908.427/0001-28\", \"senderTaxId\": \"99.999.919/9999-79\", \"status\": \"created\", \"tags\": [], \"type\": \"push\", \"updated\": \"2026-03-17T20:23:58.050421+00:00\"}";
+
+        [Fact]
+        public void ParseSubscriptionWithWrongSignature()
+        {
+            try
+            {
+                PixPullSubscription parsed = PixPullSubscription.Parse(ParseContent, BadSignature);
+            }
+            catch (StarkCore.Error.InvalidSignatureError)
+            {
+                return;
+            }
+            throw new Exception("failed to raise InvalidSignatureError");
+        }
+
+        [Fact]
+        public void ParseSubscriptionWithMalformedSignature()
+        {
+            try
+            {
+                PixPullSubscription parsed = PixPullSubscription.Parse(ParseContent, "something is definitely wrong");
+            }
+            catch (StarkCore.Error.InvalidSignatureError)
+            {
+                return;
+            }
+            throw new Exception("failed to raise InvalidSignatureError");
+        }
+
         internal static PixPullSubscription Example()
         {
             Random rand = new Random();

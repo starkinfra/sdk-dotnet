@@ -395,6 +395,40 @@ namespace StarkInfra
             return StarkCore.Utils.Api.FromApiJson(resourceMaker, json) as PixPullSubscription;
         }
 
+        /// <summary>
+        /// Create a single verified PixPullSubscription object from a content string
+        /// <br/>
+        /// Create a single PixPullSubscription object from a content string received from a handler listening at the subscription url.
+        /// If the provided digital signature does not check out with the StarkInfra public key, a Error.InvalidSignatureError will be raised.
+        /// <br/>
+        /// Parameters (required):
+        /// <list>
+        ///     <item>content [string]: response content from request received at user endpoint (not parsed)</item>
+        ///     <item>signature [string]: base-64 digital signature received at response header "Digital-Signature"</item>
+        /// </list>
+        /// <br/>
+        /// Parameters (optional):
+        /// <list>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        /// </list>
+        /// <br/>
+        /// Return:
+        /// <list>
+        ///     <item>Parsed PixPullSubscription object</item>
+        /// </list>
+        /// </summary>
+        public static PixPullSubscription Parse(string content, string signature, User user = null)
+        {
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            return Utils.Parse.ParseAndVerify(
+                content: content,
+                signature: signature,
+                resourceName: resourceName,
+                resourceMaker: resourceMaker,
+                user: user
+            ) as PixPullSubscription;
+        }
+
         internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "PixPullSubscription", resourceMaker: ResourceMaker);
