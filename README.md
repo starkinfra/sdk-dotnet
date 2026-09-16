@@ -1062,6 +1062,23 @@ StarkInfra.IssuingPurchase purchase = StarkInfra.IssuingPurchase.Get("5642359077
 Console.Write(purchase);
 ```
 
+### Update an IssuingPurchase
+
+You can update a specific purchase by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IssuingPurchase purchase = StarkInfra.IssuingPurchase.Update(
+    "5642359077339136",
+    description: "Updated purchase"
+);
+
+Console.Write(purchase);
+```
+
 ### Query IssuingPurchase logs
 
 You can query purchase logs to better understand purchase life cycles.
@@ -3475,6 +3492,48 @@ using StarkInfra;
 StarkInfra.CreditNote note = StarkInfra.CreditNote.Cancel("5155165527080960");
 
 Console.Write(note);
+```
+
+### Retrieve CCB disbursement pdf file
+
+To retrieve the CCB disbursement pdf file, use the `CreditNote.Pdf` method with a CreditNote id. The pdf is not available for canceled CreditNotes.
+
+```c#
+using System;
+using StarkInfra;
+
+
+byte[] pdf = StarkInfra.CreditNote.Pdf("5155165527080960");
+
+System.IO.File.WriteAllBytes("credit_note.pdf", pdf);
+```
+
+### Retrieve CCB disbursement payment pdf file
+
+To retrieve the CCB disbursement payment pdf file, use the `CreditNote.PaymentPdf` method with the id of a CreditNote in status `success`.
+
+```c#
+using System;
+using StarkInfra;
+
+
+byte[] pdf = StarkInfra.CreditNote.PaymentPdf("5155165527080960");
+
+System.IO.File.WriteAllBytes("credit_note_payment.pdf", pdf);
+```
+
+### CCB Token Resend
+
+To resend the contract signing token to a CreditSigner, use the `CreditSigner.ResendToken` method with the CreditSigner id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.CreditSigner signer = StarkInfra.CreditSigner.ResendToken("5155165527080960");
+
+Console.Write(signer);
 ```
 
 ### Query CreditNote logs

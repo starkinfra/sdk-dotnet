@@ -41,6 +41,7 @@ namespace StarkInfra
     ///     <item>ZipCode [string]: zip code of the merchant location. ex: "02101234"</item>
     ///     <item>IssuingTransactionIds [string]: ledger transaction ids linked to this Purchase</item>
     ///     <item>Status [string]: current IssuingCard status. Options: "approved", "canceled", "denied", "confirmed" or "voided"</item>
+    ///     <item>Description [string]: IssuingPurchase description. ex: "Office Supplies"</item>
     ///     <item>Metadata [Dictionary object]: object used to store additional information about the IssuingPurchase object. ex: new Dictionary<string, object>(){{"authorizationId", "OjZAqj"}}</item>
     ///     <item>Updated [DateTime]: latest update DateTime for the IssuingPurchase. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>Created [DateTime]: creation DateTime for the IssuingPurchase. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
@@ -77,6 +78,7 @@ namespace StarkInfra
         public string ZipCode { get; }
         public List<string> IssuingTransactionIds { get; }
         public string Status { get; }
+        public string Description { get; }
         public Dictionary<string, object> Metadata { get; }
         public DateTime? Updated { get; }
         public DateTime? Created { get; }
@@ -121,6 +123,7 @@ namespace StarkInfra
         /// <list>
         ///     <item>issuingTransactionIds [string]: ledger transaction ids linked to this Purchase</item>
         ///     <item>status [string]: current IssuingCard status. Options: "approved", "canceled", "denied", "confirmed" or "voided"</item>
+        ///     <item>description [string]: IssuingPurchase description. ex: "Office Supplies"</item>
         ///     <item>metadata [Dictionary object]: object used to store additional information about the IssuingPurchase object. ex: new Dictionary<string, object>(){{"authorizationId", "OjZAqj"}}</item>
         ///     <item>updated [DateTime]: latest update DateTime for the IssuingPurchase. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>created [DateTime]: creation DateTime for the IssuingPurchase. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
@@ -138,7 +141,7 @@ namespace StarkInfra
             string merchantCurrencySymbol = null,  string merchantCategoryCode = null,  string merchantCountryCode = null,  
             string acquirerID = null,  string merchantID = null,  string merchantName = null,  int? merchantFee = null,  
             string walletID = null,  string methodCode = null,  float? score = null,  string endToEndID = null,  List<string> tags = null,  
-            string zipCode = null,  List<string> issuingTransactionIds = null, string status = null, Dictionary<string, object> metadata = null,
+            string zipCode = null,  List<string> issuingTransactionIds = null, string status = null, string description = null, Dictionary<string, object> metadata = null,
             DateTime? updated = null, DateTime? created = null, bool? isPartialAllowed = null, List<string> cardTags = null, List<string> holderTags = null           
         ) : base(id)
         {
@@ -168,6 +171,7 @@ namespace StarkInfra
             ZipCode = zipCode;
             IssuingTransactionIds = issuingTransactionIds;
             Status = status;
+            Description = description;
             Metadata = metadata;
             Updated = updated;
             Created = created;
@@ -309,6 +313,74 @@ namespace StarkInfra
         }
 
         /// <summary>
+        /// Update IssuingPurchase entity
+        /// <br/>
+        /// Update an IssuingPurchase by passing id.
+        /// <br/>
+        /// Parameters(required):
+        /// <list>
+        ///     <item>id [string]: IssuingPurchase id. ex: "5656565656565656"</item>
+        ///     <item>patchData [Dictionary of string, object]: Dictionary of properties to patch</item>
+        ///         <list>
+        ///             <item>tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "tony", "stark" }</item>
+        ///             <item>description [string, default null]: new IssuingPurchase description. Max of 140 characters. ex: "Office Supplies"</item>
+        ///         </list>
+        /// </list>
+        /// <br/>
+        /// Parameters (optional):
+        /// <list>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        /// </list>
+        /// <br/>
+        /// Return:
+        /// <list>
+        ///     <item>target IssuingPurchase with updated attributes</item>
+        /// </list>
+        /// </summary>
+        public static IssuingPurchase Update(string id, Dictionary<string, object> patchData, User user = null)
+        {
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            return Rest.PatchId(
+                resourceName: resourceName,
+                resourceMaker: resourceMaker,
+                id: id,
+                payload: patchData,
+                user: user
+            ) as IssuingPurchase;
+        }
+
+        /// <summary>
+        /// Update IssuingPurchase entity
+        /// <br/>
+        /// Update an IssuingPurchase by passing id.
+        /// <br/>
+        /// Parameters(required):
+        /// <list>
+        ///     <item>id [string]: IssuingPurchase id. ex: "5656565656565656"</item>
+        /// </list>
+        /// <br/>
+        /// Parameters (optional):
+        /// <list>
+        ///     <item>tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "tony", "stark" }</item>
+        ///     <item>description [string, default null]: new IssuingPurchase description. Max of 140 characters. ex: "Office Supplies"</item>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        /// </list>
+        /// <br/>
+        /// Return:
+        /// <list>
+        ///     <item>target IssuingPurchase with updated attributes</item>
+        /// </list>
+        /// </summary>
+        public static IssuingPurchase Update(string id, string description = null, List<string> tags = null, User user = null)
+        {
+            Dictionary<string, object> patchData = new Dictionary<string, object>();
+            if (description != null) patchData.Add("description", description);
+            if (tags != null) patchData.Add("tags", tags);
+
+            return Update(id, patchData, user);
+        }
+
+        /// <summary>
         /// Create a single verified IssuingPurchase authorization request from a content string
         /// <br/>
         /// Use this method to parse and verify the authenticity of the authorization request received at the informed endpoint.
@@ -418,6 +490,7 @@ namespace StarkInfra
             string zipCode = json.zipCode;
             List<string> issuingTransactionIds = json.issuingTransactionIds?.ToObject<List<string>>();
             string status = json.status;
+            string description = json.description;
             Dictionary<string, object> metadata = json.metadata?.ToObject<Dictionary<string, object>>();
             string createdString = json.created;
             DateTime? created = StarkCore.Utils.Checks.CheckNullableDateTime(createdString);
@@ -436,8 +509,8 @@ namespace StarkInfra
                 merchantCountryCode: merchantCountryCode, acquirerID: acquirerID, 
                 merchantID: merchantID, merchantName: merchantName, merchantFee: merchantFee, 
                 walletID: walletID, methodCode: methodCode, score: score, endToEndID: endToEndID, 
-                tags: tags, zipCode: zipCode, issuingTransactionIds: issuingTransactionIds, 
-                status: status, metadata: metadata, created: created, updated: updated,
+                tags: tags, zipCode: zipCode, issuingTransactionIds: issuingTransactionIds,
+                status: status, description: description, metadata: metadata, created: created, updated: updated,
                 isPartialAllowed: isPartialAllowed, cardTags: cardTags, holderTags: holderTags
             );
         }

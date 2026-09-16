@@ -62,6 +62,24 @@ namespace StarkInfraTests
         public readonly string BadSignature = "MEUCIQDOpo1j+V40DNZK2URL2786UQK/8mDXon9ayEd8U0/l7AIgYXtIZJBTs8zCRR3vmted6Ehz/qfw1GRut/eYyvf1yOk=";
 
         [Fact]
+        public void Update()
+        {
+            List<IssuingPurchase> purchases = IssuingPurchase.Query(limit: 1).ToList();
+
+            // no IssuingPurchase available in this workspace
+            if (purchases.Count == 0) return;
+
+            IssuingPurchase purchase = purchases.First();
+            string description = "Updated description " + Guid.NewGuid().ToString();
+            IssuingPurchase updatedPurchase = IssuingPurchase.Update(
+                purchase.ID,
+                description: description,
+                tags: new List<string> { "updated", "purchase" }
+            );
+            Assert.Equal(description, updatedPurchase.Description);
+        }
+
+        [Fact]
         public void ParseWithRightSignature()
         {
             IssuingPurchase parsedIssuingPurchase = IssuingPurchase.Parse(Content, GoodSignature);
