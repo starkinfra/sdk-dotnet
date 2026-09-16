@@ -58,6 +58,9 @@ This SDK version is compatible with the Stark Infra API v2.
         - [PixDispute](#create-pixdisputes): Create PixDisputes
         - [PixPullSubscription](#create-pixpullsubscriptions): Set up recurring Pix debit authorizations
         - [PixPullRequest](#create-pixpullrequests): Trigger automatic Pix debits against a subscription
+    - [Ledger](#ledger)
+        - [Ledger](#create-ledgers): Track the balance of a given amount
+        - [LedgerTransaction](#create-ledgertransactions): Move amounts in and out of a Ledger
     - [Lending](#lending)
         - [CreditNote](#create-creditnotes): Create credit notes
         - [CreditPreview](#create-creditpreviews): Create credit previews
@@ -3190,6 +3193,157 @@ foreach (StarkInfra.PixPullRequest.Log log in logs) {
 ```c#
 StarkInfra.PixPullRequest.Log log = StarkInfra.PixPullRequest.Log.Get("4701727546671104");
 Console.WriteLine(log);
+```
+
+## Ledger
+
+Ledgers are used to track the balance of a given amount by inserting LedgerTransactions to them.
+They can represent a bank account, a digital wallet, an inventory product, etc.
+
+### Create Ledgers
+
+Send a list of Ledger objects for creation in the Stark Infra API.
+
+```c#
+using System;
+using System.Collections.Generic;
+
+List<StarkInfra.Ledger> ledgers = StarkInfra.Ledger.Create(
+    new List<StarkInfra.Ledger> {
+        new StarkInfra.Ledger(
+            externalID: "my-internal-id-123456",
+            tags: new List<string> { "account/123", "savings" },
+            rules: new List<StarkInfra.Ledger.Rule> {
+                new StarkInfra.Ledger.Rule(key: "minimumBalance", value: 0)
+            }
+        )
+    }
+);
+
+foreach (StarkInfra.Ledger ledger in ledgers) {
+    Console.WriteLine(ledger);
+}
+```
+
+**Note**: Instead of using Ledger and Ledger.Rule objects, you can also pass each element in dictionary format
+
+### Query Ledgers
+
+You can query multiple Ledgers according to filters.
+
+```c#
+using System;
+
+IEnumerable<StarkInfra.Ledger> ledgers = StarkInfra.Ledger.Query(
+    limit: 10,
+    after: new DateTime(2020, 1, 1),
+    before: new DateTime(2020, 3, 1)
+);
+
+foreach (StarkInfra.Ledger ledger in ledgers) {
+    Console.WriteLine(ledger);
+}
+```
+
+### Get a Ledger
+
+After its creation, information on a Ledger may be retrieved by its id.
+
+```c#
+StarkInfra.Ledger ledger = StarkInfra.Ledger.Get("5155165527080960");
+Console.WriteLine(ledger);
+```
+
+### Update a Ledger
+
+Update a Ledger by passing its id to change its rules, tags or metadata.
+
+```c#
+using System.Collections.Generic;
+
+StarkInfra.Ledger ledger = StarkInfra.Ledger.Update(
+    id: "5155165527080960",
+    tags: new List<string> { "account/123", "updated" }
+);
+Console.WriteLine(ledger);
+```
+
+### Query Ledger logs
+
+You can query Ledger logs to better understand Ledger life cycles.
+
+```c#
+using System;
+
+IEnumerable<StarkInfra.Ledger.Log> logs = StarkInfra.Ledger.Log.Query(
+    limit: 50,
+    after: new DateTime(2020, 1, 1),
+    before: new DateTime(2020, 3, 1)
+);
+
+foreach (StarkInfra.Ledger.Log log in logs) {
+    Console.WriteLine(log);
+}
+```
+
+### Get a Ledger log
+
+You can also get a specific log by its id.
+
+```c#
+StarkInfra.Ledger.Log log = StarkInfra.Ledger.Log.Get("5155165527080960");
+Console.WriteLine(log);
+```
+
+### Create LedgerTransactions
+
+Send a list of LedgerTransaction objects to move amounts in and out of a Ledger.
+
+```c#
+using System.Collections.Generic;
+
+List<StarkInfra.LedgerTransaction> transactions = StarkInfra.LedgerTransaction.Create(
+    new List<StarkInfra.LedgerTransaction> {
+        new StarkInfra.LedgerTransaction(
+            amount: 11234,
+            ledgerID: "5656565656565656",
+            externalID: "my-internal-id-123456",
+            source: "bank-transfer/123",
+            tags: new List<string> { "transfer/123", "savings" }
+        )
+    }
+);
+
+foreach (StarkInfra.LedgerTransaction transaction in transactions) {
+    Console.WriteLine(transaction);
+}
+```
+
+### Query LedgerTransactions
+
+You can query multiple LedgerTransactions according to filters. Either `ledgerID` or `ids` must be provided; if both are sent, the query is filtered by both. The other filters are optional.
+
+```c#
+using System;
+
+IEnumerable<StarkInfra.LedgerTransaction> transactions = StarkInfra.LedgerTransaction.Query(
+    ledgerID: "5656565656565656",
+    after: new DateTime(2020, 1, 1),
+    before: new DateTime(2020, 3, 1)
+);
+
+foreach (StarkInfra.LedgerTransaction transaction in transactions) {
+    Console.WriteLine(transaction);
+}
+```
+
+### Get a LedgerTransaction
+
+After its creation, information on a LedgerTransaction may be retrieved by its id.
+
+```c#
+StarkInfra.LedgerTransaction transaction = StarkInfra.LedgerTransaction.Get("5155165527080960");
+Console.WriteLine(transaction);
 ```
 
 ## Lending
