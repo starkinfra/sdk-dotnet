@@ -18,6 +18,9 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - LedgerTransaction resource
 - Parse method to PixPullSubscription
 - BusinessAccountRequest resource
+- pdf and payment methods to CreditNote resource
+- resendToken method to CreditSigner resource
+- update method to IssuingPurchase resource
 
 ## [0.13.0] - 2026-06-29
 ### Added

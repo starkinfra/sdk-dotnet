@@ -417,6 +417,70 @@ namespace StarkInfra
             ) as CreditNote;
         }
 
+        /// <summary>
+        /// Retrieve a specific CreditNote pdf file
+        /// <br/>
+        /// Receive the CCB disbursement pdf file of a CreditNote previously created in the Stark Infra API by its id. Not available for canceled CreditNotes.
+        /// <br/>
+        /// Parameters(required):
+        /// <list>
+        ///     <item>id[string]: CreditNote unique id. ex: "5656565656565656"</item>
+        /// </list>
+        /// <br/>
+        /// Parameters(optional):
+        /// <list>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        /// </list>
+        /// <br/>
+        /// Return:
+        /// <list>
+        ///     <item>CreditNote pdf file</item>
+        /// </list>
+        /// </summary>
+        public static byte[] Pdf(string id, User user = null)
+        {
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            return Rest.GetContent(
+                resourceName: resourceName,
+                resourceMaker: resourceMaker,
+                subResourceName: "pdf",
+                id: id,
+                user: user
+            );
+        }
+
+        /// <summary>
+        /// Retrieve a specific CreditNote payment pdf file
+        /// <br/>
+        /// Receive the CCB disbursement payment pdf file of a CreditNote previously created in the Stark Infra API by its id. Only CreditNotes with status "success" have a payment pdf.
+        /// <br/>
+        /// Parameters(required):
+        /// <list>
+        ///     <item>id[string]: CreditNote unique id. ex: "5656565656565656"</item>
+        /// </list>
+        /// <br/>
+        /// Parameters(optional):
+        /// <list>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        /// </list>
+        /// <br/>
+        /// Return:
+        /// <list>
+        ///     <item>CreditNote payment pdf file</item>
+        /// </list>
+        /// </summary>
+        public static byte[] PaymentPdf(string id, User user = null)
+        {
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            return Rest.GetContent(
+                resourceName: resourceName,
+                resourceMaker: resourceMaker,
+                subResourceName: "payment/pdf",
+                id: id,
+                user: user
+            );
+        }
+
         internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "CreditNote", resourceMaker: ResourceMaker);

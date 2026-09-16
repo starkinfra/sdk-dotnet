@@ -170,6 +170,33 @@ namespace StarkInfraTests
         }
 
         [Fact]
+        public void Pdf()
+        {
+            List<CreditNote> notes = CreditNote.Query(limit: 1, status: new List<string> { "created" }).ToList();
+            if (notes.Count == 0)
+            {
+                throw new Exception("no created CreditNote available in this workspace");
+            }
+
+            byte[] pdf = CreditNote.Pdf(notes.First().ID);
+            Assert.True(pdf.Length > 4);
+            Assert.Equal("%PDF", System.Text.Encoding.ASCII.GetString(pdf, 0, 4));
+        }
+
+        [Fact]
+        public void PaymentPdf()
+        {
+            List<CreditNote> notes = CreditNote.Query(limit: 1, status: new List<string> { "success" }).ToList();
+
+            // no CreditNote with status success available in this workspace
+            if (notes.Count == 0) return;
+
+            byte[] pdf = CreditNote.PaymentPdf(notes.First().ID);
+            Assert.True(pdf.Length > 4);
+            Assert.Equal("%PDF", System.Text.Encoding.ASCII.GetString(pdf, 0, 4));
+        }
+
+        [Fact]
         public void DebtorWorkspaceIDIsAccessible()
         {
             List<CreditNote> notes = CreditNote.Create(new List<CreditNote>() { Example() });
