@@ -22,7 +22,7 @@ namespace StarkInfra
     ///    <item>Amount [long]: amount in cents of the reported transaction. ex: 1234 (= R$ 12.34)</item>
     ///    <item>Created [DateTime]: datetime when the reported transaction occurred. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///    <item>EndToEndID [string]: central bank's unique transaction id. ex: "E20018183202201201213u34sav898j"</item>
-    ///    <item>Method [string]: execution method of the reported transaction. ex: "manual", "dict", "dynamicQrcode"</item>
+    ///    <item>Method [string]: execution method of the reported transaction. Options: "manual", "dict", "initiator", "dynamicQrcode", "staticQrcode", "payerQrcode", "subscription", "contactless", "staticContactless"</item>
     ///    <item>ReferenceType [string]: type of the reported transaction. ex: "request" or "reversal"</item>
     ///    <item>SenderAccountNumber [string]: sender's bank account number. ex: "876543-2"</item>
     ///    <item>SenderBranchCode [string]: sender's branch code. ex: "1357-9"</item>
@@ -37,7 +37,7 @@ namespace StarkInfra
     ///    <item>ReceiverKeyID [string, default null]: receiver's Pix key. ex: "+5511989898989"</item>
     ///    <item>ReturnID [string, default null]: central bank's unique reversal id. Required when ReferenceType is "reversal". ex: "D20018183202202030109X3OoBHG74wo"</item>
     ///    <item>ID [string]: unique id returned when the PixInternalTransactionReport is created. ex: "5656565656565656"</item>
-    ///    <item>Status [string]: current PixInternalTransactionReport status. ex: "created", "failed", "sent", "success"</item>
+    ///    <item>Status [string]: current PixInternalTransactionReport status. Options: "created", "processing", "success", "failed"</item>
     ///    <item>Updated [DateTime]: latest update DateTime for the PixInternalTransactionReport. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
     /// </summary>
@@ -78,7 +78,7 @@ namespace StarkInfra
         ///    <item>amount [long]: amount in cents of the reported transaction. ex: 1234 (= R$ 12.34)</item>
         ///    <item>created [DateTime]: datetime when the reported transaction occurred. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///    <item>endToEndID [string]: central bank's unique transaction id. ex: "E20018183202201201213u34sav898j"</item>
-        ///    <item>method [string]: execution method of the reported transaction. ex: "manual", "dict", "dynamicQrcode"</item>
+        ///    <item>method [string]: execution method of the reported transaction. Options: "manual", "dict", "initiator", "dynamicQrcode", "staticQrcode", "payerQrcode", "subscription", "contactless", "staticContactless"</item>
         ///    <item>referenceType [string]: type of the reported transaction. ex: "request" or "reversal"</item>
         ///    <item>senderAccountNumber [string]: sender's bank account number. ex: "876543-2"</item>
         ///    <item>senderBranchCode [string]: sender's branch code. ex: "1357-9"</item>
@@ -101,7 +101,7 @@ namespace StarkInfra
         /// Attributes (return-only):
         /// <list>
         ///    <item>id [string]: unique id returned when the PixInternalTransactionReport is created. ex: "5656565656565656"</item>
-        ///    <item>status [string]: current PixInternalTransactionReport status. ex: "created", "failed", "sent", "success"</item>
+        ///    <item>status [string]: current PixInternalTransactionReport status. Options: "created", "processing", "success", "failed"</item>
         ///    <item>updated [DateTime]: latest update DateTime for the PixInternalTransactionReport. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>

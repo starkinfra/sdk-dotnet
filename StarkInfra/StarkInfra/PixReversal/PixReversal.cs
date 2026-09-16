@@ -11,6 +11,7 @@ namespace StarkInfra
     /// PixReversal object
     /// <br/>
     /// PixReversals are instant payments used to revert PixRequests. You can only revert inbound PixRequests.
+    /// PixReversals can only be created for inbound PixRequests with status "success"; reference the original PixRequest by its EndToEndID.
     /// <br/>
     /// When you initialize a PixReversal, the entity will not be automatically
     /// created in the Stark Infra API. The 'create' function sends the objects
@@ -21,7 +22,7 @@ namespace StarkInfra
     ///     <item>Amount [integer]: amount in cents to be reversed from PixRequest. ex: 1234 (= R$ 12.34)</item>
     ///     <item>ExternalID [string]: string that must be unique among all your PixReversals. Duplicated external IDs will cause failures. By default, this parameter will block any PixReversal that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"</item>
     ///     <item>EndToEndID [string]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"</item>
-    ///     <item>Reason [string]: reason why the PixRequest is being reversed. Options are "bankError", "fraud", "chashierError", "customerRequest"</item>
+    ///     <item>Reason [string]: reason why the PixRequest is being reversed. Options are "bankError", "fraud", "cashierError", "customerRequest" (fix the "chashierError" typo — sending that literal string is rejected by the API)</item>
     ///     <item>Tags [list of strings, default null]: list of strings for reference when searching for PixReversals. ex: new List<string>{ "employees", "monthly" }</item>
     ///     <item>ID [string]: unique id returned when the PixReversal is created. ex: "5656565656565656".</item>
     ///     <item>ReturnID [string]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".</item>
@@ -60,7 +61,7 @@ namespace StarkInfra
         ///     <item>amount [integer]: amount in cents to be reversed from PixRequest. ex: 1234 (= R$ 12.34)</item>
         ///     <item>externalID [string]: string that must be unique among all your PixReversals. Duplicated external IDs will cause failures. By default, this parameter will block any PixReversal that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"</item>
         ///     <item>endToEndID [string]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"</item>
-        ///     <item>reason [string]: reason why the PixRequest is being reversed. Options are "bankError", "fraud", "chashierError", "customerRequest"</item>
+        ///     <item>reason [string]: reason why the PixRequest is being reversed. Options are "bankError", "fraud", "cashierError", "customerRequest" (fix the "chashierError" typo — sending that literal string is rejected by the API)</item>
         ///</list>
         /// Parameters (optional):
         /// <list>
@@ -326,6 +327,8 @@ namespace StarkInfra
 
         /// <summary>
         /// Helps you respond to a PixReversal authorization
+        /// <br/>
+        /// Helps you respond to a PixReversal authorization request received at your registered pixReversalUrl (which must differ from your pixRequestUrl). You must answer within 1 second (HTTP 200) or it is denied by default. If no pixReversalUrl is registered, inbound PixReversals are accepted by default.
         /// <br/>
         /// Parameters (required):
         /// <list>

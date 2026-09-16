@@ -367,6 +367,7 @@ namespace StarkInfra
         ///     <item>status [string, default null]: You may block the IssuingCard by passing "blocked" or activate by passing "active" in the status</item>
         ///     <item>displayName [string, default null]: card displayed name. ex: "ANTHONY EDWARD"</item>
         ///     <item>rules [list of IssuingRule, default null]: list of IssuingRules with "amount": int, "currencyCode": string, "id": string, "interval": string, "name": string pairs.</item>
+        ///     <item>pin [string, default null]: numeric string of 4 to 6 digits to set as the card's PIN. Write-only: it is never returned by the API; pass expand="isPinDefined" on Get/Query to check whether a PIN has been set. A pending physical card must receive a pin when you activate it (set status to "active").</item>
         ///     <item>tags [list of strings]: list of strings for tagging</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
@@ -391,7 +392,7 @@ namespace StarkInfra
         /// <summary>
         /// Cancel an IssuingCard entity
         /// <br/>
-        /// Cancel an IssuingCard entity previously created in the Stark Infra API
+        /// Cancel an IssuingCard entity previously created in the Stark Infra API. This action is irreversible.
         /// <br/>
         /// Parameters(required):
         /// <list>

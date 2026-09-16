@@ -324,7 +324,7 @@ namespace StarkInfra
         /// <summary>
         /// Cancel an IssuingHolder entity
         /// <br/>
-        /// Cancel an IssuingHolder entity previously created in the Stark Infra API
+        /// Cancel an IssuingHolder entity previously created in the Stark Infra API. This action is irreversible.
         /// <br/>
         /// Parameters(required):
         /// <list>

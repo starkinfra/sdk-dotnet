@@ -85,7 +85,7 @@ namespace StarkInfra
         /// <list>
         ///     <item>amount [long]: amount in cents to be reversed. ex: 11234 (= R$ 112.34)</item>
         ///     <item>referenceID [string]: endToEndID or returnID of the transaction to be reversed. ex: "E20018183202201201450u34sDGd19lz"</item>
-        ///     <item>reason [string]: reason why the reversal was requested. Options: "fraud", "flaw", "reversalChargeback"</item>
+        ///     <item>reason [string]: reason why the reversal was requested. Options: "flaw", "fraud", "subscriptionFlaw" (the API also assigns "reversalChargeback" automatically when a chargeback stems from a closed Pix Infraction, but it cannot be passed on creation)</item>
         ///</list>
         /// Parameters (conditionally required)
         /// <list>
@@ -351,15 +351,15 @@ namespace StarkInfra
         /// <summary>
         /// Update PixChargeback entity
         /// <br/>
-        /// Update a PixChargeback by passing id.
+        /// Respond to an incoming PixChargeback request. The requesting participant must receive your answer within 24 hours.
         /// <br/>
         /// Parameters(required):
         /// <list>
         ///     <item>id[string]: object unique id. ex: "5656565656565656".</item>
-        ///     <item>result [string]: result after the analysis of the PixChargeback. Options: "rejected", "accepted", "partiallyAccepted".</item>
+        ///     <item>result [string]: result of the chargeback analysis you are submitting. Options: "agreed", "disagreed", "partiallyAgreed"</item>
         ///     <item>patchData [dictionary]: Dictionary of optional and conditionally required parameter.</item>
         ///     <list>
-        ///         <item>rejectionReason[string, default null]: if the PixChargeback is rejected a rejectionReason is required. Options: "noBalance", "accountClosed", "invalidRequest", "unableToReverse".</item>
+        ///         <item>rejectionReason [string, default null]: if the PixChargeback's result is "rejected", a reason is required. Options: "other", "noBalance", "accountClosed", "invalidRequest" ("unableToReverse" is not a valid value).</item>
         ///         <item>reversalReferenceID[string, default null]: if the PixChargeback is accepted a reversalReferenceID is required. ex: "D20018183202201201450u34sDGd19lz."</item>
         ///         <item>analysis[string, default null]: description of the analysis that led to the result. Required if rejection_reason is "invalidRequest".</item>
         ///     </list>

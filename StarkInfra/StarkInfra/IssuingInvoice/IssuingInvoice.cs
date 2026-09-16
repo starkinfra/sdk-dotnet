@@ -25,7 +25,7 @@ namespace StarkInfra
     ///     <item>Brcode [string]: BR Code for the Invoice payment. ex: "00020101021226930014br.gov.bcb.pix2571brcode-h.development.starkinfra.com/v2/d7f6546e194d4c64a153e8f79f1c41ac5204000053039865802BR5925Stark Bank S.A. - Institu6009Sao Paulo62070503***63042109"</item>
     ///     <item>Due [DateTime]: Invoice due and expiration date in UTC ISO format. ex: DateTime(2020, 10, 28)</item>
     ///     <item>Link [string]: public Invoice webpage URL. ex: "https://starkbank-card-issuer.development.starkbank.com/invoicelink/d7f6546e194d4c64a153e8f79f1c41ac"</item>
-    ///     <item>Status [string]: current IssuingInvoice status status. Options: "created", "expired", "overdue" and "paid"</item>
+    ///     <item>Status [string]: current IssuingInvoice status. ex: "created", "paid", "overdue", "expired" or "canceled"</item>
     ///     <item>IssuingTransactionID [string]: ledger transaction ids linked to this IssuingInvoice. ex: "issuing-invoice/5656565656565656"</item>
     ///     <item>Updated [DateTime]: latest update DateTime for the IssuingInvoice. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>Created [DateTime]: creation DateTime for the IssuingInvoice. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
@@ -70,7 +70,7 @@ namespace StarkInfra
         ///     <item>brcode [string]: BR Code for the Invoice payment. ex: "00020101021226930014br.gov.bcb.pix2571brcode-h.development.starkinfra.com/v2/d7f6546e194d4c64a153e8f79f1c41ac5204000053039865802BR5925Stark Bank S.A. - Institu6009Sao Paulo62070503***63042109"</item>
         ///     <item>due [DateTime]: Invoice due and expiration date in UTC ISO format. ex: DateTime(2020, 10, 28)</item>
         ///     <item>link [string]: public Invoice webpage URL. ex: "https://starkbank-card-issuer.development.starkbank.com/invoicelink/d7f6546e194d4c64a153e8f79f1c41ac"</item>
-        ///     <item>status [string]: current IssuingInvoice status status. ex: "created", "expired", "overdue" and "paid"</item>
+        ///     <item>status [string]: current IssuingInvoice status. ex: "created", "paid", "overdue", "expired" or "canceled"</item>
         ///     <item>issuingTransactionID [string]: ledger transaction ids linked to this IssuingInvoice. ex: "issuing-invoice/5656565656565656"</item>
         ///     <item>updated [DateTime]: latest update DateTime for the IssuingInvoice. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>created [DateTime]: creation DateTime for the IssuingInvoice. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>

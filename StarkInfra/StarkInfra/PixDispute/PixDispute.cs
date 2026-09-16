@@ -79,7 +79,7 @@ namespace StarkInfra
         ///    <item>tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "travel", "food" }</item>
         ///    <item>minTransactionAmount [long]: minimum transaction amount to be considered for the graph creation.</item>
         ///    <item>maxTransactionCount [long]: maximum number of transactions to be considered for the graph creation.</item>
-        ///    <item>maxHopInterval [long]: mean time between transactions to be considered for the graph creation.</item>
+        ///    <item>maxHopInterval [long]: maximum interval in seconds between hops to be considered for the graph creation.</item>
         ///    <item>maxHopCount [long]: depth to be considered for the graph creation.</item>
         /// </list>
         /// Attributes (return-only):

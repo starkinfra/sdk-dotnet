@@ -40,7 +40,7 @@ namespace StarkInfra
     ///    <item>ReconciliationID [string, default null]: Reconciliation ID linked to this payment. ex: "b77f5236-7ab9-4487-9f95-66ee6eaf1781"</item>
     ///    <item>InitiatorTaxID [string, default null]: Payment initiator's tax id (CPF/CNPJ). ex: "01234567890" or "20.018.183/0001-80"</item>
     ///    <item>Tags [list of strings, default null]: list of strings for reference when searching for PixRequests. ex: new List<string>{ "employees", "monthly" }</item>
-    ///    <item>Method [string, default null]: execution method of creation of the Pix. ex: 'manual', 'payerQrcode', 'dynamicQrcode’.</item>
+    ///    <item>Method [string, default null]: execution method of creation of the Pix. Options: "manual", "dict", "initiator", "dynamicQrcode", "staticQrcode", "payerQrcode", "subscription", "contactless", "staticContactless".</item>
     ///    <item>Priority [string, default "high"]: Specifies the message channel used to send the Pix Request. If set to "high", the request is sent through the primary channel; if set to "low", it uses the secondary channel. Options: "high" or "low"
     ///    <item>Reason [string, default "customerRequest"]: underlying reason for the payment transaction. ex: "customerRequest", "fraud", "subscriptionFlaw"
     ///    <item>ID [string]: unique id returned when the PixRequest is created. ex: "5656565656565656"</item>
@@ -126,7 +126,7 @@ namespace StarkInfra
         ///    <item>reconciliationID [string, default null]: Reconciliation ID linked to this payment. ex: "b77f5236-7ab9-4487-9f95-66ee6eaf1781"</item>
         ///    <item>initiatorTaxID [string, default null]: Payment initiator's tax id (CPF/CNPJ). ex: "01234567890" or "20.018.183/0001-80"</item>
         ///    <item>tags [list of strings, default null]: list of strings for reference when searching for PixRequests. ex: new List<string>{ "employees", "monthly" }</item>
-        ///    <item>method [string, default null]: execution method of creation of the Pix. ex: 'manual', 'payerQrcode', 'dynamicQrcode’.</item>
+        ///    <item>method [string, default null]: execution method of creation of the Pix. Options: "manual", "dict", "initiator", "dynamicQrcode", "staticQrcode", "payerQrcode", "subscription", "contactless", "staticContactless".</item>
         ///    <item>priority [string, default "high"]: Specifies the message channel used to send the Pix Request. If set to "high", the request is sent through the primary channel; if set to "low", it uses the secondary channel. Options: "high" or "low"
         ///    <item>reason [string, default "customerRequest"]: underlying reason for the payment transaction. ex: "customerRequest", "fraud", "subscriptionFlaw"
         /// </list>
@@ -417,6 +417,8 @@ namespace StarkInfra
 
         /// <summary>
         /// Helps you respond to a PixRequest authorization
+        /// <br/>
+        /// Helps you respond to a PixRequest authorization request received at your registered pixRequestUrl. You must answer with approval or denial within 1 second (HTTP 200); if you do not respond in time, the request is denied by default.
         /// <br/>
         /// Parameters (required):
         /// <list>

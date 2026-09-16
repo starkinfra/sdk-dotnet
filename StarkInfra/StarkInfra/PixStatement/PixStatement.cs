@@ -262,7 +262,7 @@ namespace StarkInfra
         /// <br/>
         /// Return:
         /// <list>
-        ///     <item>.zip file containing a PixStatement in .csv format</item>
+        ///     <item>.gzip file containing a PixStatement in .csv format</item>
         /// </list>
         /// </summary>
         public static byte[] Csv(string id, User user = null)

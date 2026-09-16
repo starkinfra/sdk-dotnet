@@ -18,7 +18,7 @@ namespace StarkInfra
     ///     <item>StockID [string]: IssuingStock unique id ex: "5136459887542272"</item>
     ///     <item>Tags [list of strings] list of strings for tagging. ex: new List<string> { "card", "corporate" } </item>
     ///     <item>ID [string]: unique id returned when IssuingRestock is created. ex: "5656565656565656"</item>
-    ///     <item>Status [string]: current IssuingRestock status. ex: "created", "processing", "confirmed"</item>
+    ///     <item>Status [string]: current IssuingRestock status. Options: "created", "processing", "confirmed", "canceled"</item>
     ///     <item>Updated [DateTime]: latest update datetime for the IssuingRestock. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>Created [DateTime]: creation datetime for the IssuingRestock. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
@@ -50,7 +50,7 @@ namespace StarkInfra
         /// Attributes (return-only):
         /// <list>
         ///     <item>id [string]: unique id returned when IssuingRestock is created. ex: "5656565656565656"</item>
-        ///     <item>status [string]: current IssuingRestock status. ex: "created", "processing", "confirmed"</item>
+        ///     <item>status [string]: current IssuingRestock status. Options: "created", "processing", "confirmed", "canceled"</item>
         ///     <item>updated [DateTime]: latest update datetime for the IssuingRestock. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>created [DateTime]: creation datetime for the IssuingRestock. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>

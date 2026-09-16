@@ -173,7 +173,7 @@ namespace StarkInfra
         /// <summary>
         /// Delete a Webhook Event entity
         /// <br/>
-        /// Delete a of notification Event entity previously created in the Stark Infra API by its ID
+        /// Delete a notification Event entity previously created in the Stark Infra API by its ID. This action cannot be undone.
         /// <br/>
         /// Parameters (required):
         /// <list>

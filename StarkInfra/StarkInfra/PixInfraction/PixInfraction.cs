@@ -143,22 +143,7 @@ namespace StarkInfra
         /// <summary>
         /// Create PixInfraction objects
         /// <br/>
-        /// Create PixInfraction objects in the Stark Infra API
-        /// <br/>
-        /// Parameters (required):
-        /// <list>
-        ///     <item>infractions [list of PixInfraction object]: list of PixInfraction objects to be created in the API.</item>
-        /// </list>
-        /// <br/>
-        /// Parameters (optional):
-        /// <list>
-        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
-        /// </list>
-        /// <br/>
-        /// Return:
-        /// <list>
-        ///     <item>List of PixInfraction object with updated attributes.</item>
-        /// </list>
+        /// This function is deprecated and permanently disabled: the Stark Infra API no longer exposes a POST /pix-infraction endpoint for client-initiated creation, so calling this always raises an exception and never reaches the API.
         /// </summary>
         [Obsolete("Function deprecated since v0.13.0")]
         public static List<PixInfraction> Create(List<PixInfraction> infractions, User user = null)

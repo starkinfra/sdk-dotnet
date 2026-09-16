@@ -26,9 +26,9 @@ namespace StarkInfra
         ///     <item>invoices [list of CreditNote.Invoice objects]: list of Invoice objects to be created and sent to the credit receiver. ex: new List<Invoice> { Invoice(), Invoice() }</item>
         ///     <item>nominalInterest [float]: yearly nominal interest rate of the CreditNote, in percentage. ex: 12.5</item>
         ///     <item>initialDue [DateTime]: date of the first invoice. ex: DateTime(2020, 3, 10)</item>
-        ///     <item>count [integer]: quantity of invoices for payment. ex: 12</item>
+        ///     <item>count [integer]: quantity of invoices for payment. "sac"/"price" require exactly one of count or initialAmount; "american" requires count; "bullet" and "custom" do not use count. ex: 12</item>
         ///     <item>initialAmount [integer]: value of the first invoice in cents. ex: 1234 (= R$12.34)</item>
-        ///     <item>interval [string]: interval between invoices. Options: "year", "month"</item>
+        ///     <item>interval [string, default "month"]: interval between invoices. Options: "day", "week", "month", "quarter", "semester" or "year"</item>
         ///     <item>rebateAmount [integer, default null]: credit analysis fee deducted from lent amount. ex: 11234 (= R$ 112.34)</item>
         ///     <item>amount [integer]: CreditNote value in cents. ex: 1234 (= R$ 12.34)</item>
         ///     <item>interest [float]: yearly effective interest rate of the CreditNote, in percentage. ex: 12.5</item>
@@ -73,9 +73,9 @@ namespace StarkInfra
             ///     <item>invoices [list of CreditNote.Invoice objects]: list of Invoice objects to be created and sent to the credit receiver. ex: new List<string> { Invoice(), Invoice() }</item>
             ///     <item>nominalInterest [float]: yearly nominal interest rate of the CreditNote, in percentage. ex: 12.5</item>
             ///     <item>initialDue [DateTime]: date of the first invoice. ex: DateTime(2020, 3, 10)</item>
-            ///     <item>count [integer]: quantity of invoices for payment. ex: 12</item>
+            ///     <item>count [integer]: quantity of invoices for payment. "sac"/"price" require exactly one of count or initialAmount; "american" requires count; "bullet" and "custom" do not use count. ex: 12</item>
             ///     <item>initialAmount [integer]: value of the first invoice in cents. ex: 1234 (= R$12.34)</item>
-            ///     <item>interval [string]: interval between invoices. Options: "year", "month"</item>
+            ///     <item>interval [string, default "month"]: interval between invoices. Options: "day", "week", "month", "quarter", "semester" or "year"</item>
             /// </list>
             /// Parameters (optional):
             /// <list>

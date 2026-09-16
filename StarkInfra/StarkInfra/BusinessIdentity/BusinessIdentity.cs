@@ -21,7 +21,7 @@ namespace StarkInfra
     /// <br/>
     /// Properties:
     /// <list>
-    ///     <item>TaxID [string]: business's tax ID (CNPJ). ex: "20.018.183/0001-80"</item>
+    ///     <item>TaxID [string]: business's tax ID (CNPJ), with or without punctuation. Must be a valid, active CNPJ in the official bureau that returns at least one representative (sócio). ex: "20.018.183/0001-80"</item>
     ///     <item>Tags [list of strings, default []]: list of strings for reference when searching for BusinessIdentities. ex: List<string>{ "employees", "monthly" }</item>
     ///     <item>Id [string]: unique id returned when the BusinessIdentity is created. ex: "5656565656565656"</item>
     ///     <item>Name [string]: business's full name. ex: "Stark Bank S.A."</item>
@@ -68,7 +68,7 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (required):
         /// <list>
-        ///     <item>taxID [string]: business's tax ID (CNPJ). ex: "20.018.183/0001-80"</item>
+        ///     <item>taxID [string]: business's tax ID (CNPJ), with or without punctuation. Must be a valid, active CNPJ in the official bureau that returns at least one representative (sócio). ex: "20.018.183/0001-80"</item>
         ///</list>
         /// Parameters (optional):
         /// <list>
@@ -313,7 +313,7 @@ namespace StarkInfra
         ///     <item>id [string]: BusinessIdentity id. ex: "5656565656565656"</item>
         ///     <item>patchData [Dictionary of string, object]: Dictionary of properties to patch</item>
         ///         <list>
-        ///             <item>status [string, default null]: You may send the BusinessIdentity to validation by passing "processing" in the status</item>
+        ///             <item>status [string, default null]: send the BusinessIdentity to processing by passing "processing" (the only accepted value). The identity must be in "created" or "pending" status and must already have at least one BusinessAttachment associated with it.</item>
         ///             <item>tags [list of strings, default null]: list of strings for reference when searching for BusinessIdentities. ex: List<string>{ "employees", "monthly" }</item>
         ///         </list>
         /// </list>
@@ -352,7 +352,7 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>status [string, default null]: You may send the BusinessIdentity to validation by passing "processing" in the status</item>
+        ///     <item>status [string, default null]: send the BusinessIdentity to processing by passing "processing" (the only accepted value). The identity must be in "created" or "pending" status and must already have at least one BusinessAttachment associated with it.</item>
         ///     <item>tags [list of strings, default null]: list of strings for reference when searching for BusinessIdentities. ex: List<string>{ "employees", "monthly" }</item>
         ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
@@ -374,7 +374,7 @@ namespace StarkInfra
         /// <summary>
         /// Cancel a BusinessIdentity entity
         /// <br/>
-        /// Cancel a BusinessIdentity entity previously created in the Stark Infra API
+        /// Cancel a BusinessIdentity entity previously created in the Stark Infra API. Only identities in "created" or "pending" status can be canceled.
         /// <br/>
         /// Parameters(required):
         /// <list>

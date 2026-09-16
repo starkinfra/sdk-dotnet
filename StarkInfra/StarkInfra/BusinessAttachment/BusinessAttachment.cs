@@ -9,9 +9,7 @@ namespace StarkInfra
     /// <summary>
     /// BusinessAttachment object
     /// <br/>
-    /// Business attachments are files containing documents of a business
-    /// to be used in a matching validation. When created, they must be attached to a business
-    /// identity to be used for its validation.
+    /// Business attachments are corporate documents uploaded against a BusinessIdentity for validation. Only one attachment may be created per request, and each BusinessIdentity accepts up to two attachments in total. Only PDF, JPG and PNG files are accepted, up to 8 MB each; name must be unique among the identity's other "created" attachments; and the parent BusinessIdentity must be in "created" or "pending" status with fewer than 2 attachments already linked.
     /// <br/>
     /// When you initialize a BusinessAttachment, the entity will not be automatically
     /// created in the Stark Infra API. The 'create' function sends the objects
@@ -44,9 +42,7 @@ namespace StarkInfra
         /// <summary>
         /// BusinessAttachment object
         /// <br/>
-        /// Business attachments are files containing documents of a business
-        /// to be used in a matching validation. When created, they must be attached to a business
-        /// identity to be used for its validation.
+        /// Business attachments are corporate documents uploaded against a BusinessIdentity for validation. Only one attachment may be created per request, and each BusinessIdentity accepts up to two attachments in total. Only PDF, JPG and PNG files are accepted, up to 8 MB each; name must be unique among the identity's other "created" attachments; and the parent BusinessIdentity must be in "created" or "pending" status with fewer than 2 attachments already linked.
         /// <br/>
         /// When you initialize a BusinessAttachment, the entity will not be automatically
         /// created in the Stark Infra API. The 'create' function sends the objects
@@ -90,9 +86,7 @@ namespace StarkInfra
         /// <summary>
         /// BusinessAttachment object
         /// <br/>
-        /// Business attachments are files containing documents of a business
-        /// to be used in a matching validation. When created, they must be attached to a business
-        /// identity to be used for its validation.
+        /// Business attachments are corporate documents uploaded against a BusinessIdentity for validation. Only one attachment may be created per request, and each BusinessIdentity accepts up to two attachments in total. Only PDF, JPG and PNG files are accepted, up to 8 MB each; name must be unique among the identity's other "created" attachments; and the parent BusinessIdentity must be in "created" or "pending" status with fewer than 2 attachments already linked.
         /// <br/>
         /// When you initialize a BusinessAttachment, the entity will not be automatically
         /// created in the Stark Infra API. The 'create' function sends the objects
@@ -326,7 +320,7 @@ namespace StarkInfra
         /// <summary>
         /// Cancel a BusinessAttachment entity
         /// <br/>
-        /// Cancel a BusinessAttachment entity previously created in the Stark Infra API
+        /// Cancel a BusinessAttachment entity previously created in the Stark Infra API. Only attachments in "created" status can be canceled.
         /// <br/>
         /// Parameters(required):
         /// <list>

@@ -10,7 +10,8 @@ namespace StarkInfra
     /// IssuingStockRule object
     /// <br/>
     /// The IssuingStockRule object is a notification rule attached to an IssuingStock. When the linked
-    /// stock balance reaches the minimumBalance, the recipients listed in emails and phones are notified.
+    /// stock balance reaches the minimumBalance (a positive integer), the recipients listed in emails and phones are notified.
+    /// At least one email or phone must be informed per rule, and each IssuingStock can have only one active rule at a time.
     /// <br/>
     /// When you initialize an IssuingStockRule, the entity will not be automatically created in the
     /// Stark Infra API. The 'create' function sends the objects to the Stark Infra API and returns the
@@ -317,7 +318,7 @@ namespace StarkInfra
         /// <summary>
         /// Cancel an IssuingStockRule entity
         /// <br/>
-        /// Cancel an IssuingStockRule entity previously created in the Stark Infra API
+        /// Cancel an IssuingStockRule entity previously created in the Stark Infra API. This action is irreversible.
         /// <br/>
         /// Parameters (required):
         /// <list>
