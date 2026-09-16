@@ -50,6 +50,38 @@ namespace StarkInfra
             Method = method;
         }
 
+        /// <summary>
+        /// Resend token to signer
+        /// <br/>
+        /// Resend token to a specific signer.
+        /// <br/>
+        /// Parameters(required):
+        /// <list>
+        ///     <item>id[string]: CreditSigner unique id. ex: "5656565656565656"</item>
+        /// </list>
+        /// <br/>
+        /// Parameters(optional):
+        /// <list>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        /// </list>
+        /// <br/>
+        /// Return:
+        /// <list>
+        ///     <item>CreditSigner object with updated attributes</item>
+        /// </list>
+        /// </summary>
+        public static CreditSigner ResendToken(string id, User user = null)
+        {
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            return Rest.PatchId(
+                resourceName: resourceName,
+                resourceMaker: resourceMaker,
+                id: id,
+                payload: new Dictionary<string, object> { { "isSent", false } },
+                user: user
+            ) as CreditSigner;
+        }
+
         internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
             return (resourceName: "CreditSigner", resourceMaker: ResourceMaker);
