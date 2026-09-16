@@ -70,6 +70,7 @@ This SDK version is compatible with the Stark Infra API v2.
         - [IndividualDocument](#create-individualdocuments): Create individual documents
         - [BusinessIdentity](#create-businessidentities): Create business identities
         - [BusinessAttachment](#create-businessattachments): Create business attachments
+        - [BusinessAccountRequest](#create-businessaccountrequests): Open a Stark Infra account for a company
     - [Webhook](#webhook):
         - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
         - [WebhookEvents](#process-webhook-events): Manage webhook events
@@ -4225,6 +4226,132 @@ using StarkInfra;
 
 
 StarkInfra.BusinessAttachment.Log log = StarkInfra.BusinessAttachment.Log.Get("5155165527080960");
+
+Console.Write(log);
+```
+
+### Create BusinessAccountRequests
+
+You can create a BusinessAccountRequest to open a Stark Infra account for a company. Each of the company's owners completes an identity verification through a webview, delivered as the owner's `ValidatorLink`. The approval flow runs asynchronously.
+
+```c#
+using System.Collections.Generic;
+using StarkInfra;
+
+
+List<StarkInfra.BusinessAccountRequest> requests = StarkInfra.BusinessAccountRequest.Create(
+    new List<StarkInfra.BusinessAccountRequest>() {
+        new StarkInfra.BusinessAccountRequest(
+            name: "Stark Bank S.A.",
+            taxID: "20.018.183/0001-80",
+            address: new StarkInfra.Address(
+                street: "Av. Faria Lima",
+                number: "2000",
+                neighborhood: "Itaim Bibi",
+                city: "Sao Paulo",
+                state: "SP",
+                zipCode: "04538-132",
+                complement: "Sala 42"
+            ),
+            revenue: 100000000,
+            owners: new List<StarkInfra.Owner>() {
+                new StarkInfra.Owner(
+                    taxID: "012.345.678-90",
+                    name: "Jamie Lannister",
+                    role: "partner"
+                ),
+                new StarkInfra.Owner(
+                    taxID: "812.531.960-36",
+                    name: "Cersei Lannister",
+                    role: "representative"
+                )
+            },
+            tags: new List<string>{ "employees", "monthly" }
+        )
+    }
+);
+
+foreach(StarkInfra.BusinessAccountRequest request in requests)
+{
+    Console.Write(request);
+}
+```
+
+**Note**: Instead of using BusinessAccountRequest, Address and Owner objects, you can also pass each element in dictionary format
+
+### Query BusinessAccountRequests
+
+You can query multiple business account requests according to filters.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.BusinessAccountRequest> requests = StarkInfra.BusinessAccountRequest.Query(
+    limit: 10,
+    after: new DateTime(2020, 1, 1),
+    before: new DateTime(2020, 4, 1),
+    status: new List<string>{ "approved" },
+    tags: new List<string>{ "employees", "monthly" }
+);
+
+foreach(StarkInfra.BusinessAccountRequest request in requests)
+{
+    Console.Write(request);
+}
+```
+
+### Get a BusinessAccountRequest
+
+After its creation, information on a business account request may be retrieved by its id. Use it to read the per-owner verification status.
+
+```c#
+using StarkInfra;
+
+
+StarkInfra.BusinessAccountRequest request = StarkInfra.BusinessAccountRequest.Get("5155165527080960");
+
+foreach(StarkInfra.Owner owner in request.Owners)
+{
+    Console.Write(owner.Name + " " + owner.Status);
+}
+```
+
+Each owner also carries a `ValidatorLink`, the webview where that owner completes biometrics and document capture. Treat it as a credential: deliver it to its owner through a secure channel, and never log it or write it to disk.
+
+### Query BusinessAccountRequest logs
+
+You can query business account request logs to better understand business account request life cycles.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.BusinessAccountRequest.Log> logs = StarkInfra.BusinessAccountRequest.Log.Query(
+    limit: 50,
+    after: new DateTime(2020, 1, 1),
+    before: new DateTime(2020, 1, 20)
+);
+
+foreach (StarkInfra.BusinessAccountRequest.Log log in logs)
+{
+    Console.Write(log);
+}
+```
+
+### Get a BusinessAccountRequest log
+
+You can also get a specific log by its id.
+
+```c#
+using StarkInfra;
+
+
+StarkInfra.BusinessAccountRequest.Log log = StarkInfra.BusinessAccountRequest.Log.Get("5155165527080960");
 
 Console.Write(log);
 ```
