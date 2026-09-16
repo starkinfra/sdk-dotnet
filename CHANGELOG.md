@@ -16,6 +16,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ### Added
 - Ledger resource
 - LedgerTransaction resource
+- parse method to PixPullSubscription resource
 
 ## [0.13.0] - 2026-06-29
 ### Added

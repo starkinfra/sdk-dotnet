@@ -110,6 +110,34 @@ namespace StarkInfraTests
         }
 
         [Fact]
+        public void ParseSubscriptionWithWrongSignature()
+        {
+            try
+            {
+                PixPullSubscription parsed = PixPullSubscription.Parse(Content, BadSignature);
+            }
+            catch (StarkCore.Error.InvalidSignatureError)
+            {
+                return;
+            }
+            throw new Exception("failed to raise InvalidSignatureError");
+        }
+
+        [Fact]
+        public void ParseSubscriptionWithMalformedSignature()
+        {
+            try
+            {
+                PixPullSubscription parsed = PixPullSubscription.Parse(Content, "something is definitely wrong");
+            }
+            catch (StarkCore.Error.InvalidSignatureError)
+            {
+                return;
+            }
+            throw new Exception("failed to raise InvalidSignatureError");
+        }
+
+        [Fact]
         public void Update()
         {
             PixPullSubscription target = PixPullSubscription.Query(limit: 1, status: new List<string> { "created" }).FirstOrDefault();
