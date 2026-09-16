@@ -24,6 +24,8 @@ namespace StarkInfra
     ///     <item>CounterAmount [integer]: current rule spent amount. ex: 1000</item>
     ///     <item>CurrencySymbol [string]: currency symbol. ex: "R$""</item>
     ///     <item>CurrencyName [string]: currency name. ex: "Brazilian Real"</item>
+    ///     <item>Schedule [string]: Optional schedule dictating when the rule can be used. Some examples: "everyday from 09:00 to 18:00 in America/Sao_Paulo" - every day, 09:00-18:00 Sao Paulo time; "every monday, wednesday, friday from 08:00 to 12:00 in America/Sao_Paulo" - only those weekdays, mornings; "every saturday, sunday" - weekends, all day, in UTC</item>
+    ///     <item>Purposes [list of strings]: Optional list of transaction purposes the rule applies to. Options: "purchase", "withdrawal", "verification". The rule then limits only purchases of those purposes; omit it to allow any purposes. Example: new List<string>{ "purchase", "verification" } if you want us to automatically deny withdrawal.</item>
     /// </list>
     /// </summary>
     ///
@@ -39,6 +41,8 @@ namespace StarkInfra
         public string CounterAmount { get; }
         public string CurrencySymbol { get; }
         public string CurrencyName { get; }
+        public string Schedule { get; }
+        public List<string> Purposes { get; }
 
         /// <summary>
         /// IssuingRule object
@@ -64,12 +68,15 @@ namespace StarkInfra
         ///     <item>counterAmount [integer]: current rule spent amount. ex: 1000</item>
         ///     <item>currencySymbol [string]: currency symbol. ex: "R$""</item>
         ///     <item>currencyName [string]: currency name. ex: "Brazilian Real"</item>
+        ///     <item>schedule [string]: Optional schedule dictating when the rule can be used. Some examples: "everyday from 09:00 to 18:00 in America/Sao_Paulo" - every day, 09:00-18:00 Sao Paulo time; "every monday, wednesday, friday from 08:00 to 12:00 in America/Sao_Paulo" - only those weekdays, mornings; "every saturday, sunday" - weekends, all day, in UTC</item>
+        ///     <item>purposes [list of strings]: Optional list of transaction purposes the rule applies to. Options: "purchase", "withdrawal", "verification". The rule then limits only purchases of those purposes; omit it to allow any purposes. Example: new List<string>{ "purchase", "verification" } if you want us to automatically deny withdrawal.</item>
         /// </list>
         /// </summary>
         public IssuingRule(string name, long amount, string interval, string currencyCode = "BRL", List<MerchantCategory> categories = null, List<MerchantCountry> countries = null,
-            string id = null, List<CardMethod> methods = null, string counterAmount = null, string currencySymbol = null, string currencyName = null
+            string id = null, List<CardMethod> methods = null, string counterAmount = null, string currencySymbol = null, string currencyName = null,
+            string schedule = null, List<string> purposes = null
         ) : base(id)
-        { 
+        {
             Name = name;
             Amount = amount;
             Interval = interval;
@@ -80,6 +87,8 @@ namespace StarkInfra
             CounterAmount = counterAmount;
             CurrencySymbol = currencySymbol;
             CurrencyName = currencyName;
+            Schedule = schedule;
+            Purposes = purposes;
         }
         
         public static List<IssuingRule> ParseRules(dynamic json)
@@ -111,10 +120,13 @@ namespace StarkInfra
             string counterAmount = json.counterAmount;
             string currencySymbol = json.currencySymbol;
             string currencyName = json.currencyName;
+            string schedule = json.schedule;
+            List<string> purposes = json.purposes?.ToObject<List<string>>();
 
             return new IssuingRule(
                 id: id, name: name, amount: amount, interval: interval, currencyCode: currencyCode, categories: categories, countries: countries,
-                methods: methods, counterAmount: counterAmount, currencySymbol: currencySymbol, currencyName: currencyName
+                methods: methods, counterAmount: counterAmount, currencySymbol: currencySymbol, currencyName: currencyName,
+                schedule: schedule, purposes: purposes
             );
         }
     }

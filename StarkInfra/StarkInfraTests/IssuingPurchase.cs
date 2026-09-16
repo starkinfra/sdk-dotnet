@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Xunit;
+using System;
 using StarkInfra;
-using Xunit;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +33,46 @@ namespace StarkInfraTests
                 Assert.NotNull(purchase.ID);
                 Assert.Equal("canceled", purchase.Status);
             }
+        }
+
+        [Fact]
+        public void QueryFieldGaps()
+        {
+            List<IssuingPurchase> purchases = IssuingPurchase.Query(limit: 1).ToList();
+            Assert.True(purchases.Count <= 1);
+            foreach (IssuingPurchase purchase in purchases)
+            {
+                TestUtils.Log(purchase);
+                Assert.NotNull(purchase.ID);
+                string productID = purchase.ProductID;
+                string merchantCategoryType = purchase.MerchantCategoryType;
+                int? installmentCount = purchase.InstallmentCount;
+                string description = purchase.Description;
+                string holderID = purchase.HolderID;
+                TestUtils.Log(productID);
+                TestUtils.Log(merchantCategoryType);
+                TestUtils.Log(installmentCount);
+                TestUtils.Log(description);
+                TestUtils.Log(holderID);
+            }
+        }
+
+        [Fact]
+        public void ConstructorExposesNewFields()
+        {
+            IssuingPurchase purchase = new IssuingPurchase(
+                productID: "53810200",
+                installmentCount: 12,
+                merchantCategoryType: "food",
+                description: "Office Supplies",
+                holderID: "5917814565109760"
+            );
+            Assert.Equal("53810200", purchase.ProductID);
+            Assert.Equal(12, purchase.InstallmentCount);
+            Assert.Equal("food", purchase.MerchantCategoryType);
+            Assert.Equal("Office Supplies", purchase.Description);
+            Assert.Equal("5917814565109760", purchase.HolderID);
+            TestUtils.Log(purchase);
         }
 
         [Fact]

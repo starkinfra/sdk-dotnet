@@ -7,59 +7,52 @@ using StarkInfra.Utils;
 namespace StarkInfra
 {
     /// <summary>
-    /// IssuingDesign object
+    /// IssuingTokenDesign object
     /// <br/>
-    /// The IssuingDesign object displays information on the card and card package designs available to your Workspace.
+    /// The IssuingTokenDesign object displays the information of the token designs created in your Workspace.
+    /// This resource represents the existent designs for the cards which will be tokenized.
     /// <br/>
     /// Properties:
     /// <list>
-    ///     <item>ID [string]: unique id returned when IssuingDesign is created. ex: "5656565656565656"</item>
-    ///     <item>Name [string]: card or package design name. ex: "stark-plastic-dark-001"</item>
-    ///     <item>EmbosserIds [list of strings] list of embosser unique ids. ex: new List<string> { "5136459887542272", "5136459887542273" }</item>
-    ///     <item>Type [string]: card or package design type. Options: "card", "envelope"</item>
-    ///     <item>Updated [DateTime]: latest update datetime for the IssuingDesign. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
-    ///     <item>Created [DateTime]: creation datetime for the IssuingDesign. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>ID [string]: unique id returned when IssuingTokenDesign is created. ex: "5656565656565656"</item>
+    ///     <item>Name [string]: design name. ex: "Stark Bank - White Metal"</item>
+    ///     <item>Created [DateTime]: creation datetime for the IssuingTokenDesign. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>Updated [DateTime]: latest update datetime for the IssuingTokenDesign. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
     /// </summary>
-    public partial class IssuingDesign : Resource
+    public partial class IssuingTokenDesign : Resource
     {
         public string Name { get; }
-        public List<string> EmbosserIds { get; }
-        public string Type { get; }
-        public DateTime? Updated { get;  }
         public DateTime? Created { get; }
+        public DateTime? Updated { get; }
 
         /// <summary>
-        /// IssuingDesign object
+        /// IssuingTokenDesign object
         /// <br/>
-        /// The IssuingDesign object displays information on the card and card package designs available to your Workspace.
+        /// The IssuingTokenDesign object displays the information of the token designs created in your Workspace.
+        /// This resource represents the existent designs for the cards which will be tokenized.
         /// <br/>
         /// Attributes (return-only):
         /// <list>
-        ///     <item>id [string]: unique id returned when IssuingDesign is created. ex: "5656565656565656"</item>
-        ///     <item>name [string]: card or package design name. ex: "stark-plastic-dark-001" </item>
-        ///     <item>embosserIds [list of strings]: list of embosser unique ids. ex: new List<string> { "5136459887542272", "5136459887542273" }</item>
-        ///     <item>type [string]: card or package design type. Options: "card", "envelope"</item>
-        ///     <item>updated [DateTime]: latest update datetime for the IssuingDesign. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
-        ///     <item>created [DateTime]: creation datetime for the IssuingDesign. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>id [string]: unique id returned when IssuingTokenDesign is created. ex: "5656565656565656"</item>
+        ///     <item>name [string]: design name. ex: "Stark Bank - White Metal"</item>
+        ///     <item>created [DateTime]: creation datetime for the IssuingTokenDesign. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>updated [DateTime]: latest update datetime for the IssuingTokenDesign. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
-        public IssuingDesign(
-            string id = null, string name = null, List<string> embosserIds = null,
-            string type = null, DateTime? updated = null, DateTime? created = null
+        public IssuingTokenDesign(
+            string id = null, string name = null, DateTime? created = null, DateTime? updated = null
         ) : base(id)
         {
             Name = name;
-            EmbosserIds = embosserIds;
-            Type = type;
-            Updated = updated;
             Created = created;
+            Updated = updated;
         }
 
         /// <summary>
-        /// Retrieve a specific IssuingDesign object
+        /// Retrieve a specific IssuingTokenDesign object
         /// <br/>
-        /// Receive a single IssuingDesign object previously created in the Stark Infra API by passing its id
+        /// Receive a single IssuingTokenDesign object previously created in the Stark Infra API by passing its id
         /// <br/>
         /// Parameters (required):
         /// <list>
@@ -73,10 +66,10 @@ namespace StarkInfra
         /// <br/>
         /// Return:
         /// <list>
-        ///     <item>IssuingDesign object with updated attributes</item>
+        ///     <item>IssuingTokenDesign object with updated attributes</item>
         /// </list>
         /// </summary>
-        public static IssuingDesign Get(string id, User user = null)
+        public static IssuingTokenDesign Get(string id, User user = null)
         {
             (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             return Rest.GetId(
@@ -84,13 +77,13 @@ namespace StarkInfra
                 resourceMaker: resourceMaker,
                 id: id,
                 user: user
-            ) as IssuingDesign;
+            ) as IssuingTokenDesign;
         }
 
         /// <summary>
-        /// Retrieve IssuingDesign objects
+        /// Retrieve IssuingTokenDesign objects
         /// <br/>
-        /// Receive an IEnumerable of IssuingDesign objects previously created in the Stark Infra API
+        /// Receive an IEnumerable of IssuingTokenDesign objects previously created in the Stark Infra API
         /// <br/>
         /// Parameters (optional):
         /// <list>
@@ -101,10 +94,10 @@ namespace StarkInfra
         /// <br/>
         /// Return:
         /// <list>
-        ///     <item>IEnumerable of IssuingDesign objects with updated attributes</item>
+        ///     <item>IEnumerable of IssuingTokenDesign objects with updated attributes</item>
         /// </list>
         /// </summary>
-        public static IEnumerable<IssuingDesign> Query(List<string> ids = null, int? limit = null,
+        public static IEnumerable<IssuingTokenDesign> Query(int? limit = null, List<string> ids = null,
             User user = null)
         {
             (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
@@ -112,17 +105,17 @@ namespace StarkInfra
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
-                    { "ids", ids },
                     { "limit", limit },
+                    { "ids", ids },
                 },
                 user: user
-            ).Cast<IssuingDesign>();
+            ).Cast<IssuingTokenDesign>();
         }
 
         /// <summary>
-        /// Retrieve paged IssuingDesign objects
+        /// Retrieve paged IssuingTokenDesign objects
         /// <br/>
-        /// Receive a list of up to 100 IssuingDesign objects previously created in the Stark Infra API and the cursor to the next page.
+        /// Receive a list of up to 100 IssuingTokenDesign objects previously created in the Stark Infra API and the cursor to the next page.
         /// Use this function instead of query if you want to manually page your requests.
         /// <br/>
         /// Parameters (optional):
@@ -135,12 +128,12 @@ namespace StarkInfra
         /// <br/>
         /// Return:
         /// <list>
-        ///     <item>list of IssuingDesign objects with updated attributes</item>
-        ///     <item>cursor to retrieve the next page of IssuingDesign objects</item>
+        ///     <item>list of IssuingTokenDesign objects with updated attributes</item>
+        ///     <item>cursor to retrieve the next page of IssuingTokenDesign objects</item>
         /// </list>
         /// </summary>
-        public static (List<IssuingDesign> page, string pageCursor) Page(string cursor = null, List<string> ids = null, int? limit = null, 
-            User user = null)
+        public static (List<IssuingTokenDesign> page, string pageCursor) Page(string cursor = null, int? limit = null,
+            List<string> ids = null, User user = null)
         {
             (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
             (List<StarkCore.Utils.SubResource> page, string pageCursor) = Rest.GetPage(
@@ -148,23 +141,23 @@ namespace StarkInfra
                 resourceMaker: resourceMaker,
                 query: new Dictionary<string, object> {
                     { "cursor", cursor },
-                    { "ids", ids },
                     { "limit", limit },
+                    { "ids", ids },
                 },
                 user: user
             );
-            List<IssuingDesign> designs = new List<IssuingDesign>();
+            List<IssuingTokenDesign> designs = new List<IssuingTokenDesign>();
             foreach (StarkCore.Utils.SubResource subResource in page)
             {
-                designs.Add(subResource as IssuingDesign);
+                designs.Add(subResource as IssuingTokenDesign);
             }
             return (designs, pageCursor);
         }
-        
+
         /// <summary>
-        /// Retrieve a specific IssuingDesign pdf file
+        /// Retrieve a specific IssuingTokenDesign pdf file
         /// <br/>
-        /// Receive a single IssuingDesign pdf file generated in the Stark Infra API by its id.
+        /// Receive a single IssuingTokenDesign pdf file generated in the Stark Infra API by its id.
         /// <br/>
         /// Parameters (required):
         /// <list>
@@ -173,18 +166,18 @@ namespace StarkInfra
         /// <br/>
         /// Parameters (optional):
         /// <list>
-        ///     <item>user [Organization/Project object]: Organization or Project object. Not necessary if StarkBank.Settings.User was set before function call</item>
+        ///     <item>user [Organization/Project object]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
         /// </list>
         /// <br/>
         /// Return:
         /// <list>
-        ///     <item>IssuingDesign .pdf file</item>
+        ///     <item>IssuingTokenDesign .pdf file</item>
         /// </list>
         /// </summary>
         public static byte[] Pdf(string id, User user = null)
         {
             (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
-            return Utils.Rest.GetContent(
+            return Rest.GetContent(
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
                 subResourceName: "pdf",
@@ -195,23 +188,20 @@ namespace StarkInfra
 
         internal static (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) Resource()
         {
-            return (resourceName: "IssuingDesign", resourceMaker: ResourceMaker);
+            return (resourceName: "IssuingTokenDesign", resourceMaker: ResourceMaker);
         }
 
         internal static Resource ResourceMaker(dynamic json)
         {
             string id = json.id;
             string name = json.name;
-            List<string> embosserIds = json.embosserIds.ToObject<List<string>>();
-            string type = json.type;
             string createdString = json.created;
             DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
             DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
 
-            return new IssuingDesign(
-                id: id, name: name, embosserIds: embosserIds, type: type, updated: updated,
-                created: created
+            return new IssuingTokenDesign(
+                id: id, name: name, created: created, updated: updated
             );
         }
     }

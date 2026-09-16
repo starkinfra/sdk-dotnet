@@ -21,6 +21,16 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - pdf and payment methods to CreditNote resource
 - resendToken method to CreditSigner resource
 - update method to IssuingPurchase resource
+- productId attribute to IssuingCard resource
+- type attribute to IssuingDesign resource
+- productId, merchantCategoryType, installmentCount, description and holderId attributes to IssuingPurchase resource
+- IssuingBillingInvoice resource
+- IssuingBillingTransaction resource
+- IssuingToken resource
+- IssuingTokenRequest resource
+- IssuingTokenDesign resource
+### Fixed
+- IssuingProduct fundingType, holderType and code were exposed as Settlement, Category and Client; now FundingType, HolderType, Code, plus Client and Settlement from the API
 
 ## [0.13.0] - 2026-06-29
 ### Added

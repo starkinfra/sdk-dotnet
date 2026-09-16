@@ -16,18 +16,24 @@ namespace StarkInfra
     /// <list>
     ///     <item>ID[string]: unique card product number (BIN) registered within the card network. ex: "53810200"</item>
     ///     <item>Network [string]: card network flag. ex: "mastercard"</item>
+    ///     <item>CustomerType [string]: Same as holderType. Kept for backward compatibility</item>
     ///     <item>FundingType [string]: type of funding used for payment. ex: "credit", "debit"</item>
     ///     <item>HolderType [string]: holder type. ex: "business", "individual"</item>
     ///     <item>Code [string]: internal code from card flag informing the product. ex: "MRW", "MCO", "MWB", "MCS"</item>
+    ///     <item>Client [string]: client of the product.</item>
+    ///     <item>Settlement [string]: settlement of the product.</item>
     ///     <item>Created [DateTime]: creation DateTime for the IssuingProduct. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
     /// </summary>
     public partial class IssuingProduct : Resource
     {
         public string Network { get; }
-        public string Settlement { get; }
-        public string Category { get; }
+        public string CustomerType { get; }
+        public string FundingType { get; }
+        public string HolderType { get; }
+        public string Code { get; }
         public string Client { get; }
+        public string Settlement { get; }
         public DateTime? Created { get; }
 
         /// <summary>
@@ -40,20 +46,26 @@ namespace StarkInfra
         /// <list>
         ///     <item>id[string]: unique card product number (BIN) registered within the card network. ex: "53810200"</item>
         ///     <item>network [string]: card network flag. ex: "mastercard"</item>
+        ///     <item>customerType [string]: Same as holderType. Kept for backward compatibility</item>
         ///     <item>fundingType [string]: type of funding used for payment. ex: "credit", "debit"</item>
         ///     <item>holderType [string]: holder type. ex: "business", "individual"</item>
         ///     <item>code [string]: internal code from card flag informing the product. ex: "MRW", "MCO", "MWB", "MCS"</item>
+        ///     <item>client [string]: client of the product.</item>
+        ///     <item>settlement [string]: settlement of the product.</item>
         ///     <item>created [DateTime]: creation DateTime for the IssuingProduct. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
-        public IssuingProduct(string id, string network, string settlement, string category, string client,
-            DateTime? created
+        public IssuingProduct(string id, string network, string customerType, string fundingType, string holderType, string code,
+            string client = null, string settlement = null, DateTime? created = null
         ) : base(id)
         {
             Network = network;
-            Settlement = settlement;
-            Category = category;
+            CustomerType = customerType;
+            FundingType = fundingType;
+            HolderType = holderType;
+            Code = code;
             Client = client;
+            Settlement = settlement;
             Created = created;
         }
 
@@ -134,15 +146,18 @@ namespace StarkInfra
         {
             string id = json.id;
             string network = json.network;
+            string customerType = json.customerType;
             string fundingType = json.fundingType;
             string holderType = json.holderType;
             string code = json.code;
+            string client = json.client;
+            string settlement = json.settlement;
             string createdString = json.created;
             DateTime? created = StarkCore.Utils.Checks.CheckDateTime(createdString);
 
             return new IssuingProduct(
-                id: id, network: network, settlement: fundingType, category: holderType, 
-                client: code, created: created
+                id: id, network: network, customerType: customerType, fundingType: fundingType, holderType: holderType,
+                code: code, client: client, settlement: settlement, created: created
             );
         }
     } 
