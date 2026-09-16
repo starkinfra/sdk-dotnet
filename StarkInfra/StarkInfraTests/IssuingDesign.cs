@@ -1,5 +1,5 @@
-using StarkInfra;
 using Xunit;
+using StarkInfra;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -68,6 +68,37 @@ namespace StarkInfraTests
                 byte[] pdf = IssuingDesign.Pdf(id: design.ID);
                 Assert.True(pdf.Length > 0);
                 System.IO.File.WriteAllBytes("issuingdesign.pdf", pdf);
+            }
+        }
+
+        [Fact]
+        public void QueryType()
+        {
+            List<string> validTypes = new List<string> { "card", "envelope" };
+            List<IssuingDesign> designs = IssuingDesign.Query(limit: 4).ToList();
+            Assert.True(designs.Count <= 4);
+            foreach (IssuingDesign design in designs)
+            {
+                TestUtils.Log(design);
+                Assert.NotNull(design.ID);
+                Assert.NotNull(design.Type);
+                Assert.Contains(design.Type, validTypes);
+            }
+        }
+
+        [Fact]
+        public void GetAndVerifyType()
+        {
+            List<string> validTypes = new List<string> { "card", "envelope" };
+            List<IssuingDesign> designs = IssuingDesign.Query(limit: 1).ToList();
+            Assert.True(designs.Count <= 4);
+            foreach (IssuingDesign design in designs)
+            {
+                IssuingDesign getDesign = IssuingDesign.Get(design.ID);
+                Assert.Equal(getDesign.ID, design.ID);
+                Assert.NotNull(getDesign.Type);
+                Assert.Contains(getDesign.Type, validTypes);
+                TestUtils.Log(getDesign);
             }
         }
     }

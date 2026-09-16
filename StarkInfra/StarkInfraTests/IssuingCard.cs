@@ -1,5 +1,5 @@
-﻿using StarkInfra;
-using Xunit;
+﻿using Xunit;
+using StarkInfra;
 using System;
 using System.Linq;
 using System.Diagnostics;
@@ -92,7 +92,36 @@ namespace StarkInfraTests
             Assert.Equal(canceledCard.Status, "canceled");
             TestUtils.Log(canceledCard);
         }
-        
+
+        [Fact]
+        public void CreateGetProductId()
+        {
+            string productID = "52233227";
+            IssuingHolder holder = IssuingHolder.Query(limit: 1, status: "blocked").ToList().First();
+            IssuingCard example = new IssuingCard(
+                city: "Sao Paulo",
+                displayName: "ANTHONY STARK",
+                productID: productID,
+                district: "Bela Vista",
+                holderExternalID: Convert.ToString(new Random().Next(1, 999999999)),
+                holderName: holder.Name,
+                holderTaxID: holder.TaxID,
+                stateCode: "SP",
+                streetLine1: "Av. Paulista, 200",
+                streetLine2: "Apto. 123",
+                zipCode: "01311-200"
+            );
+            List<IssuingCard> cards = IssuingCard.Create(new List<IssuingCard>() { example });
+            IssuingCard card = cards.First();
+            TestUtils.Log(card);
+            Assert.NotNull(card.ID);
+            Assert.Equal(productID, card.ProductID);
+            IssuingCard getCard = IssuingCard.Get(card.ID);
+            Assert.Equal(productID, getCard.ProductID);
+            TestUtils.Log(getCard);
+            IssuingCard.Cancel(id: card.ID);
+        }
+
         internal static IssuingCard Example()
         {
             IssuingHolder holder = IssuingHolder.Query(limit: 1, status: "blocked").ToList().First();
