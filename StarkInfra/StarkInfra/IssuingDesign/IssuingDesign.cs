@@ -202,12 +202,12 @@ namespace StarkInfra
         {
             string id = json.id;
             string name = json.name;
-            List<string> embosserIds = json.embosserIds.ToObject<List<string>>();
+            List<string> embosserIds = json.embosserIds == null ? null : json.embosserIds.ToObject<List<string>>();
             string type = json.type;
             string createdString = json.created;
-            DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
+            DateTime? created = createdString == null ? (DateTime?)null : StarkCore.Utils.Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
-            DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
+            DateTime? updated = updatedString == null ? (DateTime?)null : StarkCore.Utils.Checks.CheckDateTime(updatedString);
 
             return new IssuingDesign(
                 id: id, name: name, embosserIds: embosserIds, type: type, updated: updated,

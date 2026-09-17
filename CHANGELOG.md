@@ -38,6 +38,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - CashierBankCode, Description and Type attributes to StaticBrcode resource
 ### Fixed
 - IssuingProduct fundingType, holderType and code were exposed as Settlement, Category and Client; now FundingType, HolderType, Code, plus Client and Settlement from the API
+- IssuingDesign parsing when embosserIds is absent, which broke IssuingEmbossingKit queries
 
 ## [0.13.0] - 2026-06-29
 ### Added
