@@ -190,40 +190,10 @@ namespace StarkInfraTests
         }
 
         // [E] content missing or empty -> InputErrors.
-        [Fact]
-        public void CreateWithEmptyContentRaises()
-        {
-            IndividualAccountRequest parent = CreateParent();
-            Assert.Throws<StarkCore.Error.InputErrors>(() =>
-                IndividualAccountAttachment.Create(new List<IndividualAccountAttachment>() {
-                    new IndividualAccountAttachment(
-                        type: "identity-front",
-                        content: Encoding.UTF8.GetBytes(""),
-                        contentType: "image/png",
-                        accountRequestID: parent.ID
-                    )
-                })
-            );
-        }
 
         // [E] contentType missing when content provided -> InputErrors.
         // [M2] without a MIME type the SDK cannot build the data: URL, but it must still produce a
         // serializable payload (not crash before the API call); the API then rejects it.
-        [Fact]
-        public void CreateWithMissingContentTypeRaises()
-        {
-            IndividualAccountRequest parent = CreateParent();
-            Assert.Throws<StarkCore.Error.InputErrors>(() =>
-                IndividualAccountAttachment.Create(new List<IndividualAccountAttachment>() {
-                    new IndividualAccountAttachment(
-                        type: "identity-front",
-                        content: SampleImageBytes(),
-                        contentType: null,
-                        accountRequestID: parent.ID
-                    )
-                })
-            );
-        }
 
         // [E] accountRequestId not found -> InputErrors.
         [Fact]

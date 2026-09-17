@@ -334,7 +334,7 @@ namespace StarkInfra
         {
             string name = json.name;
             string taxID = json.taxId;
-            Address address = Address.Parse(json.address);
+            Address address = json.address == null ? null : (Address)Address.ResourceMaker(json.address);
             long income = json.income;
             string birthDateString = json.birthDate;
             DateTime? birthDate = string.IsNullOrEmpty(birthDateString) ? (DateTime?)null : StarkCore.Utils.Checks.CheckDateTime(birthDateString);
