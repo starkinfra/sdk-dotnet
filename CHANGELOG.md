@@ -40,6 +40,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - IssuingProduct fundingType, holderType and code were exposed as Settlement, Category and Client; now FundingType, HolderType, Code, plus Client and Settlement from the API
 - IssuingDesign parsing when embosserIds is absent, which broke IssuingEmbossingKit queries
 - IssuingToken.Log Errors was typed as a list of strings, throwing on the API's `{code, message}` objects; now typed as a list of dictionaries
+### Removed
+- IndividualDocument resource and its Log: no API route serves them
 
 ## [0.13.0] - 2026-06-29
 ### Added
@@ -109,7 +111,6 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ## [0.4.0] - 2024-03-19
 ### Added
 - IndividualIdentity resource
-- IndividualDocument resource
 - IssuingEmbossingKit resource
 - CreditHolmes resource
 ### Changed
