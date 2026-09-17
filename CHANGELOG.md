@@ -31,6 +31,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - IssuingTokenDesign resource
 - IssuingTokenActivation resource
 - IssuingToken.Log resource
+- Data, Description, Expired and Jws attributes to BrcodePreview resource
 ### Fixed
 - IssuingProduct fundingType, holderType and code were exposed as Settlement, Category and Client; now FundingType, HolderType, Code, plus Client and Settlement from the API
 

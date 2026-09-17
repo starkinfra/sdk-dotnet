@@ -42,6 +42,10 @@ namespace StarkInfra
     ///     <item>Status [string]: Payment status. Options: "active", "paid", "canceled" or "unknown"</item>
     ///     <item>Subscription [Subscription]: BR code subscription information</item>
     ///     <item>TaxID [string]: Payment receiver tax ID. ex: "012.345.678-90"</item>
+    ///     <item>Data [list of dictionaries]: additional data of the dynamic QR code, in key/value pairs. ex: new List<Dictionary<string, object>>{ new Dictionary<string, object>{ { "key", "additional-info" }, { "value", "order #12345" } } }</item>
+    ///     <item>Description [string]: Description of the payment.</item>
+    ///     <item>Expired [DateTime]: date and time after which the dynamic QR code is considered expired. ex: DateTime(2022, 2, 1)</item>
+    ///     <item>Jws [string]: JWS of the dynamic QR code. Returned only when "jws" is passed in the expand query parameter. ex: "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9..."</item>
     /// </list>
     /// </summary>
     public partial class BrcodePreview : Resource
@@ -70,6 +74,10 @@ namespace StarkInfra
         public string Status { get; }
         public Subscription Subscription { get; }
         public string TaxID { get; }
+        public List<Dictionary<string, object>> Data { get; }
+        public string Description { get; }
+        public DateTime? Expired { get; }
+        public string Jws { get; }
 
         /// <summary>
         /// BrcodePreview object
@@ -109,16 +117,21 @@ namespace StarkInfra
         ///     <item>status [string]: Payment status. Options: "active", "paid", "canceled" or "unknown"</item>
         ///     <item>subscription [Subscription]: BR code subscription information</item>
         ///     <item>taxID [string]: Payment receiver tax ID. ex: "012.345.678-90"</item>
+        ///     <item>data [list of dictionaries]: additional data of the dynamic QR code, in key/value pairs. ex: new List<Dictionary<string, object>>{ new Dictionary<string, object>{ { "key", "additional-info" }, { "value", "order #12345" } } }</item>
+        ///     <item>description [string]: Description of the payment.</item>
+        ///     <item>expired [DateTime]: date and time after which the dynamic QR code is considered expired. ex: DateTime(2022, 2, 1)</item>
+        ///     <item>jws [string]: JWS of the dynamic QR code. Returned only when "jws" is passed in the expand query parameter. ex: "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9..."</item>
         /// </list>
         /// </summary>
-        public BrcodePreview( 
-            string id, string payerId, string accountNumber = null, string accountType = null, 
-            int? amount = null, string amountType = null, string bankCode = null, 
-            string branchCode = null, int? cashAmount = null, string cashierBankCode = null, 
+        public BrcodePreview(
+            string id, string payerId, string accountNumber = null, string accountType = null,
+            int? amount = null, string amountType = null, string bankCode = null,
+            string branchCode = null, int? cashAmount = null, string cashierBankCode = null,
             string cashierType = null, int? discountAmount = null, DateTime? due = null, string endToEndID = null,
-            int? fineAmount = null, int? interestAmount = null, string keyID = null, string name = null, 
-            int? nominalAmount = null, string reconciliationID = null, int? reductionAmount = null, 
-            DateTime? scheduled = null, string status = null, Subscription subscription = null, string taxID = null
+            int? fineAmount = null, int? interestAmount = null, string keyID = null, string name = null,
+            int? nominalAmount = null, string reconciliationID = null, int? reductionAmount = null,
+            DateTime? scheduled = null, string status = null, Subscription subscription = null, string taxID = null,
+            List<Dictionary<string, object>> data = null, string description = null, DateTime? expired = null, string jws = null
         ) : base(id)
         {
             PayerId = payerId;
@@ -145,6 +158,10 @@ namespace StarkInfra
             Status = status;
             Subscription = subscription;
             TaxID = taxID;
+            Data = data;
+            Description = description;
+            Expired = expired;
+            Jws = jws;
         }
 
         /// <summary>
@@ -245,15 +262,21 @@ namespace StarkInfra
             string status = json.status;
             Subscription subscription = ParseSubscription(json.subscription);
             string taxID = json.taxId;
+            List<Dictionary<string, object>> data = json.data?.ToObject<List<Dictionary<string, object>>>();
+            string description = json.description;
+            string expiredString = json.expired;
+            DateTime? expired = expiredString == "" ? null : StarkCore.Utils.Checks.CheckNullableDateTime(expiredString);
+            string jws = json.jws;
 
             return new BrcodePreview(
-                id: id, payerId: payerId, accountNumber: accountNumber, accountType: accountType, 
-                amount: amount, amountType: amountType, bankCode: bankCode, 
-                branchCode: branchCode, cashAmount: cashAmount, cashierBankCode: cashierBankCode, 
+                id: id, payerId: payerId, accountNumber: accountNumber, accountType: accountType,
+                amount: amount, amountType: amountType, bankCode: bankCode,
+                branchCode: branchCode, cashAmount: cashAmount, cashierBankCode: cashierBankCode,
                 cashierType: cashierType, discountAmount: discountAmount, due: due, endToEndID: endToEndID,
-                fineAmount: fineAmount, interestAmount: interestAmount, keyID: keyID, name: name, 
-                nominalAmount: nominalAmount, reconciliationID: reconciliationID, reductionAmount: reductionAmount, 
-                scheduled: scheduled, status: status, subscription: subscription, taxID: taxID
+                fineAmount: fineAmount, interestAmount: interestAmount, keyID: keyID, name: name,
+                nominalAmount: nominalAmount, reconciliationID: reconciliationID, reductionAmount: reductionAmount,
+                scheduled: scheduled, status: status, subscription: subscription, taxID: taxID,
+                data: data, description: description, expired: expired, jws: jws
             );
         }
         
