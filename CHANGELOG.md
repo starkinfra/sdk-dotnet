@@ -44,6 +44,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - PixPullSubscription resource
 - PixPullRequest resource
 - BusinessIdentity and BusinessAttachment resources
+- IndividualAccountRequest resource
+- IndividualAccountAttachment resource
 
 ## [0.12.0] - 2026-02-10
 ### Fixed
