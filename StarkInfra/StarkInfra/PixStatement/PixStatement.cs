@@ -28,6 +28,7 @@ namespace StarkInfra
     ///     <item>TransactionCount [integer]: number of transactions that happened during the day that the PixStatement was requested. ex: 11</item>
     ///     <item>Created [DateTime]: creation DateTime for the PixStatement. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>Updated [DateTime]: latest update DateTime for the PixStatement. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>ChunkCount [integer]: number of chunks the statement file is split into. ex: 2</item>
     /// </list>
     /// </summary>
     public partial class PixStatement : Resource
@@ -39,6 +40,7 @@ namespace StarkInfra
         public long? TransactionCount { get; }
         public DateTime? Created { get; }
         public DateTime? Updated { get; }
+        public long? ChunkCount { get; }
 
         /// <summary>
         /// PixStatement object
@@ -66,10 +68,11 @@ namespace StarkInfra
         ///     <item>transactionCount [integer]: number of transactions that happened during the day that the PixStatement was requested. ex: 11</item>
         ///     <item>created [DateTime]: creation DateTime for the PixStatement. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>updated [DateTime]: latest update DateTime for the PixStatement. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>chunkCount [integer]: number of chunks the statement file is split into. ex: 2</item>
         /// </list>
         /// </summary>
-        public PixStatement(DateTime? after, DateTime? before, string type, string id = null, string status = null, 
-            long? transactionCount = null, DateTime? created = null, DateTime? updated = null) : base(id)
+        public PixStatement(DateTime? after, DateTime? before, string type, string id = null, string status = null,
+            long? transactionCount = null, DateTime? created = null, DateTime? updated = null, long? chunkCount = null) : base(id)
         {
             After = after;
             Before = before;
@@ -78,6 +81,7 @@ namespace StarkInfra
             TransactionCount = transactionCount;
             Created = created;
             Updated = updated;
+            ChunkCount = chunkCount;
         }
 
         /// <summary>
@@ -296,10 +300,11 @@ namespace StarkInfra
             string updatedString = json.updated;
             DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
             DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
+            long? chunkCount = json.chunkCount;
 
             return new PixStatement(
                 after: after, before: before, type: type, id: id, status: status, transactionCount: transactionCount,
-                created: created, updated: updated
+                created: created, updated: updated, chunkCount: chunkCount
             );
         }
     }
