@@ -1222,6 +1222,38 @@ StarkInfra.IssuingToken token = StarkInfra.IssuingToken.Cancel("5353197895942144
 Console.Write(token);
 ```
 
+### Query IssuingToken logs
+
+You can query token logs to better understand token life cycles.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.IssuingToken.Log> logs = StarkInfra.IssuingToken.Log.Query(limit: 10);
+
+foreach (StarkInfra.IssuingToken.Log log in logs)
+{
+    Console.Write(log);
+}
+```
+
+### Get an IssuingToken log
+
+You can also get a specific log by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.IssuingToken.Log log = StarkInfra.IssuingToken.Log.Get("6299741604282368");
+
+Console.Write(log);
+```
+
 ### Process Token authorizations
 
 It's possible to process tokenization and activation requests that arrived at your endpoint.

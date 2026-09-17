@@ -30,6 +30,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - IssuingTokenRequest resource
 - IssuingTokenDesign resource
 - IssuingTokenActivation resource
+- IssuingToken.Log resource
 ### Fixed
 - IssuingProduct fundingType, holderType and code were exposed as Settlement, Category and Client; now FundingType, HolderType, Code, plus Client and Settlement from the API
 
