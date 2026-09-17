@@ -28,6 +28,9 @@ namespace StarkInfra
     ///     <item>Url [string]: url link to the BR code image. ex: "https://brcode-h.development.starkinfra.com/static-qrcode/97756273400d42ce9086404fe10ea0d6.png"</item>
     ///     <item>Updated [DateTime]: latest update DateTime for the StaticBrcode. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>Created [DateTime]: creation DateTime for the StaticBrcode. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>CashierBankCode [string, default null]: Cashier's bank code. ex: "20018183".</item>
+    ///     <item>Description [string, default null]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"</item>
+    ///     <item>Type [string, default "instant"]: type of the StaticBrcode. Options: "instant", "instantAndOrSubscription"</item>
     /// </list>
     /// </summary>
     public partial class StaticBrcode : Resource
@@ -42,6 +45,9 @@ namespace StarkInfra
         public string Url { get; }
         public DateTime? Updated { get; }
         public DateTime? Created { get; }
+        public string CashierBankCode { get; }
+        public string Description { get; }
+        public string Type { get; }
 
         /// <summary>
         /// StaticBrcode object
@@ -63,6 +69,9 @@ namespace StarkInfra
         ///     <item>amount [integer, default 0]: positive integer that represents the amount in cents of the resulting Pix transaction. If the amount is zero, the sender can choose any amount in the moment of payment. ex: 1234 (= R$ 12.34)</item>
         ///     <item>reconciliationID [string, default ""]: id to be used for conciliation of the resulting Pix transaction. This id must have up to 25 alphanumeric digits ex: "ah27s53agj6493hjds6836v49"</item>
         ///     <item>tags [list of strings, default null]: list of strings for tagging. ex: new List<string>{ "travel", "food" }</item>
+        ///     <item>cashierBankCode [string, default null]: Cashier's bank code. ex: "20018183".</item>
+        ///     <item>description [string, default null]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"</item>
+        ///     <item>type [string, default "instant"]: type of the StaticBrcode. Options: "instant", "instantAndOrSubscription"</item>
         /// </list>
         /// Attributes (return-only):
         /// <list>
@@ -74,10 +83,11 @@ namespace StarkInfra
         /// </list>
         /// </summary>
         public StaticBrcode(
-            string name, string keyID, string city, long? amount = null, 
-            string reconciliationID = null, List<string> tags = null, string id = null, 
-            string uuid = null, string url = null, DateTime? updated = null, 
-            DateTime? created = null
+            string name, string keyID, string city, long? amount = null,
+            string reconciliationID = null, List<string> tags = null, string id = null,
+            string uuid = null, string url = null, DateTime? updated = null,
+            DateTime? created = null, string cashierBankCode = null, string description = null,
+            string type = null
         ) : base(id)
         {
             Name = name;
@@ -90,6 +100,9 @@ namespace StarkInfra
             Url = url;
             Updated = updated;
             Created = created;
+            CashierBankCode = cashierBankCode;
+            Description = description;
+            Type = type;
         }
 
         /// <summary>
@@ -296,11 +309,15 @@ namespace StarkInfra
             DateTime? created = StarkCore.Utils.Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
             DateTime? updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
+            string cashierBankCode = json.cashierBankCode;
+            string description = json.description;
+            string type = json.type;
 
-            return new StaticBrcode( 
-                name: name, keyID: keyID, city: city, amount: amount, 
+            return new StaticBrcode(
+                name: name, keyID: keyID, city: city, amount: amount,
                 reconciliationID: reconciliationID, tags: tags, id: id, uuid: uuid,
-                url: url, created: created, updated: updated
+                url: url, created: created, updated: updated, cashierBankCode: cashierBankCode,
+                description: description, type: type
             );
         }
     }
