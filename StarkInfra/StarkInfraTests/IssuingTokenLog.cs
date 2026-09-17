@@ -25,6 +25,11 @@ namespace StarkInfraTests
                 TestUtils.Log(log);
                 Assert.NotNull(log.ID);
                 Assert.Equal("blocked", log.Type);
+                foreach (Dictionary<string, object> error in log.Errors)
+                {
+                    Assert.True(error.ContainsKey("code"));
+                    Assert.True(error.ContainsKey("message"));
+                }
             }
             IssuingToken.Log getLog = IssuingToken.Log.Get(id: logs.First().ID);
             Assert.Equal(getLog.ID, logs.First().ID);

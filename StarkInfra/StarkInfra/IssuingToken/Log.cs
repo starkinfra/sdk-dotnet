@@ -19,7 +19,7 @@ namespace StarkInfra
         /// <list>
         ///     <item>ID [string]: unique id returned when the log is created. ex: "5656565656565656"</item>
         ///     <item>Token [IssuingToken]: IssuingToken entity to which the log refers to.</item>
-        ///     <item>Errors [list of strings]: list of errors linked to this IssuingToken event.</item>
+        ///     <item>Errors [list of dictionaries]: list of errors linked to this IssuingToken event. ex: [{"code": "invalidToken", "message": "The token is invalid"}]</item>
         ///     <item>Type [string]: type of the IssuingToken event which triggered the log creation. ex: "active", "blocked", "canceled", "frozen" or "pending"</item>
         ///     <item>Created [DateTime]: creation DateTime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
@@ -27,7 +27,7 @@ namespace StarkInfra
         public class Log : Resource
         {
             public IssuingToken Token { get; }
-            public List<string> Errors { get; }
+            public List<Dictionary<string, object>> Errors { get; }
             public string Type { get; }
             public DateTime Created { get; }
 
@@ -42,12 +42,12 @@ namespace StarkInfra
             /// <list>
             ///     <item>id [string]: unique id returned when the log is created. ex: "5656565656565656"</item>
             ///     <item>token [IssuingToken]: IssuingToken entity to which the log refers to.</item>
-            ///     <item>errors [list of strings]: list of errors linked to this IssuingToken event.</item>
+            ///     <item>errors [list of dictionaries]: list of errors linked to this IssuingToken event. ex: [{"code": "invalidToken", "message": "The token is invalid"}]</item>
             ///     <item>type [string]: type of the IssuingToken event which triggered the log creation. ex: "active", "blocked", "canceled", "frozen" or "pending"</item>
             ///     <item>created [DateTime]: creation DateTime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
             /// </list>
             /// </summary>
-            public Log(string id, string type, List<string> errors, IssuingToken token, DateTime created) : base(id)
+            public Log(string id, string type, List<Dictionary<string, object>> errors, IssuingToken token, DateTime created) : base(id)
             {
                 Token = token;
                 Errors = errors;
@@ -186,7 +186,7 @@ namespace StarkInfra
             {
                 string id = json.id;
                 string type = json.type;
-                List<string> errors = json.errors is null ? new List<string> { } : json.errors.ToObject<List<string>>();
+                List<Dictionary<string, object>> errors = json.errors.ToObject<List<Dictionary<string, object>>>();
                 IssuingToken token = IssuingToken.ResourceMaker(json.token);
                 string createdString = json.created;
                 DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
