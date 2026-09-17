@@ -31,6 +31,7 @@ namespace StarkInfra
     ///     <item>Flow [string]: direction of money flow. ex: "in" or "out"</item>
     ///     <item>Created [DateTime]: creation DateTime for the PixReversal. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>Updated [DateTime]: latest update DateTime for the PixReversal. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>Description [string]: Description of the reversal.</item>
     /// </list>
     /// </summary>
     public partial class PixReversal : Utils.Resource
@@ -46,6 +47,7 @@ namespace StarkInfra
         public string Flow { get; }
         public DateTime? Created { get; }
         public DateTime? Updated { get; }
+        public string Description { get; }
 
         /// <summary>
         /// PixReversal object
@@ -76,11 +78,12 @@ namespace StarkInfra
         ///     <item>flow [string]: direction of money flow. ex: "in" or "out"</item>
         ///     <item>created [DateTime]: creation DateTime for the PixReversal. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>updated [DateTime]: latest update DateTime for the PixReversal. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>description [string]: Description of the reversal.</item>
         /// </list>
         /// </summary>
-        public PixReversal(long amount, string externalID, string endToEndID, string reason, List<string> tags = null,  
-            string id = null, string returnID = null, long? fee = null, string status = null, string flow = null, 
-            DateTime? created = null, DateTime? updated = null) : base(id)
+        public PixReversal(long amount, string externalID, string endToEndID, string reason, List<string> tags = null,
+            string id = null, string returnID = null, long? fee = null, string status = null, string flow = null,
+            DateTime? created = null, DateTime? updated = null, string description = null) : base(id)
         {
             Amount = amount;
             ExternalID = externalID;
@@ -93,6 +96,7 @@ namespace StarkInfra
             Flow = flow ;
             Created = created;
             Updated = updated;
+            Description = description;
         }
 
         /// <summary>
@@ -380,11 +384,13 @@ namespace StarkInfra
             DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
             DateTime updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
+            string description = json.description;
 
             return new PixReversal(
-                amount: amount, externalID: externalID, endToEndID: endToEndID, 
-                reason: reason, tags: tags, id: id, returnID: returnID, fee: fee, 
-                status: status, flow: flow , created: created, updated: updated 
+                amount: amount, externalID: externalID, endToEndID: endToEndID,
+                reason: reason, tags: tags, id: id, returnID: returnID, fee: fee,
+                status: status, flow: flow , created: created, updated: updated,
+                description: description
             );
         }
     }
