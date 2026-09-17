@@ -73,6 +73,7 @@
     <Folder Include="IssuingBillingInvoice\" />
     <Folder Include="IssuingBillingTransaction\" />
     <Folder Include="IssuingToken\" />
+    <Folder Include="IssuingTokenActivation\" />
     <Folder Include="IssuingTokenRequest\" />
     <Folder Include="IssuingTokenDesign\" />
     <Folder Include="MerchantCategory\" />
