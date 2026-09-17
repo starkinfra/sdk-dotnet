@@ -242,7 +242,7 @@ namespace StarkInfraTests
         }
 
         // Real PNG bytes; the API validates binary image content (not just the MIME type).
-        // Read from the source tree via relative path, matching IndividualDocument.cs.
+        // Read from the source tree via relative path.
         internal static byte[] SampleImageBytes()
         {
             return System.IO.File.ReadAllBytes("../../../identity/identity-front-face.png");

@@ -9,10 +9,8 @@ namespace StarkInfra
     /// <summary>
     /// IndividualIdentity object
     /// <br/>
-    /// An IndividualDocument represents an individual to be validated. It can have several individual documents attached
-    /// to it, which are used to validate the identity of the individual. Once an individual identity is created, individual
-    /// documents must be attached to it using the created method of the individual document resource. When all the required
-    /// individual documents are attached to an individual identity it can be sent to validation by patching its status to 
+    /// An IndividualIdentity represents an individual to be validated. Once all the required
+    /// information is attached to an individual identity it can be sent to validation by patching its status to
     /// processing.
     /// <br/>
     /// When you initialize a IndividualIdentity, the entity will not be automatically
@@ -41,10 +39,8 @@ namespace StarkInfra
         /// <summary>
         /// IndividualIdentity object
         /// <br/>
-        /// An IndividualDocument represents an individual to be validated. It can have several individual documents attached
-        /// to it, which are used to validate the identity of the individual. Once an individual identity is created, individual
-        /// documents must be attached to it using the created method of the individual document resource. When all the required
-        /// individual documents are attached to an individual identity it can be sent to validation by patching its status to 
+        /// An IndividualIdentity represents an individual to be validated. Once all the required
+        /// information is attached to an individual identity it can be sent to validation by patching its status to
         /// processing.
         /// <br/>
         /// When you initialize a IndividualIdentity, the entity will not be automatically
