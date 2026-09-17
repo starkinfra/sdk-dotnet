@@ -36,6 +36,7 @@ namespace StarkInfra
     ///     <item>ClaimedBankCode [string]: bankCode of the account donating the PixKey. ex: "20018183"</item>
     ///     <item>Created [DateTime]: creation DateTime for the PixClaim. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>Updated [DateTime]: update DateTime for the PixClaim. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>BacenId [string, default null]: unique transaction id returned from Central Bank. ex: "ccf9bd9c-e99d-999e-bab9-b999ca999f99"</item>
     /// </list>
     /// </summary>
     public partial class PixClaim : Resource
@@ -56,6 +57,7 @@ namespace StarkInfra
         public string ClaimedBankCode { get; }
         public DateTime? Updated { get; }
         public DateTime? Created { get; }
+        public string BacenId { get; }
 
         /// <summary>
         /// PixClaim object
@@ -93,14 +95,15 @@ namespace StarkInfra
         ///     <item>claimedBankCode [string]: bankCode of the account donating the PixKey. ex: "20018183"</item>
         ///     <item>created [DateTime]: creation DateTime for the PixClaim. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>updated [DateTime]: update DateTime for the PixClaim. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>bacenId [string, default null]: unique transaction id returned from Central Bank. ex: "ccf9bd9c-e99d-999e-bab9-b999ca999f99"</item>
         /// </list>
         /// </summary>
         public PixClaim(
-            DateTime accountCreated, string accountNumber, string accountType, 
+            DateTime accountCreated, string accountNumber, string accountType,
             string branchCode, string name, string taxID, string keyID, List<string> tags = null,
-            string status = null, string type = null, string keyType = null, 
+            string status = null, string type = null, string keyType = null,
             string flow = null, string claimerBankCode = null, string claimedBankCode = null,
-            DateTime? updated = null, DateTime? created = null, string id = null
+            DateTime? updated = null, DateTime? created = null, string id = null, string bacenId = null
         ) : base(id)
         {
             AccountCreated = accountCreated;
@@ -119,6 +122,7 @@ namespace StarkInfra
             ClaimedBankCode = claimedBankCode;
             Updated = updated;
             Created = created;
+            BacenId = bacenId;
         }
 
         /// <summary>
@@ -398,13 +402,14 @@ namespace StarkInfra
             DateTime? created = StarkCore.Utils.Checks.CheckDateTime(createdString);
             string updatedString = json.updated;
             DateTime? updated = StarkCore.Utils.Checks.CheckDateTime(updatedString);
+            string bacenId = json.bacenId;
 
             return new PixClaim(
-                accountCreated: accountCreated, accountNumber: accountNumber, 
-                accountType: accountType, branchCode: branchCode, name: name, 
-                taxID: taxID, keyID: keyID, tags: tags, id: id, status: status, 
+                accountCreated: accountCreated, accountNumber: accountNumber,
+                accountType: accountType, branchCode: branchCode, name: name,
+                taxID: taxID, keyID: keyID, tags: tags, id: id, status: status,
                 type: type, keyType: keyType, flow: flow, claimerBankCode: claimerBankCode,
-                claimedBankCode: claimedBankCode, updated: updated, created: created
+                claimedBankCode: claimedBankCode, updated: updated, created: created, bacenId: bacenId
             );
         }
     }
