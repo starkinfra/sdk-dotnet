@@ -14,6 +14,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 ### Added
+- AiKnowledgeBase, AiVoice, AiSpeech, AiTranscript, AiAgent, AiChat and AiMessage resources
 - Ledger resource
 - LedgerTransaction resource
 - Parse method to PixPullSubscription
