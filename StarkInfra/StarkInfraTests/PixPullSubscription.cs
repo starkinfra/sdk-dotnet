@@ -185,11 +185,11 @@ namespace StarkInfraTests
         {
             Random rand = new Random();
             string bankCode = Environment.GetEnvironmentVariable("SANDBOX_BANK_CODE");
-            string bacenID = BacenID.Create(bankCode: bankCode);
+            string bacenID = PixSubscriptionBacenID.Create(bankCode: bankCode, prefix: "RR");
             return new PixPullSubscription(
                 bacenID: bacenID,
                 externalID: Convert.ToString(rand.Next(1, 999999999)),
-                installmentStart: DateTime.UtcNow.AddDays(1),
+                installmentStart: DateTime.UtcNow.AddDays(7),
                 interval: "month",
                 receiverName: "Stark Bank",
                 receiverTaxID: "39.908.427/0001-28",

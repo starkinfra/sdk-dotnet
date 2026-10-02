@@ -15,6 +15,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ## [Unreleased]
 ### Added
 - disputeID attribute to PixRequest resource
+- PixSubscriptionBacenID utility to generate Pix subscription bacenIds
+- ReturnID and BacenID utilities to generate return and bacen ids
 - Ledger resource
 - LedgerTransaction resource
 - Parse method to PixPullSubscription
