@@ -14,6 +14,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 ### Added
+- PixKeyHolmes.Log sub-resource
+- Get method to PixKeyHolmes resource
 - Ledger resource
 - LedgerTransaction resource
 - Parse method to PixPullSubscription
