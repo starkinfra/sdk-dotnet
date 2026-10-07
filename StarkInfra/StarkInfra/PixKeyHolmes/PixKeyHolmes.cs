@@ -108,6 +108,37 @@ namespace StarkInfra
         }
 
         /// <summary>
+        /// Retrieve a specific PixKeyHolmes
+        /// <br/>
+        /// Receive a single PixKeyHolmes object previously created in the Stark Infra API by its id
+        /// <br/>
+        /// Parameters (required):
+        /// <list>
+        ///     <item>id [string]: object unique id. ex: "5656565656565656"</item>
+        /// </list>
+        /// <br/>
+        /// Parameters (optional):
+        /// <list>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        /// </list>
+        /// <br/>
+        /// Return:
+        /// <list>
+        ///     <item>PixKeyHolmes object that corresponds to the given id.</item>
+        /// </list>
+        /// </summary>
+        public static PixKeyHolmes Get(string id, User user = null)
+        {
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            return Rest.GetId(
+                resourceName: resourceName,
+                resourceMaker: resourceMaker,
+                id: id,
+                user: user
+            ) as PixKeyHolmes;
+        }
+
+        /// <summary>
         /// Retrieve PixKeyHolmes objects
         /// <br/>
         /// Receive an IEnumerable of PixKeyHolmes objects previously created in the Stark Infra API
