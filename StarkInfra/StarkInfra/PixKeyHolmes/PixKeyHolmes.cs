@@ -23,7 +23,7 @@ namespace StarkInfra
     ///     <item>Tags [list of strings, default []]: list of strings for reference when searching for PixKeyHolmes. ex: new List<string>{ "travel", "food" }</item>
     ///     <item>ID [string]: unique id returned when the PixKeyHolmes is created. ex: "5656565656565656"</item>
     ///     <item>Result [string]: investigation outcome once the case is solved. Options: "registered", "unregistered"</item>
-    ///     <item>Status [string]: current status of the PixKeyHolmes. ex: "created", "solving", "solved", "failed"</item>
+    ///     <item>Status [string]: current status of the PixKeyHolmes. ex: "solving", "solved"</item>
     ///     <item>Created [DateTime]: creation DateTime for the PixKeyHolmes. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>Updated [DateTime]: latest update DateTime for the PixKeyHolmes. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
@@ -58,7 +58,7 @@ namespace StarkInfra
         /// <list>
         ///     <item>id [string]: unique id returned when PixKeyHolmes is created. ex: "5656565656565656"</item>
         ///     <item>result [string]: investigation outcome once the case is solved. Options: "registered", "unregistered"</item>
-        ///     <item>status [string]: current status of the PixKeyHolmes. ex: "created", "solving", "solved", "failed"</item>
+        ///     <item>status [string]: current status of the PixKeyHolmes. ex: "solving", "solved"</item>
         ///     <item>created [DateTime]: creation DateTime for the PixKeyHolmes. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>updated [DateTime]: latest update DateTime for the PixKeyHolmes. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
