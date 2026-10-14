@@ -20,25 +20,25 @@ namespace StarkInfra
         /// Properties:
         /// <list>
         ///     <item>type [string]: table type that defines the amortization system. Options: "sac", "price", "american", "bullet", "custom"</item>
-        ///     <item>nominalAmount [integer]: amount in cents transferred to the credit receiver, before deductions. ex: 11234 (= R$ 112.34)</item>
         ///     <item>scheduled [DateTime]: date of transfer execution. ex: DateTime(2020, 3, 10)</item>
         ///     <item>taxID [string]: credit receiver's tax ID (CPF or CNPJ). ex: "20.018.183/0001-80"</item>
-        ///     <item>invoices [list of CreditNote.Invoice objects]: list of Invoice objects to be created and sent to the credit receiver. ex: new List<Invoice> { Invoice(), Invoice() }</item>
-        ///     <item>nominalInterest [float]: yearly nominal interest rate of the CreditNote, in percentage. ex: 12.5</item>
+        ///     <item>invoices [list of CreditNote.Invoice objects]: list of Invoice objects to be created and sent to the credit receiver. ex: new List&lt;Invoice&gt; { new Invoice(), new Invoice() }</item>
+        ///     <item>nominalAmount [integer]: amount in cents transferred to the credit receiver, before deductions, for every type including "custom". Provide exactly one of nominalAmount or amount; the other value, along with taxAmount and the interest rates, is computed from the invoice schedule. ex: 11234 (= R$ 112.34)</item>
+        ///     <item>amount [integer]: net amount in cents to be disbursed to the credit receiver, for every type including "custom". Provide exactly one of nominalAmount or amount; the other value, along with taxAmount and the interest rates, is computed from the invoice schedule.</item>
+        ///     <item>nominalInterest [float]: yearly nominal interest rate of the credit note, in percentage. ex: 12.5</item>
         ///     <item>initialDue [DateTime]: date of the first invoice. ex: DateTime(2020, 3, 10)</item>
-        ///     <item>count [integer]: quantity of invoices for payment. "sac"/"price" require exactly one of count or initialAmount; "american" requires count; "bullet" and "custom" do not use count. ex: 12</item>
+        ///     <item>count [integer]: quantity of invoices for payment. ex: 12</item>
         ///     <item>initialAmount [integer]: value of the first invoice in cents. ex: 1234 (= R$12.34)</item>
-        ///     <item>interval [string, default "month"]: interval between invoices. Options: "day", "week", "month", "quarter", "semester" or "year"</item>
+        ///     <item>interval [string]: interval between invoices. ex: "year", "month"</item>
         ///     <item>rebateAmount [integer, default null]: credit analysis fee deducted from lent amount. ex: 11234 (= R$ 112.34)</item>
-        ///     <item>amount [integer]: CreditNote value in cents. ex: 1234 (= R$ 12.34)</item>
-        ///     <item>interest [float]: yearly effective interest rate of the CreditNote, in percentage. ex: 12.5</item>
-        ///     <item>taxAmount [integer]: tax amount included in the CreditNote. ex: 100</item>
+        ///     <item>interest [float]: yearly effective interest rate of the credit note, in percentage. ex: 12.5</item>
+        ///     <item>taxAmount [integer]: tax amount included in the credit note. ex: 100</item>
         /// </list>
         /// </summary>
         public class CreditNotePreview : StarkCore.Utils.SubResource
         {
             public string Type { get; }
-            public int NominalAmount { get; }
+            public int? NominalAmount { get; }
             public DateTime? Scheduled { get; }
             public string TaxID { get; }
             public List<Invoice> Invoices { get; }
@@ -64,18 +64,20 @@ namespace StarkInfra
             /// Parameters (required):
             /// <list>
             ///     <item>type [string]: table type that defines the amortization system. Options: "sac", "price", "american", "bullet", "custom"</item>
-            ///     <item>nominalAmount [integer]: amount in cents transferred to the credit receiver, before deductions. ex: 11234 (= R$ 112.34)</item>
             ///     <item>scheduled [DateTime]: date of transfer execution. ex: DateTime(2020, 3, 10)</item>
             ///     <item>taxID [string]: credit receiver's tax ID (CPF or CNPJ). ex: "20.018.183/0001-80"</item>
             /// </list>
             /// Parameters (conditionally required):
+            /// Each `type` value requires its own subset of these fields: "sac", "price", "american" and "bullet" require nominalInterest and initialDue; "sac" and "price" require exactly one of count or initialAmount (count is also required for "american") plus interval; only "custom" requires invoices, leaving the others unused. For every type, including "custom", exactly one of nominalAmount or amount must also be provided.
             /// <list>
-            ///     <item>invoices [list of CreditNote.Invoice objects]: list of Invoice objects to be created and sent to the credit receiver. ex: new List<string> { Invoice(), Invoice() }</item>
-            ///     <item>nominalInterest [float]: yearly nominal interest rate of the CreditNote, in percentage. ex: 12.5</item>
+            ///     <item>invoices [list of CreditNote.Invoice objects]: list of Invoice objects to be created and sent to the credit receiver. ex: new List&lt;Invoice&gt; { new Invoice(), new Invoice() }</item>
+            ///     <item>nominalAmount [integer]: amount in cents transferred to the credit receiver, before deductions, for every type including "custom". Provide exactly one of nominalAmount or amount; the other value, along with taxAmount and the interest rates, is computed from the invoice schedule. ex: 11234 (= R$ 112.34)</item>
+            ///     <item>amount [integer]: net amount in cents to be disbursed to the credit receiver, for every type including "custom". Provide exactly one of nominalAmount or amount; the other value, along with taxAmount and the interest rates, is computed from the invoice schedule.</item>
+            ///     <item>nominalInterest [float]: yearly nominal interest rate of the credit note, in percentage. ex: 12.5</item>
             ///     <item>initialDue [DateTime]: date of the first invoice. ex: DateTime(2020, 3, 10)</item>
-            ///     <item>count [integer]: quantity of invoices for payment. "sac"/"price" require exactly one of count or initialAmount; "american" requires count; "bullet" and "custom" do not use count. ex: 12</item>
+            ///     <item>count [integer]: quantity of invoices for payment. ex: 12</item>
             ///     <item>initialAmount [integer]: value of the first invoice in cents. ex: 1234 (= R$12.34)</item>
-            ///     <item>interval [string, default "month"]: interval between invoices. Options: "day", "week", "month", "quarter", "semester" or "year"</item>
+            ///     <item>interval [string]: interval between invoices. ex: "year", "month"</item>
             /// </list>
             /// Parameters (optional):
             /// <list>
@@ -83,13 +85,12 @@ namespace StarkInfra
             /// </list>
             /// Attributes (return-only):
             /// <list>
-            ///     <item>amount [integer]: CreditNote value in cents. ex: 1234 (= R$ 12.34)</item>
-            ///     <item>interest [float]: yearly effective interest rate of the CreditNote, in percentage. ex: 12.5</item>
-            ///     <item>taxAmount [integer]: tax amount included in the CreditNote. ex: 100</item>
+            ///     <item>interest [float]: yearly effective interest rate of the credit note, in percentage. ex: 12.5</item>
+            ///     <item>taxAmount [integer]: tax amount included in the credit note. ex: 100</item>
             /// </list>
             /// </summary>
             public CreditNotePreview(
-                string type, int nominalAmount, DateTime? scheduled, string taxID, 
+                string type, int? nominalAmount = null, DateTime? scheduled = null, string taxID = null, 
                 List<Invoice> invoices = null, float? nominalInterest = null, 
                 DateTime? initialDue = null, int? count = null, int? initialAmount = null, 
                 string interval = null, int? rebateAmount = null, int? amount = null,
