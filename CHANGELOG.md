@@ -36,6 +36,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - Description attribute to PixReversal resource
 - ChunkCount attribute to PixStatement resource
 - CashierBankCode, Description and Type attributes to StaticBrcode resource
+### Changed
+- nominalAmount and amount parameters to conditionally required to CreditNotePreview sub-resource
 ### Fixed
 - IssuingProduct fundingType, holderType and code were exposed as Settlement, Category and Client; now FundingType, HolderType, Code, plus Client and Settlement from the API
 - IssuingDesign parsing when embosserIds is absent, which broke IssuingEmbossingKit queries
