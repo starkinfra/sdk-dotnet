@@ -46,6 +46,9 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - IssuingProduct Settlement and Client attributes now hold the API's settlement and client; the fundingType and code values they used to hold moved to FundingType and Code
 - IssuingProduct constructor parameters to id, network, customerType, fundingType, holderType, code, client, settlement and created
 - IssuingBalance constructor now requires limit and maxLimit before updated
+- nominalAmount and amount parameters to conditionally required to CreditNotePreview sub-resource
+- NominalAmount attribute type from int to int? in CreditNotePreview sub-resource
+- scheduled and taxID parameters to optional in CreditNotePreview constructor; they are still required by the API
 ### Deprecated
 - BinID attribute of IssuingCard resource, in favor of ProductID
 ### Fixed
