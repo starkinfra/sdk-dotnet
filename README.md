@@ -80,6 +80,14 @@ This SDK version is compatible with the Stark Infra API v2.
     - [Account Approval](#account-approval)
         - [IndividualAccountRequest](#create-individualaccountrequests): Request individual account opening
         - [IndividualAccountAttachment](#create-individualaccountattachments): Attach supporting documents to an account request
+    - [AI](#ai)
+        - [AiKnowledgeBase](#create-an-aiknowledgebase): Turn a website into knowledge your agents can answer from
+        - [AiVoice](#create-an-aivoice): Clone a voice from a recording
+        - [AiSpeech](#create-an-aispeech): Read a text out loud with a cloned voice
+        - [AiTranscript](#create-an-aitranscript): Transcribe an audio file
+        - [AiAgent](#create-an-aiagent): Configure an assistant with a model, instructions, knowledge and voice
+        - [AiChat](#create-an-aichat): Open a conversation thread with an agent
+        - [AiMessage](#create-an-aimessage): Talk to an agent and read the history
     - [Webhook](#webhook):
         - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
         - [WebhookEvents](#process-webhook-events): Manage webhook events
@@ -4940,6 +4948,716 @@ using StarkInfra;
 StarkInfra.BusinessAccountRequest.Log log = StarkInfra.BusinessAccountRequest.Log.Get("5155165527080960");
 
 Console.Write(log);
+```
+
+## AI
+
+### Create an AiKnowledgeBase
+
+An AiKnowledgeBase turns a website into material an agent can read. Stark Infra crawls the root URL, follows its
+links, converts every page to Markdown and indexes it. The call returns at once with the base in "processing" status.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+StarkInfra.AiKnowledgeBase knowledgeBase = StarkInfra.AiKnowledgeBase.Create(
+    new StarkInfra.AiKnowledgeBase(
+        name: "Product Documentation",
+        rootUrl: "https://docs.starkinfra.com",
+        isRecursive: false,
+        tags: new List<string> { "support", "public" }
+    )
+);
+
+Console.Write(knowledgeBase);
+```
+
+### Get an AiKnowledgeBase
+
+Poll a knowledge base by its id until its status leaves "processing".
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.AiKnowledgeBase knowledgeBase = StarkInfra.AiKnowledgeBase.Get("5155165527080960");
+
+Console.Write(knowledgeBase);
+```
+
+### Query AiKnowledgeBases
+
+You can list your knowledge bases, optionally filtered by ids, by a substring of the name or by status. The cursor is followed for you until the list ends or the limit is reached.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.AiKnowledgeBase> knowledgeBases = StarkInfra.AiKnowledgeBase.Query(
+    name: "documentation",
+    status: "success"
+);
+
+foreach (StarkInfra.AiKnowledgeBase knowledgeBase in knowledgeBases)
+{
+    Console.Write(knowledgeBase);
+}
+```
+
+### Get paged AiKnowledgeBases
+
+A page can come back empty with a cursor when the name filter matches nothing on it: keep following the cursor until it is null.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+string cursor = null;
+do
+{
+    (List<StarkInfra.AiKnowledgeBase> knowledgeBases, string nextCursor) = StarkInfra.AiKnowledgeBase.Page(
+        cursor: cursor,
+        limit: 50,
+        name: "documentation"
+    );
+    foreach (StarkInfra.AiKnowledgeBase knowledgeBase in knowledgeBases)
+    {
+        Console.Write(knowledgeBase);
+    }
+    cursor = nextCursor;
+} while (cursor != null);
+```
+
+### Update an AiKnowledgeBase
+
+Rename a knowledge base, retag it or change whether its crawl is recursive. The root URL cannot be changed.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+StarkInfra.AiKnowledgeBase knowledgeBase = StarkInfra.AiKnowledgeBase.Update(
+    id: "5155165527080960",
+    name: "Public Documentation",
+    tags: new List<string> { "support" }
+);
+
+Console.Write(knowledgeBase);
+```
+
+### List the pages of an AiKnowledgeBase
+
+Get every page the crawler has seen, grouped by host, with the status of each one.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+Newtonsoft.Json.Linq.JObject hosts = StarkInfra.AiKnowledgeBase.Hosts("5155165527080960");
+
+foreach (var host in hosts)
+{
+    Console.WriteLine(host.Key);
+    Console.WriteLine(host.Value);
+}
+```
+
+### Delete AiKnowledgeBases
+
+Delete up to 100 knowledge bases at once. Agents that still reference a deleted base simply retrieve nothing from it.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+List<StarkInfra.AiKnowledgeBase> knowledgeBases = StarkInfra.AiKnowledgeBase.Delete(
+    new List<string> { "5155165527080960", "4545454545454545" }
+);
+
+foreach (StarkInfra.AiKnowledgeBase knowledgeBase in knowledgeBases)
+{
+    Console.Write(knowledgeBase);
+}
+```
+
+### Create an AiVoice
+
+An AiVoice is a voice cloned from a recording you upload. Cloning is asynchronous: the voice comes back in "processing" status
+and moves to "success" when it is ready to speak.
+
+```c#
+using System;
+using System.IO;
+using StarkInfra;
+
+
+StarkInfra.AiVoice voice = StarkInfra.AiVoice.Create(
+    new StarkInfra.AiVoice(
+        audio: Convert.ToBase64String(File.ReadAllBytes("recording.mp3")),
+        name: "Helena",
+        description: "Calm voice",
+        language: "portuguese",
+        gender: "female"
+    )
+);
+
+Console.Write(voice);
+```
+
+### Query AiVoices
+
+You can list your voices. The cursor is followed for you until the list ends or the limit is reached.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.AiVoice> voices = StarkInfra.AiVoice.Query();
+
+foreach (StarkInfra.AiVoice voice in voices)
+{
+    Console.Write(voice);
+}
+```
+
+### Get paged AiVoices
+
+You can get up to 100 voices per request and follow the cursor yourself. The cursor is null on the last page.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+string cursor = null;
+do
+{
+    (List<StarkInfra.AiVoice> voices, string nextCursor) = StarkInfra.AiVoice.Page(
+        cursor: cursor,
+        limit: 50
+    );
+    foreach (StarkInfra.AiVoice voice in voices)
+    {
+        Console.Write(voice);
+    }
+    cursor = nextCursor;
+} while (cursor != null);
+```
+
+### Delete AiVoices
+
+Delete up to 100 voices at once.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+List<StarkInfra.AiVoice> voices = StarkInfra.AiVoice.Delete(
+    new List<string> { "5155165527080960", "4545454545454545" }
+);
+
+foreach (StarkInfra.AiVoice voice in voices)
+{
+    Console.Write(voice);
+}
+```
+
+### Create an AiSpeech
+
+An AiSpeech is one text read out loud by a voice. It is synthesized during the call and comes back with the audio as a base64 MP3.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.AiSpeech speech = StarkInfra.AiSpeech.Create(
+    new StarkInfra.AiSpeech(
+        voiceID: "5155165527080960",
+        text: "Hello, how can I help you?"
+    )
+);
+
+Console.Write(speech);
+```
+
+### Get an AiSpeech
+
+Get a single speech by its id, with its audio. Use expand to receive the name of the voice.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+StarkInfra.AiSpeech speech = StarkInfra.AiSpeech.Get(
+    "5155165527080960",
+    expand: new List<string> { "voiceName" }
+);
+
+Console.Write(speech);
+```
+
+### Query AiSpeeches
+
+You can list your speeches. The audio is left out of the results; use Get to retrieve it. The cursor is followed for you until the list ends or the limit is reached.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.AiSpeech> speeches = StarkInfra.AiSpeech.Query(
+    limit: 35,
+    expand: new List<string> { "voiceName" }
+);
+
+foreach (StarkInfra.AiSpeech speech in speeches)
+{
+    Console.Write(speech);
+}
+```
+
+### Get paged AiSpeeches
+
+You can get up to 100 speeches per request and follow the cursor yourself. The audio is left out of the results. The cursor is null on the last page.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+string cursor = null;
+do
+{
+    (List<StarkInfra.AiSpeech> speeches, string nextCursor) = StarkInfra.AiSpeech.Page(
+        cursor: cursor,
+        limit: 50,
+        expand: new List<string> { "voiceName" }
+    );
+    foreach (StarkInfra.AiSpeech speech in speeches)
+    {
+        Console.Write(speech);
+    }
+    cursor = nextCursor;
+} while (cursor != null);
+```
+
+### Create an AiTranscript
+
+An AiTranscript is the text of an audio file you upload. It is transcribed during the call.
+
+```c#
+using System;
+using System.IO;
+using StarkInfra;
+
+
+StarkInfra.AiTranscript transcript = StarkInfra.AiTranscript.Create(
+    new StarkInfra.AiTranscript(
+        audio: Convert.ToBase64String(File.ReadAllBytes("recording.mp3"))
+    )
+);
+
+Console.Write(transcript);
+```
+
+### Query AiTranscripts
+
+You can list your transcripts. The cursor is followed for you until the list ends or the limit is reached.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.AiTranscript> transcripts = StarkInfra.AiTranscript.Query();
+
+foreach (StarkInfra.AiTranscript transcript in transcripts)
+{
+    Console.Write(transcript);
+}
+```
+
+### Get paged AiTranscripts
+
+You can get up to 100 transcripts per request and follow the cursor yourself. The cursor is null on the last page.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+string cursor = null;
+do
+{
+    (List<StarkInfra.AiTranscript> transcripts, string nextCursor) = StarkInfra.AiTranscript.Page(
+        cursor: cursor,
+        limit: 50
+    );
+    foreach (StarkInfra.AiTranscript transcript in transcripts)
+    {
+        Console.Write(transcript);
+    }
+    cursor = nextCursor;
+} while (cursor != null);
+```
+
+### Create an AiAgent
+
+An AiAgent is the configuration of an assistant: the model, the instructions, the knowledge it may consult and the voice it speaks with.
+The keys of the metadata schema are yours and are sent exactly as written.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+StarkInfra.AiAgent agent = StarkInfra.AiAgent.Create(
+    new StarkInfra.AiAgent(
+        name: "Support assistant",
+        model: "bender-1.0",
+        systemPrompt: "Answer in one short sentence.",
+        knowledgeBaseIds: new List<string> { "5155165527080960" },
+        metadataSchema: new Dictionary<string, object> {
+            { "order_id", new Dictionary<string, object> { { "type", "string" }, { "description", "Order the customer mentions" } } }
+        }
+    )
+);
+
+Console.Write(agent);
+```
+
+### Get an AiAgent
+
+Get a single agent by its id. Use expand to receive the knowledge bases themselves instead of only their ids.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+StarkInfra.AiAgent agent = StarkInfra.AiAgent.Get(
+    "5155165527080960",
+    expand: new List<string> { "knowledgeBases" }
+);
+
+Console.Write(agent);
+```
+
+### Query AiAgents
+
+You can list your agents. The cursor is followed for you until the list ends or the limit is reached.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.AiAgent> agents = StarkInfra.AiAgent.Query(
+    limit: 35,
+    expand: new List<string> { "knowledgeBases" }
+);
+
+foreach (StarkInfra.AiAgent agent in agents)
+{
+    Console.Write(agent);
+}
+```
+
+### Get paged AiAgents
+
+You can get up to 100 agents per request and follow the cursor yourself. The cursor is null on the last page.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+string cursor = null;
+do
+{
+    (List<StarkInfra.AiAgent> agents, string nextCursor) = StarkInfra.AiAgent.Page(
+        cursor: cursor,
+        limit: 50,
+        expand: new List<string> { "knowledgeBases" }
+    );
+    foreach (StarkInfra.AiAgent agent in agents)
+    {
+        Console.Write(agent);
+    }
+    cursor = nextCursor;
+} while (cursor != null);
+```
+
+### Update an AiAgent
+
+The API keeps what you do not send. Clear a field on purpose with "" for the system prompt and the voice, an empty list for the
+knowledge bases or an empty dictionary for the metadata schema.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+StarkInfra.AiAgent agent = StarkInfra.AiAgent.Update(
+    id: "5155165527080960",
+    name: "Billing assistant",
+    model: "prime-1.0",
+    knowledgeBaseIds: new List<string>()
+);
+
+Console.Write(agent);
+```
+
+### Delete AiAgents
+
+Delete up to 100 agents at once.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+List<StarkInfra.AiAgent> agents = StarkInfra.AiAgent.Delete(
+    new List<string> { "5155165527080960", "4545454545454545" }
+);
+
+foreach (StarkInfra.AiAgent agent in agents)
+{
+    Console.Write(agent);
+}
+```
+
+### Create an AiChat
+
+An AiChat is one conversation thread with an agent and holds the history. When the title is omitted, the first message generates one.
+Tags let you search your chats later; the context is a free-form object whose keys are yours and are sent exactly as written.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+StarkInfra.AiChat chat = StarkInfra.AiChat.Create(
+    new StarkInfra.AiChat(
+        agentID: "5155165527080960",
+        title: "Order status",
+        tags: new List<string> { "customer-123", "whatsapp" },
+        context: new Dictionary<string, object> { { "customer_id", "123" } }
+    )
+);
+
+Console.Write(chat);
+```
+
+### Get an AiChat
+
+Get a single chat by its id. Use expand to receive the name of its agent.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+StarkInfra.AiChat chat = StarkInfra.AiChat.Get(
+    "5155165527080960",
+    expand: new List<string> { "agentName" }
+);
+
+Console.Write(chat);
+```
+
+### Query AiChats
+
+You can list your chats, optionally filtered by tags. The cursor is followed for you until the list ends or the limit is reached.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.AiChat> chats = StarkInfra.AiChat.Query(
+    limit: 35,
+    tags: new List<string> { "customer-123" }
+);
+
+foreach (StarkInfra.AiChat chat in chats)
+{
+    Console.Write(chat);
+}
+```
+
+### Get paged AiChats
+
+You can get up to 100 chats per request and follow the cursor yourself. The cursor is null on the last page.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+string cursor = null;
+do
+{
+    (List<StarkInfra.AiChat> chats, string nextCursor) = StarkInfra.AiChat.Page(
+        cursor: cursor,
+        limit: 50,
+        tags: new List<string> { "customer-123" }
+    );
+    foreach (StarkInfra.AiChat chat in chats)
+    {
+        Console.Write(chat);
+    }
+    cursor = nextCursor;
+} while (cursor != null);
+```
+
+### Update an AiChat
+
+Change the title of a chat, the agent that answers in it from now on, its tags or its context. The API keeps what you do not send;
+clear a field with "" for the title, an empty list for the tags or an empty dictionary for the context.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+StarkInfra.AiChat chat = StarkInfra.AiChat.Update(
+    id: "5155165527080960",
+    title: "Refund request",
+    tags: new List<string> { "customer-123", "refund" },
+    context: new Dictionary<string, object> { { "customer_id", "123" }, { "order_id", "456" } }
+);
+
+Console.Write(chat);
+```
+
+### Delete AiChats
+
+Delete up to 100 chats at once, with their messages.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+List<StarkInfra.AiChat> chats = StarkInfra.AiChat.Delete(
+    new List<string> { "5155165527080960", "4545454545454545" }
+);
+
+foreach (StarkInfra.AiChat chat in chats)
+{
+    Console.Write(chat);
+}
+```
+
+### Create an AiMessage
+
+Post what the user said to a chat. The call waits for the agent, which takes a few seconds, and returns the user's message and the agent's answer.
+Use expand to receive the chat title, which the first message generates.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+List<StarkInfra.AiMessage> messages = StarkInfra.AiMessage.Create(
+    new StarkInfra.AiMessage(
+        chatID: "5155165527080960",
+        text: "What is the status of order 123?"
+    ),
+    expand: new List<string> { "chatName" }
+);
+
+foreach (StarkInfra.AiMessage message in messages)
+{
+    Console.Write(message);
+}
+```
+
+### Query AiMessages
+
+You can read the history of a chat, or the messages of every chat of the workspace when the chat id is omitted. The cursor is followed for you until the history ends or the limit is reached.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.AiMessage> messages = StarkInfra.AiMessage.Query(
+    limit: 35,
+    chatID: "5155165527080960"
+);
+
+foreach (StarkInfra.AiMessage message in messages)
+{
+    Console.Write(message);
+}
+```
+
+### Get AiMessage pages
+
+You can get up to 100 messages per request and follow the cursor yourself. The chat id is optional. The cursor is null on the last page.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+string cursor = null;
+do
+{
+    (List<StarkInfra.AiMessage> messages, string nextCursor) = StarkInfra.AiMessage.Page(
+        cursor: cursor,
+        limit: 50,
+        chatID: "5155165527080960"
+    );
+    foreach (StarkInfra.AiMessage message in messages)
+    {
+        Console.Write(message);
+    }
+    cursor = nextCursor;
+} while (cursor != null);
 ```
 
 ## Webhook
