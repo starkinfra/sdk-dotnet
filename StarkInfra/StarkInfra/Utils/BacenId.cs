@@ -15,7 +15,7 @@ namespace StarkInfra.Utils
         static public string Create(string bankCode, string dateFormat = "yyyyMMddHHmm")
         {
             StringBuilder bacenID = new StringBuilder(bankCode);
-            bacenID.Append(DateTime.Now.ToString(dateFormat));
+            bacenID.Append(DateTime.UtcNow.ToString(dateFormat));
 
             lock (randomLock)
             {
