@@ -55,6 +55,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - IssuingCard Page ignored the status filter; now sends it to the API
 - IssuingDesign parsing when embosserIds is absent, which broke IssuingEmbossingKit queries
 - IssuingToken.Log Errors was typed as a list of strings, throwing on the API's `{code, message}` objects; now typed as a list of dictionaries
+- EndToEndID datetime generated in UTC instead of the machine timezone
 - PixClaim.Log and PixChargeback.Log Errors were typed as a list of dictionaries, throwing on the API's string errors; now typed as a list of strings
 - IndividualAccountRequest.Log Errors was typed as a list of dictionaries, throwing on the API's string errors; now typed as a list of strings
 - README, docstrings and tests pointed to StarkInfra.Error classes, which are never thrown; now point to the StarkCore.Error classes raised by the core
