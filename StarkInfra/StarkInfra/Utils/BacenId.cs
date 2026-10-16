@@ -12,6 +12,27 @@ namespace StarkInfra.Utils
         private static readonly Random random = new Random();
         private static readonly object randomLock = new object();
 
+        /// <summary>
+        /// Create a random BacenID
+        /// <br/>
+        /// Generates a random BacenID based on your bank code (ISPB). The date part is always generated in UTC,
+        /// regardless of the machine timezone.
+        /// <br/>
+        /// Parameters (required):
+        /// <list>
+        ///     <item>bankCode [string]: your bank code (ISPB). ex: "20018183"</item>
+        /// </list>
+        /// <br/>
+        /// Parameters (optional):
+        /// <list>
+        ///     <item>dateFormat [string, default "yyyyMMddHHmm"]: format of the UTC date part. ex: "yyyyMMdd"</item>
+        /// </list>
+        /// <br/>
+        /// Return:
+        /// <list>
+        ///     <item>BacenID composed of the bank code, the current UTC date and 11 random alphanumeric characters</item>
+        /// </list>
+        /// </summary>
         static public string Create(string bankCode, string dateFormat = "yyyyMMddHHmm")
         {
             StringBuilder bacenID = new StringBuilder(bankCode);
