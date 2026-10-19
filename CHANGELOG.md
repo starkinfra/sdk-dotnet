@@ -40,6 +40,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - IssuingProduct fundingType, holderType and code were exposed as Settlement, Category and Client; now FundingType, HolderType, Code, plus Client and Settlement from the API
 - IssuingDesign parsing when embosserIds is absent, which broke IssuingEmbossingKit queries
 - IssuingToken.Log Errors was typed as a list of strings, throwing on the API's `{code, message}` objects; now typed as a list of dictionaries
+- README, docstrings and tests pointed to StarkInfra.Error classes, which are never thrown; now point to the StarkCore.Error classes raised by the core
 ### Removed
 - IndividualDocument resource and its Log: no API route serves them
 

@@ -131,7 +131,7 @@ namespace StarkInfraTests
         {
             try {
                 IssuingPurchase parsedIssuingPurchase = IssuingPurchase.Parse(Content, BadSignature);
-            } catch (StarkInfra.Error.InvalidSignatureError e) {
+            } catch (StarkCore.Error.InvalidSignatureError e) {
                 TestUtils.Log(e);
                 return;
             }
@@ -145,7 +145,7 @@ namespace StarkInfraTests
             {
                 IssuingPurchase parsedIssuingPurchase = IssuingPurchase.Parse(Content, "Something is definitely wrong");
             }
-            catch (StarkInfra.Error.InvalidSignatureError e)
+            catch (StarkCore.Error.InvalidSignatureError e)
             {
                 TestUtils.Log(e);
                 return;

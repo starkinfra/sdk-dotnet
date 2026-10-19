@@ -137,7 +137,7 @@ namespace StarkInfraTests
         {
             try {
                 PixReversal parsedPixReversal = PixReversal.Parse(Content, BadSignature);
-            } catch (StarkInfra.Error.InvalidSignatureError e) {
+            } catch (StarkCore.Error.InvalidSignatureError e) {
                 TestUtils.Log(e);
                 return;
             }
@@ -151,7 +151,7 @@ namespace StarkInfraTests
             {
                 PixReversal parsedPixReversal = PixReversal.Parse(Content, BadSignature);
             }
-            catch (StarkInfra.Error.InvalidSignatureError e)
+            catch (StarkCore.Error.InvalidSignatureError e)
             {
                 TestUtils.Log(e);
                 return;
