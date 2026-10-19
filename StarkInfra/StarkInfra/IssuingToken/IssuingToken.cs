@@ -327,7 +327,7 @@ namespace StarkInfra
         /// <br/>
         /// Use this method to parse and verify the authenticity of the request received at the informed endpoint.
         /// Token requests are posted to your registered endpoint whenever IssuingTokens are received.
-        /// If the provided digital signature does not check out with the StarkInfra public key, a Error.InvalidSignatureException will be raised.
+        /// If the provided digital signature does not check out with the StarkInfra public key, a StarkCore.Error.InvalidSignatureError will be raised.
         /// <br/>
         /// Parameters (required):
         /// <list>

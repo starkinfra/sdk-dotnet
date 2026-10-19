@@ -399,7 +399,7 @@ namespace StarkInfra
         /// Create a single verified PixPullSubscription object from a content string
         /// <br/>
         /// Create a single PixPullSubscription object from a content string received from a handler listening at the subscription url.
-        /// If the provided digital signature does not check out with the StarkInfra public key, a Error.InvalidSignatureError will be raised.
+        /// If the provided digital signature does not check out with the StarkInfra public key, a StarkCore.Error.InvalidSignatureError will be raised.
         /// <br/>
         /// Parameters (required):
         /// <list>
