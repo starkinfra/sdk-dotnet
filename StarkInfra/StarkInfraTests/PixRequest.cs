@@ -136,7 +136,7 @@ namespace StarkInfraTests
         {
             try {
                 PixRequest parsedPixRequest = PixRequest.Parse(Content, BadSignature);
-            } catch (StarkInfra.Error.InvalidSignatureError e) {
+            } catch (StarkCore.Error.InvalidSignatureError e) {
                 return;
             }
             throw new Exception("failed to raise InvalidSignatureError");
@@ -149,7 +149,7 @@ namespace StarkInfraTests
             {
                 PixRequest parsedPixRequest = PixRequest.Parse(Content, BadSignature);
             }
-            catch (StarkInfra.Error.InvalidSignatureError e)
+            catch (StarkCore.Error.InvalidSignatureError e)
             {
                 return;
             }

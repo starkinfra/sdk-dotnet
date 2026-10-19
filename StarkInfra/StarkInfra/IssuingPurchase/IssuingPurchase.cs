@@ -410,7 +410,7 @@ namespace StarkInfra
         /// Use this method to parse and verify the authenticity of the authorization request received at the informed endpoint.
         /// Authorization requests are posted to your registered endpoint whenever IssuingPurchases are received.
         /// They present IssuingPurchase data that must be analyzed and answered with approval or declination.
-        /// If the provided digital signature does not check out with the StarkInfra public key, a Error.InvalidSignatureException will be raised.
+        /// If the provided digital signature does not check out with the StarkInfra public key, a StarkCore.Error.InvalidSignatureError will be raised.
         /// If the authorization request is not answered within 2 seconds or is not answered with an HTTP status code 200 the IssuingPurchase will go through the pre-configured stand-in validation.
         /// <br/>
         /// Parameters (required):

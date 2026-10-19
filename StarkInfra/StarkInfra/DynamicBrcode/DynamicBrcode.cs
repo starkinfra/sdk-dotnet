@@ -446,7 +446,7 @@ namespace StarkInfra
         /// retrieve additional information needed to complete the transaction.
         /// Use this method to verify the authenticity of a GET request received at your registered endpoint.
         /// If the provided digital signature does not check out with the StarkInfra public key,
-        /// a Error.InvalidSignatureException will be raised.
+        /// a StarkCore.Error.InvalidSignatureError will be raised.
         /// <br/>
         /// Parameters (required):
         /// <list>

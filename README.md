@@ -3155,7 +3155,7 @@ Console.Write(brcode);
 When a DynamicBrcode is read by your user, a GET request will be made to the your registered URL to 
 retrieve additional information needed to complete the transaction.
 Use this method to verify the authenticity of a GET request received at your registered endpoint.
-If the provided digital signature does not check out with the StarkInfra public key, a Error.InvalidSignatureException will be raised.
+If the provided digital signature does not check out with the StarkInfra public key, a StarkCore.Error.InvalidSignatureError will be raised.
 
 ```c#
 using System;
@@ -5333,7 +5333,7 @@ Console.WriteLine(request.ToString());
 
 # Handling errors
 
-The SDK may raise one of four types of errors: __InputErrors__, __InternalServerError__, __UnknownError__, __InvalidSignatureError__
+The SDK may raise one of four types of errors, all from the `StarkCore.Error` namespace: __InputErrors__, __InternalServerError__, __UnknownError__, __InvalidSignatureError__
 
 __InputErrors__ will be raised whenever the API detects an error in your request (status code 400).
 If you catch such an error, you can get its elements to verify each of the
@@ -5343,7 +5343,7 @@ For example:
 ```c#
 using System;
 using System.Collections.Generic;
-using System.Error;
+using StarkCore.Error;
 using StarkInfra;
 
 

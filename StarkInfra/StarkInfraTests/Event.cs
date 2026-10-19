@@ -30,7 +30,7 @@ namespace StarkInfraTests
         {
             try {
                 Event parsedEvent = Event.Parse(Content, BadSignature);
-            } catch (StarkInfra.Error.InvalidSignatureError e) {
+            } catch (StarkCore.Error.InvalidSignatureError e) {
                 TestUtils.Log(e);
                 return;
             }
@@ -44,7 +44,7 @@ namespace StarkInfraTests
             {
                 Event parsedEvent = Event.Parse(Content, "something is definitely wrong");
             }
-            catch (StarkInfra.Error.InvalidSignatureError e)
+            catch (StarkCore.Error.InvalidSignatureError e)
             {
                 TestUtils.Log(e);
                 return;
