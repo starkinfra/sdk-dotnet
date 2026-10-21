@@ -41,6 +41,47 @@ namespace StarkInfraTests
             Assert.Equal(previewedTypes, expectedTypes);
         }
 
+        [Fact]
+        public void CreateWithNominalAmountOrAmount()
+        {
+            int value = new Random().Next(100000, 1000000);
+            List<CreditNotePreview> previews = new List<CreditNotePreview> {
+                generateAmountPreview(type: "sac", amount: value, count: 12, interval: "month"),
+                generateAmountPreview(type: "price", amount: value, count: 12, interval: "month"),
+                generateAmountPreview(type: "american", amount: value, count: 12, interval: "month"),
+                generateAmountPreview(type: "bullet", amount: value),
+                generateAmountPreview(type: "sac", nominalAmount: value, count: 12, interval: "month"),
+                generateAmountPreview(type: "price", nominalAmount: value, count: 12, interval: "month"),
+                generateAmountPreview(type: "american", nominalAmount: value, count: 12, interval: "month"),
+                generateAmountPreview(type: "bullet", nominalAmount: value)
+            };
+
+            List<CreditPreview> creditNotePreviews = new List<CreditPreview>();
+            foreach (CreditNotePreview preview in previews)
+            {
+                creditNotePreviews.Add(new CreditPreview(type: "credit-note", credit: preview));
+            }
+
+            List<CreditPreview> createdPreviews = CreditPreview.Create(creditNotePreviews);
+            Assert.Equal(previews.Count, createdPreviews.Count);
+
+            for (int i = 0; i < previews.Count; i++)
+            {
+                CreditNotePreview sent = previews[i];
+                CreditNotePreview received = (CreditNotePreview)createdPreviews[i].Credit;
+                TestUtils.Log(createdPreviews[i]);
+                Assert.Equal(sent.Type, received.Type);
+                if (sent.Amount is null)
+                {
+                    Assert.Equal(value, received.NominalAmount);
+                    Assert.True(received.Amount > 0);
+                    continue;
+                }
+                Assert.Equal(value, received.Amount);
+                Assert.True(received.NominalAmount > 0);
+            }
+        }
+
         public Invoice generateInvoice(DateTime? days = null, long amount = 100)
         {
             return new Invoice(
@@ -116,6 +157,21 @@ namespace StarkInfraTests
                 nominalInterest: (float)new Random().NextDouble(),
                 scheduled: DateTime.Today.Date.AddDays(new Random().Next(11, 20)),
                 initialDue: DateTime.Today.Date.AddDays(new Random().Next(30, 40))
+            );
+        }
+
+        public CreditNotePreview generateAmountPreview(string type, int nominalAmount = 0, int? amount = null, int? count = null, string interval = null)
+        {
+            return new CreditNotePreview(
+                taxID: "095.550.500-31",
+                type: type,
+                nominalAmount: nominalAmount,
+                amount: amount,
+                nominalInterest: 12.5f,
+                scheduled: DateTime.Today.Date.AddDays(new Random().Next(11, 20)),
+                initialDue: DateTime.Today.Date.AddDays(new Random().Next(30, 40)),
+                count: count,
+                interval: interval
             );
         }
 
