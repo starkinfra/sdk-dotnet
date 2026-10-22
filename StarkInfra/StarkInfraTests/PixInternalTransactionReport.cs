@@ -32,6 +32,8 @@ namespace StarkInfraTests
             );
             PixInternalTransactionReport report = reports.First();
             Assert.NotNull(reports.First().ID);
+            Assert.Equal("reversal", report.ReferenceType);
+            Assert.NotNull(report.ReturnID);
             PixInternalTransactionReport getReport = PixInternalTransactionReport.Get(id: report.ID);
             Assert.Equal(getReport.ID, report.ID);
         }
@@ -153,16 +155,11 @@ namespace StarkInfraTests
         internal static PixInternalTransactionReport ReversalExample()
         {
             string senderBankCode = Environment.GetEnvironmentVariable("SANDBOX_BANKCODE");
-            const string alphanumeric = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            Random random = new Random();
-            char[] suffix = new char[11];
-            for (int i = 0; i < suffix.Length; i++)
-            {
-                suffix[i] = alphanumeric[random.Next(alphanumeric.Length)];
-            }
-            string returnID = "D" + "00000665" + DateTime.Now.ToString(@"yyyyMMddHHmm") + new string(suffix);
+            string returnID = ReturnID.Create(bankCode: senderBankCode);
+            Assert.Equal(32, returnID.Length);
+            Assert.StartsWith("D", returnID);
             return new PixInternalTransactionReport(
-                amount: random.Next(1, 1000),
+                amount: new Random().Next(1, 1000),
                 created: DateTime.Now,
                 endToEndID: EndToEndID.Create(bankCode: senderBankCode),
                 method: "dict",
