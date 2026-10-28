@@ -28,7 +28,7 @@ namespace StarkInfra
         {
             public PixChargeback Chargeback { get; }
             public string Type { get; }
-            public List<Dictionary<string, object>> Errors { get; }
+            public List<string> Errors { get; }
             public DateTime Created { get; }
 
             /// <summary>
@@ -47,7 +47,7 @@ namespace StarkInfra
             ///     <item>created [DateTime]: creation DateTime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
             /// </list>
             /// </summary>
-            public Log(string id, PixChargeback chargeback, string type, List<Dictionary<string, object>> errors, DateTime created) : base(id)
+            public Log(string id, PixChargeback chargeback, string type, List<string> errors, DateTime created) : base(id)
             {
                 Chargeback = chargeback;
                 Errors = errors;
@@ -186,7 +186,7 @@ namespace StarkInfra
                 string id = json.id;
                 PixChargeback chargeback = PixChargeback.ResourceMaker(json.chargeback);
                 string type = json.type;
-                List<Dictionary<string, object>> errors = json.errors.ToObject<List<Dictionary<string, object>>>();
+                List<string> errors = json.errors is null ? new List<string> { } : json.errors.ToObject<List<string>>();
                 string createdString = json.created;
                 DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
 
