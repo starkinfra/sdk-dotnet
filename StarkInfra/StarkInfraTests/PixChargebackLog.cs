@@ -33,6 +33,22 @@ namespace StarkInfraTests
         }
 
         [Fact]
+        public void QueryFailedWithErrors()
+        {
+            List<PixChargeback.Log> logs = PixChargeback.Log.Query(
+                limit: 10,
+                types: new List<string> { "failed" }
+            ).ToList();
+            Assert.Contains(logs, log => log.Errors.Count > 0);
+            foreach (PixChargeback.Log log in logs)
+            {
+                TestUtils.Log(log);
+                Assert.Equal("failed", log.Type);
+                Assert.All(log.Errors, error => Assert.False(string.IsNullOrEmpty(error)));
+            }
+        }
+
+        [Fact]
         public void Page()
         {
             List<string> ids = new List<string>();

@@ -29,7 +29,7 @@ namespace StarkInfra
         {
             public PixClaim Claim { get; }
             public string Type { get; }
-            public List<Dictionary<string, object>> Errors { get; }
+            public List<string> Errors { get; }
             public string Reason { get;  }
             public DateTime Created { get; }
 
@@ -50,7 +50,7 @@ namespace StarkInfra
             ///     <item>created [DateTime]: creation DateTime for the log. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
             /// </list>
             /// </summary>
-            public Log(string id, PixClaim claim, string type, List<Dictionary<string, object>> errors, string reason, DateTime created) : base(id)
+            public Log(string id, PixClaim claim, string type, List<string> errors, string reason, DateTime created) : base(id)
             {
                 Claim = claim;
                 Type = type;
@@ -190,7 +190,7 @@ namespace StarkInfra
                 string id = json.id;
                 PixClaim claim = PixClaim.ResourceMaker(json.claim);
                 string type = json.type;
-                List<Dictionary<string, object>> errors = json.errors.ToObject<List<Dictionary<string, object>>>();
+                List<string> errors = json.errors is null ? new List<string> { } : json.errors.ToObject<List<string>>();
                 string reason = json.reason;
                 string createdString = json.created;
                 DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
