@@ -23,7 +23,13 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - update method to IssuingPurchase resource
 - productId attribute to IssuingCard resource
 - type attribute to IssuingDesign resource
-- productId, merchantCategoryType, installmentCount, description and holderId attributes to IssuingPurchase resource
+- productId, installmentCount, merchantCategoryType, merchantCategoryNumber, confirmed, description and holderId attributes to IssuingPurchase resource
+- isPinDefined attribute to IssuingCard resource
+- limit and maxLimit attributes to IssuingBalance resource
+- schedule and purposes attributes to IssuingRule resource
+- embosserName attribute to IssuingStock resource
+- group attribute to MerchantCategory resource
+- customerType, fundingType, holderType and code attributes to IssuingProduct resource
 - IssuingBillingInvoice resource
 - IssuingBillingTransaction resource
 - IssuingToken resource
@@ -36,13 +42,20 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - Description attribute to PixReversal resource
 - ChunkCount attribute to PixStatement resource
 - CashierBankCode, Description and Type attributes to StaticBrcode resource
+### Changed
+- IssuingProduct Settlement and Client attributes now hold the API's settlement and client; the fundingType and code values they used to hold moved to FundingType and Code
+- IssuingProduct constructor parameters to id, network, customerType, fundingType, holderType, code, client, settlement and created
+- IssuingBalance constructor now requires limit and maxLimit before updated
+### Deprecated
+- BinID attribute of IssuingCard resource, in favor of ProductID
 ### Fixed
-- IssuingProduct fundingType, holderType and code were exposed as Settlement, Category and Client; now FundingType, HolderType, Code, plus Client and Settlement from the API
+- IssuingCard Page ignored the status filter; now sends it to the API
 - IssuingDesign parsing when embosserIds is absent, which broke IssuingEmbossingKit queries
 - IssuingToken.Log Errors was typed as a list of strings, throwing on the API's `{code, message}` objects; now typed as a list of dictionaries
 - PixClaim.Log and PixChargeback.Log Errors were typed as a list of dictionaries, throwing on the API's string errors; now typed as a list of strings
 ### Removed
 - IndividualDocument resource and its Log: no API route serves them
+- Category attribute from IssuingProduct resource: the API no longer returns it; its holderType value moved to HolderType
 
 ## [0.13.0] - 2026-06-29
 ### Added

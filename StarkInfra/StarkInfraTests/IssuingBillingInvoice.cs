@@ -113,40 +113,26 @@ namespace StarkInfraTests
         [Fact]
         public void OutputFieldsAreExposed()
         {
-            List<IssuingBillingInvoice> invoices = IssuingBillingInvoice.Query(limit: 1).ToList();
-            Assert.True(invoices.Count <= 1);
+            List<IssuingBillingInvoice> invoices = IssuingBillingInvoice.Query(limit: 5).ToList();
+            Assert.NotEmpty(invoices);
             foreach (IssuingBillingInvoice invoice in invoices)
             {
                 TestUtils.Log(invoice);
                 Assert.NotNull(invoice.ID);
-                string taxID = invoice.TaxID;
-                string name = invoice.Name;
-                double? fine = invoice.Fine;
-                double? interest = invoice.Interest;
-                long? amount = invoice.Amount;
-                long? nominalAmount = invoice.NominalAmount;
-                string status = invoice.Status;
-                string brcode = invoice.Brcode;
-                string link = invoice.Link;
-                DateTime? due = invoice.Due;
-                DateTime? start = invoice.Start;
-                DateTime? end = invoice.End;
-                DateTime? created = invoice.Created;
-                DateTime? updated = invoice.Updated;
-                TestUtils.Log(taxID);
-                TestUtils.Log(name);
-                TestUtils.Log(fine);
-                TestUtils.Log(interest);
-                TestUtils.Log(amount);
-                TestUtils.Log(nominalAmount);
-                TestUtils.Log(status);
-                TestUtils.Log(brcode);
-                TestUtils.Log(link);
-                TestUtils.Log(due);
-                TestUtils.Log(start);
-                TestUtils.Log(end);
-                TestUtils.Log(created);
-                TestUtils.Log(updated);
+                Assert.False(string.IsNullOrEmpty(invoice.TaxID));
+                Assert.False(string.IsNullOrEmpty(invoice.Name));
+                Assert.False(string.IsNullOrEmpty(invoice.Status));
+                Assert.NotNull(invoice.Fine);
+                Assert.NotNull(invoice.Interest);
+                Assert.NotNull(invoice.Amount);
+                Assert.NotNull(invoice.NominalAmount);
+                Assert.NotNull(invoice.Brcode);
+                Assert.NotNull(invoice.Link);
+                Assert.NotNull(invoice.Due);
+                Assert.NotNull(invoice.Start);
+                Assert.NotNull(invoice.End);
+                Assert.NotNull(invoice.Created);
+                Assert.NotNull(invoice.Updated);
             }
         }
     }

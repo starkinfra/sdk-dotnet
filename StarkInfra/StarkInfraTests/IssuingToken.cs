@@ -3,6 +3,7 @@ using StarkInfra;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 
 namespace StarkInfraTests
@@ -138,5 +139,114 @@ namespace StarkInfraTests
             Assert.Equal(canceledToken.ID, token.ID);
             TestUtils.Log(canceledToken);
         }
+
+        [Fact]
+        public void ParseWithRightSignature()
+        {
+            IssuingToken token = IssuingToken.Parse(Content, GoodSignature);
+            Assert.Equal("5189831499972623", token.CardID);
+            Assert.Equal("google", token.WalletID);
+            Assert.Equal("Google Pay", token.WalletName);
+            Assert.Equal("12345678901", token.MerchantID);
+            Assert.Equal("manual", token.MethodCode);
+            Assert.Equal("Phone", token.DeviceType);
+            Assert.Equal("Android", token.DeviceOsName);
+            Assert.Equal("1b24f24a24ba98e27d43e345b532a245e4723d7a9c4f624e", token.WalletInstanceID);
+            TestUtils.Log(token);
+        }
+
+        [Fact]
+        public void ParseWithWrongSignature()
+        {
+            try
+            {
+                IssuingToken token = IssuingToken.Parse(Content, BadSignature);
+            }
+            catch (StarkCore.Error.InvalidSignatureError e)
+            {
+                TestUtils.Log(e);
+                return;
+            }
+            throw new Exception("failed to raise InvalidSignatureError");
+        }
+
+        [Fact]
+        public void ParseWithMalformedSignature()
+        {
+            try
+            {
+                IssuingToken token = IssuingToken.Parse(Content, "Something is definitely wrong");
+            }
+            catch (StarkCore.Error.InvalidSignatureError e)
+            {
+                TestUtils.Log(e);
+                return;
+            }
+            throw new Exception("failed to raise InvalidSignatureError");
+        }
+
+        [Fact]
+        public void ResponseAuthorizationApproved()
+        {
+            string response = IssuingToken.ResponseAuthorization(
+                status: "approved",
+                activationMethods: new List<Dictionary<string, object>> {
+                    new Dictionary<string, object> { { "type", "app" }, { "value", "com.subissuer.android" } },
+                    new Dictionary<string, object> { { "type", "text" }, { "value", "** *****-5678" } }
+                },
+                designId: "4584031664472031",
+                tags: new List<string> { "tony", "stark" }
+            );
+            JObject authorization = (JObject)JObject.Parse(response)["authorization"];
+            Assert.Equal("approved", (string)authorization["status"]);
+            Assert.Equal("", (string)authorization["reason"]);
+            Assert.Equal("4584031664472031", (string)authorization["designId"]);
+            Assert.Equal(2, authorization["activationMethods"].Count());
+            Assert.Equal("app", (string)authorization["activationMethods"][0]["type"]);
+            Assert.Equal(new List<string> { "tony", "stark" }, authorization["tags"].ToObject<List<string>>());
+        }
+
+        [Fact]
+        public void ResponseAuthorizationDenied()
+        {
+            string response = IssuingToken.ResponseAuthorization(
+                status: "denied",
+                reason: "other",
+                tags: new List<string> { "tony", "stark" }
+            );
+            JObject authorization = (JObject)JObject.Parse(response)["authorization"];
+            Assert.Equal("denied", (string)authorization["status"]);
+            Assert.Equal("other", (string)authorization["reason"]);
+            Assert.Equal(new List<string> { "tony", "stark" }, authorization["tags"].ToObject<List<string>>());
+        }
+
+        [Fact]
+        public void ResponseActivationApproved()
+        {
+            string response = IssuingToken.ResponseActivation(
+                status: "approved",
+                tags: new List<string> { "tony", "stark" }
+            );
+            JObject authorization = (JObject)JObject.Parse(response)["authorization"];
+            Assert.Equal("approved", (string)authorization["status"]);
+            Assert.Equal("", (string)authorization["reason"]);
+            Assert.Equal(new List<string> { "tony", "stark" }, authorization["tags"].ToObject<List<string>>());
+        }
+
+        [Fact]
+        public void ResponseActivationDenied()
+        {
+            string response = IssuingToken.ResponseActivation(
+                status: "denied",
+                reason: "other"
+            );
+            JObject authorization = (JObject)JObject.Parse(response)["authorization"];
+            Assert.Equal("denied", (string)authorization["status"]);
+            Assert.Equal("other", (string)authorization["reason"]);
+        }
+
+        public readonly string Content = "{\"deviceName\": \"My phone\", \"methodCode\": \"manual\", \"walletName\": \"Google Pay\", \"activationCode\": \"\", \"deviceSerialNumber\": \"2F6D63\", \"deviceImei\": \"352099001761481\", \"deviceType\": \"Phone\", \"walletInstanceId\": \"1b24f24a24ba98e27d43e345b532a245e4723d7a9c4f624e\", \"deviceOsVersion\": \"4.4.4\", \"cardId\": \"5189831499972623\", \"deviceOsName\": \"Android\", \"merchantId\": \"12345678901\", \"walletId\": \"google\"}";
+        public readonly string GoodSignature = "MEYCIQC4XbhjxEp9VhowLeg9JbSOo94FCRWE9GI7l7OuHh0bUwIhAJBuLDl5DAT9L4iMI0qYQ+PVmBIG5scxxvkWSsoWmwi4";
+        public readonly string BadSignature = "MEUCIQDOpo1j+V40DNZK2URL2786UQK/8mDXon9ayEd8U0/l7AIgYXtIZJBTs8zCRR3vmted6Ehz/qfw1GRut/eYyvf1yOk=";
     }
 }

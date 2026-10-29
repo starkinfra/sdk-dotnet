@@ -41,6 +41,7 @@ namespace StarkInfra
     ///     <item>Expiration [DateTime]: [EXPANDABLE] masked card expiration DateTime. Expand to unmask the value. ex: DateTime(2020, 3, 10, 10, 30, 0, 0).</item>
     ///     <item>Updated [DateTime]: latest update DateTime for the IssuingCard. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>Created [DateTime]: creation DateTime for the IssuingCard. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+    ///     <item>BinID [string]: deprecated, use ProductID. ex: "53810200"</item>
     /// </list>
     /// </summary>
     public partial class IssuingCard : Resource
@@ -67,6 +68,8 @@ namespace StarkInfra
         public DateTime? Expiration { get; }
         public DateTime? Updated { get;  }
         public DateTime? Created { get; }
+        [Obsolete("Use ProductID")]
+        public string BinID { get; }
 
         /// <summary>
         /// IssuingCard object
@@ -109,12 +112,14 @@ namespace StarkInfra
         ///     <item>expiration [DateTime]: [EXPANDABLE] masked card expiration DateTime. Expand to unmask the value. ex: DateTime(2020, 3, 10, 10, 30, 0, 0).</item>
         ///     <item>updated [DateTime]: latest update DateTime for the IssuingCard. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>created [DateTime]: creation DateTime for the IssuingCard. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
+        ///     <item>binID [string]: deprecated, use productID. ex: "53810200"</item>
         /// </list>
         /// </summary>
         public IssuingCard(string holderName, string holderTaxID, string holderExternalID, string displayName = null, List<IssuingRule> rules = null, 
             string productID = null, List<string> tags = null, string streetLine1 = null, string streetLine2 = null, string district = null, string city = null, 
             string stateCode = null, string zipCode = null, string id = null, string holderID = null, string type = null, string status = null,
-            bool? isPinDefined = null, string number = null, string securityCode = null, DateTime? expiration = null, DateTime? updated = null, DateTime? created = null
+            bool? isPinDefined = null, string number = null, string securityCode = null, DateTime? expiration = null, DateTime? updated = null, DateTime? created = null,
+            string binID = null
         ) : base(id)
         {
             HolderID = holderID;
@@ -127,6 +132,9 @@ namespace StarkInfra
             IsPinDefined = isPinDefined;
             Rules = rules;
             ProductID = productID;
+            #pragma warning disable CS0618
+            BinID = binID;
+            #pragma warning restore CS0618
             StreetLine1 = streetLine1;
             StreetLine2 = streetLine2;
             District = district;
@@ -438,6 +446,7 @@ namespace StarkInfra
             string displayName = json.displayName;
             List<IssuingRule> rules = IssuingRule.ParseRules(json.rules);
             string productID = json.productId;
+            string binID = json.binId;
             List<string> tags = json.tags?.ToObject<List<string>>();
             string streetLine1 = json.streetLine1;
             string streetLine2 = json.streetLine2;
@@ -466,7 +475,7 @@ namespace StarkInfra
                 streetLine1: streetLine1, streetLine2: streetLine2, district: district, 
                 city: city, stateCode: stateCode, zipCode: zipCode, id: id, holderID: holderID,
                 type: type, status: status, isPinDefined: isPinDefined, number: number, securityCode: securityCode,
-                expiration: expiration, updated: updated, created: created
+                expiration: expiration, updated: updated, created: created, binID: binID
             );
         }
     }
