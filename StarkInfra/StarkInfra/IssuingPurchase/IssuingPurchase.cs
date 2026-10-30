@@ -31,7 +31,7 @@ namespace StarkInfra
     ///     <item>MerchantCurrencySymbol [string]: merchant currency symbol. ex: "$"</item>
     ///     <item>MerchantCategoryCode [string]: merchant category code. ex: "fastFoodRestaurants"</item>
     ///     <item>MerchantCategoryType [string]: merchant category type. ex: "food"</item>
-    ///     <item>MerchantCategoryNumber [integer]: MCC number of the merchant category. ex: 5814</item>
+    ///     <item>MerchantCategoryNumber [string]: MCC number of the merchant category. ex: "5814"</item>
     ///     <item>MerchantCountryCode [string]: merchant country code. ex: "USA"</item>
     ///     <item>AcquirerID [string]: acquirer ID. ex: "5656565656565656"</item>
     ///     <item>MerchantID [string]: merchant ID. ex: "5656565656565656"</item>
@@ -52,7 +52,7 @@ namespace StarkInfra
     ///     <item>Created [DateTime]: creation DateTime for the IssuingPurchase. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>IsPartialAllowed [bool]: true if the merchant allows partial purchases. ex: False</item>
     ///     <item>CardTags [list of strings]: tags of the IssuingCard responsible for this purchase. ex: new List<string>{ "travel", "food" }</item>
-    ///     <item>HolderID [string]: card holder ID. ex: "5656565656565656"</item>
+    ///     <item>HolderID [string]: card holder ID. Returned only in the authorization request read by Parse; null on Get and Query. ex: "5656565656565656"</item>
     ///     <item>HolderTags [list of strings]: tags of the IssuingHolder responsible for this purchase. new List<string>{ "technology", "john snow" }</item>
     /// </list>
     /// </summary>
@@ -74,7 +74,7 @@ namespace StarkInfra
         public string MerchantCurrencySymbol { get; }
         public string MerchantCategoryCode { get; }
         public string MerchantCategoryType { get; }
-        public int? MerchantCategoryNumber { get; }
+        public string MerchantCategoryNumber { get; }
         public string MerchantCountryCode { get; }
         public string AcquirerID { get; }
         public string MerchantID { get; }
@@ -122,7 +122,7 @@ namespace StarkInfra
         ///     <item>merchantCurrencySymbol [string]: merchant currency symbol. ex: "$"</item>
         ///     <item>merchantCategoryCode [string]: merchant category code. ex: "fastFoodRestaurants"</item>
         ///     <item>merchantCategoryType [string]: merchant category type. ex: "food"</item>
-        ///     <item>merchantCategoryNumber [integer]: MCC number of the merchant category. ex: 5814</item>
+        ///     <item>merchantCategoryNumber [string]: MCC number of the merchant category. ex: "5814"</item>
         ///     <item>merchantCountryCode [string]: merchant country code. ex: "USA"</item>
         ///     <item>acquirerID [string]: acquirer ID. ex: "5656565656565656"</item>
         ///     <item>merchantID [string]: merchant ID. ex: "5656565656565656"</item>
@@ -149,18 +149,20 @@ namespace StarkInfra
         /// <list>
         ///     <item>isPartialAllowed [bool]: true if the merchant allows partial purchases. ex: False</item>
         ///     <item>cardTags [list of strings]: tags of the IssuingCard responsible for this purchase. ex: new List<string>{ "travel", "food" }</item>
-        ///     <item>holderID [string]: card holder ID. ex: "5656565656565656"</item>
+        ///     <item>holderID [string]: card holder ID. Returned only in the authorization request read by Parse; null on Get and Query. ex: "5656565656565656"</item>
         ///     <item>holderTags [list of strings]: tags of the IssuingHolder responsible for this purchase. ex: new List<string>{ "technology", "john snow" }</item>
         /// </list>
         /// </summary>
-        public IssuingPurchase(string id = null, string holderName = null,  string productID = null,  string cardID = null,  string cardEnding = null,
-            string purpose = null, int? installmentCount = null, long? amount = null, int? tax = null, long? issuerAmount = null, string issuerCurrencyCode = null,
+        public IssuingPurchase(string id = null, string holderName = null,  string cardID = null,  string cardEnding = null,
+            string purpose = null, long? amount = null, int? tax = null, long? issuerAmount = null, string issuerCurrencyCode = null,
             string issuerCurrencySymbol = null, long? merchantAmount = null,  string merchantCurrencyCode = null,
-            string merchantCurrencySymbol = null,  string merchantCategoryCode = null,  string merchantCategoryType = null,  int? merchantCategoryNumber = null,  string merchantCountryCode = null,
+            string merchantCurrencySymbol = null,  string merchantCategoryCode = null,  string merchantCountryCode = null,
             string acquirerID = null,  string merchantID = null,  string merchantName = null,  int? merchantFee = null,
             string walletID = null,  string methodCode = null,  float? score = null,  string endToEndID = null,  List<string> tags = null,
-            string zipCode = null,  List<string> issuingTransactionIds = null, string status = null, DateTime? confirmed = null, string description = null, Dictionary<string, object> metadata = null,
-            DateTime? updated = null, DateTime? created = null, bool? isPartialAllowed = null, List<string> cardTags = null, string holderID = null, List<string> holderTags = null
+            string zipCode = null,  List<string> issuingTransactionIds = null, string status = null, Dictionary<string, object> metadata = null,
+            DateTime? updated = null, DateTime? created = null, bool? isPartialAllowed = null, List<string> cardTags = null, List<string> holderTags = null,
+            string productID = null, int? installmentCount = null, string merchantCategoryType = null, string merchantCategoryNumber = null,
+            DateTime? confirmed = null, string description = null, string holderID = null
         ) : base(id)
         {
             HolderName = holderName;
@@ -504,7 +506,7 @@ namespace StarkInfra
             string merchantCurrencySymbol = json.merchantCurrencySymbol;
             string merchantCategoryCode = json.merchantCategoryCode;
             string merchantCategoryType = json.merchantCategoryType;
-            int? merchantCategoryNumber = json.merchantCategoryNumber;
+            string merchantCategoryNumber = json.merchantCategoryNumber;
             string merchantCountryCode = json.merchantCountryCode;
             string acquirerID = json.acquirerId;
             string merchantID = json.merchantId;

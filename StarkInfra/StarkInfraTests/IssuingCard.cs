@@ -31,6 +31,20 @@ namespace StarkInfraTests
         }
 
         [Fact]
+        public void QueryExposesDeprecatedBinID()
+        {
+            List<IssuingCard> cards = IssuingCard.Query(limit: 4).ToList();
+            Assert.NotEmpty(cards);
+            foreach (IssuingCard card in cards)
+            {
+                #pragma warning disable CS0618
+                Assert.NotNull(card.BinID);
+                Assert.Equal(card.ProductID, card.BinID);
+                #pragma warning restore CS0618
+            }
+        }
+
+        [Fact]
         public void Page()
         {
             List<string> ids = new List<string>();

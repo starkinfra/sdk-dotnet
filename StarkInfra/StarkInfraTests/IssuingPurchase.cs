@@ -36,24 +36,18 @@ namespace StarkInfraTests
         }
 
         [Fact]
-        public void QueryFieldGaps()
+        public void QueryExposesFields()
         {
-            List<IssuingPurchase> purchases = IssuingPurchase.Query(limit: 1).ToList();
-            Assert.True(purchases.Count <= 1);
+            List<IssuingPurchase> purchases = IssuingPurchase.Query(limit: 5).ToList();
+            Assert.NotEmpty(purchases);
             foreach (IssuingPurchase purchase in purchases)
             {
                 TestUtils.Log(purchase);
                 Assert.NotNull(purchase.ID);
-                string productID = purchase.ProductID;
-                string merchantCategoryType = purchase.MerchantCategoryType;
-                int? installmentCount = purchase.InstallmentCount;
-                string description = purchase.Description;
-                string holderID = purchase.HolderID;
-                TestUtils.Log(productID);
-                TestUtils.Log(merchantCategoryType);
-                TestUtils.Log(installmentCount);
-                TestUtils.Log(description);
-                TestUtils.Log(holderID);
+                Assert.False(string.IsNullOrEmpty(purchase.ProductID));
+                Assert.False(string.IsNullOrEmpty(purchase.MerchantCategoryType));
+                Assert.False(string.IsNullOrEmpty(purchase.MerchantCategoryNumber));
+                Assert.NotNull(purchase.InstallmentCount);
             }
         }
 
@@ -64,15 +58,44 @@ namespace StarkInfraTests
                 productID: "53810200",
                 installmentCount: 12,
                 merchantCategoryType: "food",
+                merchantCategoryNumber: "5814",
                 description: "Office Supplies",
                 holderID: "5917814565109760"
             );
             Assert.Equal("53810200", purchase.ProductID);
             Assert.Equal(12, purchase.InstallmentCount);
             Assert.Equal("food", purchase.MerchantCategoryType);
+            Assert.Equal("5814", purchase.MerchantCategoryNumber);
             Assert.Equal("Office Supplies", purchase.Description);
             Assert.Equal("5917814565109760", purchase.HolderID);
             TestUtils.Log(purchase);
+        }
+
+        [Fact]
+        public void ConstructorKeepsPositionalOrder()
+        {
+            // positional call in the 0.13.0 signature order: new parameters must not shift these values
+            IssuingPurchase purchase = new IssuingPurchase(
+                "5656565656565656", "Tony Stark", "5671893688385536", "1234", "purchase",
+                100, 0, 100, "BRL", "R$",
+                100, "BRL", "R$", "bookStores", "BRA",
+                "236090", "204933612653639", "STARK BANK", 0, "",
+                "contactless", null, "2fa7ef9f-b889-4bae-ac02-16749c04a3b6", new List<string> { "travel" }, "01311200",
+                new List<string> { "5656565656565656" }, "approved", null, null, null,
+                true, new List<string> { "card" }, new List<string> { "holder" }
+            );
+            Assert.Equal("5671893688385536", purchase.CardID);
+            Assert.Equal("1234", purchase.CardEnding);
+            Assert.Equal("purchase", purchase.Purpose);
+            Assert.Equal(100, purchase.Amount);
+            Assert.Equal("bookStores", purchase.MerchantCategoryCode);
+            Assert.Equal("BRA", purchase.MerchantCountryCode);
+            Assert.Equal("approved", purchase.Status);
+            Assert.True(purchase.IsPartialAllowed);
+            Assert.Equal(new List<string> { "card" }, purchase.CardTags);
+            Assert.Equal(new List<string> { "holder" }, purchase.HolderTags);
+            Assert.Null(purchase.ProductID);
+            Assert.Null(purchase.HolderID);
         }
 
         [Fact]
@@ -124,6 +147,7 @@ namespace StarkInfraTests
         {
             IssuingPurchase parsedIssuingPurchase = IssuingPurchase.Parse(Content, GoodSignature);
             TestUtils.Log(parsedIssuingPurchase);
+            Assert.Equal("5917814565109760", parsedIssuingPurchase.HolderID);
         }
 
         [Fact]

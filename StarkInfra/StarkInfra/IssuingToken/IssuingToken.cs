@@ -353,8 +353,7 @@ namespace StarkInfra
                 signature: signature,
                 resourceName: resourceName,
                 resourceMaker: resourceMaker,
-                user: user,
-                key: ""
+                user: user
             ) as IssuingToken;
         }
 

@@ -110,42 +110,21 @@ namespace StarkInfraTests
         [Fact]
         public void OutputFieldsAreExposed()
         {
-            List<IssuingBillingTransaction> transactions = IssuingBillingTransaction.Query(limit: 1).ToList();
-            Assert.True(transactions.Count <= 1);
+            List<IssuingBillingTransaction> transactions = IssuingBillingTransaction.Query(limit: 5).ToList();
+            Assert.NotEmpty(transactions);
             foreach (IssuingBillingTransaction transaction in transactions)
             {
                 TestUtils.Log(transaction);
                 Assert.NotNull(transaction.ID);
-                long? amount = transaction.Amount;
-                string invoiceID = transaction.InvoiceID;
-                long? installment = transaction.Installment;
-                long? installmentCount = transaction.InstallmentCount;
-                long? balance = transaction.Balance;
-                string holderName = transaction.HolderName;
-                string source = transaction.Source;
-                string externalID = transaction.ExternalID;
-                string description = transaction.Description;
-                string cardEnding = transaction.CardEnding;
-                double? tax = transaction.Tax;
-                double? rate = transaction.Rate;
-                long? merchantAmount = transaction.MerchantAmount;
-                string merchantCurrencyCode = transaction.MerchantCurrencyCode;
-                DateTime? created = transaction.Created;
-                TestUtils.Log(amount);
-                TestUtils.Log(invoiceID);
-                TestUtils.Log(installment);
-                TestUtils.Log(installmentCount);
-                TestUtils.Log(balance);
-                TestUtils.Log(holderName);
-                TestUtils.Log(source);
-                TestUtils.Log(externalID);
-                TestUtils.Log(description);
-                TestUtils.Log(cardEnding);
-                TestUtils.Log(tax);
-                TestUtils.Log(rate);
-                TestUtils.Log(merchantAmount);
-                TestUtils.Log(merchantCurrencyCode);
-                TestUtils.Log(created);
+                Assert.NotNull(transaction.Amount);
+                Assert.NotNull(transaction.Balance);
+                Assert.NotNull(transaction.Tax);
+                Assert.NotNull(transaction.Rate);
+                Assert.NotNull(transaction.Created);
+                Assert.False(string.IsNullOrEmpty(transaction.Source));
+                Assert.False(string.IsNullOrEmpty(transaction.ExternalID));
+                Assert.False(string.IsNullOrEmpty(transaction.Description));
+                Assert.False(string.IsNullOrEmpty(transaction.MerchantCurrencyCode));
             }
         }
     }
