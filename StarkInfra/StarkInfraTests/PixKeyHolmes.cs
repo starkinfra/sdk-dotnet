@@ -47,6 +47,15 @@ namespace StarkInfraTests
         }
 
         [Fact]
+        public void QueryAndGet()
+        {
+            PixKeyHolmes sherlock = PixKeyHolmes.Query(limit: 1).First();
+            PixKeyHolmes getHolmes = PixKeyHolmes.Get(id: sherlock.ID);
+            Assert.Equal(sherlock.ID, getHolmes.ID);
+            TestUtils.Log(getHolmes);
+        }
+
+        [Fact]
         public void QueryIds()
         {
             List<PixKeyHolmes> holmes = PixKeyHolmes.Query(limit: 10).ToList();
@@ -124,10 +133,10 @@ namespace StarkInfraTests
         }
 
         [Fact]
-        public void ExposesOnlyCreateQueryPage()
+        public void ExposesCreateGetQueryPage()
         {
             Type type = typeof(PixKeyHolmes);
-            Assert.Null(type.GetMethod("Get", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static));
+            Assert.NotNull(type.GetMethod("Get", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static));
             Assert.Null(type.GetMethod("Cancel", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static));
             Assert.Null(type.GetMethod("Delete", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static));
             Assert.NotNull(type.GetMethod("Create", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static));

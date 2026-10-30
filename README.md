@@ -2744,6 +2744,59 @@ foreach(StarkInfra.PixKeyHolmes sherlock in holmes)
 }
 ```
 
+### Get a PixKeyHolmes
+
+After its creation, information on a PixKeyHolmes may be retrieved by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.PixKeyHolmes sherlock = StarkInfra.PixKeyHolmes.Get("5656565656565656");
+
+Console.Write(sherlock);
+```
+
+### Query PixKeyHolmes logs
+
+You can query PixKeyHolmes logs to better understand PixKeyHolmes life cycles.
+
+```c#
+using System;
+using System.Collections.Generic;
+using StarkInfra;
+
+
+IEnumerable<StarkInfra.PixKeyHolmes.Log> logs = StarkInfra.PixKeyHolmes.Log.Query(
+    limit: 50,
+    ids: new List<string>{ "5729405850615808" },
+    after: new DateTime(2022, 01, 01),
+    before: new DateTime(2022, 12, 01),
+    types: new List<string>{ "solved" },
+    holmesIds: new List<string>{ "5719405850615809" }
+);
+
+foreach (StarkInfra.PixKeyHolmes.Log log in logs)
+{
+    Console.Write(log);
+}
+```
+
+### Get a PixKeyHolmes log
+
+You can also get a specific log by its id.
+
+```c#
+using System;
+using StarkInfra;
+
+
+StarkInfra.PixKeyHolmes.Log log = StarkInfra.PixKeyHolmes.Log.Get("5155165527080960");
+
+Console.Write(log);
+```
+
 ### Create PixInternalTransactionReports
 
 Transactions that happen internally — outside of the SPI — must be reported to the
