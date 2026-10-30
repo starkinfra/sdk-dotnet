@@ -36,6 +36,19 @@ namespace StarkInfraTests
             }
         }
 
+        [Fact]
+        public void QueryErrorsAsStrings()
+        {
+            List<IndividualAccountRequest.Log> logs =
+                IndividualAccountRequest.Log.Query(limit: 100).ToList();
+            foreach (IndividualAccountRequest.Log log in logs)
+            {
+                TestUtils.Log(log);
+                Assert.NotNull(log.Errors);
+                Assert.All(log.Errors, error => Assert.False(string.IsNullOrEmpty(error)));
+            }
+        }
+
         // [M8] Log.Page returns (items, cursor).
         [Fact]
         public void Page()

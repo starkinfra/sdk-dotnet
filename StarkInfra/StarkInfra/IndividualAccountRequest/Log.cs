@@ -19,7 +19,7 @@ namespace StarkInfra
         ///     <item>ID [string]: unique id returned when the log is created. ex: "5656565656565656"</item>
         ///     <item>Request [IndividualAccountRequest]: IndividualAccountRequest entity to which the log refers to.</item>
         ///     <item>Type [string]: type of the IndividualAccountRequest event which triggered the log creation. Options: "approved", "created", "denied", "processing", "updated"</item>
-        ///     <item>Errors [list of dictionaries]: list of errors linked to this IndividualAccountRequest event.</item>
+        ///     <item>Errors [list of strings]: list of errors linked to this IndividualAccountRequest event.</item>
         ///     <item>Created [DateTime]: creation DateTime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
         /// </summary>
@@ -27,7 +27,7 @@ namespace StarkInfra
         {
             public IndividualAccountRequest Request { get; }
             public string Type { get; }
-            public List<Dictionary<string, object>> Errors { get; }
+            public List<string> Errors { get; }
             public DateTime Created { get; }
 
             /// <summary>
@@ -38,11 +38,11 @@ namespace StarkInfra
             ///     <item>id [string]: unique id returned when the log is created. ex: "5656565656565656"</item>
             ///     <item>request [IndividualAccountRequest]: IndividualAccountRequest entity to which the log refers to.</item>
             ///     <item>type [string]: type of the IndividualAccountRequest event which triggered the log creation. ex: "created"</item>
-            ///     <item>errors [list of dictionaries]: list of errors linked to this IndividualAccountRequest event.</item>
+            ///     <item>errors [list of strings]: list of errors linked to this IndividualAccountRequest event.</item>
             ///     <item>created [DateTime]: creation DateTime for the log. ex: new DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
             /// </list>
             /// </summary>
-            public Log(string id, IndividualAccountRequest request, string type, List<Dictionary<string, object>> errors, DateTime created) : base(id)
+            public Log(string id, IndividualAccountRequest request, string type, List<string> errors, DateTime created) : base(id)
             {
                 Request = request;
                 Type = type;
@@ -177,7 +177,7 @@ namespace StarkInfra
                 string id = json.id;
                 IndividualAccountRequest request = (IndividualAccountRequest)IndividualAccountRequest.ResourceMaker(json.request);
                 string type = json.type;
-                List<Dictionary<string, object>> errors = json.errors is null ? new List<Dictionary<string, object>> { } : json.errors.ToObject<List<Dictionary<string, object>>>();
+                List<string> errors = json.errors is null ? new List<string> { } : json.errors.ToObject<List<string>>();
                 string createdString = json.created;
                 DateTime created = StarkCore.Utils.Checks.CheckDateTime(createdString);
 
