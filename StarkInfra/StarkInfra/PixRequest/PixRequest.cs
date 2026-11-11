@@ -42,7 +42,8 @@ namespace StarkInfra
     ///    <item>Tags [list of strings, default null]: list of strings for reference when searching for PixRequests. ex: new List<string>{ "employees", "monthly" }</item>
     ///    <item>Method [string, default null]: execution method of creation of the Pix. Options: "manual", "dict", "initiator", "dynamicQrcode", "staticQrcode", "payerQrcode", "subscription", "contactless", "staticContactless".</item>
     ///    <item>Priority [string, default "high"]: Specifies the message channel used to send the Pix Request. If set to "high", the request is sent through the primary channel; if set to "low", it uses the secondary channel. Options: "high" or "low"
-    ///    <item>Reason [string, default "customerRequest"]: underlying reason for the payment transaction. ex: "customerRequest", "fraud", "subscriptionFlaw"
+    ///    <item>Reason [string, default "customerRequest"]: underlying reason for the payment transaction. Options: "customerRequest", "subscriptionFlaw", "fraud". When reason is "fraud" (returning funds from a PixDispute), disputeID is required and senderTaxID must be your institution's organization tax ID (CNPJ).
+    ///    <item>DisputeID [string, default null]: Id of the Pix Dispute being refunded. Required when reason is "fraud" and not allowed with any other reason. The dispute must be one you received and must be awaiting the refund, otherwise the request is refused with invalidDisputeId.</item>
     ///    <item>ID [string]: unique id returned when the PixRequest is created. ex: "5656565656565656"</item>
     ///    <item>Fee [integer]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)</item>
     ///    <item>Status [string]: current PixRequest status. ex: "created", "processing", "success", "failed"</item>
@@ -79,6 +80,7 @@ namespace StarkInfra
         public string Method { get; }
         public string Priority { get; }
         public string Reason { get; }
+        public string DisputeID { get; }
         public long? Fee { get; }
         public string Status { get; }
         public string Flow { get; }
@@ -128,7 +130,11 @@ namespace StarkInfra
         ///    <item>tags [list of strings, default null]: list of strings for reference when searching for PixRequests. ex: new List<string>{ "employees", "monthly" }</item>
         ///    <item>method [string, default null]: execution method of creation of the Pix. Options: "manual", "dict", "initiator", "dynamicQrcode", "staticQrcode", "payerQrcode", "subscription", "contactless", "staticContactless".</item>
         ///    <item>priority [string, default "high"]: Specifies the message channel used to send the Pix Request. If set to "high", the request is sent through the primary channel; if set to "low", it uses the secondary channel. Options: "high" or "low"
-        ///    <item>reason [string, default "customerRequest"]: underlying reason for the payment transaction. ex: "customerRequest", "fraud", "subscriptionFlaw"
+        ///    <item>reason [string, default "customerRequest"]: underlying reason for the payment transaction. Options: "customerRequest", "subscriptionFlaw", "fraud". When reason is "fraud" (returning funds from a PixDispute), disputeID is required and senderTaxID must be your institution's organization tax ID (CNPJ).
+        /// </list>
+        /// Parameters (conditionally-required):
+        /// <list>
+        ///    <item>disputeID [string, default null]: Id of the Pix Dispute being refunded. Required when reason is "fraud" and not allowed with any other reason. The dispute must be one you received and must be awaiting the refund, otherwise the request is refused with invalidDisputeId.</item>
         /// </list>
         /// Attributes (return-only):
         /// <list>
@@ -149,6 +155,7 @@ namespace StarkInfra
             long? cashAmount = null, string receiverKeyID = null, string description = null, 
             string reconciliationID = null, string initiatorTaxID = null,  
             List<string> tags = null, string method = null, string priority = null, string reason = null,
+            string disputeID = null,
             string id = null, long? fee = null, string status = null, string flow = null, 
             string senderBankCode = null, DateTime? created = null, DateTime? updated = null 
         ) : base(id)
@@ -178,6 +185,7 @@ namespace StarkInfra
             Method = method;
             Priority = priority;
             Reason = reason;
+            DisputeID = disputeID;
             Fee = fee;
             Status = status;
             Flow = flow;
@@ -481,6 +489,7 @@ namespace StarkInfra
             string method = json.method;
             string priority = json.priority;
             string reason = json.reason;
+            string disputeID = json.disputeId;
             string id = json.id;
             long fee = json.fee is null ? 0 : json.fee;
             string status = json.status;
@@ -501,7 +510,7 @@ namespace StarkInfra
                 endToEndID: endToEndID, cashierType: cashierType, cashierBankCode: cashierBankCode, 
                 cashAmount: cashAmount, receiverKeyID: receiverKeyID, description: description, 
                 reconciliationID: reconciliationID, initiatorTaxID: initiatorTaxID, tags: tags, 
-                method: method, priority: priority, reason: reason, id: id, fee: fee, status: status,
+                method: method, priority: priority, reason: reason, disputeID: disputeID, id: id, fee: fee, status: status,
                 flow: flow, senderBankCode: senderBankCode, created: created, updated: updated
             );
         }
