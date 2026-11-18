@@ -23,6 +23,35 @@ namespace StarkInfraTests
         }
 
         [Fact]
+        public void CreateWithDisputeID()
+        {
+            PixRequest request = new PixRequest(
+                amount: 1000,
+                externalID: Convert.ToString(new Random().Next(1, 999999999)),
+                senderName: "Arya",
+                senderTaxID: "01234567890",
+                senderBranchCode: "0000",
+                senderAccountNumber: "00000",
+                senderAccountType: "checking",
+                receiverName: "maria",
+                receiverTaxID: "01234567890",
+                receiverBankCode: "20018183",
+                receiverBranchCode: "0001",
+                receiverAccountNumber: "00000",
+                receiverAccountType: "checking",
+                endToEndID: "E20018183202202161723Y4cqxlfLFcm",
+                reason: "fraud",
+                disputeID: "5656565656565656"
+            );
+            Dictionary<string, object> payload = StarkCore.Utils.Api.CastJsonToApiFormat(request.ToJson());
+
+            Assert.Equal("fraud", request.Reason);
+            Assert.Equal("5656565656565656", request.DisputeID);
+            Assert.Equal("fraud", payload["reason"]);
+            Assert.Equal("5656565656565656", payload["disputeId"]);
+        }
+
+        [Fact]
         public void Query()
         {
             List<PixRequest> requests = PixRequest.Query(limit: 101, status: new List<string> { "success" }).ToList();

@@ -14,6 +14,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 ### Added
+- disputeID attribute to PixRequest resource
 - Ledger resource
 - LedgerTransaction resource
 - Parse method to PixPullSubscription
