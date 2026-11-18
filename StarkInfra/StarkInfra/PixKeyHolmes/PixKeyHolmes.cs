@@ -23,7 +23,7 @@ namespace StarkInfra
     ///     <item>Tags [list of strings, default []]: list of strings for reference when searching for PixKeyHolmes. ex: new List<string>{ "travel", "food" }</item>
     ///     <item>ID [string]: unique id returned when the PixKeyHolmes is created. ex: "5656565656565656"</item>
     ///     <item>Result [string]: investigation outcome once the case is solved. Options: "registered", "unregistered"</item>
-    ///     <item>Status [string]: current status of the PixKeyHolmes. ex: "created", "solving", "solved", "failed"</item>
+    ///     <item>Status [string]: current status of the PixKeyHolmes. ex: "solving", "solved"</item>
     ///     <item>Created [DateTime]: creation DateTime for the PixKeyHolmes. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     ///     <item>Updated [DateTime]: latest update DateTime for the PixKeyHolmes. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
     /// </list>
@@ -58,7 +58,7 @@ namespace StarkInfra
         /// <list>
         ///     <item>id [string]: unique id returned when PixKeyHolmes is created. ex: "5656565656565656"</item>
         ///     <item>result [string]: investigation outcome once the case is solved. Options: "registered", "unregistered"</item>
-        ///     <item>status [string]: current status of the PixKeyHolmes. ex: "created", "solving", "solved", "failed"</item>
+        ///     <item>status [string]: current status of the PixKeyHolmes. ex: "solving", "solved"</item>
         ///     <item>created [DateTime]: creation DateTime for the PixKeyHolmes. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         ///     <item>updated [DateTime]: latest update DateTime for the PixKeyHolmes. ex: DateTime(2020, 3, 10, 10, 30, 0, 0)</item>
         /// </list>
@@ -105,6 +105,37 @@ namespace StarkInfra
                 entities: holmes,
                 user: user
             ).ToList().ConvertAll(o => (PixKeyHolmes)o);
+        }
+
+        /// <summary>
+        /// Retrieve a specific PixKeyHolmes
+        /// <br/>
+        /// Receive a single PixKeyHolmes object previously created in the Stark Infra API by its id
+        /// <br/>
+        /// Parameters (required):
+        /// <list>
+        ///     <item>id [string]: object unique id. ex: "5656565656565656"</item>
+        /// </list>
+        /// <br/>
+        /// Parameters (optional):
+        /// <list>
+        ///     <item>user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call</item>
+        /// </list>
+        /// <br/>
+        /// Return:
+        /// <list>
+        ///     <item>PixKeyHolmes object that corresponds to the given id.</item>
+        /// </list>
+        /// </summary>
+        public static PixKeyHolmes Get(string id, User user = null)
+        {
+            (string resourceName, StarkCore.Utils.Api.ResourceMaker resourceMaker) = Resource();
+            return Rest.GetId(
+                resourceName: resourceName,
+                resourceMaker: resourceMaker,
+                id: id,
+                user: user
+            ) as PixKeyHolmes;
         }
 
         /// <summary>
