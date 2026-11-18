@@ -241,7 +241,7 @@ namespace StarkInfra
         /// <br/>
         /// Create a single Event object received from event listening at subscribed user endpoint.
         /// If the provided digital signature does not check out with the StarkInfra public key, a
-        /// Error.InvalidSignatureException will be raised.
+        /// StarkCore.Error.InvalidSignatureError will be raised.
         /// <br/>
         /// Parameters (required):
         /// <list>

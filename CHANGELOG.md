@@ -55,6 +55,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - IssuingToken.Log Errors was typed as a list of strings, throwing on the API's `{code, message}` objects; now typed as a list of dictionaries
 - PixClaim.Log and PixChargeback.Log Errors were typed as a list of dictionaries, throwing on the API's string errors; now typed as a list of strings
 - IndividualAccountRequest.Log Errors was typed as a list of dictionaries, throwing on the API's string errors; now typed as a list of strings
+- README, docstrings and tests pointed to StarkInfra.Error classes, which are never thrown; now point to the StarkCore.Error classes raised by the core
 ### Removed
 - IndividualDocument resource and its Log: no API route serves them
 - Category attribute from IssuingProduct resource: the API no longer returns it; its holderType value moved to HolderType
