@@ -59,6 +59,20 @@ namespace StarkInfra.Utils
             );
         }
 
+        public static IEnumerable<SubResource> PatchMulti(User user = null, string resourceName = null, Api.ResourceMaker resourceMaker = null, IEnumerable<Dictionary<string, object>> entities = null, Dictionary<string, object> query = null)
+        {
+            return StarkCore.Utils.Rest.PatchMulti(
+                host: host,
+                apiVersion: apiVersion,
+                sdkVersion: sdkVersion,
+                resourceName: resourceName,
+                resourceMaker: resourceMaker,
+                query: query,
+                entities: entities,
+                user: user
+            );
+        }
+
         public static StarkCore.Utils.Resource GetId(string id, User user = null, string resourceName = null, Api.ResourceMaker resourceMaker = null, Dictionary<string, object> query = null)
         {
             return StarkCore.Utils.Rest.GetId(
