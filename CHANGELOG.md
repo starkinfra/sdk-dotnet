@@ -14,6 +14,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 ### Added
+- IssuingCard.UpdateMulti method, to update several cards in one request (PATCH /v2/issuing-card)
+- holderName, holderTaxID and holderExternalID to the IssuingCard.Update patch data, to assign a holder to a pending card
 - disputeID attribute to PixRequest resource
 - PixSubscriptionBacenID utility to generate Pix subscription bacenIds
 - ReturnID and BacenID utilities to generate return and bacen ids
@@ -48,6 +50,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - ChunkCount attribute to PixStatement resource
 - CashierBankCode, Description and Type attributes to StaticBrcode resource
 ### Changed
+- holderName, holderTaxID and holderExternalID are optional in the IssuingCard constructor, so a physical card can be created without a holder
 - IssuingProduct Settlement and Client attributes now hold the API's settlement and client; the fundingType and code values they used to hold moved to FundingType and Code
 - IssuingProduct constructor parameters to id, network, customerType, fundingType, holderType, code, client, settlement and created
 - IssuingBalance constructor now requires limit and maxLimit before updated
