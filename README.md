@@ -3952,6 +3952,11 @@ List<StarkInfra.CreditNote> notes = StarkInfra.CreditNote.Create(
                     value: "scheduled"
                 )
             },
+            templateReplacements: new StarkInfra.TemplateReplacements(new Dictionary<string, object> {
+                { "guarantorName", "Jon Snow" },
+                { "guarantorTaxId", "012.345.678-90" },
+                { "guarantorAddress", "Av. Paulista, 200 - Bela Vista - Sao Paulo, SP" }
+            }),
             externalID: "my_external_id_10",
             streetLine1: "Av. Paulista, 200",
             streetLine2: "10 andar",
@@ -3970,6 +3975,8 @@ foreach(StarkInfra.CreditNote note in notes)
 ```
 
 **Note**: Instead of using CreditNote objects, you can also pass each element in dictionary format
+
+**Note**: templateReplacements is optional and its keys depend on your contract template. Write each key exactly as the placeholder is named (camelCase, as in the example): the keys are sent unchanged. TemplateReplacements is a dictionary of string keys, so a plain Dictionary<string, object> is also accepted (it is converted and sends the same payload), and note.TemplateReplacements is always a TemplateReplacements object that keeps every key received from the API. Null values are sent as JSON null and values, including DateTime, are serialized as-is, without the SDK's date conversion, so prefer strings already formatted as the template expects.
 
 ### Query CreditNotes
 

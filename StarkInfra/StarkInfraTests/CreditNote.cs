@@ -170,6 +170,45 @@ namespace StarkInfraTests
         }
 
         [Fact]
+        public void CreateWithTemplateReplacements()
+        {
+            TemplateReplacements templateReplacements = new TemplateReplacements(new Dictionary<string, object> {
+                { "nomeAvalista", "Jon Snow" },
+                { "taxIdAvalista", "012.345.678-90" },
+                { "enderecoAvalista", "Av. Paulista, 200 - Bela Vista - Sao Paulo, SP" }
+            });
+            CreditNote example = Example(
+                templateReplacements: templateReplacements,
+                tags: new List<string> { "sdk-test" }
+            );
+
+            List<CreditNote> notes = CreditNote.Create(new List<CreditNote>() { example });
+
+            CreditNote note = notes.First();
+            Assert.NotNull(note.ID);
+            Assert.Equal("Jon Snow", note.TemplateReplacements["nomeAvalista"]);
+            foreach (string key in templateReplacements.Keys)
+            {
+                Assert.True(note.TemplateReplacements.ContainsKey(key), key);
+            }
+        }
+
+        [Fact]
+        public void CreateWithTemplateReplacementsDictionary()
+        {
+            CreditNote example = Example(
+                templateReplacements: new Dictionary<string, object> { { "nomeAvalista", "Jon Snow" }, { "taxIdAvalista", "012.345.678-90" }, { "enderecoAvalista", "Av. Paulista, 200 - Bela Vista - Sao Paulo, SP" } },
+                tags: new List<string> { "sdk-test" }
+            );
+
+            CreditNote note = CreditNote.Create(new List<CreditNote>() { example }).First();
+
+            Assert.NotNull(note.ID);
+            Assert.IsType<TemplateReplacements>(note.TemplateReplacements);
+            Assert.Equal("Jon Snow", note.TemplateReplacements["nomeAvalista"]);
+        }
+
+        [Fact]
         public void Pdf()
         {
             List<CreditNote> notes = CreditNote.Query(limit: 1, status: new List<string> { "created" }).ToList();
@@ -207,8 +246,8 @@ namespace StarkInfraTests
             Assert.NotNull(debtorWorkspaceID);
         }
 
-        internal static CreditNote Example() => new CreditNote(
-            templateID: "5706627130851328",
+        internal static CreditNote Example(Dictionary<string, object> templateReplacements = null, List<string> tags = null) => new CreditNote(
+            templateID: Environment.GetEnvironmentVariable("SANDBOX_TEMPLATE_ID") ?? "5706627130851328",
             name: "Jamie Lannister",
             taxID: "012.345.678-90",
             nominalAmount: 100000,
@@ -254,7 +293,9 @@ namespace StarkInfraTests
                     key: "invoiceCreationMode",
                     value: "scheduled"
                 )
-            }
+            },
+            tags: tags,
+            templateReplacements: templateReplacements
         );
     }
 }
