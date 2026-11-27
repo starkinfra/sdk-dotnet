@@ -37,6 +37,7 @@ namespace StarkInfra
     ///     <item>Tags [list of strings, default null]: list of strings for reference when searching for CreditNotes. ex: new List<string>{ "employees", "monthly" }</item>
     ///     <item>Expiration [integer, default 604800 (7 days)]: time interval in seconds between scheduled date and expiration. ex: 123456789</item>
     ///     <item>Rules [list of CreditNote.Rule objects, default null]: list of Rule objects or dictionaries for modifying the CreditNote behavior. ex: new List<CreditNote.Rule>{ new CreditNote.Rule(key: "invoiceCreationMode", value: "scheduled") }</item>
+    ///     <item>TemplateReplacements [StarkInfra.TemplateReplacements object, default null]: values that fill the placeholders of the contract template. Keys depend on the template and are sent exactly as written. A dictionary is converted into the object. Null values are sent as JSON null and values, including DateTime, are serialized as-is, without the SDK's date conversion. ex: new Dictionary<string, object>{ { "guarantorName", "Jon Snow" }, { "guarantorTaxId", "012.345.678-90" } }</item>
     ///     <item>ID [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"</item>
     ///     <item>Amount [integer]: CreditNote value in cents. ex: 1234 (= R$ 12.34)</item>
     ///     <item>DocumentID [string]: ID of the signed document to execute this CreditNote. ex: "4545454545454545"</item>
@@ -73,6 +74,7 @@ namespace StarkInfra
         public List<string> Tags { get; }
         public string Expiration { get; }
         public List<Rule> Rules { get; }
+        public TemplateReplacements TemplateReplacements { get; }
         public long? Amount { get; }
         public string DocumentID { get; }
         public string Status { get; }
@@ -122,6 +124,7 @@ namespace StarkInfra
         ///     <item>tags [list of strings, default null]: list of strings for reference when searching for CreditNotes. ex: new List<string>{ "employees", "monthly" }</item>
         ///     <item>expiration [integer, default 604800 (7 days)]: time interval in seconds between scheduled date and expiration. ex: 123456789</item>
         ///     <item>rules [list of CreditNote.Rule objects, default null]: list of Rule objects or dictionaries for modifying the CreditNote behavior. ex: new List<CreditNote.Rule>{ new CreditNote.Rule(key: "invoiceCreationMode", value: "scheduled") }</item>
+        ///     <item>templateReplacements [StarkInfra.TemplateReplacements object or dictionary, default null]: values that fill the placeholders of the contract template. Keys depend on the template and are sent exactly as written. A dictionary is converted into a TemplateReplacements object, with the same payload. Null values are sent as JSON null and values, including DateTime, are serialized as-is, without the SDK's date conversion. Last constructor parameter, so positional callers keep working. ex: new Dictionary<string, object>{ { "guarantorName", "Jon Snow" }, { "guarantorTaxId", "012.345.678-90" } }</item>
         /// </list>
         /// Attributes (return-only):
         /// <list>
@@ -149,7 +152,7 @@ namespace StarkInfra
             string status = null, List<string> transactionIds = null, string workspaceID = null,
             string debtorWorkspaceID = null, long? taxAmount = null,
             float? nominalInterest = null, float? interest = null, DateTime? created = null,
-            DateTime? updated = null
+            DateTime? updated = null, Dictionary<string, object> templateReplacements = null
         )  : base(id)
         {
             TemplateID = templateID;
@@ -171,6 +174,7 @@ namespace StarkInfra
             Tags = tags;
             Expiration = expiration;
             Rules = rules;
+            TemplateReplacements = ParseTemplateReplacements(templateReplacements);
             Amount = amount;
             DocumentID = documentID;
             Status = status;
@@ -187,6 +191,19 @@ namespace StarkInfra
             {
                 PaymentType = GetType(Payment);
             }
+        }
+
+        private static TemplateReplacements ParseTemplateReplacements(Dictionary<string, object> templateReplacements)
+        {
+            if (templateReplacements == null)
+            {
+                return null;
+            }
+            if (templateReplacements is TemplateReplacements typed)
+            {
+                return typed;
+            }
+            return new TemplateReplacements(templateReplacements);
         }
 
         private static string GetType(Utils.Resource payment)
@@ -523,11 +540,12 @@ namespace StarkInfra
             Resource payment = ParsePayment(json: json.payment, paymentType: json.paymentType.ToObject<string>());
             List<Invoice> invoices = ParseInvoice(json.invoices);
             List<Rule> rules = ParseRules(json.rules);
+            TemplateReplacements templateReplacements = json.templateReplacements?.ToObject<TemplateReplacements>();
 
             return new CreditNote(
                 id: id, templateID: templateID, name: name, taxID: taxID, nominalAmount: nominalAmount, scheduled: scheduled, invoices: invoices,
                 payment: payment, signers: signers, externalID: externalID, streetLine1: streetLine1, streetLine2: streetLine2, district: district,
-                city: city, stateCode: stateCode, zipCode: zipCode, paymentType: paymentType, rebateAmount: rebateAmount, tags: tags, rules: rules, amount: amount,
+                city: city, stateCode: stateCode, zipCode: zipCode, paymentType: paymentType, rebateAmount: rebateAmount, tags: tags, rules: rules, templateReplacements: templateReplacements, amount: amount,
                 expiration: expiration, documentID: documentID, status: status, transactionIds: transactionIds, workspaceID: workspaceID,
                 debtorWorkspaceID: debtorWorkspaceID, taxAmount: taxAmount, interest: interest, created: created, updated: updated
             );

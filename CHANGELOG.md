@@ -14,6 +14,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 ### Added
+- templateReplacements optional parameter to CreditNote resource, with the values that fill the contract template placeholders. It is a StarkInfra.TemplateReplacements object (a dictionary of free keys) and a plain dictionary is still accepted
 - IssuingCard.UpdateMulti method, to update several cards in one request (PATCH /v2/issuing-card)
 - holderName, holderTaxID and holderExternalID to the IssuingCard.Update patch data, to assign a holder to a pending card
 - disputeID attribute to PixRequest resource
